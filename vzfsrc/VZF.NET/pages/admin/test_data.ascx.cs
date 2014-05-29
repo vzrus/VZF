@@ -37,6 +37,7 @@ namespace YAF.Pages.Admin
 
     using VZF.Data.Common;
     using VZF.Types.Data;
+    using VZF.Types.Objects;
 
     using YAF.Classes;
     using YAF.Core;
@@ -1058,7 +1059,7 @@ namespace YAF.Pages.Admin
                 object pollID = null;
 
                 long topicId = CommonDb.topic_save(
-                    PageContext.PageModuleID, 
+                    PageContext.PageModuleID,
                     forumID,
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     string.Empty,
@@ -1067,8 +1068,10 @@ namespace YAF.Pages.Admin
                     this.MessageContentPrefixTB.Text.Trim() + this.randomGuid,
                     this.PageContext.PageUserID,
                     priority,
-                    (UserMembershipHelper.FindUsersByName(this.PageContext.User.UserName).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON", "GUEST_NAME"), this.PageContext.User.UserName) : this.PageContext.User.UserName,  
-                    this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
+                    (UserMembershipHelper.FindUsersByName(this.PageContext.User.UserName).Count > 0)
+                        ? "{0}_{1}".FormatWith(this.GetText("COMMON", "GUEST_NAME"), this.PageContext.User.UserName)
+                        : this.PageContext.User.UserName,
+                    this.Get<HttpRequestBase>().GetUserRealIPAddress(),
                     DateTime.UtcNow,
                     string.Empty,
                     this.GetMessageFlags(),
@@ -1078,39 +1081,69 @@ namespace YAF.Pages.Admin
 
                 if (this.PollCreate.Checked)
                 {
-                    // vzrus: always one in current code - a number of  questions
-                    const int questionsTotal = 1;
+                   
+                    var choiceList = new List<PollChoice>();
 
-                    var pollList = new List<PollSaveList>(questionsTotal);
+                    // Fill in choice list
+                    choiceList.Add(
+                        new PollChoice()
+                            {
+                                Choice = "ans1-" + this.randomGuid,
+                                ObjectPath = null,
+                                MimeType = null,
+                                Votes = 0
+                            });
+                    choiceList.Add(
+                        new PollChoice()
+                            {
+                                Choice = "ans2-" + this.randomGuid,
+                                ObjectPath = null,
+                                MimeType = null,
+                                Votes = 0
+                            });
 
-                    var rawChoices = new string[3,2];
+                    var pollGroup = new PollGroup
+                                        {
+                                            CategoryId = null,
+                                            ForumId = null,
+                                            TopicId = (int?)topicId,
+                                            BoardId = null,
+                                            UserId = PageContext.PageUserID,
+                                            Flags = new PollGroupFlags { IsBound = false },
+                                            Polls =
+                                                new List<Poll>
+                                                    {
+                                                        new Poll
+                                                            {
+                                                                Question =
+                                                                    "question-"
+                                                                    + this.randomGuid,
+                                                                Choices = choiceList,
+                                                                UserID =
+                                                                    this.PageContext.PageUserID,
+                                                                ObjectPath = null,
+                                                                MimeType = null,
+                                                                Flags =
+                                                                    new PollFlags
+                                                                        {
+                                                                            IsClosedBound
+                                                                                =
+                                                                                false,
+                                                                            AllowMultipleChoices
+                                                                                =
+                                                                                false,
+                                                                            ShowVoters
+                                                                                =
+                                                                                false,
+                                                                            AllowSkipVote
+                                                                                =
+                                                                                false
+                                                                        }
+                                                            }
+                                                    }
+                                        };
 
-                    rawChoices[0, 0] = "ans1-" + this.randomGuid;
-                    rawChoices[0, 1] = "ans2-" + this.randomGuid;
-                    rawChoices[1, 0] = null;
-                    rawChoices[1, 1] = null;
-                    rawChoices[2, 0] = null;
-                    rawChoices[2, 1] = null;
-
-                    object datePollExpire = null;
-                    pollList.Add(
-                        new PollSaveList(
-                            "quest-" + this.randomGuid,
-                            rawChoices,
-                            (DateTime?)datePollExpire,
-                            this.PageContext.PageUserID,
-                            (int?)topicId,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false));
-                   // pollID = CommonDb.poll_save(PageContext.PageModuleID, pollList);
+                    CommonDb.poll_save(PageContext.PageModuleID, pollGroup);
                 }
 
                 if (_messagesToCreate > 0)
@@ -1169,11 +1202,13 @@ namespace YAF.Pages.Admin
         }
 
         /// <summary>
-        /// Create Users From Board
+        /// The create users.
         /// </summary>
         /// <param name="boardID">
+        /// The board id.
         /// </param>
         /// <param name="_users_Number">
+        /// The _users_ number.
         /// </param>
         private void CreateUsers(int boardID, int _users_Number)
         {
@@ -1182,7 +1217,6 @@ namespace YAF.Pages.Admin
             bool _excludeCurrentBoard = false;
 
             this.CreateUsers(boardID, _users_Number, _outCounter, _countLimit, _excludeCurrentBoard);
-            return;
         }
 
         /// <summary>

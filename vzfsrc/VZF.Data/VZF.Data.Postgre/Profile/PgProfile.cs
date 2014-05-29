@@ -68,16 +68,16 @@
 
            return sqlCommand.ToString();           
         }
-        
 
         /// <summary>
-        /// The get profile structure.
+        /// Gets the profile structure.
         /// </summary>
-        /// <returns>
-        /// </returns>
-        public static string GetProfileStructure()
+        public static string ProfileStructure
         {
-            return @"SELECT * FROM {0} LIMIT 1";
+            get
+            {
+                return @"SELECT * FROM {0} LIMIT 1";
+            }
         }
 
         /// <summary>
@@ -121,9 +121,15 @@
             return chunk;
         }
 
-        public static string ProfileExists()
+        /// <summary>
+        /// Gets the profile exists.
+        /// </summary>
+        public static string ProfileExists
         {
-            return @"SELECT 1 FROM {0}  WHERE UserId = @i_UserID AND ApplicationName = @i_ApplicationName LIMIT 1";
+            get
+            {
+                return @"SELECT 1 FROM {0}  WHERE UserId = @i_UserID AND ApplicationName = @i_ApplicationName LIMIT 1";
+            }
         }
 
         #endregion

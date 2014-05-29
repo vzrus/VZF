@@ -3,9 +3,9 @@
 -- They are distributed under terms of GPLv2 only licence as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2006-2012
 
--- RENAME TABLE {databaseName}.{objectQualifier}AccessMask TO {databaseName}.{objectQualifier}accessmask;
+-- RENAME TABLE {databaseSchema}.{objectQualifier}AccessMask TO {databaseSchema}.{objectQualifier}accessmask;
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AccessMask
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AccessMask
        (
        `AccessMaskID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AccessMask
 --GO
 
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AccessMaskHistory
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AccessMaskHistory
        (
        `AccessMaskID` INT NOT NULL,    
        `ChangedUserID`		INT,	
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AccessMaskHistory
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Active
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Active
        (
        `SessionID` VARCHAR(24) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `BoardID` INT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Active
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ActiveAccess
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ActiveAccess
         (		
         `UserID`			    int NOT NULL ,
         `BoardID`			    int NOT NULL ,			
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ActiveAccess
         ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AdminPageUserAccess
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AdminPageUserAccess
        (
        `UserID` INT NOT NULL,	  
        `PageName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL	  
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AdminPageUserAccess
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}EventLogGroupAccess
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}EventLogGroupAccess
        (
        `GroupID`		       int NOT NULL,
        `EventTypeID`           int NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}EventLogGroupAccess
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Attachment
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Attachment
        (
        `AttachmentID` INT NOT NULL AUTO_INCREMENT,
        `MessageID` INT NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Attachment
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}BannedIP
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}BannedIP
        (
        `ID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}BannedIP
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}BBCode
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}BBCode
        (
        `BBCodeID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}BBCode
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Board
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Board
        (
        `BoardID` INT NOT NULL AUTO_INCREMENT,
        `BoardUID` BINARY(16),
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Board
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Category
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Category
        (
        `CategoryID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Category
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}CheckEmail
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}CheckEmail
        (
        `CheckEmailID` INT NOT NULL AUTO_INCREMENT,
        `UserID` INT NOT NULL,
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}CheckEmail
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Choice
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Choice
        (
        `ChoiceID` INT NOT NULL AUTO_INCREMENT,
        `PollID` INT NOT NULL,
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Choice
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}EventLog
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}EventLog
        (
        `EventLogID` INT NOT NULL AUTO_INCREMENT,
        `EventTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}EventLog
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Extension
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Extension
        (
        `ExtensionID` INT NOT NULL AUTO_INCREMENT,
        `BoardId` INT NOT NULL DEFAULT 1,
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Extension
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Forum
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Forum
        (
        `ForumID` INT NOT NULL AUTO_INCREMENT,
        `CategoryID` INT NOT NULL,
@@ -257,7 +257,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Forum
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ForumHistory
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ForumHistory
        (
        `ForumID` INT NOT NULL,    
        `ChangedUserID`		INT,	
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ForumHistory
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ForumAccess
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ForumAccess
        (
        `GroupID` INT NOT NULL,
        `ForumID` INT NOT NULL,
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ForumAccess
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Group
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Group
        (
        `GroupID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -308,7 +308,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Group
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupHistory
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}GroupHistory
        (
        `GroupID` INT NOT NULL,    
        `ChangedUserID`		INT,	
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupHistory
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupHistory
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}GroupHistory
        (
        `GroupID` INT NOT NULL,    
        `ChangedUserID`		INT NOT NULL,	
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupHistory
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupMedal
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}GroupMedal
        (
        `GroupID` INT NOT NULL,
        `MedalID` INT NOT NULL,
@@ -344,7 +344,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupMedal
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Mail
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Mail
        (
        `MailID` INT NOT NULL AUTO_INCREMENT,
        `FromUser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Mail
 --GO
 
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Medal
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Medal
        (
        `BoardID` INT NOT NULL,
        `MedalID` INT NOT NULL AUTO_INCREMENT,
@@ -387,7 +387,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Medal
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Message
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Message
        (
        `MessageID` INT NOT NULL AUTO_INCREMENT,
        `TopicID` INT NOT NULL,
@@ -415,7 +415,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Message
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}MessageHistory
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageHistory
        (
        `MessageID` INT NOT NULL,
        `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL ,
@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}MessageHistory
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}MessageReported
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageReported
        (
        `MessageID` INT NOT NULL,
        `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
@@ -440,7 +440,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}MessageReported
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}MessageReportedAudit
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageReportedAudit
        (
        `LogID` INT NOT NULL AUTO_INCREMENT,
        `UserID` INT NULL,
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}MessageReportedAudit
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}NntpForum
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpForum
        (
        `NntpForumID` INT NOT NULL AUTO_INCREMENT,
        `NntpServerID` INT NOT NULL,
@@ -466,7 +466,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}NntpForum
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}NntpServer
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpServer
        (
        `NntpServerID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -480,7 +480,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}NntpServer
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}NntpTopic
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpTopic
        (
        `NntpTopicID` INT NOT NULL AUTO_INCREMENT,
        `NntpForumID` INT NOT NULL,
@@ -491,7 +491,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}NntpTopic
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PMessage
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PMessage
        (
        `PMessageID` INT NOT NULL AUTO_INCREMENT,
        `FromUserID` INT NOT NULL,
@@ -505,7 +505,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PMessage
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PollGroupCluster
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollGroupCluster
        (
        `PollGroupID` INT NOT NULL AUTO_INCREMENT,
        `UserID`	int not NULL,
@@ -514,7 +514,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PollGroupCluster
        );
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Poll
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Poll
        (
        `PollID` INT NOT NULL AUTO_INCREMENT,
        `Question` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
@@ -529,7 +529,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Poll
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PollVote
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollVote
        (
        `PollVoteID` INT NOT NULL AUTO_INCREMENT,
        `PollID` INT NOT NULL,
@@ -541,7 +541,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PollVote
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PollVoteRefuse
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollVoteRefuse
        (
        `RefuseID` INT NOT NULL AUTO_INCREMENT,
        `PollID` INT NOT NULL,
@@ -552,7 +552,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PollVoteRefuse
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Rank
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Rank
        (
        `RankID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -574,7 +574,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Rank
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Registry
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Registry
        (
        `RegistryID` INT NOT NULL AUTO_INCREMENT,
        `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
@@ -585,7 +585,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Registry
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE  IF NOT EXISTS {databaseName}.{objectQualifier}ShoutboxMessage(
+CREATE TABLE  IF NOT EXISTS {databaseSchema}.{objectQualifier}ShoutboxMessage(
         ShoutBoxMessageID INT  NOT NULL AUTO_INCREMENT,		
         UserID int,
         UserName varchar(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
@@ -598,7 +598,7 @@ CREATE TABLE  IF NOT EXISTS {databaseName}.{objectQualifier}ShoutboxMessage(
         ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Replace_Words
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Replace_Words
        (
        `ID` INT NOT NULL AUTO_INCREMENT,
        `BoardId` INT NOT NULL,
@@ -609,7 +609,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Replace_Words
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Smiley
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Smiley
        (
        `SmileyID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -622,7 +622,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Smiley
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Topic
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Topic
        (
        `TopicID` INT NOT NULL AUTO_INCREMENT,
        `ForumID` INT NOT NULL,
@@ -656,7 +656,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Topic
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}User
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}User
        (
        `UserID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
@@ -703,7 +703,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}User
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserForum
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserForum
        (
        `UserID` INT NOT NULL,
        `ForumID` INT NOT NULL,
@@ -715,7 +715,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserForum
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserGroup
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserGroup
        (
        `UserID` INT NOT NULL,
        `GroupID` INT NOT NULL,
@@ -724,7 +724,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserGroup
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserMedal
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserMedal
        (
        `UserID` INT NOT NULL,
        `MedalID` INT NOT NULL,
@@ -737,7 +737,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserMedal
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}IgnoreUser
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}IgnoreUser
        (
        `UserID` INT NOT NULL,
        `IgnoredUserID` INT NOT NULL,
@@ -746,7 +746,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}IgnoreUser
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};	
 --GO
     
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserPMessage
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserPMessage
        (
        `UserPMessageID` INT NOT NULL AUTO_INCREMENT,
        `UserID` INT NOT NULL,
@@ -758,7 +758,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}UserPMessage
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}WatchForum
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}WatchForum
        (
        `WatchForumID` INT NOT NULL AUTO_INCREMENT,
        `ForumID` INT NOT NULL,
@@ -770,7 +770,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}WatchForum
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}WatchTopic
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}WatchTopic
        (
        `WatchTopicID` INT NOT NULL AUTO_INCREMENT,
        `TopicID` INT NOT NULL,
@@ -782,7 +782,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}WatchTopic
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Thanks
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Thanks
        (
        `ThanksID` INT NOT NULL AUTO_INCREMENT,
        `ThanksFromUserID` INT NOT NULL,
@@ -793,7 +793,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Thanks
        ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Buddy
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Buddy
        (
        `ID` INT NOT NULL AUTO_INCREMENT,
        `FromUserID` INT NOT NULL,
@@ -806,7 +806,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Buddy
 --GO
 
 /* YAF FavoriteTopic Table */
-CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}FavoriteTopic
+CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}FavoriteTopic
        (
        `ID` INT NOT NULL AUTO_INCREMENT,
        `UserID` INT NOT NULL,
@@ -816,7 +816,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}FavoriteTopic
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}UserAlbum
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserAlbum
        (
        `AlbumID` INT NOT NULL  AUTO_INCREMENT,
        `UserID` INT NOT NULL,
@@ -828,7 +828,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}UserAlbum
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}UserAlbumImage
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserAlbumImage
        (
        `ImageID` INT NOT NULL  AUTO_INCREMENT,
        `AlbumID`  INT NOT NULL,
@@ -843,7 +843,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}UserAlbumImage
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicReadTracking
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicReadTracking
        (
        `UserID`			INT NOT NULL ,
        `TopicID`			INT NOT NULL ,
@@ -852,7 +852,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicReadTracking
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}ForumReadTracking
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}ForumReadTracking
        (
        `UserID`			INT NOT NULL ,
        `ForumID`			INT NOT NULL ,
@@ -861,7 +861,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}ForumReadTracking
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicStatus
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicStatus
        (
        `TopicStatusID` INT NOT NULL AUTO_INCREMENT,
        `TopicStatusName` VARCHAR(100)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
@@ -872,7 +872,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicStatus
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}Tags
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}Tags
        (
        `TagID` INT NOT NULL AUTO_INCREMENT,
        `Tag` VARCHAR(1024)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
@@ -882,7 +882,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}Tags
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicTags
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicTags
        (	 
        `TagID` int NOT NULL,
        `TopicID` int NOT NULL,
@@ -891,7 +891,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicTags
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}UserProfile
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserProfile
        (
        `UserID` INT NOT NULL,
        `LastUpdatedDate` DATETIME NOT NULL,
@@ -903,7 +903,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}UserProfile
        ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
 
-CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}ReputationVote(
+CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}ReputationVote(
         `ReputationFromUserID`  INT NOT NULL,
         `ReputationToUserID`	  INT NOT NULL,
         `VoteDate`	DATETIME NOT NULL
@@ -912,11 +912,11 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}ReputationVote(
 
 -- update procedures 
 
-DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}tables_upgrade;
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}tables_upgrade;
 --GO;
-DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}pollgroup_migration;
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}pollgroup_migration;
 --GO;
-CREATE PROCEDURE {databaseName}.{objectQualifier}pollgroup_migration  
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}pollgroup_migration  
  (	 	
  )
  BEGIN
@@ -927,7 +927,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}pollgroup_migration
       DECLARE ici_PollGroupID INT;
       DECLARE cltt CURSOR FOR
       SELECT  PollID, TopicID, UserID 
-       FROM {databaseName}.{objectQualifier}Topic 
+       FROM {databaseSchema}.{objectQualifier}Topic 
         WHERE PollID IS NOT NULL;
     
         OPEN cltt;				
@@ -937,11 +937,11 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}pollgroup_migration
         LOOP        
             FETCH cltt INTO ici_ptmp, ici_ttmp, ici_utmp;       
              IF ici_ptmp is not null THEN
-               insert into {databaseName}.{objectQualifier}PollGroupCluster(UserID, Flags) 
+               insert into {databaseSchema}.{objectQualifier}PollGroupCluster(UserID, Flags) 
                 values (ici_utmp, 0);	
                SET ici_PollGroupID = LAST_INSERT_ID(); 
-               update {databaseName}.{objectQualifier}Topic SET PollID = ici_PollGroupID WHERE TopicID = ici_ttmp;
-               update {databaseName}.{objectQualifier}Poll SET UserID = ici_utmp, PollGroupID = ici_PollGroupID, Flags = 0 WHERE PollID = ici_ptmp;
+               update {databaseSchema}.{objectQualifier}Topic SET PollID = ici_PollGroupID WHERE TopicID = ici_ttmp;
+               update {databaseSchema}.{objectQualifier}Poll SET UserID = ici_utmp, PollGroupID = ici_PollGroupID, Flags = 0 WHERE PollID = ici_ptmp;
             END IF; 
         END LOOP;
         END;
@@ -951,979 +951,979 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}pollgroup_migration
 --GO
 
 
-CREATE  PROCEDURE {databaseName}.{objectQualifier}tables_upgrade()
+CREATE  PROCEDURE {databaseSchema}.{objectQualifier}tables_upgrade()
 BEGIN
 -- clean-up for active tables
-DELETE FROM {databaseName}.{objectQualifier}Active;
-DELETE FROM {databaseName}.{objectQualifier}ActiveAccess;
+DELETE FROM {databaseSchema}.{objectQualifier}Active;
+DELETE FROM {databaseSchema}.{objectQualifier}ActiveAccess;
 
 -- Active Table
 
   -- add `ForumPage` column  
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-                 WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}') 
+                 WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}') 
                  AND (TABLE_NAME='{objectQualifier}Active' 
                       OR TABLE_NAME=LOWER('{objectQualifier}Active'))
                  AND COLUMN_NAME='ForumPage' LIMIT 1) THEN
-     ALTER TABLE  {databaseName}.{objectQualifier}Active ADD `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Location`;
+     ALTER TABLE  {databaseSchema}.{objectQualifier}Active ADD `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Location`;
   END IF;
   
   -- Check for a right column `ForumPage` size
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-             WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  
+             WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  
              AND (TABLE_NAME='{objectQualifier}Active' 
                   OR TABLE_NAME=LOWER('{objectQualifier}Active'))
              AND COLUMN_NAME='ForumPage' AND CHARACTER_MAXIMUM_LENGTH < 255 LIMIT 1) THEN
-     ALTER TABLE  {databaseName}.{objectQualifier}Active CHANGE `ForumPage` `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+     ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `ForumPage` `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   -- Check for a right column `Location` size
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-             WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}') 
+             WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}') 
              AND (TABLE_NAME='{objectQualifier}Active' 
                   OR TABLE_NAME=LOWER('{objectQualifier}Active'))
              AND COLUMN_NAME='Location' AND CHARACTER_MAXIMUM_LENGTH < 255 LIMIT 1) THEN
-     ALTER TABLE  {databaseName}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+     ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;  
 
   -- add `Flags` column  
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Active' OR TABLE_NAME=LOWER('{objectQualifier}Active'))
   AND COLUMN_NAME='Flags' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Active ADD `Flags` INT;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Active ADD `Flags` INT;
   END IF;
 
 -- Active Access Table
    -- add `IsGuestX` column  
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}ActiveAccess' OR TABLE_NAME=LOWER('{objectQualifier}ActiveAccess'))
   AND COLUMN_NAME='IsGuestX' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}ActiveAccess ADD `IsGuestX` TINYINT(1) NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}ActiveAccess ADD `IsGuestX` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
      -- add `LastActive` column  
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}ActiveAccess' OR TABLE_NAME=LOWER('{objectQualifier}ActiveAccess'))
   AND COLUMN_NAME='LastActive' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}ActiveAccess ADD `LastActive`  DATETIME NOT NULL;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}ActiveAccess ADD `LastActive`  DATETIME NOT NULL;
   END IF;
 
  
   
 -- AccessMask Table
 IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}AccessMask' OR TABLE_NAME=LOWER('{objectQualifier}AccessMask'))
   AND COLUMN_NAME='SortOrder' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}AccessMask ADD `SortOrder`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}AccessMask ADD `SortOrder`  INT NOT NULL DEFAULT 0;
   END IF;  
 -- Board Table
 IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Board' OR TABLE_NAME=LOWER('{objectQualifier}Board'))
   AND COLUMN_NAME='BoardUID' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Board ADD `BoardUID`  BINARY(16);
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Board ADD `BoardUID`  BINARY(16);
   END IF;  
 -- Topic Table
 IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='AnswerMessageId' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD `AnswerMessageId` INT AFTER `Flags`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `AnswerMessageId` INT AFTER `Flags`;
   END IF;
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD  `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `Topic`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `Topic`;
   END IF;
 
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Styles' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD  `Styles` VARCHAR(255) NULL AFTER `Status`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Styles` VARCHAR(255) NULL AFTER `Status`;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Status' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD  `Status` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `Topic`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Status` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `Topic`;
   END IF;
 
   IF  EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Status' LIMIT 1) THEN
-  ALTER TABLE {databaseName}.{objectQualifier}Topic CHANGE `Status` `Status`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+  ALTER TABLE {databaseSchema}.{objectQualifier}Topic CHANGE `Status` `Status`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;  
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='LinkDays' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD  `LinkDays` DATETIME;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `LinkDays` DATETIME;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD `UserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `UserName`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `UserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `UserName`;
   END IF;
     
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='LastUserDisplayName' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `LastUserName`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `LastUserName`;
   END IF;
  
 -- Rank Table
 IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='PMLimit' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `PMLimit` INT;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `PMLimit` INT;
   END IF;
   
  IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='Style' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `Style` VARCHAR(255);
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `Style` VARCHAR(255);
   END IF; 
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='SortOrder' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `SortOrder`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `SortOrder`  INT NOT NULL DEFAULT 0;
   END IF; 
-  UPDATE  {databaseName}.{objectQualifier}Rank SET PMLimit = 0 WHERE PMLimit IS NULL;
+  UPDATE  {databaseSchema}.{objectQualifier}Rank SET PMLimit = 0 WHERE PMLimit IS NULL;
   
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrSigChars' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `UsrSigChars`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigChars`  INT NOT NULL DEFAULT 0;
   END IF;  
  
  
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrSigBBCodes' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrSigHTMLTags' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrAlbums' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `UsrAlbums`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrAlbums`  INT NOT NULL DEFAULT 0;
   END IF; 
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrAlbumImages' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Rank ADD `UsrAlbumImages`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrAlbumImages`  INT NOT NULL DEFAULT 0;
   END IF;  
   
   -- Group Table
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='PMLimit' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `PMLimit` INT;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `PMLimit` INT;
   END IF;
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='Style' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `Style`  VARCHAR(255);
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `Style`  VARCHAR(255);
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='SortOrder' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `SortOrder` INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `SortOrder` INT NOT NULL DEFAULT 0;
   END IF;
-  UPDATE  {databaseName}.{objectQualifier}Group SET PMLimit = 30 WHERE PMLimit IS NULL;
+  UPDATE  {databaseSchema}.{objectQualifier}Group SET PMLimit = 30 WHERE PMLimit IS NULL;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrSigChars' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `UsrSigChars`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigChars`  INT NOT NULL DEFAULT 0;
   END IF;
   
-  UPDATE  {databaseName}.{objectQualifier}Group SET UsrSigChars = 128 WHERE UsrSigChars IS NULL;
+  UPDATE  {databaseSchema}.{objectQualifier}Group SET UsrSigChars = 128 WHERE UsrSigChars IS NULL;
  
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrSigBBCodes' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrSigHTMLTags' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrAlbums' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `UsrAlbums`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrAlbums`  INT NOT NULL DEFAULT 0;
   END IF;
   
-  UPDATE  {databaseName}.{objectQualifier}Group SET UsrAlbums = 1 WHERE UsrAlbums IS NULL AND Name !='Guest';
+  UPDATE  {databaseSchema}.{objectQualifier}Group SET UsrAlbums = 1 WHERE UsrAlbums IS NULL AND Name !='Guest';
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrAlbumImages' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Group ADD `UsrAlbumImages`  INT NOT NULL DEFAULT 0;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrAlbumImages`  INT NOT NULL DEFAULT 0;
   END IF;  
-   UPDATE  {databaseName}.{objectQualifier}Group SET UsrAlbumImages = 30 WHERE UsrAlbumImages IS NULL AND Name !='Guest';
+   UPDATE  {databaseSchema}.{objectQualifier}Group SET UsrAlbumImages = 30 WHERE UsrAlbumImages IS NULL AND Name !='Guest';
 
 
   -- MessageReportedAudit Table
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}MessageReportedAudit')
   AND COLUMN_NAME='ReportedNumber' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}MessageReportedAudit ADD `ReportedNumber` INT NOT NULL DEFAULT 1;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}MessageReportedAudit ADD `ReportedNumber` INT NOT NULL DEFAULT 1;
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}MessageReportedAudit')
   AND COLUMN_NAME='ReportText' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}MessageReportedAudit ADD `ReportText` VARCHAR(4000);
+  ALTER TABLE  {databaseSchema}.{objectQualifier}MessageReportedAudit ADD `ReportText` VARCHAR(4000);
   END IF;
 
   -- User Table
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='DisplayName' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}User ADD `DisplayName`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Name`;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `DisplayName`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Name`;
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='AutoWatchTopics' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}User ADD `AutoWatchTopics` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `AutoWatchTopics` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='NotificationType' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}User ADD `NotificationType` INT NOT NULL DEFAULT 10;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `NotificationType` INT NOT NULL DEFAULT 10;
   END IF; 
    
        IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='TextEditor' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}User ADD  `TextEditor` VARCHAR(50);
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD  `TextEditor` VARCHAR(50);
   END IF; 
  
     
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='DailyDigest' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}User ADD `DailyDigest` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `DailyDigest` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
   
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='Culture' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}User ADD `Culture` VARCHAR(10) NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `Culture` VARCHAR(10) NULL;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='UseSingleSignOn' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `UseSingleSignOn`  TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `UseSingleSignOn`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsFacebookUser' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsFacebookUser` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `IsFacebookUser` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;  
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsTwitterUser' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsTwitterUser` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `IsTwitterUser` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='UserStyle' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='StyleFlags' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `StyleFlags` INT NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `StyleFlags` INT NOT NULL DEFAULT 0;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsUserStyle' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsUserStyle` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `IsUserStyle` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
           IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsGroupStyle' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsGroupStyle` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `IsGroupStyle` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
             IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsRankStyle' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;   
 
               IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsRankStyle' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;  
 
                 IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='CommonViewType' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `CommonViewType` INT NOT NULL DEFAULT 0;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `CommonViewType` INT NOT NULL DEFAULT 0;
   END IF;  
 
                   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='PostsPerPage' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `PostsPerPage`   INT NOT NULL DEFAULT 10;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `PostsPerPage`   INT NOT NULL DEFAULT 10;
   END IF;  
 
                     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='TopicsPerPage' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD  `TopicsPerPage`   INT NOT NULL DEFAULT 20;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD  `TopicsPerPage`   INT NOT NULL DEFAULT 20;
   END IF;   
 
   -- Message Table
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='EditedBy' LIMIT 1) THEN
-         ALTER TABLE  {databaseName}.{objectQualifier}Message ADD `EditedBy`  INT  AFTER `Edited`;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD `EditedBy`  INT  AFTER `Edited`;
   END IF; 
 
        IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='ExternalMessageId' LIMIT 1) THEN
-         ALTER TABLE  {databaseName}.{objectQualifier}Message ADD  `ExternalMessageId`	varchar(255) NULL;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD  `ExternalMessageId`	varchar(255) NULL;
   END IF; 
 
          IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='ReferenceMessageId' LIMIT 1) THEN
-         ALTER TABLE  {databaseName}.{objectQualifier}Message ADD  `ReferenceMessageId`	varchar(255) NULL;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD  `ReferenceMessageId`	varchar(255) NULL;
   END IF; 
 
            IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
-         ALTER TABLE  {databaseName}.{objectQualifier}Message ADD  `UserDisplayName`	varchar(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER  `UserName`;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD  `UserDisplayName`	varchar(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER  `UserName`;
   END IF; 
 
              IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-         ALTER TABLE  {databaseName}.{objectQualifier}Message ADD   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Message`;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Message`;
   END IF;
 
  
 
   -- Forum Table
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='ImageURL' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Forum ADD `ImageURL`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `ImageURL`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='Styles' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Forum ADD `Styles`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `Styles`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF; 
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='PollGroupID' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Forum ADD `PollGroupID`  INT NULL;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `PollGroupID`  INT NULL;
   END IF; 
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='LastUserDisplayName' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Forum ADD `LastUserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `LastUserName`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `LastUserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `LastUserName`;
   END IF; 
 
   -- PollVote Table
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}PollVote')
   AND COLUMN_NAME='ChoiceID' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}PollVote ADD `ChoiceID`  INT NULL;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}PollVote ADD `ChoiceID`  INT NULL;
   END IF;   
 
   -- Category Table
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Category')
   AND COLUMN_NAME='PollGroupID' LIMIT 1) THEN
-  ALTER TABLE  {databaseName}.{objectQualifier}Category ADD `PollGroupID`  INT NULL;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Category ADD `PollGroupID`  INT NULL;
   END IF;    
    
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Category')
   AND COLUMN_NAME='CanHavePersForums' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Category ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Category ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}BannedIP')
   AND COLUMN_NAME='Reason' LIMIT 1) THEN
-         ALTER TABLE  {databaseName}.{objectQualifier}BannedIP ADD `Reason`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+         ALTER TABLE  {databaseSchema}.{objectQualifier}BannedIP ADD `Reason`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF; 
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}BannedIP')
   AND COLUMN_NAME='UserID' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}BannedIP ADD `UserID`   INT NOT NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}BannedIP ADD `UserID`   INT NOT NULL;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}ShoutboxMessage')
   AND COLUMN_NAME='BoardID' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}ShoutboxMessage ADD `BoardID`   INT NOT NULL DEFAULT 1;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}ShoutboxMessage ADD `BoardID`   INT NOT NULL DEFAULT 1;
   END IF;
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
   AND COLUMN_NAME='LastMessageFlags' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Topic ADD `LastMessageFlags`   INT NOT NULL DEFAULT 22;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `LastMessageFlags`   INT NOT NULL DEFAULT 22;
   END IF;
 
   -- Poll Table
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='Question' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll MODIFY `Question`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll MODIFY `Question`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='PollGroupID' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll ADD `PollGroupID`  INT NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `PollGroupID`  INT NULL;
   END IF;
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='PollGroupID' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll ADD `UserID`  INT NOT NULL DEFAULT 1;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `UserID`  INT NOT NULL DEFAULT 1;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='PollGroupID' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll ADD `UserID`  INT NOT NULL DEFAULT 1;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `UserID`  INT NOT NULL DEFAULT 1;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='Flags' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll ADD `Flags`  INT NOT NULL DEFAULT 0;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `Flags`  INT NOT NULL DEFAULT 0;
   END IF;
 
           IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='ObjectPath' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
           IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='MimeType' LIMIT 1) THEN
-        ALTER TABLE  {databaseName}.{objectQualifier}Poll ADD `MimeType`  VARCHAR(50) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `MimeType`  VARCHAR(50) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
-  CALL {databaseName}.{objectQualifier}pollgroup_migration();
+  CALL {databaseSchema}.{objectQualifier}pollgroup_migration();
 
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='Flags' LIMIT 1) THEN
-  update {databaseName}.{objectQualifier}Poll set Flags = 0 where Flags is null;
+  update {databaseSchema}.{objectQualifier}Poll set Flags = 0 where Flags is null;
 
   END IF;
 
 -- Choice Table
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Choice')
   AND COLUMN_NAME='ObjectPath' LIMIT 1) THEN
-    alter table {databaseName}.{objectQualifier}Choice ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+    alter table {databaseSchema}.{objectQualifier}Choice ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   
     END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Choice')
   AND COLUMN_NAME='MimeType' LIMIT 1) THEN
-    alter table {databaseName}.{objectQualifier}Choice ADD `MimeType`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+    alter table {databaseSchema}.{objectQualifier}Choice ADD `MimeType`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
 
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}NntpForum')
   AND COLUMN_NAME='DateCutOff' LIMIT 1) THEN
-    alter table {databaseName}.{objectQualifier}NntpForum ADD `DateCutOff` DATETIME;
+    alter table {databaseSchema}.{objectQualifier}NntpForum ADD `DateCutOff` DATETIME;
      END IF;  
 
 -- ShoutboxMessage Table
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}ShoutboxMessage')
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
-    alter table {databaseName}.{objectQualifier}ShoutboxMessage ADD `UserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `UserName`;
+    alter table {databaseSchema}.{objectQualifier}ShoutboxMessage ADD `UserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `UserName`;
   END IF;
 
  -- UserPMessage Table
          IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserPMessage')
   AND COLUMN_NAME='IsRead' LIMIT 1) THEN
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage ADD `IsRead` TINYINT(1) NULL;
-    UPDATE {databaseName}.{objectQualifier}UserPMessage 
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage ADD `IsRead` TINYINT(1) NULL;
+    UPDATE {databaseSchema}.{objectQualifier}UserPMessage 
     SET IsRead = IFNULL(SIGN(Flags & 1)>0,false) WHERE IsRead IS NULL;
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage CHANGE `IsRead` `IsRead`  TINYINT(1) NOT NULL;
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage CHANGE `IsRead` `IsRead`  TINYINT(1) NOT NULL;
      END IF; 
      
              IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserPMessage')
   AND COLUMN_NAME='IsInOutbox' LIMIT 1) THEN
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage ADD `IsInOutbox` TINYINT(1) NULL;
-    UPDATE {databaseName}.{objectQualifier}UserPMessage 
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage ADD `IsInOutbox` TINYINT(1) NULL;
+    UPDATE {databaseSchema}.{objectQualifier}UserPMessage 
     SET IsInOutbox = IFNULL(SIGN(Flags & 2)>0,false) WHERE IsInOutbox IS NULL;
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage 
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage 
     CHANGE `IsInOutbox` `IsInOutbox`  TINYINT(1) NOT NULL;
      END IF;  
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserPMessage')
   AND COLUMN_NAME='IsArchived' LIMIT 1) THEN
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage ADD `IsArchived` TINYINT(1) NULL;
-    UPDATE {databaseName}.{objectQualifier}UserPMessage 
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage ADD `IsArchived` TINYINT(1) NULL;
+    UPDATE {databaseSchema}.{objectQualifier}UserPMessage 
     SET IsArchived = IFNULL(SIGN(Flags & 4)>0,false) WHERE IsArchived IS NULL;
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage CHANGE `IsArchived` `IsArchived`  TINYINT(1) NOT NULL;
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage CHANGE `IsArchived` `IsArchived`  TINYINT(1) NOT NULL;
      END IF;
      
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserPMessage')
   AND COLUMN_NAME='IsDeleted' LIMIT 1) THEN
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage ADD `IsDeleted` TINYINT(1) NULL;
-    UPDATE {databaseName}.{objectQualifier}UserPMessage 
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage ADD `IsDeleted` TINYINT(1) NULL;
+    UPDATE {databaseSchema}.{objectQualifier}UserPMessage 
     SET IsDeleted = IFNULL(SIGN(Flags & 8)>0,false) WHERE IsDeleted IS NULL;
-    ALTER TABLE {databaseName}.{objectQualifier}UserPMessage CHANGE `IsDeleted` `IsDeleted`  TINYINT(1) NOT NULL;
+    ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage CHANGE `IsDeleted` `IsDeleted`  TINYINT(1) NOT NULL;
      END IF;  
   
     -- drop pk `MessageHistoryID`
 IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}MessageHistory')
   AND COLUMN_NAME='MessageHistoryID' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}MessageHistory CHANGE `MessageHistoryID` `MessageHistoryID` BINARY(16) NOT NULL;
- ALTER TABLE {databaseName}.{objectQualifier}MessageHistory DROP PRIMARY KEY;
- ALTER TABLE {databaseName}.{objectQualifier}MessageHistory DROP `MessageHistoryID`;
+ ALTER TABLE {databaseSchema}.{objectQualifier}MessageHistory CHANGE `MessageHistoryID` `MessageHistoryID` BINARY(16) NOT NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}MessageHistory DROP PRIMARY KEY;
+ ALTER TABLE {databaseSchema}.{objectQualifier}MessageHistory DROP `MessageHistoryID`;
 END IF;
 
     -- drop pk `TrackingID`
 IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}TopicReadtracking')
   AND COLUMN_NAME='TrackingID' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}TopicReadtracking CHANGE `TrackingID` `TrackingID` BINARY(16) NOT NULL;
- ALTER TABLE {databaseName}.{objectQualifier}TopicReadtracking DROP PRIMARY KEY;
- ALTER TABLE {databaseName}.{objectQualifier}TopicReadtracking DROP `TrackingID`;
+ ALTER TABLE {databaseSchema}.{objectQualifier}TopicReadtracking CHANGE `TrackingID` `TrackingID` BINARY(16) NOT NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}TopicReadtracking DROP PRIMARY KEY;
+ ALTER TABLE {databaseSchema}.{objectQualifier}TopicReadtracking DROP `TrackingID`;
   END IF;
 
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}PollVoteRefuse')
   AND COLUMN_NAME='BoardID' LIMIT 1) THEN 
-   ALTER TABLE {databaseName}.{objectQualifier}PollVoteRefuse DROP `BoardID`;
+   ALTER TABLE {databaseSchema}.{objectQualifier}PollVoteRefuse DROP `BoardID`;
   END IF;
 
 
     -- drop pk `TrackingID`
 IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}ForumReadtracking')
   AND COLUMN_NAME='TrackingID' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}ForumReadtracking CHANGE `TrackingID` `TrackingID` BINARY(16) NOT NULL;
- ALTER TABLE {databaseName}.{objectQualifier}ForumReadtracking DROP PRIMARY KEY;
- ALTER TABLE {databaseName}.{objectQualifier}ForumReadtracking DROP `TrackingID`;
+ ALTER TABLE {databaseSchema}.{objectQualifier}ForumReadtracking CHANGE `TrackingID` `TrackingID` BINARY(16) NOT NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}ForumReadtracking DROP PRIMARY KEY;
+ ALTER TABLE {databaseSchema}.{objectQualifier}ForumReadtracking DROP `TrackingID`;
   END IF; 
-IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS S WHERE S.TABLE_SCHEMA='{databaseName}' AND S.INDEX_NAME='IX_{databaseName}_{objectQualifier}ActiveAccess_UserID_Forum' AND S.TABLE_NAME=LOWER('{objectQualifier}ActiveAccess') AND (S.COLUMN_NAME='UserID' OR  S.COLUMN_NAME='ForumID') LIMIT 1) THEN
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS S WHERE S.TABLE_SCHEMA='{databaseSchema}' AND S.INDEX_NAME='IX_{databaseSchema}_{objectQualifier}ActiveAccess_UserID_Forum' AND S.TABLE_NAME=LOWER('{objectQualifier}ActiveAccess') AND (S.COLUMN_NAME='UserID' OR  S.COLUMN_NAME='ForumID') LIMIT 1) THEN
 
-ALTER TABLE {databaseName}.{objectQualifier}ActiveAccess
-DROP INDEX  `IX_{databaseName}_{objectQualifier}ActiveAccess_UserID_Forum`;
+ALTER TABLE {databaseSchema}.{objectQualifier}ActiveAccess
+DROP INDEX  `IX_{databaseSchema}_{objectQualifier}ActiveAccess_UserID_Forum`;
 
 END IF;
 
 IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}MessageReportedAudit')
   AND COLUMN_NAME='MessageID' AND IS_NULLABLE='YES' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}MessageReportedAudit CHANGE `MessageID` `MessageID` INT NOT NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}MessageReportedAudit CHANGE `MessageID` `MessageID` INT NOT NULL;
   END IF; 
 
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}MessageReportedAudit')
   AND COLUMN_NAME='UserID' AND IS_NULLABLE='YES' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}MessageReportedAudit CHANGE `UserID` `UserID` INT NOT NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}MessageReportedAudit CHANGE `UserID` `UserID` INT NOT NULL;
   END IF; 
 
     IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}MessageReportedAudit')
   AND COLUMN_NAME='Reported' AND IS_NULLABLE='YES' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}MessageReportedAudit CHANGE `Reported` `Reported` DATETIME NOT NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}MessageReportedAudit CHANGE `Reported` `Reported` DATETIME NOT NULL;
   END IF; 
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}PMessage')
   AND COLUMN_NAME='ReplyTo' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}PMessage ADD `ReplyTo`  INT;
+ ALTER TABLE {databaseSchema}.{objectQualifier}PMessage ADD `ReplyTo`  INT;
   END IF; 
 
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserPMessage')
   AND COLUMN_NAME='IsReply' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}UserPMessage ADD `IsReply`  TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}UserPMessage ADD `IsReply`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF; 
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
   AND COLUMN_NAME='LinkDate' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `LinkDate`  DATETIME;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Topic ADD `LinkDate`  DATETIME;
   END IF;
     
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
   AND COLUMN_NAME='TopicImage' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `TopicImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Topic ADD `TopicImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
        IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
   AND COLUMN_NAME='TopicImageType' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `TopicImageType` varchar(50) NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Topic ADD `TopicImageType` varchar(50) NULL;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
   AND COLUMN_NAME='TopicImageBin' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `TopicImageBin` LONGBLOB NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Topic ADD `TopicImageBin` LONGBLOB NULL;
   END IF;
  
   -- Group Table
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='CreatedByUserID' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD `CreatedByUserID` INT;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserID` INT;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='CreatedByUserName' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='CreatedByUserDisplayName' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='CreatedDate' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD `CreatedDate` DATETIME;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedDate` DATETIME;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='IsUserGroup' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD `IsUserGroup` TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `IsUserGroup` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;  
  
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='IsHidden' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD `IsHidden` TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `IsHidden` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='UsrPersonalForums' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD  `UsrPersonalForums`  INT NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD  `UsrPersonalForums`  INT NOT NULL DEFAULT 0;
   END IF;  
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='UsrPersonalMasks' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD  `UsrPersonalMasks`  INT NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD  `UsrPersonalMasks`  INT NOT NULL DEFAULT 0;
   END IF; 
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='UsrPersonalGroups' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Group ADD  `UsrPersonalGroups`  INT NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD  `UsrPersonalGroups`  INT NOT NULL DEFAULT 0;
   END IF; 
   -- Forum Table
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CreatedByUserID' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CreatedByUserID` INT;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserID` INT;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CreatedByUserName' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CreatedByUserDisplayName' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CreatedDate' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CreatedDate` DATETIME;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedDate` DATETIME;
   END IF;
 
        IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='IsUserForum' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `IsUserForum`  TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `IsUserForum`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
          IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CanHavePersForums' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
   
   -- make Description column nullable
     IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='Description' AND COLUMN_DEFAULT IS NOT NULL LIMIT 1) THEN
-  ALTER TABLE {databaseName}.{objectQualifier}Forum ALTER `Description` DROP DEFAULT; 
+  ALTER TABLE {databaseSchema}.{objectQualifier}Forum ALTER `Description` DROP DEFAULT; 
   END IF;
 
       IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='Description' AND IS_NULLABLE='NO' LIMIT 1) THEN
-  ALTER TABLE {databaseName}.{objectQualifier}Forum MODIFY `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE {databaseSchema}.{objectQualifier}Forum MODIFY `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
 
   -- set sortorder of forum table to integer
 
   IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
-  ALTER TABLE {databaseName}.{objectQualifier}Forum MODIFY `SortOrder` INT;
+  ALTER TABLE {databaseSchema}.{objectQualifier}Forum MODIFY `SortOrder` INT;
   END IF;
 
     IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
-  ALTER TABLE {databaseName}.{objectQualifier}AccessMask MODIFY `SortOrder` INT;
+  ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask MODIFY `SortOrder` INT;
   END IF; 
       
   -- AccessMask Table
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='CreatedByUserID' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}AccessMask ADD `CreatedByUserID` INT;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserID` INT;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='CreatedByUserName' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}AccessMask ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='CreatedByUserDisplayName' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}AccessMask ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
   END IF;
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='CreatedDate' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}AccessMask ADD `CreatedDate` DATETIME;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedDate` DATETIME;
   END IF;
 
        IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='IsUserMask' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}AccessMask ADD `IsUserMask`  TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `IsUserMask`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
          IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='IsAdminMask' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}AccessMask ADD `IsAdminMask`  TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `IsAdminMask`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
          IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}ActiveAccess')
   AND COLUMN_NAME='UserForumAccess' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}ActiveAccess ADD `UserForumAccess` TINYINT(1) NOT NULL DEFAULT 0;
+ ALTER TABLE {databaseSchema}.{objectQualifier}ActiveAccess ADD `UserForumAccess` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserProfile')
   AND COLUMN_NAME='Birthday' LIMIT 1) THEN
- ALTER TABLE {databaseName}.{objectQualifier}UserProfile ADD `Birthday` DATETIME;
+ ALTER TABLE {databaseSchema}.{objectQualifier}UserProfile ADD `Birthday` DATETIME;
   END IF;   
   
     IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
-  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
-  ALTER TABLE {databaseName}.{objectQualifier}Group MODIFY `SortOrder` INT;
+  ALTER TABLE {databaseSchema}.{objectQualifier}Group MODIFY `SortOrder` INT;
   END IF;
 
 
@@ -1931,33 +1931,33 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   END;
 --GO
 
-CALL {databaseName}.{objectQualifier}tables_upgrade();
+CALL {databaseSchema}.{objectQualifier}tables_upgrade();
 --GO
-DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}tables_upgrade;
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}tables_upgrade;
 --GO
-DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}pollgroup_migration;	
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}pollgroup_migration;	
 --GO
 
 /* Check and update table column sizes */
 
-DROP PROCEDURE   IF EXISTS {databaseName}.{objectQualifier}change_table_columns;
+DROP PROCEDURE   IF EXISTS {databaseSchema}.{objectQualifier}change_table_columns;
 --GO
-CREATE  PROCEDURE {databaseName}.{objectQualifier}change_table_columns()
+CREATE  PROCEDURE {databaseSchema}.{objectQualifier}change_table_columns()
         BEGIN				
-             ALTER TABLE  {databaseName}.{objectQualifier}PollVote CHANGE `RemoteIP` `RemoteIP` VARCHAR(39);
-             ALTER TABLE  {databaseName}.{objectQualifier}BannedIP CHANGE `Mask` `Mask` VARCHAR(57);
-             ALTER TABLE  {databaseName}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255);
-             ALTER TABLE  {databaseName}.{objectQualifier}User CHANGE `Culture` `Culture` VARCHAR(10);
-             ALTER TABLE  {databaseName}.{objectQualifier}AccessMask CHANGE `SortOrder` `SortOrder` INT;
-             ALTER TABLE  {databaseName}.{objectQualifier}Group CHANGE `SortOrder` `SortOrder` INT;
-             ALTER TABLE  {databaseName}.{objectQualifier}Forum CHANGE `SortOrder` `SortOrder` INT;
+             ALTER TABLE  {databaseSchema}.{objectQualifier}PollVote CHANGE `RemoteIP` `RemoteIP` VARCHAR(39);
+             ALTER TABLE  {databaseSchema}.{objectQualifier}BannedIP CHANGE `Mask` `Mask` VARCHAR(57);
+             ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255);
+             ALTER TABLE  {databaseSchema}.{objectQualifier}User CHANGE `Culture` `Culture` VARCHAR(10);
+             ALTER TABLE  {databaseSchema}.{objectQualifier}AccessMask CHANGE `SortOrder` `SortOrder` INT;
+             ALTER TABLE  {databaseSchema}.{objectQualifier}Group CHANGE `SortOrder` `SortOrder` INT;
+             ALTER TABLE  {databaseSchema}.{objectQualifier}Forum CHANGE `SortOrder` `SortOrder` INT;
         END;
 --GO
-CALL {databaseName}.{objectQualifier}change_table_columns();
+CALL {databaseSchema}.{objectQualifier}change_table_columns();
 --GO
-DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}change_table_columns;
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}change_table_columns;
 --GO
-CREATE PROCEDURE {databaseName}.{objectQualifier}forum_initdisplayname() 
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}forum_initdisplayname() 
 
 BEGIN
 
@@ -1966,19 +1966,19 @@ BEGIN
     declare ici_tmpLastUserID int;
         
         declare fc cursor for
-        select ForumID, LastUserID from {databaseName}.{objectQualifier}Forum
+        select ForumID, LastUserID from {databaseSchema}.{objectQualifier}Forum
         where LastUserDisplayName IS NULL;
 
         declare sbc cursor for
-        select ShoutBoxMessageID,UserID from {databaseName}.{objectQualifier}ShoutboxMessage
+        select ShoutBoxMessageID,UserID from {databaseSchema}.{objectQualifier}ShoutboxMessage
         where UserDisplayName IS NULL;
 
         declare mc cursor for
-        select MessageID,UserID from {databaseName}.{objectQualifier}Message
+        select MessageID,UserID from {databaseSchema}.{objectQualifier}Message
         where UserDisplayName IS NULL;
 
         declare tc cursor for
-        select TopicID,UserID,LastUserID from {databaseName}.{objectQualifier}Topic
+        select TopicID,UserID,LastUserID from {databaseSchema}.{objectQualifier}Topic
         where UserDisplayName IS NULL OR LastUserDisplayName IS NULL;
 
         open fc;
@@ -1987,7 +1987,7 @@ BEGIN
         DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
         LOOP        
         fetch fc into ici_tmp,ici_tmpLastUserID;		
-        update {databaseName}.{objectQualifier}Forum set LastUserDisplayName = (select u.DisplayName FROM {databaseName}.{objectQualifier}User u WHERE u.UserID = ici_tmpLastUserID) where {databaseName}.{objectQualifier}Forum.ForumID = ici_tmp; 	
+        update {databaseSchema}.{objectQualifier}Forum set LastUserDisplayName = (select u.DisplayName FROM {databaseSchema}.{objectQualifier}User u WHERE u.UserID = ici_tmpLastUserID) where {databaseSchema}.{objectQualifier}Forum.ForumID = ici_tmp; 	
         END LOOP;
         END;
         close fc;		
@@ -1998,8 +1998,8 @@ BEGIN
         DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
         LOOP 
         fetch sbc into ici_tmp,ici_tmpUserID;		
-        update {databaseName}.{objectQualifier}ShoutboxMessage 
-        set UserDisplayName = (select u.DisplayName FROM {databaseName}.{objectQualifier}User u where u.UserID = ici_tmpUserID) where {databaseName}.{objectQualifier}ShoutboxMessage.ShoutBoxMessageID = ici_tmp;
+        update {databaseSchema}.{objectQualifier}ShoutboxMessage 
+        set UserDisplayName = (select u.DisplayName FROM {databaseSchema}.{objectQualifier}User u where u.UserID = ici_tmpUserID) where {databaseSchema}.{objectQualifier}ShoutboxMessage.ShoutBoxMessageID = ici_tmp;
         END LOOP;
         END;
         close sbc;		
@@ -2009,7 +2009,7 @@ BEGIN
         DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
         LOOP 
         fetch  mc into ici_tmp,ici_tmpUserID;				
-        update {databaseName}.{objectQualifier}Message  set UserDisplayName = (select u.DisplayName FROM {databaseName}.{objectQualifier}User u  WHERE u.UserID = ici_tmpUserID) where MessageID = ici_tmp;
+        update {databaseSchema}.{objectQualifier}Message  set UserDisplayName = (select u.DisplayName FROM {databaseSchema}.{objectQualifier}User u  WHERE u.UserID = ici_tmpUserID) where MessageID = ici_tmp;
          END LOOP;
         END;		
         close mc;
@@ -2019,8 +2019,8 @@ BEGIN
         DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
         LOOP 
         fetch next from tc into ici_tmp,ici_tmpUserID,ici_tmpLastUserID;	    
-        update {databaseName}.{objectQualifier}Topic set UserDisplayName = (select u.DisplayName FROM {databaseName}.{objectQualifier}User u  WHERE u.UserID = ici_tmpUserID) where TopicID = ici_tmp;
-        update {databaseName}.{objectQualifier}Topic set LastUserDisplayName = (select u.DisplayName FROM {databaseName}.{objectQualifier}User u WHERE u.UserID = ici_tmpLastUserID) where TopicID = ici_tmp;			
+        update {databaseSchema}.{objectQualifier}Topic set UserDisplayName = (select u.DisplayName FROM {databaseSchema}.{objectQualifier}User u  WHERE u.UserID = ici_tmpUserID) where TopicID = ici_tmp;
+        update {databaseSchema}.{objectQualifier}Topic set LastUserDisplayName = (select u.DisplayName FROM {databaseSchema}.{objectQualifier}User u WHERE u.UserID = ici_tmpLastUserID) where TopicID = ici_tmp;			
          END LOOP;
         END;
         close tc;
@@ -2028,26 +2028,26 @@ BEGIN
 end;
 --GO
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}tmp_initdisplayname()
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}tmp_initdisplayname()
 BEGIN
-if exists (select 1 from {databaseName}.{objectQualifier}Message where UserDisplayName IS NULL limit 1) then
-CALL {databaseName}.{objectQualifier}forum_initdisplayname();
+if exists (select 1 from {databaseSchema}.{objectQualifier}Message where UserDisplayName IS NULL limit 1) then
+CALL {databaseSchema}.{objectQualifier}forum_initdisplayname();
 end if;
 END;
 --GO
-  DROP PROCEDURE  IF EXISTS {databaseName}.{objectQualifier}tmp_initdisplayname;
+  DROP PROCEDURE  IF EXISTS {databaseSchema}.{objectQualifier}tmp_initdisplayname;
   --GO 
-    DROP PROCEDURE  IF EXISTS {databaseName}.{objectQualifier}forum_initdisplayname;
+    DROP PROCEDURE  IF EXISTS {databaseSchema}.{objectQualifier}forum_initdisplayname;
   --GO 
 
-  CREATE PROCEDURE {databaseName}.{objectQualifier}tmp_updatevalues()
+  CREATE PROCEDURE {databaseSchema}.{objectQualifier}tmp_updatevalues()
 BEGIN
-UPDATE {databaseName}.{objectQualifier}Group SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
-UPDATE {databaseName}.{objectQualifier}Rank SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
-UPDATE {databaseName}.{objectQualifier}Rank SET Flags = Flags | 4 where Name LIKE 'Guest';
+UPDATE {databaseSchema}.{objectQualifier}Group SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
+UPDATE {databaseSchema}.{objectQualifier}Rank SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
+UPDATE {databaseSchema}.{objectQualifier}Rank SET Flags = Flags | 4 where Name LIKE 'Guest';
 END;
 --GO
-CALL {databaseName}.{objectQualifier}tmp_updatevalues();
+CALL {databaseSchema}.{objectQualifier}tmp_updatevalues();
 --GO
-  DROP PROCEDURE  IF EXISTS {databaseName}.{objectQualifier}tmp_updatevalues;
+  DROP PROCEDURE  IF EXISTS {databaseSchema}.{objectQualifier}tmp_updatevalues;
   --GO 

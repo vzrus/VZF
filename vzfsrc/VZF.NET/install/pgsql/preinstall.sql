@@ -6,7 +6,7 @@
 -- CREATE FUNCTION plpgsql_call_handler () RETURNS OPAQUE AS '/usr/local/pgsql/lib/plpgsql' LANGUAGE C;
 -- CREATE TRUSTED LANGUAGE plpgsql HANDLER plpgsql_call_handler;
 
-CREATE OR REPLACE FUNCTION databaseSchema.f_delfunc(_schema text, _del text)
+CREATE OR REPLACE FUNCTION {databaseSchema}.f_delfunc(_schema text, _del text)
  RETURNS text AS
 $BODY$
 DECLARE
@@ -42,10 +42,10 @@ RETURN NULL;
 END;
 $BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
 --GO
-SELECT databaseSchema.f_delfunc('databaseSchema','del');
+SELECT {databaseSchema}.f_delfunc('{databaseSchema}','del');
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.f_deltype(_schema text, _del text)
+CREATE OR REPLACE FUNCTION {databaseSchema}.f_deltype(_schema text, _del text)
  RETURNS text AS
 $BODY$
 DECLARE
@@ -56,7 +56,7 @@ BEGIN
    SELECT INTO _sql, _ct
           string_agg('DROP TYPE '   
                    || quote_ident(n.nspname) || '.' || quote_ident(t.typname)
-                   || ';'                  
+                   || ' CASCADE;'                  
                   ,E'\n'
           )
           ,count(*)::text
@@ -77,10 +77,10 @@ RETURN NULL;
 END;
 $BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
 --GO
-SELECT databaseSchema.f_deltype('databaseSchema','del');
+SELECT {databaseSchema}.f_deltype('{databaseSchema}','del');
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_int_to_bool_helper(reqvalue double precision)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}int_to_bool_helper(reqvalue double precision)
   RETURNS boolean AS
 $BODY$
 BEGIN
@@ -95,7 +95,7 @@ END;$BODY$
 -- This is helper function which drops all types. Don't forget to remove it in the end 
 -- It was put here to ensure that it will be ready before any type creation
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_drop_type
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}drop_type
 (
 	varchar(100), 
 	varchar(100)
@@ -118,14 +118,14 @@ return _rowcount;
 end'
  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;
-GRANT EXECUTE ON FUNCTION databaseSchema.objectQualifier_drop_type(varchar,varchar) TO public;
+GRANT EXECUTE ON FUNCTION {databaseSchema}.{objectQualifier}drop_type(varchar,varchar) TO public;
 
 --GO
 
 -- This is helper function which checks if pkeys and fkeys exist. Don't forget to remove it in the end 
 -- It was put here to ensure that we don't create double constraints.
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_check_or_create_keys
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}check_or_create_keys
 (
 	varchar(100), 
 	varchar(100),
@@ -170,7 +170,7 @@ END'
  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;
   --GO
-GRANT EXECUTE ON FUNCTION databaseSchema.objectQualifier_check_or_create_keys(varchar,varchar,varchar,varchar,varchar,varchar) TO public;
+GRANT EXECUTE ON FUNCTION {databaseSchema}.{objectQualifier}check_or_create_keys(varchar,varchar,varchar,varchar,varchar,varchar) TO public;
 
 --GO
 
@@ -180,7 +180,7 @@ GRANT EXECUTE ON FUNCTION databaseSchema.objectQualifier_check_or_create_keys(va
 -- Don't forget to remove it in the end 
  
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_replace_index
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_replace_index
 (
 	varchar(100), 
 	varchar(100),
@@ -216,7 +216,7 @@ END'
  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;
   --GO
-GRANT EXECUTE ON FUNCTION databaseSchema.objectQualifier_create_or_replace_index(varchar, 
+GRANT EXECUTE ON FUNCTION {databaseSchema}.{objectQualifier}create_or_replace_index(varchar, 
 	varchar,
 	varchar, 
 	varchar,
@@ -243,9 +243,9 @@ $BODY$
 LANGUAGE 'plpgsql' VOLATILE
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_profileusernamemigrate');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_profileusernamemigrate');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_profileusernamemigrate AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_profileusernamemigrate AS
 (
 userid uuid,
 username character varying(255)
@@ -255,24 +255,24 @@ username character varying(255)
 
 -- DROP FUNCTION objectQualifier_board_delete(integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_fill_in_profileusername()
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}fill_in_profileusername()
 				  RETURNS void AS
 $BODY$DECLARE 
 userid_cursor uuid;
 board_cursor refcursor; 
 CurUserName character varying(255);
-_rec databaseSchema.objectQualifier_prov_profileusernamemigrate%ROWTYPE;
+_rec {databaseSchema}.{objectQualifier}prov_profileusernamemigrate%ROWTYPE;
 BEGIN
   DROP TABLE IF EXISTS tmp_migr_prof;
   CREATE TEMPORARY TABLE tmp_migr_prof(userid uuid, username varchar(255)) ON COMMIT DROP;
   INSERT INTO tmp_migr_prof (username,userid)
   SELECT   username,userid 
-  FROM     databaseSchema.objectQualifier_prov_membership
+  FROM     {databaseSchema}.{objectQualifier}prov_membership
   WHERE    username ISNULL;
 
   OPEN board_cursor  FOR
   SELECT   userid
-  FROM     databaseSchema.objectQualifier_prov_profile 
+  FROM     {databaseSchema}.{objectQualifier}prov_profile 
   WHERE    username IS NULL; 
 
  LOOP
@@ -280,7 +280,7 @@ BEGIN
   EXIT WHEN NOT FOUND;
  INSERT INTO tmp_migr_prof (username,userid)
   SELECT   username,userid 
-  FROM     databaseSchema.objectQualifier_prov_membership
+  FROM     {databaseSchema}.{objectQualifier}prov_membership
   WHERE    userid = userid_cursor;
   EXIT WHEN NOT FOUND;
 END LOOP;
@@ -288,7 +288,7 @@ END LOOP;
   FOR _rec IN SELECT * FROM tmp_migr_prof
   LOOP
   /*DEALLOCATE board_cursor;*/
-   UPDATE databaseSchema.objectQualifier_prov_profile SET username = _rec.username where userid = _rec.userid;
+   UPDATE {databaseSchema}.{objectQualifier}prov_profile SET username = _rec.username where userid = _rec.userid;
    END LOOP;
   END;
 $BODY$

@@ -3,7 +3,7 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_posts(
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_posts(
 						   i_forumID integer)
 				  RETURNS integer AS
 $BODY$DECLARE
@@ -14,19 +14,19 @@ $BODY$DECLARE
 BEGIN	
 
 	select numposts INTO ici_NumPosts 
-	from databaseSchema.objectQualifier_forum 
+	from {databaseSchema}.{objectQualifier}forum 
 	where forumid=i_forumID;
 
 
-	if exists(select 1 from databaseSchema.objectQualifier_forum where parentid=i_forumID) THEN
+	if exists(select 1 from {databaseSchema}.{objectQualifier}forum where parentid=i_forumID) THEN
 
 		OPEN cur_forposts FOR
-		select forumid FROM databaseSchema.objectQualifier_forum
+		select forumid FROM {databaseSchema}.{objectQualifier}forum
 		where parentid = i_forumID;
 		LOOP
   FETCH cur_forposts INTO ici_tmp;
   EXIT WHEN NOT FOUND;
-  ici_NumPosts=ici_NumPosts+ COALESCE((SELECT databaseSchema.objectQualifier_forum_posts(ici_tmp)),0);
+  ici_NumPosts=ici_NumPosts+ COALESCE((SELECT {databaseSchema}.{objectQualifier}forum_posts(ici_tmp)),0);
   cntrfp:=cntrfp+1;  
   EXIT WHEN NOT FOUND;
    
@@ -41,7 +41,7 @@ END;$BODY$
   COST 100;
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_lasttopic(
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_lasttopic(
 						   i_forumid integer, 
 						   i_userid integer, 
 						   i_lasttopicid integer, 
@@ -67,8 +67,8 @@ $BODY$DECLARE
 			a.parentid
 				INTO  ici_LastTopicID,ici_LastPosted,ici_ParentID
 		FROM
-			databaseSchema.objectQualifier_forum a
-			JOIN databaseSchema.objectQualifier_activeaccess x ON a.forumid=x.forumid
+			{databaseSchema}.{objectQualifier}forum a
+			JOIN {databaseSchema}.{objectQualifier}activeaccess x ON a.forumid=x.forumid
 		WHERE
 			a.forumid = i_forumid AND
 			(
@@ -77,13 +77,13 @@ $BODY$DECLARE
 			);
 	END IF;
 	
- IF EXISTS(select 1 from databaseSchema.objectQualifier_forum where parentid=i_forumid) THEN 
+ IF EXISTS(select 1 from {databaseSchema}.{objectQualifier}forum where parentid=i_forumid) THEN 
 	SELECT  			
 			MAX(a.lastposted)
 				INTO  ici_LastPostedTemp
 		FROM
-			databaseSchema.objectQualifier_forum a
-			JOIN databaseSchema.objectQualifier_activeaccess x ON a.forumid=x.forumid
+			{databaseSchema}.{objectQualifier}forum a
+			JOIN {databaseSchema}.{objectQualifier}activeaccess x ON a.forumid=x.forumid
 		WHERE
 			a.parentid=i_forumid and a.forumid <> i_forumid and
 			(
@@ -94,8 +94,8 @@ $BODY$DECLARE
 			a.lasttopicid 			
 				INTO  ici_LastTopicIDTemp
 		FROM
-			databaseSchema.objectQualifier_forum a
-			JOIN databaseSchema.objectQualifier_activeaccess x ON a.forumid=x.forumid
+			{databaseSchema}.{objectQualifier}forum a
+			JOIN {databaseSchema}.{objectQualifier}activeaccess x ON a.forumid=x.forumid
 		WHERE
 			a.parentid=i_forumid and a.lastposted = ici_LastPostedTemp and
 			(
@@ -124,12 +124,12 @@ $BODY$DECLARE
 
 
 
--- Function: databaseSchema.objectQualifier_forum_lastposted(integer, integer, integer, time with time zone)
+-- Function: {databaseSchema}.{objectQualifier}forum_lastposted(integer, integer, integer, time with time zone)
 
--- DROP FUNCTION databaseSchema.objectQualifier_forum_lastposted(integer, integer, integer, timestamp with time zone);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}forum_lastposted(integer, integer, integer, timestamp with time zone);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_lastposted(i_forumid integer, i_userid integer, i_lasttopicid integer, i_lastposted timestamp with time zone)
-  RETURNS databaseSchema.objectQualifier_last_posted_return_type AS
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_lastposted(i_forumid integer, i_userid integer, i_lasttopicid integer, i_lastposted timestamp with time zone)
+  RETURNS {databaseSchema}.{objectQualifier}last_posted_return_type AS
 $BODY$DECLARE
 ici_LastTopicID int :=i_lasttopicid;
 ici_LastPosted  timestamp with time zone :=i_lastposted;
@@ -137,15 +137,15 @@ ici_SubforumID integer;
 ici_doneflt integer:=1;
 ici_TopicID integer;
 ici_Posted timestamp with time zone;
-_rec databaseSchema.objectQualifier_last_posted_return_type;
+_rec {databaseSchema}.{objectQualifier}last_posted_return_type;
 cltt CURSOR FOR
 			SELECT 
 				a.forumid,
 				a.lasttopicid,
 				a.lastposted
 			FROM
-				databaseSchema.objectQualifier_forum a
-				JOIN databaseSchema.objectQualifier_activeaccess x ON a.forumid=x.forumid
+				{databaseSchema}.{objectQualifier}forum a
+				JOIN {databaseSchema}.{objectQualifier}activeaccess x ON a.forumid=x.forumid
 			WHERE
 				a.parentid=i_forumid AND 
 				(
@@ -164,8 +164,8 @@ cltt CURSOR FOR
 			INTO
 			ici_LastTopicID,ici_LastPosted              
 		FROM
-			databaseSchema.objectQualifier_forum a
-			JOIN databaseSchema.objectQualifier_activeaccess x ON a.forumid=x.forumid
+			{databaseSchema}.{objectQualifier}forum a
+			JOIN {databaseSchema}.{objectQualifier}activeaccess x ON a.forumid=x.forumid
 		WHERE
 			a.forumid=i_forumid and
 			(
@@ -175,7 +175,7 @@ cltt CURSOR FOR
 			);
 	END IF;
 	-- look for newer topic/message in subforums
-	IF EXISTS(select 1 from databaseSchema.objectQualifier_forum where parentid=i_forumid) THEN 		
+	IF EXISTS(select 1 from {databaseSchema}.{objectQualifier}forum where parentid=i_forumid) THEN 		
 			
 		open cltt;
 		
@@ -189,8 +189,8 @@ EXIT WHEN NOT FOUND;
 					 a.LastPosted 
 					 INTO ici_TopicID,ici_Posted
 				 FROM 				                       
-			databaseSchema.objectQualifier_forum a
-				JOIN databaseSchema.objectQualifier_activeaccess x 
+			{databaseSchema}.{objectQualifier}forum a
+				JOIN {databaseSchema}.{objectQualifier}activeaccess x 
 				ON a.ForumID=x.ForumID
 			WHERE
 				a.ParentID=i_forumid and
@@ -220,11 +220,11 @@ END LOOP;
   COST 100;
 --GO
 
--- Function: databaseSchema.objectQualifier_medal_getribbonsetting(character varying, integer, boolean)
+-- Function: {databaseSchema}.{objectQualifier}medal_getribbonsetting(character varying, integer, boolean)
 
--- DROP FUNCTION databaseSchema.objectQualifier_medal_getribbonsetting(character varying, integer, boolean);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}medal_getribbonsetting(character varying, integer, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_medal_getribbonsetting(i_ribbonurl character varying, i_flags integer, i_onlyribbon boolean)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}medal_getribbonsetting(i_ribbonurl character varying, i_flags integer, i_onlyribbon boolean)
   RETURNS boolean AS
 $BODY$DECLARE
 ici_OnlyRibbon boolean :=i_onlyribbon;
@@ -239,11 +239,11 @@ BEGIN
   COST 100;
  --GO
 
--- Function: databaseSchema.objectQualifier_forum_topics(integer)
+-- Function: {databaseSchema}.{objectQualifier}forum_topics(integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_forum_topics(integer);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}forum_topics(integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_topics(i_forumid integer)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_topics(i_forumid integer)
   RETURNS integer AS
 $BODY$DECLARE
 ici_NumTopics integer:=0;
@@ -253,18 +253,18 @@ cur_fortopics refcursor;
 BEGIN	
 
 	select z.numtopics INTO ici_NumTopics
-	from databaseSchema.objectQualifier_forum z
+	from {databaseSchema}.{objectQualifier}forum z
 	where z.forumid=i_forumid;
 
-	if exists(select 1 from databaseSchema.objectQualifier_forum z where z.parentid=i_ForumID) THEN
+	if exists(select 1 from {databaseSchema}.{objectQualifier}forum z where z.parentid=i_ForumID) THEN
 
 		OPEN cur_fortopics FOR
-		SELECT z.forumid FROM databaseSchema.objectQualifier_forum z
+		SELECT z.forumid FROM {databaseSchema}.{objectQualifier}forum z
 		WHERE z.parentid = i_forumid;
 		LOOP
   FETCH cur_fortopics INTO ici_tmpt;
   EXIT WHEN NOT FOUND;
-  ici_NumTopics=ici_NumTopics + COALESCE(databaseSchema.objectQualifier_forum_topics(ici_tmpt),0);
+  ici_NumTopics=ici_NumTopics + COALESCE({databaseSchema}.{objectQualifier}forum_topics(ici_tmpt),0);
   cntrfp1:=cntrfp1+1;
  EXIT WHEN NOT FOUND OR cntrfp1>4;   
 END LOOP;  
@@ -279,11 +279,11 @@ END LOOP;
   COST 100;  
 --GO
 
--- Function: databaseSchema.objectQualifier_medal_getsortorder(smallint, smallint, integer)
+-- Function: {databaseSchema}.{objectQualifier}medal_getsortorder(smallint, smallint, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_medal_getsortorder(smallint, smallint, integer);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}medal_getsortorder(smallint, smallint, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_medal_getsortorder(i_sortorder smallint, i_defaultsortorder smallint, i_flags integer)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}medal_getsortorder(i_sortorder smallint, i_defaultsortorder smallint, i_flags integer)
   RETURNS smallint AS
 $BODY$DECLARE
 ici_SortOrder smallint:=i_sortorder;
@@ -296,11 +296,11 @@ END;$BODY$
   COST 100; 
 --GO
 
--- Function: databaseSchema.objectQualifier_medal_gethide(boolean, integer)
+-- Function: {databaseSchema}.{objectQualifier}medal_gethide(boolean, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_medal_gethide(boolean, integer);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}medal_gethide(boolean, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_medal_gethide(i_hide boolean, i_flags integer)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}medal_gethide(i_hide boolean, i_flags integer)
   RETURNS boolean AS
 $BODY$DECLARE
 ici_hide boolean :=i_hide;
@@ -313,21 +313,21 @@ END$BODY$
 --GO
 
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_get_userstyle(i_userid integer)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}get_userstyle(i_userid integer)
   RETURNS character varying(255)   AS
 $BODY$DECLARE
 ici_style character varying(255);
 BEGIN	
-	SELECT  c.style INTO ici_style FROM databaseSchema.objectQualifier_user a 
-						JOIN databaseSchema.objectQualifier_usergroup b
+	SELECT  c.style INTO ici_style FROM {databaseSchema}.{objectQualifier}user a 
+						JOIN {databaseSchema}.{objectQualifier}usergroup b
 						  ON a.userid = b.userid
-							JOIN databaseSchema.objectQualifier_group c                         
+							JOIN {databaseSchema}.{objectQualifier}group c                         
 							  ON b.groupid = c.groupid 
 							  WHERE a.userid = i_userid AND LENGTH(c.style) > 3  
 							  ORDER BY c.sortorder ASC LIMIT 1;
 	   if ( ici_style is null or LENGTH(ici_style) < 4 ) then               
-							  SELECT c.style INTO ici_style FROM databaseSchema.objectQualifier_rank c 
-								JOIN databaseSchema.objectQualifier_user d
+							  SELECT c.style INTO ici_style FROM {databaseSchema}.{objectQualifier}rank c 
+								JOIN {databaseSchema}.{objectQualifier}user d
 								  ON c.rankid = d.rankid 
 								  WHERE d.userid = i_userid AND LENGTH(c.style) > 3 
 								  ORDER BY c.sortorder  LIMIT 1;
@@ -338,7 +338,7 @@ END$BODY$
   COST 100; 
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_getthanksinfo(i_messageid integer, i_showthanksdate boolean)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}message_getthanksinfo(i_messageid integer, i_showthanksdate boolean)
   RETURNS text   AS
 $BODY$DECLARE
 ici_temp1 text;
@@ -349,7 +349,7 @@ BEGIN
 	SELECT COALESCE(ici_return || ',', '') , i.thanksfromuserid::text,
 	(CASE i_showthanksdate  WHEN TRUE THEN ',' || i.thanksdate::text  ELSE '' END)
 	INTO ici_temp1,ici_temp2 ,ici_temp3 
-			FROM	databaseSchema.objectQualifier_thanks i
+			FROM	{databaseSchema}.{objectQualifier}thanks i
 			WHERE	i.messageid = i_messageid ORDER BY i.thanksdate;
 	ici_return := ici_temp1 || ici_temp2 || ici_temp3;
 -- Add the last comma if ici_return has data.
@@ -362,7 +362,7 @@ END$BODY$
   COST 100;
   --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save_parentschecker(i_forumid integer, i_parentid integer)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_save_parentschecker(i_forumid integer, i_parentid integer)
   RETURNS integer AS
 $BODY$DECLARE
 ici_dependency integer:= 0;
@@ -374,20 +374,20 @@ begin
 -- Checks if the forum is already referenced as a parent 
 	
 	select forumid into ici_dependency 
-	from databaseSchema.objectQualifier_forum 
+	from {databaseSchema}.{objectQualifier}forum 
 	where parentid=i_forumid and forumid = i_parentid;
 	if ici_dependency > 0 then   
 	return i_parentid;
 	end if;
 
-	if exists(select 1 from databaseSchema.objectQualifier_forum where parentID=i_forumid) then
+	if exists(select 1 from {databaseSchema}.{objectQualifier}forum where parentID=i_forumid) then
 	  FOR  row_data  IN       
-		select forumid,parentid from databaseSchema.objectQualifier_forum
+		select forumid,parentid from {databaseSchema}.{objectQualifier}forum
 		where parentid = i_forumid
 		LOOP
 		if row_data.forumid > 0 AND row_data.forumid IS NOT NULL then              
 			SELECT * INTO ici_haschildren 
-			FROM databaseSchema.objectQualifier_forum_save_parentschecker(row_data.forumid, i_parentid);            
+			FROM {databaseSchema}.{objectQualifier}forum_save_parentschecker(row_data.forumid, i_parentid);            
 			if  row_data.parentid = i_parentid
 			then
 			ici_dependency := i_parentid;                
@@ -405,21 +405,21 @@ END$BODY$
   COST 100; 
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_registry_value( i_name varchar(64), i_boardid integer)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}registry_value( i_name varchar(64), i_boardid integer)
   RETURNS text AS
 $BODY$DECLARE
 ici_returnValue text;
 begin
-	IF i_boardid IS NOT NULL AND EXISTS(SELECT 1 FROM databaseSchema.objectQualifier_registry WHERE LOWER("name") = LOWER(i_name) AND boardid = i_boardid) then
+	IF i_boardid IS NOT NULL AND EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}registry WHERE LOWER("name") = LOWER(i_name) AND boardid = i_boardid) then
    
 			SELECT "value"::text INTO ici_returnValue
-			FROM databaseSchema.objectQualifier_registry
+			FROM {databaseSchema}.{objectQualifier}registry
 			WHERE LOWER("name") = LOWER(i_name) and  boardid = i_boardid;    
 	
 	ELSE
 	
 		 SELECT "value"::text INTO ici_returnValue
-			FROM databaseSchema.objectQualifier_registry
+			FROM {databaseSchema}.{objectQualifier}registry
 			WHERE LOWER("name") = LOWER(i_name) and
 				boardid is NULL;          
 	END IF;
@@ -431,7 +431,7 @@ END$BODY$
   COST 100; 
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_tagsave(i_topicid integer,
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_tagsave(i_topicid integer,
 						   i_messageidsstr text)
 				  RETURNS void AS
 $BODY$
@@ -442,32 +442,32 @@ i_tagid INT;
 i_tagids int[];
 BEGIN
    -- delete tags
-	DELETE FROM databaseSchema.objectQualifier_topictags where topicid = i_topicid;
+	DELETE FROM {databaseSchema}.{objectQualifier}topictags where topicid = i_topicid;
 
  i_messageids = string_to_array(i_messageidsstr,',');
  -- i := 1; 
   WHILE i_messageids[i] IS NOT NULL LOOP
-		UPDATE databaseSchema.objectQualifier_tags SET tag = i_messageids[i] where tag = i_messageids[i] returning tagid into i_tagid ;
+		UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where tag = i_messageids[i] returning tagid into i_tagid ;
 		IF NOT found THEN
 		BEGIN
-			INSERT INTO databaseSchema.objectQualifier_tags(tag) VALUES (i_messageids[i]) returning tagid into i_tagid ;
+			INSERT INTO {databaseSchema}.{objectQualifier}tags(tag) VALUES (i_messageids[i]) returning tagid into i_tagid ;
 		EXCEPTION WHEN unique_violation THEN
-			UPDATE databaseSchema.objectQualifier_tags SET tag = i_messageids[i] where tag = i_messageids[i] returning tagid into i_tagid ;
+			UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where tag = i_messageids[i] returning tagid into i_tagid ;
 		END;
 		END IF;
 
-		UPDATE databaseSchema.objectQualifier_topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
+		UPDATE {databaseSchema}.{objectQualifier}topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
 		IF NOT found THEN
 		BEGIN
-			INSERT INTO databaseSchema.objectQualifier_topictags(tagid, topicid) VALUES (i_tagid, i_topicid);
+			INSERT INTO {databaseSchema}.{objectQualifier}topictags(tagid, topicid) VALUES (i_tagid, i_topicid);
 			-- increase tag count
 			
 		EXCEPTION WHEN unique_violation THEN
-			UPDATE databaseSchema.objectQualifier_topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
+			UPDATE {databaseSchema}.{objectQualifier}topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
 		    
 		END;
 		END IF;
-			UPDATE databaseSchema.objectQualifier_tags SET tagcount = (SELECT Count(tagid) from databaseSchema.objectQualifier_topictags WHERE tagid = i_tagid) where tagid = i_tagid;	
+			UPDATE {databaseSchema}.{objectQualifier}tags SET tagcount = (SELECT Count(tagid) from {databaseSchema}.{objectQualifier}topictags WHERE tagid = i_tagid) where tagid = i_tagid;	
   i := i + 1; 
  END LOOP;
 

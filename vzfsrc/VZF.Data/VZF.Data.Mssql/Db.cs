@@ -36,7 +36,7 @@ namespace VZF.Data.MsSql
     /// <summary>
     /// All the Database functions for YAF
     /// </summary>
-    public static partial class Db
+    public static class Db
     {
         // Parameter 10
         #region Constants and Fields
@@ -106,6 +106,10 @@ namespace VZF.Data.MsSql
                 _fullTextSupported = value;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether btn reindex visible.
+        /// </summary>
         public static bool btnReindexVisible
         {
             get
@@ -172,7 +176,6 @@ namespace VZF.Data.MsSql
         /// <summary>
         ///   Gets ProviderAssemblyName.
         /// </summary>
-        [NotNull]
         public static string ProviderAssemblyName
         {
             get
@@ -191,6 +194,7 @@ namespace VZF.Data.MsSql
                 return _scriptList;
             }
         }
+
         public static string SqlScriptsDelimiterRegexPattern
         {
             get
@@ -204,6 +208,9 @@ namespace VZF.Data.MsSql
 
         #region Public Methods
 
+        /// <summary>
+        /// Gets the connection parameters.
+        /// </summary>
         public static List<ConnectionStringParameter> ConnectionParameters
         {
             get
@@ -241,22 +248,23 @@ namespace VZF.Data.MsSql
             }
         }
 
-       
         /// <summary>
         /// The db_getstats_warning.
         /// </summary>
-        /// <param name="connectionManager">
-        /// The conn man.
-        /// </param>
         /// <returns>
-        /// The db_getstats_warning.
+        /// The <see cref="string"/>.
         /// </returns>
-        [NotNull]
         public static string db_getstats_warning()
         {
             return string.Empty;
         }
 
+        /// <summary>
+        /// The db_reindex_new.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_reindex_new()
         {
             var sb = new StringBuilder();
@@ -283,6 +291,15 @@ namespace VZF.Data.MsSql
             return sb.ToString();
         }
 
+        /// <summary>
+        /// The db_getstats.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getstats(out string message)
         {
             // create statistic getting SQL...
@@ -317,7 +334,6 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The db_reindex_warning.
         /// </returns>
-        [NotNull]
         public static string db_reindex_warning()
         {
             return string.Empty;
@@ -332,7 +348,6 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The db_shrink_warning.
         /// </returns>
-        [NotNull]
         public static string db_shrink_warning()
         {
             return string.Empty;
@@ -353,6 +368,18 @@ namespace VZF.Data.MsSql
             return "DBCC SHRINKDATABASE(N'{0}')";
         }
 
+        /// <summary>
+        /// The db_recovery_mode_new.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="dbRecoveryMode">
+        /// The db recovery mode.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_recovery_mode_new([NotNull] string connectionString, [NotNull] string dbRecoveryMode)
         {
             return string.Empty;
@@ -397,21 +424,58 @@ namespace VZF.Data.MsSql
         */
         }
 
+        /// <summary>
+        /// The db_getfirstcharset.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getfirstcharset()
         {            
             return string.Empty;
         }
+
+        /// <summary>
+        /// The db_getfirstcollation.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getfirstcollation()
         {
             return string.Empty;
         }
 
+        /// <summary>
+        /// The db_checkvalidcharset.
+        /// </summary>
+        /// <param name="charsetColumn">
+        /// The charset column.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_checkvalidcharset(out string charsetColumn, out string value)
         {
             charsetColumn = value = string.Empty;
             return string.Empty;
         }
 
+        /// <summary>
+        /// The db_collations_data.
+        /// </summary>
+        /// <param name="charsetColumn">
+        /// The charset column.
+        /// </param>
+        /// <param name="collationColumn">
+        /// The collation column.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_collations_data(out string charsetColumn, out string collationColumn)
         {
             charsetColumn = collationColumn = string.Empty;

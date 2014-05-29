@@ -244,7 +244,7 @@ namespace YAF.Providers.Profile
         {
             using (var sc = new SQLCommand(connectionStringName))
             {
-                sc.CommandText.AppendQuery(string.Format("SELECT FIRST 1 * FROM {0}", ObjectName.GetVzfObjectName("P_profile", SqlDbAccess.GetProviderName(connectionStringName))));
+                sc.CommandText.AppendQuery(string.Format("SELECT FIRST 1 * FROM {0}", ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName)));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
             }
         }

@@ -3560,6 +3560,12 @@ Visit {forumname} at {forumlink}
       <Resource tag="TITLE_CREATE">Create Personal Forum</Resource>
       <Resource tag="TITLE_EDIT">Edit Personal Forum</Resource>
       <Resource tag="SAVE">Save</Resource>
+      <Resource tag="CATEGORYALLOWED">Select a category:</Resource>
+      <Resource tag="CATEGORYALLOWED_HELP">You can create it directly in the categories from the list.</Resource>
+      <Resource tag="FORUMCATEGORYALLOWED">Select a category to filter forums:</Resource>
+      <Resource tag="FORUMALLOWED">Select a forum:</Resource>
+      <Resource tag="FORUMALLOWED_HELP">You can create it as subforum? just select a category and then a forum.</Resource>
+      <Resource tag="NOTSELECTED">You didn't pick a place to create your personal forum in.</Resource>
       <Resource tag="UPDATE">Update</Resource>
       <Resource tag="CANCEL">Cancel</Resource>
    </page>

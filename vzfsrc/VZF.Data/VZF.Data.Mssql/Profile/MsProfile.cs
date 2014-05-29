@@ -58,12 +58,15 @@
         /// <summary>
         /// The get profile structure.
         /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string GetProfileStructure()
+        /// <value>
+        ///   The <see cref="string"/>.
+        /// </value>
+        public static string ProfileStructure
         {
-            return "SELECT TOP 1 * FROM {0}";
+            get
+            {
+                return "SELECT TOP 1 * FROM {0}";
+            }
         }
 
         /// <summary>
@@ -105,14 +108,14 @@
         }
 
         /// <summary>
-        /// The profile exists.
+        /// Gets the profile exists.
         /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string ProfileExists()
+        public static string ProfileExists
         {
-            return  "SELECT top 1 1 FROM {0} WHERE UserID = @UserID AND ApplicationName = @ApplicationName";
+            get
+            {
+                return "SELECT top 1 1 FROM {0} WHERE UserID = @UserID AND ApplicationName = @ApplicationName";
+            }
         }
 
         #endregion

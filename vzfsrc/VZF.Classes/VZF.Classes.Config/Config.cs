@@ -358,12 +358,19 @@ namespace YAF.Classes
         /// <summary>
         ///     Gets DatabaseOwner.
         /// </summary>
+        [Obsolete("Legacy: Phasing out, use DatabaseSchemaName")] 
         [NotNull]
         public static string DatabaseOwner
         {
             get
             {
-                return GetConfigValueAsString("YAF.DatabaseOwner") ?? "dbo";
+                var schema = GetConfigValueAsString("YAF.DatabaseSchemaName");
+                if (string.IsNullOrEmpty(schema))
+                {
+                    return GetConfigValueAsString("YAF.DatabaseOwner") ?? "dbo";
+                }
+
+                return schema;
             }
         }
 
@@ -376,6 +383,18 @@ namespace YAF.Classes
             get
             {
                 return GetConfigValueAsString("YAF.DatabaseSchemaName") ?? "public";
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether database allows schema name.
+        /// </summary>
+        [NotNull]
+        public static bool DatabaseAllowsSchemaName
+        {
+            get
+            {
+                return GetConfigValueAsBool("YAF.DatabaseAllowsSchemaName", true);
             }
         }
 

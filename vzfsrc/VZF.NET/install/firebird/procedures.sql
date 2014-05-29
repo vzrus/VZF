@@ -445,7 +445,8 @@ end
 --GO
 
 
-CREATE PROCEDURE  {objectQualifier}ACCESSMASK_AFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_AFORUMLIST(
+I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
 RETURNS
 (
 "AccessMaskID" INTEGER,
@@ -2429,7 +2430,7 @@ CREATE PROCEDURE  {objectQualifier}EXTENSION_DELETE (I_EXTENSIONID INTEGER)
                a.NAME AS "Forum", 
                a.PARENTID,
                a.POLLGROUPID,
-               a.CANHAVEPERSFORUMS
+               a.CANHAVEPERSFORUMS			  
                FROM  {objectQualifier}FORUM a 
         INNER JOIN
              {objectQualifier}CATEGORY b ON b.CATEGORYID = a.CATEGORYID
@@ -5106,7 +5107,8 @@ CREATE PROCEDURE  {objectQualifier}MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
 "UserDisplayName" varchar(128),
 "Posted" timestamp,
 "TopicID"  integer,
-"Topic" character varying(128),
+"Topic" character varying(255),
+"MessageCount" integer,
 "Message" BLOB SUB_TYPE 1,
 "Flags" integer,
 "IsModeratorChanged" BOOL
@@ -5121,6 +5123,7 @@ CREATE PROCEDURE  {objectQualifier}MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
       b.POSTED AS "Posted",
       a.TOPICID AS "TopicID",
       a.TOPIC AS "Topic",
+	  a.NUMPOSTS,
       b.MESSAGE AS "Message",
       b.FLAGS AS "Flags",
       b.ISMODERATORCHANGED AS "IsModeratorChanged"
@@ -5143,6 +5146,7 @@ CREATE PROCEDURE  {objectQualifier}MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
         :"Posted",
         :"TopicID",
         :"Topic",
+		:"MessageCount",
         :"Message",
         :"Flags",
         :"IsModeratorChanged"
@@ -10461,7 +10465,8 @@ BEGIN
     RETURNS
     (
 "UserID" integer,
-"Name"  varchar(128)
+"Name"  varchar(128),
+"DisplayName"  varchar(128)
 )
     AS
     DECLARE l_Limit INTEGER DEFAULT 500;
@@ -10473,14 +10478,16 @@ BEGIN
         IF (I_LIMIT IS NOT NULL) THEN  l_Limit=I_LIMIT;
 
     FOR SELECT FIRST (:l_Limit) a.USERID,
-    a.NAME
+    a.NAME,
+	a.DISPLAYNAME
     FROM     {objectQualifier}USER a
     WHERE    a.USERID >= :l_StartID
     AND a.USERID < (:l_StartID + :l_Limit)
          ORDER BY a.USERID
          INTO
          :"UserID",
-         :"Name"
+         :"Name",
+		 :"DisplayName"
          DO SUSPEND;          
        
      END;

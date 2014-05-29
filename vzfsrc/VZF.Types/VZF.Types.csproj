@@ -74,6 +74,7 @@
     <Compile Include="Constants\ViewPermissions.cs" />
     <Compile Include="Constants\YafRssFeeds.cs" />
     <Compile Include="Constants\YafSyndicationFormats.cs" />
+    <Compile Include="Data\IDbInformation.cs" />
     <Compile Include="EventProxies\CacheItemRemovedEvent.cs" />
     <Compile Include="EventProxies\EventPageLoad.cs" />
     <Compile Include="EventProxies\EventPreRequestPageExecute.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Flags\MedalFlags.cs" />
     <Compile Include="Flags\MessageFlags.cs" />
     <Compile Include="Flags\PollFlags.cs" />
+    <Compile Include="Objects\PollGroup.cs" />
     <Compile Include="Flags\PollGroupFlags.cs" />
     <Compile Include="Flags\RankFlags.cs" />
     <Compile Include="Flags\TopicFlags.cs" />
@@ -195,10 +197,12 @@
     <Compile Include="Interfaces\IYafUserProfile.cs" />
     <Compile Include="LanguageResources.cs" />
     <Compile Include="MessageCleaned.cs" />
+    <Compile Include="Objects\PollChoice.cs" />
     <Compile Include="Objects\ConnectionStringParameter.cs" />
     <Compile Include="Objects\MessageNotification.cs" />
     <Compile Include="Objects\NamedParameter.cs" />
-    <Compile Include="Objects\PollSaveList.cs" />
+    <Compile Include="Objects\PollList.cs" />
+    <Compile Include="Objects\Poll.cs" />
     <Compile Include="Objects\SimpleForum.cs" />
     <Compile Include="Objects\SimpleModerator.cs" />
     <Compile Include="Objects\SimpleTopic.cs" />

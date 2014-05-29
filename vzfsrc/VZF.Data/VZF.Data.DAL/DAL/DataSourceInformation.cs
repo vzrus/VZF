@@ -30,10 +30,13 @@ namespace VZF.Data.DAL
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    using YAF.Types.Interfaces;
+    using YAF.Types.Interfaces.Data;
+
     /// <summary>
     /// The data source information.
     /// </summary>
-    public class DataSourceInformation
+    public class DataSourceInformation 
     {
         /// <summary>
         /// The _ type.

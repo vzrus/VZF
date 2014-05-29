@@ -40,20 +40,22 @@
     <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
     <Compile Include="Db.cs" />
     <Compile Include="Profile\DataTypeMappers.cs" />
     <Compile Include="Search\SearchBuilder.cs" />
     <Compile Include="Search\SearchBuilderExtensions.cs" />
     <Compile Include="Search\SearchCondition.cs" />
     <Compile Include="Search\SearchConditionType.cs" />
-    <Compile Include="PollSave.cs" />
     <Compile Include="Profile\MsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

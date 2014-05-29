@@ -151,7 +151,7 @@ namespace VZF.Controls
 
             if (extensions.Any(x => x.Contains("PublicKeyToken=f3828393ba2d803c")))
             {
-                footer.Append("Offical YAF.NET Release: Modules with Public Key of f3828393ba2d803c Loaded.");
+                footer.Append("Offical VZF Release: Modules with Public Key of f3828393ba2d803c Loaded.");
             }
 
             if (extensions.Any(x => x.Contains(".Module")))

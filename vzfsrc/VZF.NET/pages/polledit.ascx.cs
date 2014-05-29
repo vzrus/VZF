@@ -25,15 +25,19 @@ namespace YAF.Pages
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Types.Objects;
 
     using YAF.Classes;
     
     using YAF.Core;
     using YAF.Types.Constants;
+    using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
     using VZF.Utils;
@@ -358,6 +362,7 @@ namespace YAF.Pages
         /// <returns>
         /// Returns the Poll Id
         /// </returns>
+        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         private bool? GetPollID()
         {
             if (int.TryParse(this.PollExpire.Text.Trim(), out this._daysPollExpire))
@@ -393,7 +398,9 @@ namespace YAF.Pages
                     }
                 }
 
-                CommonDb.poll_update(PageContext.PageModuleID, this.PollId,
+                CommonDb.poll_update(
+                    PageContext.PageModuleID,
+                    this.PollId,
                     this.Question.Text,
                     this._datePollExpire,
                     this.IsBoundCheckBox.Checked,
@@ -440,11 +447,21 @@ namespace YAF.Pages
                     if (string.IsNullOrEmpty(chid) && !string.IsNullOrEmpty(choice))
                     {
                         // add choice
-                        CommonDb.choice_add(PageContext.PageModuleID, this.PollId, choice, choiceObjectPath, choiceImageMime);
+                        CommonDb.choice_add(
+                            PageContext.PageModuleID,
+                            this.PollId,
+                            choice,
+                            choiceObjectPath,
+                            choiceImageMime);
                     }
                     else if (!string.IsNullOrEmpty(chid) && !string.IsNullOrEmpty(choice))
                     {
-                        CommonDb.choice_update(PageContext.PageModuleID, chid, choice, choiceObjectPath, choiceImageMime);
+                        CommonDb.choice_update(
+                            PageContext.PageModuleID,
+                            chid,
+                            choice,
+                            choiceObjectPath,
+                            choiceImageMime);
                     }
                     else if (!string.IsNullOrEmpty(chid) && string.IsNullOrEmpty(choice))
                     {
@@ -461,10 +478,12 @@ namespace YAF.Pages
                 // The value was selected, we attach an existing poll
                 if (this.PollGroupListDropDown.SelectedIndex.ToType<int>() > 0)
                 {
-                    int result = CommonDb.pollgroup_attach(PageContext.PageModuleID, this.PollGroupListDropDown.SelectedValue.ToType<int>(), 
-                        this._topicId, 
-                        this._forumId, 
-                        this._categoryId, 
+                    int result = CommonDb.pollgroup_attach(
+                        PageContext.PageModuleID,
+                        this.PollGroupListDropDown.SelectedValue.ToType<int>(),
+                        this._topicId,
+                        this._forumId,
+                        this._categoryId,
                         this._boardId);
 
                     if (result == 1)
@@ -493,18 +512,15 @@ namespace YAF.Pages
                     {
                         YafContext.Current.AddLoadMessage(
                             this.GetTextFormatted(
-                                "POLLIMAGE_TOOBIG", 
-                                length / 1024, 
-                                this.Get<YafBoardSettings>().PollImageMaxFileSize, 
+                                "POLLIMAGE_TOOBIG",
+                                length / 1024,
+                                this.Get<YafBoardSettings>().PollImageMaxFileSize,
                                 questionPath));
                     }
                 }
 
-                var pollSaveList = new List<PollSaveList>();
+                var choiceList = new List<PollChoice>();
 
-                var rawChoices = new string[3, this.ChoiceRepeater.Items.Count];
-                int j = 0;
-                
                 foreach (RepeaterItem ri in this.ChoiceRepeater.Items)
                 {
                     string choiceObjectPath = ((TextBox)ri.FindControl("ObjectPath")).Text.Trim();
@@ -526,18 +542,24 @@ namespace YAF.Pages
                         {
                             YafContext.Current.AddLoadMessage(
                                 this.GetTextFormatted(
-                                    "POLLIMAGE_TOOBIG", 
-                                    length / 1024, 
-                                    this.Get<YafBoardSettings>().PollImageMaxFileSize, 
+                                    "POLLIMAGE_TOOBIG",
+                                    length / 1024,
+                                    this.Get<YafBoardSettings>().PollImageMaxFileSize,
                                     choiceObjectPath));
                             return false;
                         }
                     }
 
-                    rawChoices[0, j] = HtmlHelper.StripHtml(((TextBox)ri.FindControl("PollChoice")).Text.Trim());
-                    rawChoices[1, j] = choiceObjectPath;
-                    rawChoices[2, j] = choiceObjectMime;
-                    j++;
+                    // Fill in choice list
+                    choiceList.Add(
+                        new PollChoice()
+                            {
+                                Choice =
+                                    HtmlHelper.StripHtml(
+                                        ((TextBox)ri.FindControl("PollChoice")).Text.Trim()),
+                                ObjectPath = choiceObjectPath,
+                                MimeType = choiceObjectMime
+                            });
                 }
 
                 int? realTopic = this._topicId;
@@ -552,27 +574,54 @@ namespace YAF.Pages
                     this._datePollExpire = DateTime.UtcNow.AddDays(this.PollExpire.Text.Trim().ToType<int>());
                 }
 
-                pollSaveList.Add(
-                    new PollSaveList(
-                        this.Question.Text, 
-                        rawChoices, 
-                        this._datePollExpire, 
-                        this.PageContext.PageUserID, 
-                        realTopic, 
-                        this._forumId, 
-                        this._categoryId, 
-                        this._boardId, 
-                        questionPath, 
-                        questionMime, 
-                        this.IsBoundCheckBox.Checked, 
-                        this.IsClosedBoundCheckBox.Checked, 
-                        this.AllowMultipleChoicesCheckBox.Checked, 
-                        this.ShowVotersCheckBox.Checked, 
-                        this.AllowSkipVoteCheckBox.Checked));
-                CommonDb.poll_save(PageContext.PageModuleID, pollSaveList);
+                var pollGroup = new PollGroup
+                                    {
+                                        CategoryId = this._categoryId,
+                                        ForumId = this._forumId,
+                                        TopicId = realTopic,
+                                        BoardId = this._boardId,
+                                        UserId = PageContext.PageUserID,
+                                        Flags = new PollGroupFlags { IsBound = this.IsBoundCheckBox.Checked },
+                                        Polls =
+                                            new List<Poll>
+                                                {
+                                                    new Poll
+                                                        {
+                                                            Question = this.Question.Text,
+                                                            Choices = choiceList,
+                                                            Closes = this._datePollExpire,
+                                                            UserID = this.PageContext.PageUserID,
+                                                            ObjectPath = questionPath,
+                                                            MimeType = questionMime,
+                                                            Flags =
+                                                                new PollFlags
+                                                                    {
+                                                                        IsClosedBound =
+                                                                            this
+                                                                            .IsClosedBoundCheckBox
+                                                                            .Checked,
+                                                                        AllowMultipleChoices
+                                                                            =
+                                                                            this
+                                                                            .AllowMultipleChoicesCheckBox
+                                                                            .Checked,
+                                                                        ShowVoters =
+                                                                            this
+                                                                            .ShowVotersCheckBox
+                                                                            .Checked,
+                                                                        AllowSkipVote =
+                                                                            this
+                                                                            .AllowSkipVoteCheckBox
+                                                                            .Checked
+                                                                    }
+                                                        }
+                                                }
+                                    };
+
+
+                CommonDb.poll_save(PageContext.PageModuleID, pollGroup);
                 return true;
             }
-           
         }
 
         /// <summary>
@@ -612,7 +661,7 @@ namespace YAF.Pages
                 {
                     TimeSpan closing = (DateTime)this._choices.Rows[0]["Closes"] - DateTime.UtcNow;
 
-                    this.PollExpire.Text = (closing.TotalDays + 1).ToType<int>().ToString();
+                    this.PollExpire.Text = (closing.TotalDays + 1).ToType<int>().ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {

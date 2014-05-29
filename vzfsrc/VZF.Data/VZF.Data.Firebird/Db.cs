@@ -35,7 +35,7 @@ namespace VZF.Data.Firebird
     /// All the Database functions for VZF
     /// </summary>
     [SecuritySafeCritical]
-    public static partial class Db
+    public static class Db
     {
         // added by vzrus
         #region ConnectionStringOptions
@@ -220,19 +220,9 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return _fullTextSupported;
-            }
-
-            set
-            {
-                _fullTextSupported = value;
+                return true;
             }
         }
-
-        /// <summary>
-        /// The _full text script.
-        /// </summary>
-        private static string _fullTextScript = "firebird/fulltext.sql";
 
         /// <summary>
         /// Gets or sets the full text script.
@@ -241,12 +231,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return _fullTextScript;
-            }
-
-            set
-            {
-                _fullTextScript = value;
+                return  "firebird/fulltext.sql";
             }
         }
 
@@ -304,17 +289,6 @@ namespace VZF.Data.Firebird
         // Shinking Operation
 
         /// <summary>
-        /// The db_shrink_warning.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string db_shrink_warning()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// The db_shrink_new.
         /// </summary>
         /// <param name="connectionString">
@@ -337,12 +311,6 @@ namespace VZF.Data.Firebird
                 cmd.CommandTimeout = 9999;
                 cmd.ExecuteNonQuery();
             }*/
-            return string.Empty;
-        }
-
-        // Set Recovery
-        public static string db_recovery_mode_warning()
-        {
             return string.Empty;
         }
 
@@ -497,6 +465,18 @@ namespace VZF.Data.Firebird
         }
 
         /// <summary>
+        /// The db_shrink_warning.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string db_shrink_warning()
+        {
+            // Shinking Operation is not applicable to the db.
+            return string.Empty;
+        }
+
+        /// <summary>
         /// The db_reindex_new.
         /// </summary>
         /// <returns>
@@ -523,7 +503,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static string db_getstats(out string message)
         {
-            message = "Reindexing complited.";
+            message = "Reindexing completed.";
             return string.Format(
                   "execute block as BEGIN FOR SELECT a.RDB$INDEX_NAME FROM RDB$INDICES a WHERE a.RDB$FOREIGN_KEY IS NULL "
                   + "AND a.RDB$SYSTEM_FLAG=0 AND a.RDB$UNIQUE_FLAG IS NULL AND a.RDB$RELATION_NAME LIKE '%{0}%' "

@@ -49,6 +49,21 @@ namespace YAF.pages
         #region Public Methods
 
         /// <summary>
+        /// Gets or sets the ftitle.
+        /// </summary>
+        protected string ftitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether can have forums as subforums.
+        /// </summary>
+        protected bool canHaveForumsAsSubforums { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether can have forums in categories.
+        /// </summary>
+        protected bool canHaveForumsInCategories { get; set; } 
+
+        /// <summary>
         /// The category_ change.
         /// </summary>
         /// <param name="sender">
@@ -77,7 +92,7 @@ namespace YAF.pages
         /// </param>
         protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ((DropDownList)sender).DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags:0, pageUserID: PageContext.PageUserID, isUserMask: true, isAdminMask: false);
+            ((DropDownList)sender).DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: PageContext.PageUserID, isUserMask: true, isAdminMask: false);
             ((DropDownList)sender).DataValueField = "AccessMaskID";
             ((DropDownList)sender).DataTextField = "Name";
         }
@@ -119,10 +134,10 @@ namespace YAF.pages
                     }
                 }
 
-               /* this.ForumImages.DataSource = dt;
-                this.ForumImages.DataValueField = "FileName";
-                this.ForumImages.DataTextField = "Description";
-                this.ForumImages.DataBind(); */
+                /* this.ForumImages.DataSource = dt;
+                 this.ForumImages.DataValueField = "FileName";
+                 this.ForumImages.DataTextField = "Description";
+                 this.ForumImages.DataBind(); */
             }
         }
 
@@ -176,11 +191,23 @@ namespace YAF.pages
             {
                 return;
             }
-            
+
+
+            this.canHaveForumsAsSubforums = this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums;
+            this.canHaveForumsInCategories = this.Get<YafBoardSettings>().AllowPersonalForumsInCategories;
+
             // A new forum case
-            if (PageContext.PersonalForumsNumber >= PageContext.UsrPersonalForums && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
             {
-                YafBuildLink.AccessDenied();
+                if (PageContext.PersonalForumsNumber >= PageContext.UsrPersonalForums)
+                {
+                    YafBuildLink.AccessDenied();
+                }
+
+                if (!this.canHaveForumsAsSubforums && !this.Get<YafBoardSettings>().AllowPersonalForumsInCategories)
+                {
+                    YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
+                }
             }
 
             // the calling user is not the owner
@@ -189,7 +216,7 @@ namespace YAF.pages
                 YafBuildLink.AccessDenied();
             }
 
-            string ftitle = null;
+
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") != null)
             {
                 if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa")))
@@ -197,12 +224,14 @@ namespace YAF.pages
                     YafBuildLink.AccessDenied();
                 }
 
+                // checking if the personal forum of the page user exists.
                 DataTable dt = CommonDb.forum_byuserlist(
                     PageContext.PageModuleID,
                     PageContext.PageBoardID,
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa").ToType<int>(),
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
                     true);
+
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     ftitle = dt.Rows[0]["Name"].ToString();
@@ -214,7 +243,7 @@ namespace YAF.pages
             }
 
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
-            
+
             // user profile
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
 
@@ -227,13 +256,13 @@ namespace YAF.pages
             this.Page.Header.Title = "{0} - {1}".FormatWith(
                 this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
                 ftitle.IsSet() ? this.HtmlEncode(ftitle) : this.GetText("PERSONALFORUM", "TITLE"));
-         
+
             // Populate Forum Images Table
             this.CreateImagesDataTable();
 
-          /*  this.ForumImages.Attributes["onchange"] =
-              "getElementById('{1}').src='{0}{2}/' + this.value".FormatWith(
-                YafForumInfo.ForumClientFileRoot, this.Preview.ClientID, YafBoardFolders.Current.Forums); */
+            /*  this.ForumImages.Attributes["onchange"] =
+                "getElementById('{1}').src='{0}{2}/' + this.value".FormatWith(
+                  YafForumInfo.ForumClientFileRoot, this.Preview.ClientID, YafBoardFolders.Current.Forums); */
 
             this.BindData();
 
@@ -265,25 +294,31 @@ namespace YAF.pages
                 }
             }
 
-            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
+            if (this.canHaveForumsAsSubforums)
             {
-                DataRow row = dt.Rows[0];
-                var flags = new ForumFlags(row["Flags"]);
-                this.Name.Text = (string)row["Name"];
-                this.Description.Text = row["Description"].ToString();
-                this.SortOrder.Text = row["SortOrder"].ToString();
-                this.HideNoAccess.Checked = flags.IsHidden;
-                this.Locked.Checked = flags.IsLocked;
-                this.IsTest.Checked = flags.IsTest;
-                this.ForumNameTitle.Text = this.Name.Text;
-                this.Moderated.Checked = flags.IsModerated;
-                this.Styles.Text = row["Styles"].ToString();
-                this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
-                this.CategoryList.SelectedValue = row["CategoryID"].ToString();
+                using (
+                    DataTable dt = CommonDb.forum_list(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
+                        forumId.Value))
+                {
+                    DataRow row = dt.Rows[0];
+                    var flags = new ForumFlags(row["Flags"]);
+                    this.Name.Text = (string)row["Name"];
+                    this.Description.Text = row["Description"].ToString();
+                    this.SortOrder.Text = row["SortOrder"].ToString();
+                    this.HideNoAccess.Checked = flags.IsHidden;
+                    this.Locked.Checked = flags.IsLocked;
+                    this.IsTest.Checked = flags.IsTest;
+                    this.ForumNameTitle.Text = this.Name.Text;
+                    this.Moderated.Checked = flags.IsModerated;
+                    this.Styles.Text = row["Styles"].ToString();
+                    this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
+                    this.CategoryList.SelectedValue = row["CategoryID"].ToString();
 
-                this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
+                    this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
 
-               /* ListItem item = this.ForumImages.Items.FindByText(row["ImageURL"].ToString());
+                    /* ListItem item = this.ForumImages.Items.FindByText(row["ImageURL"].ToString());
                 if (item != null)
                 {
                     item.Selected = true;
@@ -291,20 +326,21 @@ namespace YAF.pages
                       YafForumInfo.ForumClientFileRoot, row["ImageURL"], YafBoardFolders.Current.Forums); // path corrected
                 } */
 
-                // populate parent forums list with forums according to selected category
-                this.BindParentList();
+                    // populate parent forums list with forums according to selected category
+                    this.BindParentList();
 
-                if (!row.IsNull("ParentID"))
-                {
-                    this.ParentList.SelectedValue = row["ParentID"].ToString();
+                    if (!row.IsNull("ParentID"))
+                    {
+                        this.ParentList.SelectedValue = row["ParentID"].ToString();
+                    }
+
+                    if (!row.IsNull("ThemeURL"))
+                    {
+                        this.ThemeList.SelectedValue = row["ThemeURL"].ToString();
+                    }
+
+                    this.remoteurl.Text = row["RemoteURL"].ToString();
                 }
-
-                if (!row.IsNull("ThemeURL"))
-                {
-                    this.ThemeList.SelectedValue = row["ThemeURL"].ToString();
-                }
-
-                this.remoteurl.Text = row["RemoteURL"].ToString();
             }
 
             this.NewGroupRow.Visible = false;
@@ -351,23 +387,46 @@ namespace YAF.pages
                 newRow.ItemArray = row.ItemArray;
                 dataCatNew.Rows.Add(newRow);
             }
-           
+
             dataCatNew.AcceptChanges();
+
             if (dataCatNew.Rows.Count <= 0)
             {
                 YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
             }
 
-            this.CategoryList.DataSource = dataCatNew;
-            this.CategoryList.DataValueField = "CategoryID";
-            this.CategoryList.DataTextField = "Name";
-            this.CategoryList.DataBind();
-
-            if (forumId.HasValue)
+            if (this.canHaveForumsInCategories)
             {
-                this.AccessList.DataSource = CommonDb.forumaccess_list(this.PageContext.PageModuleID, forumId.Value, PageContext.PageUserID, true);
+                this.tr_categoriesallowed.Visible = true;
+
+                this.CategoryAllowed.DataSource = dataCatNew;
+                this.CategoryAllowed.DataValueField = "CategoryID";
+                this.CategoryAllowed.DataTextField = "Name";
+                this.CategoryAllowed.DataBind();
+            }
+
+            if (this.canHaveForumsAsSubforums)
+            {
+                this.tr_categoriesforforumsallowed.Visible = true;
+                this.tr_forumsallowed.Visible = true;
+
+                this.CategoryList.DataSource = dataCatNew;
+                this.CategoryList.DataValueField = "CategoryID";
+                this.CategoryList.DataTextField = "Name";
+                this.CategoryList.DataBind();
+            }
+
+
+            if (forumId.HasValue || this.canHaveForumsAsSubforums || this.canHaveForumsInCategories)
+            {
+                this.AccessList.DataSource = CommonDb.forumaccess_list(
+                    this.PageContext.PageModuleID,
+                    forumId,
+                    PageContext.PageUserID,
+                    true);
                 this.AccessList.DataBind();
             }
+
 
             // Load forum's combo
             this.BindParentList();
@@ -389,28 +448,35 @@ namespace YAF.pages
         /// </summary>
         private void BindParentList()
         {
-            DataTable dataCat = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue, false);
-            DataTable dataCatNew = dataCat.Clone();
-            foreach (DataRow row in dataCat.Rows)
+            if (this.canHaveForumsAsSubforums)
             {
-                if (row["CanHavePersForums"].ToType<bool>() || row["ForumID"].ToString() == string.Empty)
+                DataTable dataCat = CommonDb.forum_listall_fromCat(
+                    PageContext.PageModuleID,
+                    this.PageContext.PageBoardID,
+                    this.CategoryList.SelectedValue,
+                    false);
+                DataTable dataCatNew = dataCat.Clone();
+                foreach (DataRow row in dataCat.Rows)
                 {
-                    DataRow newRow = dataCatNew.NewRow();
-                    newRow.ItemArray = row.ItemArray;
-                    dataCatNew.Rows.Add(newRow);
+                    if (row["CanHavePersForums"].ToType<bool>() || row["ForumID"].ToString() == string.Empty)
+                    {
+                        DataRow newRow = dataCatNew.NewRow();
+                        newRow.ItemArray = row.ItemArray;
+                        dataCatNew.Rows.Add(newRow);
+                    }
                 }
-            }
 
-            dataCatNew.AcceptChanges();
-            if (dataCatNew.Rows.Count <= 0)
-            {
-                YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
-            }
+                dataCatNew.AcceptChanges();
+                if (dataCatNew.Rows.Count <= 0)
+                {
+                    YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
+                }
 
-            this.ParentList.DataSource = dataCatNew;
-            this.ParentList.DataValueField = "ForumID";
-            this.ParentList.DataTextField = "Title";
-            this.ParentList.DataBind();
+                this.ParentList.DataSource = dataCatNew;
+                this.ParentList.DataValueField = "ForumID";
+                this.ParentList.DataTextField = "Title";
+                this.ParentList.DataBind();
+            }
         }
 
         /// <summary>
@@ -579,7 +645,7 @@ namespace YAF.pages
               this.AccessMaskID.SelectedValue,
               IsNull(this.remoteurl.Text),
               themeUrl,
-           // this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : 
+                // this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : 
               null,
               this.Styles.Text,
               false,
@@ -588,7 +654,7 @@ namespace YAF.pages
               this.CanHavePersForums.Checked);
 
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
-          
+
             // Access
             if (forumId.HasValue || forumCopyId.HasValue)
             {
@@ -599,7 +665,7 @@ namespace YAF.pages
                     CommonDb.forumaccess_save(PageContext.PageModuleID, newForumId, groupId, item.FindControlAs<DropDownList>("AccessmaskID").SelectedValue);
                 }
             }
-            
+
             // Clearing cache with old permissions data...
             this.ClearCaches();
 

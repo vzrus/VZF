@@ -432,7 +432,7 @@ namespace YAF.Pages
         /// </summary>
         private void BindData()
         {
-            this.AlphaSort1.PagerPage = ForumPages.members;
+            // this.AlphaSort1.PagerPage = ForumPages.members;
             this.Pager.PageSize = this.Get<YafBoardSettings>().MemberListPageSize;
             char selectedCharLetter = this.AlphaSort1.CurrentLetter;
 

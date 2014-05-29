@@ -1,54 +1,54 @@
  -- vzrus: drop indexes on views here
   
 /****** Object:  Index [{objectQualifier}vaccess_user_UserForum]    Script Date: 09/28/2009 22:30:20 ******/
-IF  exists (select top 1 1 from sys.indexes where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_user]') AND name = N'{objectQualifier}vaccess_user_UserForum_PK')
-DROP INDEX  [{databaseOwner}].[{objectQualifier}vaccess_user].[{objectQualifier}vaccess_user_UserForum_PK]
+IF  exists (select top 1 1 from sys.indexes where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_user]') AND name = N'{objectQualifier}vaccess_user_UserForum_PK')
+DROP INDEX  [{databaseSchema}].[{objectQualifier}vaccess_user].[{objectQualifier}vaccess_user_UserForum_PK]
 GO
 
 /****** Object:  Index [{objectQualifier}vaccess_null_UserForum]    Script Date: 09/28/2009 22:30:36 ******/
-IF  exists (select top 1 1 from sys.indexes where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_null]') AND name = N'{objectQualifier}vaccess_null_UserForum_PK')
-DROP INDEX  [{databaseOwner}].[{objectQualifier}vaccess_null].[{objectQualifier}vaccess_null_UserForum_PK]
+IF  exists (select top 1 1 from sys.indexes where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_null]') AND name = N'{objectQualifier}vaccess_null_UserForum_PK')
+DROP INDEX  [{databaseSchema}].[{objectQualifier}vaccess_null].[{objectQualifier}vaccess_null_UserForum_PK]
 GO
 
 /****** Object:  Index [{objectQualifier}vaccess_group_UserGroup]    Script Date: 09/28/2009 22:30:55 ******/
-IF  exists (select top 1 1 from sys.indexes where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_group]') AND name = N'{objectQualifier}vaccess_group_UserForum_PK')
-DROP INDEX [{databaseOwner}].[{objectQualifier}vaccess_group].[{objectQualifier}vaccess_group_UserForum_PK]
+IF  exists (select top 1 1 from sys.indexes where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_group]') AND name = N'{objectQualifier}vaccess_group_UserForum_PK')
+DROP INDEX [{databaseSchema}].[{objectQualifier}vaccess_group].[{objectQualifier}vaccess_group_UserForum_PK]
 GO
 
 -- drop views
 
-/****** Object:  View [{databaseOwner}].[{objectQualifier}vaccess]    Script Date: 10/27/2009 21:42:29 ******/
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess]') and type in (N'V'))
-DROP VIEW [{databaseOwner}].[{objectQualifier}vaccess]
+/****** Object:  View [{databaseSchema}].[{objectQualifier}vaccess]    Script Date: 10/27/2009 21:42:29 ******/
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess]') and type in (N'V'))
+DROP VIEW [{databaseSchema}].[{objectQualifier}vaccess]
 GO
 
-/****** Object:  View [{databaseOwner}].[{objectQualifier}vaccessfull]    Script Date: 10/27/2009 21:42:29 ******/
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccessfull]') and type in (N'V'))
-DROP VIEW [{databaseOwner}].[{objectQualifier}vaccessfull]
+/****** Object:  View [{databaseSchema}].[{objectQualifier}vaccessfull]    Script Date: 10/27/2009 21:42:29 ******/
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccessfull]') and type in (N'V'))
+DROP VIEW [{databaseSchema}].[{objectQualifier}vaccessfull]
 GO
 
-/****** Object:  View [{databaseOwner}].[{objectQualifier}vaccess_group]    Script Date: 10/27/2009 21:42:29 ******/
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_group]') and type in (N'V'))
-DROP VIEW [{databaseOwner}].[{objectQualifier}vaccess_group]
+/****** Object:  View [{databaseSchema}].[{objectQualifier}vaccess_group]    Script Date: 10/27/2009 21:42:29 ******/
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_group]') and type in (N'V'))
+DROP VIEW [{databaseSchema}].[{objectQualifier}vaccess_group]
 GO
 
-/****** Object:  View [{databaseOwner}].[{objectQualifier}vaccess_null]    Script Date: 10/27/2009 21:42:29 ******/
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_null]') and type in (N'V'))
-DROP VIEW [{databaseOwner}].[{objectQualifier}vaccess_null]
+/****** Object:  View [{databaseSchema}].[{objectQualifier}vaccess_null]    Script Date: 10/27/2009 21:42:29 ******/
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_null]') and type in (N'V'))
+DROP VIEW [{databaseSchema}].[{objectQualifier}vaccess_null]
 GO
 
-/****** Object:  View [{databaseOwner}].[{objectQualifier}vaccess_user]    Script Date: 10/27/2009 21:42:29 ******/
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_user]') and type in (N'V'))
-DROP VIEW [{databaseOwner}].[{objectQualifier}vaccess_user]
+/****** Object:  View [{databaseSchema}].[{objectQualifier}vaccess_user]    Script Date: 10/27/2009 21:42:29 ******/
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_user]') and type in (N'V'))
+DROP VIEW [{databaseSchema}].[{objectQualifier}vaccess_user]
 GO
 
-/****** Object:  View [{databaseOwner}].[{objectQualifier}PMessageView]    Script Date: 10/27/2009 21:42:29 ******/
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}PMessageView]') and type in (N'V'))
-DROP VIEW [{databaseOwner}].[{objectQualifier}PMessageView]
+/****** Object:  View [{databaseSchema}].[{objectQualifier}PMessageView]    Script Date: 10/27/2009 21:42:29 ******/
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}PMessageView]') and type in (N'V'))
+DROP VIEW [{databaseSchema}].[{objectQualifier}PMessageView]
 GO
 
-IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_group]') and type in (N'V'))
-EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseOwner}].[{objectQualifier}vaccess_group]
+IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_group]') and type in (N'V'))
+EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseSchema}].[{objectQualifier}vaccess_group]
 WITH SCHEMABINDING
 AS
         select
@@ -70,14 +70,14 @@ AS
 			UserForumAccess = convert(int,d.Flags & 32768),
             AdminGroup		= convert(int,e.Flags & 1)
         from
-            [{databaseOwner}].[{objectQualifier}UserGroup] b
-            INNER JOIN [{databaseOwner}].[{objectQualifier}ForumAccess] c on c.GroupID=b.GroupID
-            INNER JOIN [{databaseOwner}].[{objectQualifier}AccessMask] d on d.AccessMaskID=c.AccessMaskID
-            INNER JOIN [{databaseOwner}].[{objectQualifier}Group] e on e.GroupID=b.GroupID' 
+            [{databaseSchema}].[{objectQualifier}UserGroup] b
+            INNER JOIN [{databaseSchema}].[{objectQualifier}ForumAccess] c on c.GroupID=b.GroupID
+            INNER JOIN [{databaseSchema}].[{objectQualifier}AccessMask] d on d.AccessMaskID=c.AccessMaskID
+            INNER JOIN [{databaseSchema}].[{objectQualifier}Group] e on e.GroupID=b.GroupID' 
 GO
 
-IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_null]') and type in (N'V'))
-EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseOwner}].[{objectQualifier}vaccess_null]
+IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_null]') and type in (N'V'))
+EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseSchema}].[{objectQualifier}vaccess_null]
 WITH SCHEMABINDING
 AS
         select
@@ -99,12 +99,12 @@ AS
 			UserForumAccess	= convert(int,0),
             AdminGroup		= convert(int,0)
         from
-            [{databaseOwner}].[{objectQualifier}User] a' 
+            [{databaseSchema}].[{objectQualifier}User] a' 
 GO
 
 
-IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess_user]') and type in (N'V'))
-EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseOwner}].[{objectQualifier}vaccess_user]
+IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess_user]') and type in (N'V'))
+EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseSchema}].[{objectQualifier}vaccess_user]
 WITH SCHEMABINDING
 AS
     SELECT
@@ -126,13 +126,13 @@ AS
 			UserForumAccess = convert(int,c.Flags & 32768),
             AdminGroup		= convert(int,0)
         from
-            [{databaseOwner}].[{objectQualifier}UserForum] b
-            INNER JOIN [{databaseOwner}].[{objectQualifier}AccessMask] c on c.AccessMaskID=b.AccessMaskID' 
+            [{databaseSchema}].[{objectQualifier}UserForum] b
+            INNER JOIN [{databaseSchema}].[{objectQualifier}AccessMask] c on c.AccessMaskID=b.AccessMaskID' 
 GO
 
 
-IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccessfull]') and type in (N'V'))
-EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseOwner}].[{objectQualifier}vaccessfull]
+IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccessfull]') and type in (N'V'))
+EXEC sys.sp_executesql @statement = N'CREATE VIEW [{databaseSchema}].[{objectQualifier}vaccessfull]
 WITH SCHEMABINDING
 AS
 
@@ -160,7 +160,7 @@ select
 			UserForumAccess ,
             AdminGroup		
         from
-            [{databaseOwner}].[{objectQualifier}vaccess_user] b
+            [{databaseSchema}].[{objectQualifier}vaccess_user] b
         
         union all
         
@@ -181,7 +181,7 @@ select
 			UserForumAccess ,
             AdminGroup	
         from
-            [{databaseOwner}].[{objectQualifier}vaccess_group] b
+            [{databaseSchema}].[{objectQualifier}vaccess_group] b
 
         union all
 
@@ -202,23 +202,23 @@ select
 			UserForumAccess ,
             AdminGroup	
         from
-            [{databaseOwner}].[{objectQualifier}vaccess_null] b
+            [{databaseSchema}].[{objectQualifier}vaccess_null] b
 ) access
     GROUP BY
         UserID,ForumID' 
 GO
 
 
-IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}vaccess]') and type in (N'V'))
-EXEC sys.sp_executesql @statement = N'/****** Object:  View [{databaseOwner}].[{objectQualifier}vaccess]    Script Date: 09/28/2009 22:26:00 ******/
-CREATE VIEW [{databaseOwner}].[{objectQualifier}vaccess]
+IF NOT exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}vaccess]') and type in (N'V'))
+EXEC sys.sp_executesql @statement = N'/****** Object:  View [{databaseSchema}].[{objectQualifier}vaccess]    Script Date: 09/28/2009 22:26:00 ******/
+CREATE VIEW [{databaseSchema}].[{objectQualifier}vaccess]
 AS
     SELECT
         UserID				= a.UserID,
         ForumID				= x.ForumID,
         IsAdmin				= max(convert(int,b.Flags & 1)),
         IsForumModerator	= max(convert(int,b.Flags & 8)),
-        IsModerator			= (select count(1) from [{databaseOwner}].[{objectQualifier}UserGroup] v,[{databaseOwner}].[{objectQualifier}Group] w,[{databaseOwner}].[{objectQualifier}ForumAccess] x,[{databaseOwner}].[{objectQualifier}AccessMask] y where v.UserID=a.UserID and w.GroupID=v.GroupID and x.GroupID=w.GroupID and y.AccessMaskID=x.AccessMaskID and (y.Flags & 64)<>0),
+        IsModerator			= (select count(1) from [{databaseSchema}].[{objectQualifier}UserGroup] v,[{databaseSchema}].[{objectQualifier}Group] w,[{databaseSchema}].[{objectQualifier}ForumAccess] x,[{databaseSchema}].[{objectQualifier}AccessMask] y where v.UserID=a.UserID and w.GroupID=v.GroupID and x.GroupID=w.GroupID and y.AccessMaskID=x.AccessMaskID and (y.Flags & 64)<>0),
         ReadAccess			= max(x.ReadAccess),
         PostAccess			= max(x.PostAccess),
         ReplyAccess			= max(x.ReplyAccess),
@@ -232,9 +232,9 @@ AS
         DownloadAccess		= max(x.DownloadAccess),
 		UserForumAccess     = max(x.UserForumAccess)			
     FROM
-        [{databaseOwner}].[{objectQualifier}vaccessfull] as x WITH(NOLOCK)
-        INNER JOIN [{databaseOwner}].[{objectQualifier}UserGroup] a WITH(NOLOCK) on a.UserID=x.UserID
-        INNER JOIN [{databaseOwner}].[{objectQualifier}Group] b WITH(NOLOCK) on b.GroupID=a.GroupID
+        [{databaseSchema}].[{objectQualifier}vaccessfull] as x WITH(NOLOCK)
+        INNER JOIN [{databaseSchema}].[{objectQualifier}UserGroup] a WITH(NOLOCK) on a.UserID=x.UserID
+        INNER JOIN [{databaseSchema}].[{objectQualifier}Group] b WITH(NOLOCK) on b.GroupID=a.GroupID
     GROUP BY
         a.UserID,x.ForumID' 
 GO

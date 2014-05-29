@@ -59,7 +59,7 @@ BEGIN
             SET    "VALUE" = :I_VALUE
             WHERE  Lower(NAME) = Lower(:I_NAME)
             AND BOARDID = :I_BOARDID;
-             end
+             END
             ELSE            
                 INSERT INTO {objectQualifier}REGISTRY
                            (REGISTRYID,
@@ -446,7 +446,7 @@ BEGIN
       END        
         CLOSE currBoards;
         /*deallocate curBoards*/
-    end
+    END
     ELSE
         /*resync board forums*/
         EXECUTE PROCEDURE {objectQualifier}FORUM_RESYNC :I_BOARDID, null;
@@ -800,7 +800,7 @@ begin
         set EXTENSION = :I_EXTENSION 
         where EXTENSIONID = :I_EXTENSIONID;
     
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}ACTIVE_UPDATEMAXSTATS
@@ -932,7 +932,7 @@ ici_IsCrawler = :I_ISCRAWLER;
             begin
             -- set IsCrawler ActiveFlag
             ici_ActiveFlags =  BIN_OR(ici_ActiveFlags, 8);
-            end 
+            END 
     END 
     ELSE
     BEGIN
@@ -1134,7 +1134,7 @@ ici_IsCrawler = :I_ISCRAWLER;
      begin
          select LastVisit from {objectQualifier}USER where UserID = :ici_userid
          INTO :ici_previousvisit;
-    end
+    END
 
     -- update last visit
     UPDATE {objectQualifier}USER SET 
@@ -1439,7 +1439,7 @@ BEGIN
         (SELECT CAST(0 as BOOL) FROM RDB$DATABASE) as "ModeratorAvatarImage",
             (case(:I_STYLEDNICKS)
             when 1 then b.STYLE  
-            else ''	 end) as Style,	
+            else ''	 END) as Style,	
         (SELECT 1 FROM RDB$DATABASE) AS "IsGroup"			
     from
         {objectQualifier}FORUM f
@@ -1464,7 +1464,7 @@ BEGIN
         (CASE WHEN (bit_length(usr.AVATARIMAGE) > 10) THEN CAST(1 AS SMALLINT) ELSE CAST(0 AS SMALLINT) END),		
         (case(:I_STYLEDNICKS)
             when 1 then  usr.USERSTYLE
-            else ''	 end) as Style,	
+            else ''	 END) as Style,	
         (SELECT 0 FROM RDB$DATABASE) AS "IsGroup"
     from
         {objectQualifier}USER usr
@@ -1549,7 +1549,7 @@ for select
 :"LastTopicID",
 :"LastTopicName"	
         DO SUSPEND;		
-end;
+END;
 --GO
 /* create procedure {objectQualifier}FORUM_LISTREAD_OLD(I_BOARDID INTEGER,I_USERID INTEGER,I_CATEGORYID 
 
@@ -1644,7 +1644,7 @@ NAME from {objectQualifier}USER x
          :"LastUserID",
          :"LastUser"
         DO SUSPEND;		
-end;
+END;
 */
 
 create procedure {objectQualifier}FORUM_LISTREAD(
@@ -1778,15 +1778,15 @@ select
         (CAST(x.READACCESS as INTEGER)),
         (case(:I_STYLEDNICKS)
             when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM {objectQualifier}USER usr WHERE usr.USERID = t.LASTUSERID)  
-            else (select '' from rdb$database)	 end),
+            else (select '' from rdb$database)	 END),
         (case(:I_FINDLASTUNREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=b.FORUMID AND x.USERID = x.USERID)
-             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE) end) AS "LastForumAccess",
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE) END) AS "LastForumAccess",
         (case(:I_FINDLASTUNREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=t.TOPICID AND y.USERID = x.USERID)
-             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE)  end) AS  "LastTopicAccess"    				
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE)  END) AS  "LastTopicAccess"    				
     from 
         {objectQualifier}CATEGORY a
         join {objectQualifier}FORUM b on b.CATEGORYID=a.CATEGORYID
@@ -1837,7 +1837,7 @@ select
          where x.USERID=:"LastUserID" INTO :"LastUser",:"LastUserDisplayName";		
          SUSPEND; 
          END
-end;
+END;
 --GO
 
 create procedure {objectQualifier}FORUM_LISTREADPERSONAL(
@@ -1930,15 +1930,15 @@ ici_LastPosted = :I_UTCTIMESTAMP;
         (CAST(x.READACCESS as INTEGER)),
         (case(:I_STYLEDNICKS)
             when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM {objectQualifier}USER usr WHERE usr.USERID = t.LASTUSERID)  
-            else (select '' from rdb$database)	 end),
+            else (select '' from rdb$database)	 END),
         (case(:I_FINDLASTUNREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=b.FORUMID AND x.USERID = x.USERID)
-             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE) end) AS "LastForumAccess",
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE) END) AS "LastForumAccess",
         (case(:I_FINDLASTUNREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=t.TOPICID AND y.USERID = x.USERID)
-             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE)  end) AS  "LastTopicAccess"    				
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE)  END) AS  "LastTopicAccess"    				
     from 
         {objectQualifier}CATEGORY a
         join {objectQualifier}FORUM b on b.CATEGORYID=a.CATEGORYID
@@ -1991,7 +1991,7 @@ ici_LastPosted = :I_UTCTIMESTAMP;
          where x.USERID=:"LastUserID" INTO :"LastUser",:"LastUserDisplayName";		
          SUSPEND; 
          END
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}TOPIC_LATEST
@@ -2060,17 +2060,17 @@ BEGIN
         where x.USERID = t.LASTUSERID)) AS "LastUserDisplayName",
         case(:I_STYLEDNICKS)
             when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM {objectQualifier}USER usr WHERE usr.USERID = t.LASTUSERID)  
-            else (SELECT '' FROM RDB$DATABASE)	 end,
+            else (SELECT '' FROM RDB$DATABASE)	 END,
         (select x.ISGUEST from {objectQualifier}USER x 
         where x.USERID = t.LASTUSERID) AS "LastUserIsGuest",
         (case(:I_FINDLASTUNREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=f.FORUMID AND x.USERID = :I_PAGEUSERID)
-             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) END) AS "LastForumAccess",
         (case(:I_FINDLASTUNREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=t.TOPICID AND y.USERID = :I_PAGEUSERID)
-             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess"  
+             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  END) AS  "LastTopicAccess"  
     FROM 
         {objectQualifier}TOPIC t
     INNER JOIN
@@ -2447,7 +2447,7 @@ begin
         :"Platform",
         :"ForumPage"
         DO SUSPEND;
-end;
+END;
 --GO
 
 create procedure {objectQualifier}ACTIVE_STATS(I_BOARDID INTEGER) 
@@ -2491,7 +2491,7 @@ begin
         "ActiveGuests",
         "ActiveHidden";
         SUSPEND;
-        end;
+        END;
 --GO
 
 create procedure {objectQualifier}BOARD_USERSTATS(I_BOARDID INTEGER, I_STYLEDNICKS BOOL) 
@@ -2819,10 +2819,10 @@ begin
         BIN_AND(c.FLAGS, 2)<>0
         INTO :"UserID";
         SUSPEND;
-end;
+END;
 --GO
 
--- end of required to see start page
+-- END of required to see start page
 
 
 create procedure {objectQualifier}FORUM_LISTPATH(I_FORUMID INTEGER) 
@@ -2889,7 +2889,7 @@ begin
         :"ForumID",
         :"Name"
         DO SUSPEND;
-end;
+END;
 --GO
 
 create procedure {objectQualifier}FORUM_LIST(I_BOARDID INTEGER,I_FORUMID INTEGER, I_USERID INTEGER, I_ISUSERFORUM BOOL) 
@@ -3049,7 +3049,7 @@ DO SUSPEND;
         :"CreatedByUserID",
         :"CanHavePersForums"
 DO SUSPEND;
-end;
+END;
 --GO
 
 create procedure {objectQualifier}FORUM_BYUSERLIST(I_BOARDID INTEGER,I_FORUMID INTEGER, I_USERID INTEGER, I_ISUSERFORUM BOOL) 
@@ -3203,7 +3203,7 @@ DO SUSPEND;
         :"IsModerated",
         :"CreatedByUserID"
 DO SUSPEND;
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}FORUM_LISTALL (I_BOARDID INTEGER,I_USERID INTEGER, I_ROOT INTEGER, I_RETURNALL SMALLINT)
@@ -3217,6 +3217,7 @@ RETURNS
 "ParentID" integer,
 "PollGroupID" integer,
 "IsHidden" bool,
+"CanHavePersForums" bool,
 "ReadAccess" bool
 )
 AS
@@ -3232,6 +3233,7 @@ AS
                     a.PARENTID,
                     a.POLLGROUPID,
                     SIGN(BIN_AND(a.FLAGS, 2)),
+					a.CANHAVEPERSFORUMS,
                     c.READACCESS
               FROM
                     {objectQualifier}FORUM a
@@ -3257,6 +3259,7 @@ AS
                     :"ParentID",
                     :"PollGroupID",
                     :"IsHidden",
+					:"CanHavePersForums",
                     :"ReadAccess"
                      DO SUSPEND;
 
@@ -3271,6 +3274,7 @@ AS
         a.PARENTID,
         a.POLLGROUPID,
         SIGN(BIN_AND(a.FLAGS, 2)),
+		a.CANHAVEPERSFORUMS,
         c.READACCESS
     FROM
         {objectQualifier}FORUM a
@@ -3297,6 +3301,7 @@ AS
                     :"ParentID",
                     :"PollGroupID",
                     :"IsHidden",
+					:"CanHavePersForums",
                     :"ReadAccess"
                      DO SUSPEND;
 ELSE 
@@ -3421,7 +3426,7 @@ CREATE PROCEDURE {objectQualifier}USER_PMCOUNT
       if (:ICI_PMLIMIT1 > :ICI_COUNTALLOWED) THEN
       begin
       ICI_COUNTALLOWED = :ICI_PMLIMIT1;      
-      end 
+      END 
       
     -- get count of pm's in user's sent items
     
@@ -4148,7 +4153,7 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
         :"TopicsPerPage",
         :"PostsPerPage"
 do suspend;
-     end;
+     END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}MESSAGE_GETTEXTBYIDS(I_MESSAGEIDS BLOB SUB_TYPE 1)
@@ -4330,21 +4335,21 @@ BEGIN
             join {objectQualifier}GROUP f on f.GROUPID=e.GROUPID WHERE e.USERID=c.USERID AND CHAR_LENGTH(f.STYLE) > 2 ORDER BY f.SortOrder), 
             (select r.STYLE from {objectQualifier}USER usr 
             join {objectQualifier}RANK r ON r.RankID = usr.RankID  where usr.USERID=c.USERID))  
-            else ''	 end),
+            else ''	 END),
         (case(:I_STYLEDNICKS)
             when 1 then  COALESCE((SELECT FIRST 1 f.STYLE FROM {objectQualifier}USERGROUP e 
             join {objectQualifier}GROUP f on f.GROUPID=e.GROUPID WHERE e.USERID=c.LASTUSERID AND CHAR_LENGTH(f.STYLE) > 2 ORDER BY f.SortOrder), 
             (select r.STYLE from {objectQualifier}USER usr 
             join {objectQualifier}RANK r ON r.RankID = usr.RankID  where usr.USERID=c.LASTUSERID))  
-            else ''	 end),
+            else ''	 END),
         (case(:I_FINDLASTREAD)
              when 1 then
                (SELECT FIRST 1  LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
-             else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE) 	 end),
+             else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE) 	 END),
         (case(:I_FINDLASTREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
-             else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end)
+             else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 END)
     from
         {objectQualifier}TOPIC c
         join {objectQualifier}USER b on b.USERID=c.USERID
@@ -4472,21 +4477,21 @@ begin
             join {objectQualifier}GROUP f on f.GroupID=e.GroupID WHERE e.UserID=c.UserID AND CHAR_LENGTH(f.STYLE) > 2 ORDER BY f.SortOrder), 
             (select r.STYLE from {objectQualifier}USER usr 
             join {objectQualifier}RANK r ON r.RankID = usr.RankID  where usr.UserID=c.UserID))  
-            else ''	 end) as StarterStyle ,
+            else ''	 END) as StarterStyle ,
         (case(:I_STYLEDNICKS)
             when 1 then  COALESCE((SELECT FIRST 1 f.STYLE FROM {objectQualifier}USERGROUP e 
             join {objectQualifier}GROUP f on f.GroupID=e.GroupID WHERE e.UserID=c.LastUserID AND CHAR_LENGTH(f.STYLE) > 2 ORDER BY f.SortOrder), 
             (select r.STYLE from {objectQualifier}USER usr 
             join {objectQualifier}RANK r ON r.RankID = usr.RankID  where usr.UserID=c.LastUserID))  
-            else ''	 end) as LastUserStyle,
+            else ''	 END) as LastUserStyle,
        (case(:I_FINDLASTREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
-             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) END) AS "LastForumAccess",
         (case(:I_FINDLASTREAD)
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID = c.TOPICID AND y.USERID = :I_PAGEUSERID)
-             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess"  
+             else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  END) AS  "LastTopicAccess"  
     from
         {objectQualifier}TOPIC c
         join {objectQualifier}USER b on b.USERID=c.USERID
@@ -4541,7 +4546,7 @@ begin
         :"LastForumAccess",
         :"LastTopicAccess"
         DO SUSPEND;
-end;
+END;
 */
 
 
@@ -4564,7 +4569,7 @@ BEGIN
             DAILYDIGEST = (CASE WHEN (:I_DAILYDIGEST is not null) THEN  :I_DAILYDIGEST ELSE DAILYDIGEST END)
         WHERE
             USERID = :I_USERID;
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}ALBUM_IMAGES_BY_USER(I_USERID integer)
@@ -4602,7 +4607,7 @@ BEGIN
         :"Uploaded",
         :"Downloads"
         DO SUSPEND;
-end;
+END;
 --GO
 
 
@@ -4616,7 +4621,7 @@ BEGIN
      If (not exists (select 1 from  {objectQualifier}ADMINPAGEUSERACCESS where USERID = :I_USERID and PAGENAME = :I_PAGENAME ROWS 1)) THEN		
         insert into {objectQualifier}ADMINPAGEUSERACCESS  (USERID,PAGENAME) 
         values(:I_USERID,:I_PAGENAME);			
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}ADMINPAGEACCESS_DELETE
@@ -4694,7 +4699,7 @@ if (:I_USERID > 0  and :I_PAGENAME IS NOT NULL) then
              "UserDisplayName",
              "BoardName" DO SUSPEND;
 
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}FORUM_MAXID(I_BOARDID INTEGER)
@@ -4705,7 +4710,7 @@ begin
     on b.CATEGORYID=a.CATEGORYID where b.BOARDID=:I_BOARDID order by a.FORUMID desc
     INTO :"ForumID";
     SUSPEND;
-end;
+END;
 --GO
 
 CREATE PROCEDURE {objectQualifier}EVENTLOG_DELETEBYUSER
@@ -4720,7 +4725,7 @@ begin
 delete from {objectQualifier}EVENTLOG where
             (USERID is null or
             USERID in (select USERID from {objectQualifier}USER where BOARDID=:I_BOARDID));
-end
+END
 else
 begin
         -- either EventLogID or BoardID must be null, not both at the same time
@@ -4731,7 +4736,7 @@ begin
         join {objectQualifier}USERGROUP ug on (ug.USERID =  :I_PAGEUSERID and ug.GROUPID = e.GROUPID)
         left join {objectQualifier}USER b on b.USERID=a.USERID
         where e.DELETEACCESS = 1);
-end		
+END		
 END;
 --GO
 
@@ -4830,12 +4835,12 @@ BEGIN
 if (:I_EVENTTYPENAME is not null) THEN
     begin
         delete from {objectQualifier}EVENTLOGGROUPACCESS  where GROUPID = :I_GROUPID and EVENTTYPEID = :I_EVENTTYPEID;
-    end	
+    END	
     else
     begin
     -- delete all access rights
         delete from {objectQualifier}EVENTLOGGROUPACCESS  where GROUPID = :I_GROUPID; 
-    end
+    END
 END;
 --GO
 
@@ -4912,4 +4917,114 @@ BEGIN
 END;
 --GO
 
+
+CREATE PROCEDURE {objectQualifier}POLLGROUP_SAVE
+(   i_TopicID integer,
+    i_ForumID integer,
+	i_CategoryID integer,	
+	i_UserID integer,	
+	i_Flags integer,	
+	i_UTCTIMESTAMP timestamp
+)
+RETURNS
+(
+"PollGroupID" INTEGER,
+"NewPollGroupID" INTEGER
+)
+AS
+declare i_PollGroupID integer;
+declare i_NewPollGroupID integer;
+BEGIN
+ -- Check if the group already exists
+  IF (:i_TopicId is not null) THEN
+  BEGIN  
+                select PollID  from {objectQualifier}Topic WHERE TopicID = :i_TopicID into :i_PollGroupID; 
+  END				              
+  IF (:i_ForumID is not null) THEN 
+  BEGIN             
+				select  PollGroupID    from {objectQualifier}Forum WHERE ForumID = :i_ForumID into  :i_PollGroupID ;  
+  END              
+  if (:i_CategoryID is not null) THEN
+  BEGIN
+                select PollGroupID  from {objectQualifier}Category
+				WHERE CategoryID = :i_CategoryID into  :i_PollGroupID;
+  END
+  IF (:i_PollGroupID IS NULL) THEN
+  begin
+				  INSERT INTO {objectQualifier}PollGroupCluster(UserID,Flags ) VALUES(:i_UserID, :i_Flags) 
+				   returning POLLGROUPID INTO :i_NewPollGroupID;		  
+  END
+     SELECT :i_PollGroupID , :i_NewPollGroupID FROM RDB$DATABASE 
+	  INTO :"PollGroupID",:"NewPollGroupID";
+	  SUSPEND;	
+END;
+--GO
+
+CREATE PROCEDURE {objectQualifier}POLL_SAVE
+(
+i_Question varchar(255), 
+    i_Closes TIMESTAMP,
+	i_UserID INTEGER,	
+	i_PollGroupID INTEGER,
+	i_ObjectPath VARCHAR(255),  
+	i_MimeType VARCHAR(255), 
+	i_Flags INTEGER,
+	i_UTCTIMESTAMP TIMESTAMP
+)
+RETURNS("PollID" INTEGER)
+AS
+BEGIN
+ insert INTO {objectQualifier}Poll(PollID,Question,Closes,PollGroupID,UserID,ObjectPath,MimeType,Flags)
+ values((SELECT NEXT VALUE FOR SEQ_{objectQualifier}POLL_POLLID FROM RDB$DATABASE),:i_Question,:i_Closes,:i_PollGroupID,:i_UserID,:i_ObjectPath,:i_MimeType,:i_Flags) 
+ RETURNING POLLID INTO :"PollID"; 
+ SUSPEND;			
+END;
+--GO
+
+
+CREATE PROCEDURE {objectQualifier}CHOICE_SAVE
+(
+    i_PollID INTEGER, 
+    i_Choice VARCHAR(255),
+	i_Votes INTEGER,	
+	i_ObjectPath varchar(255),  
+	i_MimeType varchar(50), 	
+	i_UTCTIMESTAMP TIMESTAMP
+)
+AS
+BEGIN
+insert INTO {objectQualifier}Choice(ChoiceID,PollID,Choice,Votes,ObjectPath,MimeType)
+ values((SELECT NEXT VALUE FOR SEQ_{objectQualifier}CHOICE_CHOICEID FROM RDB$DATABASE),:i_PollID,:i_Choice,:i_Votes,:i_ObjectPath,:i_MimeType); 	
+END;
+--GO
+
+
+CREATE PROCEDURE {objectQualifier}POLLGROUP_SETLINKS
+(
+    i_TopicID INTEGER,
+    i_ForumID INTEGER,
+	i_CategoryID INTEGER,	
+	i_PollGroupID INTEGER,
+	i_UTCTIMESTAMP TIMESTAMP
+)
+AS
+BEGIN
+  -- we don't update if no new group is being created 
+                IF  (:i_PollGroupID IS NOT NULL) THEN
+				BEGIN 
+                -- fill a pollgroup field - double work if a poll exists 
+                if (:i_TopicId is not null) THEN
+                    UPDATE {objectQualifier}Topic SET PollID = :i_PollGroupID WHERE TopicID = :i_TopicID; 
+				-- fill a pollgroup field in Forum Table if the call comes from a forum's topic list 
+                else if (:i_ForumID is not null) THEN                 
+                    UPDATE {objectQualifier}Forum SET PollGroupID= :i_PollGroupID WHERE ForumID= :i_ForumID; 
+                -- fill a pollgroup field in Category Table if the call comes from a category's topic list 
+                else if (:i_CategoryID is not null)   THEN           
+                    UPDATE {objectQualifier}Category SET PollGroupID= :i_PollGroupID WHERE CategoryID= :i_CategoryID;                 
+              END
+                -- fill a pollgroup field in Board Table if the call comes from the main page poll 
+                
+                -- the functionality is primitive for other databases compliance.It will save calls for each choice. 
+END;
+--GO
 

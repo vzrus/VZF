@@ -69,11 +69,14 @@
         /// <summary>
         /// The get profile structure.
         /// </summary>
-        /// <returns>
-        /// </returns>
-        public static string GetProfileStructure()
+        /// <value>
+        /// </value>
+        public static string ProfileStructure
         {
-            return @"SELECT FIRST 1 * FROM {0}";
+            get
+            {
+                return @"SELECT FIRST 1 * FROM {0}";
+            }
         }
 
         /// <summary>
@@ -122,13 +125,17 @@
         /// <summary>
         /// The profile exists.
         /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string ProfileExists()
+        /// <value>
+        ///   The <see cref="string"/>.
+        /// </value>
+        public static string ProfileExists
         {
-            return "SELECT FIRST 1 1 FROM {0} WHERE USERID = @i_UserID AND ApplicationName = @i_ApplicationName";
+            get
+            {
+                return "SELECT FIRST 1 1 FROM {0} WHERE USERID = @i_UserID AND ApplicationName = @i_ApplicationName";
+            }
         }
+
         #endregion
     }
 }

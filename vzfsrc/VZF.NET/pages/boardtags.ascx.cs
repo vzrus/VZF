@@ -265,10 +265,12 @@ namespace YAF.Pages
         /// </summary>
         private void BindData()
         {
-            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag") != null)
-            {
-                this.UserSearchName.Text = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag")));
-            }
+            this.AlphaSort1.PagerPage = ForumPages.boardtags;
+            this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+
+      
+            this.UserSearchName.Text = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag")));
+           
 
             char selectedCharLetter = this.AlphaSort1.CurrentLetter;
             bool beginsWith = this.UserSearchName.Text.IsNotSet()
@@ -276,7 +278,7 @@ namespace YAF.Pages
 
             string selectedLetter = this.UserSearchName.Text.IsSet() ? this.UserSearchName.Text.Trim() : (!(selectedCharLetter == char.MinValue || selectedCharLetter == '#') ? selectedCharLetter.ToString(CultureInfo.InvariantCulture) : string.Empty);
 
-            this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+          
 
             using (var dtTopics = CommonDb.forum_tags(
                     this.PageContext.PageModuleID,

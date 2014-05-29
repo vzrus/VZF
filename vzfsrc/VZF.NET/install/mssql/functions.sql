@@ -7,74 +7,74 @@
 */
 
 -- scalar functions
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}registry_value]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}registry_value]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}registry_value]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}registry_value]
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}bitset]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}bitset]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}bitset]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}bitset]
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_posts]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}forum_posts]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_posts]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_posts]
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_topics]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}forum_topics]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_topics]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_topics]
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_subforums]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}forum_subforums]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_subforums]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_subforums]
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_lasttopic]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}forum_lasttopic]
-
-GO
-
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}medal_getribbonsetting]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}medal_getribbonsetting]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_lasttopic]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_lasttopic]
 
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}medal_getsortorder]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}medal_getsortorder]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}medal_getribbonsetting]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}medal_getribbonsetting]
 
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}medal_gethide]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}medal_gethide]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}medal_getsortorder]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}medal_getsortorder]
 
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}get_userstyle]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}get_userstyle]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}medal_gethide]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}medal_gethide]
 
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}message_getthanksinfo]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}message_getthanksinfo]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}get_userstyle]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}get_userstyle]
 
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_save_parentschecker]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}forum_save_parentschecker]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}message_getthanksinfo]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}message_getthanksinfo]
 
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_save_parentschecker]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_save_parentschecker]
+
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}table_strfromdelimitedstr]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}table_strfromdelimitedstr]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}table_intfromdelimitedstr]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}table_intfromdelimitedstr]
 GO
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}topic_gettags_str]') and type in (N'FN', N'IF', N'TF'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}topic_gettags_str]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}table_strfromdelimitedstr]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}table_strfromdelimitedstr]
+GO
+
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}topic_gettags_str]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}topic_gettags_str]
 GO
  
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}registry_value] (
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}registry_value] (
 	@Name NVARCHAR(64)
 	,@BoardID INT = NULL
 	)
@@ -83,18 +83,18 @@ AS
 BEGIN
 	DECLARE @returnValue NVARCHAR(MAX)
 
-	IF @BoardID IS NOT NULL AND EXISTS(SELECT 1 FROM [{databaseOwner}].[{objectQualifier}Registry] WHERE LOWER([Name]) = LOWER(@Name) AND [BoardID] = @BoardID)
+	IF @BoardID IS NOT NULL AND EXISTS(SELECT 1 FROM [{databaseSchema}].[{objectQualifier}Registry] WHERE LOWER([Name]) = LOWER(@Name) AND [BoardID] = @BoardID)
 	BEGIN
 		SET @returnValue = (
 			SELECT CAST([Value] AS NVARCHAR(MAX))
-			FROM [{databaseOwner}].[{objectQualifier}Registry]
+			FROM [{databaseSchema}].[{objectQualifier}Registry]
 			WHERE LOWER([Name]) = LOWER(@Name) AND [BoardID] = @BoardID)
 	END
 	ELSE
 	BEGIN
 		SET @returnValue = (
 			SELECT CAST([Value] AS NVARCHAR(MAX))
-			FROM [{databaseOwner}].[{objectQualifier}Registry]
+			FROM [{databaseSchema}].[{objectQualifier}Registry]
 			WHERE LOWER([Name]) = LOWER(@Name) AND [BoardID] IS NULL)
 	END
 
@@ -102,19 +102,19 @@ BEGIN
 END
 GO
 
-create function [{databaseOwner}].[{objectQualifier}forum_posts](@ForumID int) returns int as
+create function [{databaseSchema}].[{objectQualifier}forum_posts](@ForumID int) returns int as
 begin
 	declare @NumPosts int
 	declare @tmp int
 
-	select @NumPosts=NumPosts from [{databaseOwner}].[{objectQualifier}Forum] where ForumID=@ForumID
+	select @NumPosts=NumPosts from [{databaseSchema}].[{objectQualifier}Forum] where ForumID=@ForumID
 
 
-	if exists(select 1 from [{databaseOwner}].[{objectQualifier}Forum] where ParentID=@ForumID)
+	if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where ParentID=@ForumID)
 
 	begin
 		declare c cursor for
-		select ForumID from [{databaseOwner}].[{objectQualifier}Forum]
+		select ForumID from [{databaseSchema}].[{objectQualifier}Forum]
 
 		where ParentID = @ForumID
 		
@@ -123,7 +123,7 @@ begin
 		fetch next from c into @tmp
 		while @@FETCH_STATUS = 0
 		begin
-			set @NumPosts=@NumPosts+[{databaseOwner}].[{objectQualifier}forum_posts](@tmp)
+			set @NumPosts=@NumPosts+[{databaseSchema}].[{objectQualifier}forum_posts](@tmp)
 
 			fetch next from c into @tmp
 		end
@@ -135,20 +135,20 @@ begin
 end
 GO
 
-create function [{databaseOwner}].[{objectQualifier}forum_topics](@ForumID int) returns int as
+create function [{databaseSchema}].[{objectQualifier}forum_topics](@ForumID int) returns int as
 
 begin
 	declare @NumTopics int
 	declare @tmp int
 
-	select @NumTopics=NumTopics from [{databaseOwner}].[{objectQualifier}Forum] where ForumID=@ForumID
+	select @NumTopics=NumTopics from [{databaseSchema}].[{objectQualifier}Forum] where ForumID=@ForumID
 
 
-	if exists(select 1 from [{databaseOwner}].[{objectQualifier}Forum] where ParentID=@ForumID)
+	if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where ParentID=@ForumID)
 
 	begin
 		declare c cursor for
-		select ForumID from [{databaseOwner}].[{objectQualifier}Forum]
+		select ForumID from [{databaseSchema}].[{objectQualifier}Forum]
 
 		where ParentID = @ForumID
 		
@@ -157,7 +157,7 @@ begin
 		fetch next from c into @tmp
 		while @@FETCH_STATUS = 0
 		begin
-			set @NumTopics=@NumTopics+[{databaseOwner}].[{objectQualifier}forum_topics](@tmp)
+			set @NumTopics=@NumTopics+[{databaseSchema}].[{objectQualifier}forum_topics](@tmp)
 
 			fetch next from c into @tmp
 		end
@@ -169,7 +169,7 @@ begin
 end
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}forum_lasttopic] 
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}forum_lasttopic] 
 
 (	
 	@ForumID int,
@@ -191,8 +191,8 @@ BEGIN
 					@LastTopicID=a.LastTopicID,
 					@LastPosted=a.LastPosted
 				FROM
-					[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-					INNER JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
+					[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+					INNER JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
 				WHERE
 					a.ForumID = @ForumID AND a.IsHidden = 0
 		END			
@@ -202,15 +202,15 @@ BEGIN
 					@LastTopicID=a.LastTopicID,
 					@LastPosted=a.LastPosted
 				FROM
-					[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-					INNER JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
+					[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+					INNER JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
 				WHERE
 					(a.IsHidden = 0 or x.ReadAccess <> 0) AND a.ForumID=@ForumID and x.UserID=@UserID
 		END	
 	END
 
 	-- look for newer topic/message in subforums
-	if exists(select 1 from [{databaseOwner}].[{objectQualifier}Forum] where ParentID=@ForumID)
+	if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where ParentID=@ForumID)
 	begin
 		declare c cursor FORWARD_ONLY READ_ONLY for
 			SELECT
@@ -218,8 +218,8 @@ BEGIN
 				a.LastTopicID,
 				a.LastPosted
 			FROM
-				[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-				JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
+				[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+				JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
 			WHERE
 				a.ParentID=@ForumID and
 				(					
@@ -231,8 +231,8 @@ BEGIN
 				a.LastTopicID,
 				a.LastPosted
 			FROM
-				[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-				JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess]x WITH(NOLOCK) ON a.ForumID=x.ForumID
+				[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+				JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess]x WITH(NOLOCK) ON a.ForumID=x.ForumID
 			WHERE
 				a.ParentID=@ForumID and
 				(					
@@ -250,7 +250,7 @@ BEGIN
 				@TopicID = LastTopicID,
 				@Posted = LastPosted
 			FROM
-				[{databaseOwner}].[{objectQualifier}forum_lastposted](@SubforumID, @UserID, @TopicID, @Posted)
+				[{databaseSchema}].[{objectQualifier}forum_lastposted](@SubforumID, @UserID, @TopicID, @Posted)
 
 
 			-- if subforum has newer topic/message, make it last for parent forum
@@ -277,12 +277,12 @@ GO
 
 -- table-valued functions
 
-IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_lastposted]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [{databaseOwner}].[{objectQualifier}forum_lastposted]
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_lastposted]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_lastposted]
 
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}forum_lastposted] 
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}forum_lastposted] 
 
 (	
 	@ForumID int,
@@ -310,8 +310,8 @@ BEGIN
 					@LastTopicID=a.LastTopicID,
 					@LastPosted=a.LastPosted
 				FROM
-					[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-					INNER JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
+					[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+					INNER JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
 				WHERE
 					a.ForumID = @ForumID AND a.IsHidden = 0
 		END			
@@ -321,15 +321,15 @@ BEGIN
 					@LastTopicID=a.LastTopicID,
 					@LastPosted=a.LastPosted
 				FROM
-					[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-					INNER JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
+					[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+					INNER JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
 				WHERE
 					(a.IsHidden = 0 or x.ReadAccess <> 0) AND a.ForumID=@ForumID and x.UserID=@UserID
 		END	
 	END
 
 	-- look for newer topic/message in subforums
-	if exists(select 1 from [{databaseOwner}].[{objectQualifier}Forum] where ParentID=@ForumID)
+	if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where ParentID=@ForumID)
 
 	begin
 		declare c cursor FORWARD_ONLY READ_ONLY for
@@ -338,8 +338,8 @@ BEGIN
 				a.LastTopicID,
 				a.LastPosted
 			FROM
-				[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-				JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
+				[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+				JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] x WITH(NOLOCK) ON a.ForumID=x.ForumID
 			WHERE
 				a.ParentID=@ForumID and
 				(					
@@ -351,8 +351,8 @@ BEGIN
 				a.LastTopicID,
 				a.LastPosted
 			FROM
-				[{databaseOwner}].[{objectQualifier}Forum] a WITH(NOLOCK)
-				JOIN [{databaseOwner}].[{objectQualifier}ActiveAccess]x WITH(NOLOCK) ON a.ForumID=x.ForumID
+				[{databaseSchema}].[{objectQualifier}Forum] a WITH(NOLOCK)
+				JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess]x WITH(NOLOCK) ON a.ForumID=x.ForumID
 			WHERE
 				a.ParentID=@ForumID and
 				(					
@@ -370,7 +370,7 @@ BEGIN
 				@TopicID = LastTopicID,
 				@Posted = LastPosted
 			FROM
-				[{databaseOwner}].[{objectQualifier}forum_lastposted](@SubforumID, @UserID, @TopicID, @Posted)
+				[{databaseSchema}].[{objectQualifier}forum_lastposted](@SubforumID, @UserID, @TopicID, @Posted)
 
 
 			-- if subforum has newer topic/message, make it last for parent forum
@@ -394,7 +394,7 @@ BEGIN
 END
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}medal_getribbonsetting]
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}medal_getribbonsetting]
 (
 	@RibbonURL nvarchar(250),
 	@Flags int,
@@ -411,7 +411,7 @@ BEGIN
 END
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}medal_getsortorder]
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}medal_getsortorder]
 (
 	@SortOrder tinyint,
 	@DefaultSortOrder tinyint,
@@ -428,7 +428,7 @@ BEGIN
 END
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}medal_gethide]
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}medal_gethide]
 (
 	@Hide bit,
 	@Flags int
@@ -445,7 +445,7 @@ END
 GO
 
 -- Gets the Thanks info which will be formatted and then placed in "dvThanksInfo" Div Tag in displaypost.ascx.
-create function [{databaseOwner}].[{objectQualifier}message_getthanksinfo]
+create function [{databaseSchema}].[{objectQualifier}message_getthanksinfo]
 (
 @MessageID INT,
 @ShowThanksDate bit
@@ -454,7 +454,7 @@ BEGIN
 	DECLARE @Output NVARCHAR(MAX)
 		SELECT @Output = COALESCE(@Output+',', '') + CAST(i.ThanksFromUserID AS varchar) + 
 	CASE @ShowThanksDate WHEN 1 THEN ',' + CAST (i.ThanksDate AS varchar)  ELSE '' end
-			FROM	[{databaseOwner}].[{objectQualifier}Thanks] i
+			FROM	[{databaseSchema}].[{objectQualifier}Thanks] i
 			WHERE	i.MessageID = @MessageID	ORDER BY i.ThanksDate
 	-- Add the last comma if @Output has data.
 	IF @Output <> ''
@@ -463,7 +463,7 @@ BEGIN
 END
 GO
 
-create function [{databaseOwner}].[{objectQualifier}forum_save_parentschecker](@ForumID int, @ParentID int) returns int as
+create function [{databaseSchema}].[{objectQualifier}forum_save_parentschecker](@ForumID int, @ParentID int) returns int as
 
 begin
 -- Checks if the forum is already referenced as a parent 
@@ -475,16 +475,16 @@ begin
 	set @dependency = 0
 	set @haschildren = 0
 	
-	select @dependency=ForumID from [{databaseOwner}].[{objectQualifier}Forum] where ParentID=@ForumID AND ForumID = @ParentID;
+	select @dependency=ForumID from [{databaseSchema}].[{objectQualifier}Forum] where ParentID=@ForumID AND ForumID = @ParentID;
 	if @dependency > 0
 	begin
 	return @ParentID
 	end
 
-	if exists(select 1 from [{databaseOwner}].[{objectQualifier}Forum] where ParentID=@ForumID)
+	if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where ParentID=@ForumID)
 		begin        
 		declare c cursor for
-		select ForumID,ParentID from [{databaseOwner}].[{objectQualifier}Forum]
+		select ForumID,ParentID from [{databaseSchema}].[{objectQualifier}Forum]
 		where ParentID = @ForumID
 		
 		open c
@@ -494,7 +494,7 @@ begin
 		begin
 		if @frmtmp > 0 AND @frmtmp IS NOT NULL
 		 begin        
-			set @haschildren= [{databaseOwner}].[{objectQualifier}forum_save_parentschecker](@frmtmp,@ParentID)            
+			set @haschildren= [{databaseSchema}].[{objectQualifier}forum_save_parentschecker](@frmtmp,@ParentID)            
 			if  @prntmp = @ParentID
 			begin
 			set @dependency= @ParentID
@@ -513,7 +513,7 @@ begin
 end
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}table_intfromdelimitedstr]
 (
    @sInputList VARCHAR(MAX), -- List of delimited items
    @sDelimiter CHAR(1) = ',' -- delimiter that separates items
@@ -528,7 +528,7 @@ CREATE FUNCTION [{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]
 	  @sInputList=RTRIM(LTRIM(SUBSTRING(@sInputList,CHARINDEX(@sDelimiter,@sInputList,0)+LEN(@sDelimiter),LEN(@sInputList))))
  
 	 IF LEN(@sItem) > 0
-	  INSERT INTO @List SELECT @sItem
+	  INSERT INTO @List SELECT CONVERT(int,@sItem)
 	 END
 
 	IF LEN(@sInputList) > 0
@@ -537,7 +537,38 @@ CREATE FUNCTION [{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]
 	END
 GO
 
-CREATE FUNCTION [{databaseOwner}].[{objectQualifier}topic_gettags_str] 
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}table_strfromdelimitedstr]
+(
+   @sInputList NVARCHAR(MAX), -- List of delimited items
+   @sDelimiter CHAR(1) = ',' -- delimiter that separates items
+) RETURNS @List TABLE (ind INT,item NVARCHAR(255))
+
+	BEGIN
+	DECLARE @sItem int;
+	DECLARE @ind int = 1;
+	
+	WHILE CHARINDEX(@sDelimiter,@sInputList,0) <> 0
+	 BEGIN
+	 SELECT
+	  @sItem=RTRIM(LTRIM(SUBSTRING(@sInputList,1,CHARINDEX(@sDelimiter,@sInputList,0)-1))),
+	  @sInputList=RTRIM(LTRIM(SUBSTRING(@sInputList,CHARINDEX(@sDelimiter,@sInputList,0)+LEN(@sDelimiter),LEN(@sInputList))))
+ 
+	 IF LEN(@sItem) > 0
+	 begin
+	  INSERT INTO @List SELECT @ind, @sItem
+	  select @ind = @ind + 1;
+	 end
+	 END
+
+	IF LEN(@sInputList) > 0
+	begin
+	 INSERT INTO @List SELECT @ind, @sInputList -- Put the last item in
+	end
+	RETURN
+	END
+GO
+
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}topic_gettags_str] 
 	(@TopicID int)
 RETURNS NVARCHAR(MAX)
 AS
@@ -546,7 +577,7 @@ DECLARE @listStr NVARCHAR(MAX)
 SELECT
 @listStr =
 COALESCE (COALESCE(@listStr+',' ,'') + Tag , @listStr)
-FROM [{databaseOwner}].[{objectQualifier}Tags] tg JOIN  [{databaseOwner}].[{objectQualifier}TopicTags] tt on tt.TagID = tg.TagID where tt.TopicID = @TopicID
+FROM [{databaseSchema}].[{objectQualifier}Tags] tg JOIN  [{databaseSchema}].[{objectQualifier}TopicTags] tt on tt.TagID = tg.TagID where tt.TopicID = @TopicID
 RETURN @listStr
 END
 GO

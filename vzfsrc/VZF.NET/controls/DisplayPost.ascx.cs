@@ -364,7 +364,7 @@ namespace VZF.Controls
                    this.Get<HttpServerUtilityBase>().HtmlEncode(
                         this.DataRow[this.Get<YafBoardSettings>().EnableDisplayName ? "DisplayName" : "UserName"].ToString())),
                 MessageTypes.Success);
-        
+
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "reputationprogressjs",
                 JavaScriptBlocks.ReputationProgressChangeJs(
@@ -549,7 +549,7 @@ namespace VZF.Controls
             }
             else
             {
-                this.Edit.Visible = false; 
+                this.Edit.Visible = false;
             }
 
             if (this.PageContext.ForumModeratorAccess && !this.PostData.IsLocked)
@@ -575,7 +575,7 @@ namespace VZF.Controls
             }
             else
             {
-                this.Delete.Visible = false; 
+                this.Delete.Visible = false;
             }
 
             if (this.PostData.CanUnDeletePost && !this.PostData.IsLocked)
@@ -617,9 +617,11 @@ namespace VZF.Controls
                                                        == DataRow["UserName"].ToString()))
                                                    ? DataRow["DisplayName"].ToString()
                                                    : DataRow["UserName"].ToString();
-               this.UserProfileLink.PostfixText = DataRow["IP"].ToString() == "NNTP"
-                                                   ? this.GetText("EXTERNALUSER")
-                                                   : string.Empty;
+            this.UserProfileLink.PostfixText = DataRow["IP"].ToString() == "NNTP"
+                                                ? this.GetText("EXTERNALUSER")
+                                                : string.Empty;
+            this.UserProfileLink.IsGuest = DataRow["IP"].ToString() == "NNTP";
+
 
             // setup jQuery and YAF JS...
             YafContext.Current.PageElements.RegisterJQuery();
@@ -682,7 +684,7 @@ namespace VZF.Controls
                     f => f.Name("CallFailed").WithParams("res").Func(s => s.Add("alert('Error Occurred');")));
 
             YafContext.Current.PageElements.RegisterJsBlockStartup("asynchCallFailedJs", asynchCallFailedJs);
-            
+
             this.FormatThanksRow();
 
             this.ShowIPInfo();
@@ -694,7 +696,7 @@ namespace VZF.Controls
         private void AddReputationControls()
         {
             if (this.PageContext.PageUserID != this.DataRow["UserID"].ToType<int>() &&
-                this.Get<YafBoardSettings>().EnableUserReputation && !this.IsGuest && !this.PageContext.IsGuest)
+               this.Get<YafBoardSettings>().EnableUserReputation && !this.IsGuest && !this.PageContext.IsGuest)
             {
                 if (YafReputation.CheckIfAllowReputationVoting(this.DataRow["ReputationVoteDate"]))
                 {

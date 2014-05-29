@@ -40,6 +40,42 @@ namespace YAF.pages {
         protected global::System.Web.UI.WebControls.Label ForumNameTitle;
         
         /// <summary>
+        /// tr_categoriesallowed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow tr_categoriesallowed;
+        
+        /// <summary>
+        /// HelpLabel55 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel55;
+        
+        /// <summary>
+        /// CategoryAllowed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList CategoryAllowed;
+        
+        /// <summary>
+        /// tr_categoriesforforumsallowed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow tr_categoriesforforumsallowed;
+        
+        /// <summary>
         /// HelpLabel1 control.
         /// </summary>
         /// <remarks>
@@ -56,6 +92,15 @@ namespace YAF.pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList CategoryList;
+        
+        /// <summary>
+        /// tr_forumsallowed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow tr_forumsallowed;
         
         /// <summary>
         /// HelpLabel2 control.

@@ -6,38 +6,38 @@
 
 /* Views */
 
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccessfull1;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull1;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccessfull2;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull2;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccessfull3;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull3;
 --GO
 
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccessfull;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccess;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccess;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccess_null;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccess_null;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccess_group;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccess_group;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}vaccess_user;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccess_user;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}UserPMessageSelectView;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}UserPMessageSelectView;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}MessageSelectView;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}MessageSelectView;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}TopicSelectView;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}TopicSelectView;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}PMessageView;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}PMessageView;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}MessageSelectView;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}MessageSelectView;
 --GO
-DROP VIEW IF EXISTS {databaseName}.{objectQualifier}UserSelectView;
+DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}UserSelectView;
 --GO
 
 /* Views vaccess */
-CREATE VIEW {databaseName}.{objectQualifier}vaccessfull1 AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccessfull1 AS
 SELECT
 b.UserID,
 b.ForumID,
@@ -54,11 +54,11 @@ c.Flags & 512 AS UploadAccess,
 c.Flags & 1024 AS DownloadAccess,
 c.Flags & 32768 AS UserForumAccess,
 0 AS AdminGroup                                 
-FROM          {databaseName}.{objectQualifier}UserForum AS b
-INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
+FROM          {databaseSchema}.{objectQualifier}UserForum AS b
+INNER JOIN    {databaseSchema}.{objectQualifier}AccessMask AS c
 ON c.AccessMaskID = b.AccessMaskID;
 --GO
-CREATE VIEW {databaseName}.{objectQualifier}vaccessfull2 AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccessfull2 AS
 SELECT
 b.UserID,
 c.ForumID,
@@ -75,15 +75,15 @@ d.Flags & 512 AS UploadAccess,
 d.Flags & 1024 AS DownloadAccess,
 d.Flags & 32768 AS UserForumAccess,
 e.Flags & 1 AS AdminGroup  
-FROM   {databaseName}.{objectQualifier}UserGroup AS b
-INNER JOIN {databaseName}.{objectQualifier}ForumAccess AS c
+FROM   {databaseSchema}.{objectQualifier}UserGroup AS b
+INNER JOIN {databaseSchema}.{objectQualifier}ForumAccess AS c
 ON c.GroupID = b.GroupID
-INNER JOIN {databaseName}.{objectQualifier}AccessMask AS d
+INNER JOIN {databaseSchema}.{objectQualifier}AccessMask AS d
 ON d.AccessMaskID = c.AccessMaskID
-INNER JOIN {databaseName}.{objectQualifier}Group e
+INNER JOIN {databaseSchema}.{objectQualifier}Group e
 ON e.GroupID=b.GroupID;
 --GO
-CREATE VIEW {databaseName}.{objectQualifier}vaccessfull3 AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccessfull3 AS
    SELECT a1.UserID AS UserID,
 				   0 AS  ForumID,
 				   0 AS ReadAccess,
@@ -99,12 +99,12 @@ CREATE VIEW {databaseName}.{objectQualifier}vaccessfull3 AS
 				   0 AS DownloadAccess,
 				   0 AS UserForumAccess,
 				   0 AS AdminGroup 
-			FROM  {databaseName}.{objectQualifier}User a1;
+			FROM  {databaseSchema}.{objectQualifier}User a1;
 --GO
 
 /* eof Views */ 
 
-CREATE VIEW {databaseName}.{objectQualifier}vaccessfull AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccessfull AS
 SELECT
 b.UserID,
 b.ForumID,
@@ -121,8 +121,8 @@ c.Flags & 512 AS UploadAccess,
 c.Flags & 1024 AS DownloadAccess,
 c.Flags & 32768 AS UserForumAccess,
 0 AS AdminGroup                                 
-FROM          {databaseName}.{objectQualifier}UserForum AS b
-INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
+FROM          {databaseSchema}.{objectQualifier}UserForum AS b
+INNER JOIN    {databaseSchema}.{objectQualifier}AccessMask AS c
 ON c.AccessMaskID = b.AccessMaskID
 UNION ALL
 SELECT
@@ -141,12 +141,12 @@ d.Flags & 512 AS UploadAccess,
 d.Flags & 1024 AS DownloadAccess,
 d.Flags & 32768 AS UserForumAccess,
 e.Flags & 1 AS AdminGroup  
-FROM   {databaseName}.{objectQualifier}UserGroup AS b
-INNER JOIN {databaseName}.{objectQualifier}ForumAccess AS c
+FROM   {databaseSchema}.{objectQualifier}UserGroup AS b
+INNER JOIN {databaseSchema}.{objectQualifier}ForumAccess AS c
 ON c.GroupID = b.GroupID
-INNER JOIN {databaseName}.{objectQualifier}AccessMask AS d
+INNER JOIN {databaseSchema}.{objectQualifier}AccessMask AS d
 ON d.AccessMaskID = c.AccessMaskID
-INNER JOIN {databaseName}.{objectQualifier}Group e
+INNER JOIN {databaseSchema}.{objectQualifier}Group e
 ON e.GroupID=b.GroupID
 UNION ALL
 SELECT
@@ -165,14 +165,14 @@ UserID,
 0 AS DownloadAccess,
 0 AS UserForumAccess,
 0 AS AdminGroup 
-FROM {databaseName}.{objectQualifier}User AS a;
+FROM {databaseSchema}.{objectQualifier}User AS a;
 --GO 
 
 
 
 
 /* TODO to not forget to separate if improves performance
-CREATE VIEW {databaseName}.{objectQualifier}vaccess_user AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccess_user AS
 SELECT
 b.UserID,
 b.ForumID,
@@ -190,12 +190,12 @@ c.Flags & 256 AS DeleteAccess,
 c.Flags & 512 AS UploadAccess,
 c.Flags & 1024 AS DownloadAccess,
 0 AS AdminGroup                                 
-FROM          {databaseName}.{objectQualifier}UserForum AS b
-INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
+FROM          {databaseSchema}.{objectQualifier}UserForum AS b
+INNER JOIN    {databaseSchema}.{objectQualifier}AccessMask AS c
 ON c.AccessMaskID = b.AccessMaskID;
 -- GO
 
-CREATE VIEW {databaseName}.{objectQualifier}vaccess_group AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccess_group AS
 SELECT
 b.UserID,
 c.ForumID,
@@ -213,16 +213,16 @@ d.Flags & 256 AS DeleteAccess,
 d.Flags & 512 AS UploadAccess,
 d.Flags & 1024 AS DownloadAccess,
 e.Flags & 1 AS AdminGroup  
-FROM   {databaseName}.{objectQualifier}UserGroup AS b
-INNER JOIN {databaseName}.{objectQualifier}ForumAccess AS c
+FROM   {databaseSchema}.{objectQualifier}UserGroup AS b
+INNER JOIN {databaseSchema}.{objectQualifier}ForumAccess AS c
 ON c.GroupID = b.GroupID
-INNER JOIN {databaseName}.{objectQualifier}AccessMask AS d
+INNER JOIN {databaseSchema}.{objectQualifier}AccessMask AS d
 ON d.AccessMaskID = c.AccessMaskID
-INNER JOIN {databaseName}.{objectQualifier}Group e
+INNER JOIN {databaseSchema}.{objectQualifier}Group e
 ON e.GroupID=b.GroupID;
 -- GO
 
-CREATE VIEW {databaseName}.{objectQualifier}vaccess_null AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccess_null AS
 SELECT
 a.UserID,
 0 AS ForumID,
@@ -240,10 +240,10 @@ a.UserID,
 0 AS UploadAccess,
 0 AS DownloadAccess,
 0 AS AdminGroup 
-FROM {databaseName}.{objectQualifier}User AS a;
+FROM {databaseSchema}.{objectQualifier}User AS a;
 -- GO
 
-CREATE VIEW {databaseName}.{objectQualifier}vaccessfull
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccessfull
 AS
 select 
 			UserID,
@@ -268,7 +268,7 @@ select
 			DownloadAccess	,
 			AdminGroup		
 		from
-			{databaseName}.{objectQualifier}vaccess_user b
+			{databaseSchema}.{objectQualifier}vaccess_user b
 		
 		union all
 		
@@ -288,7 +288,7 @@ select
 			DownloadAccess	,
 			AdminGroup	
 		from
-			{databaseName}.{objectQualifier}vaccess_group b
+			{databaseSchema}.{objectQualifier}vaccess_group b
 
 		union all
 
@@ -308,25 +308,25 @@ select
 			DownloadAccess	,
 			AdminGroup	
 		from
-			{databaseName}.{objectQualifier}vaccess_null b
+			{databaseSchema}.{objectQualifier}vaccess_null b
 ) access
 	GROUP BY
 		UserID,ForumID;			
 -- GO
 */
 
-CREATE VIEW {databaseName}.{objectQualifier}vaccess AS
+CREATE VIEW {databaseSchema}.{objectQualifier}vaccess AS
 SELECT     a.UserID,
 x_1.ForumID,
 MAX(b.Flags & 1) AS IsAdmin,
 MAX(b.Flags & 2) AS IsGuest,
 MAX(b.Flags & 8) AS IsForumModerator,
 (SELECT     COUNT(1) AS Expr1
-FROM          {databaseName}.{objectQualifier}UserGroup AS v
-INNER JOIN    {databaseName}.{objectQualifier}Group AS w
+FROM          {databaseSchema}.{objectQualifier}UserGroup AS v
+INNER JOIN    {databaseSchema}.{objectQualifier}Group AS w
 ON v.GroupID = w.GroupID
-CROSS JOIN  {databaseName}.{objectQualifier}ForumAccess AS x
-CROSS JOIN  {databaseName}.{objectQualifier}AccessMask AS y
+CROSS JOIN  {databaseSchema}.{objectQualifier}ForumAccess AS x
+CROSS JOIN  {databaseSchema}.{objectQualifier}AccessMask AS y
 WHERE (v.UserID = a.UserID)
 AND (x.GroupID = w.GroupID)
 AND (y.AccessMaskID = x.AccessMaskID)
@@ -343,16 +343,16 @@ MAX(x_1.DeleteAccess) AS DeleteAccess,
 MAX(x_1.UploadAccess) AS UploadAccess,
 MAX(x_1.DownloadAccess) AS DownloadAccess,
 MAX(x_1.UserForumAccess) AS UserForumAccess
-FROM     {databaseName}.{objectQualifier}vaccessfull x_1
-INNER JOIN  {databaseName}.{objectQualifier}UserGroup AS a
+FROM     {databaseSchema}.{objectQualifier}vaccessfull x_1
+INNER JOIN  {databaseSchema}.{objectQualifier}UserGroup AS a
 ON a.UserID = x_1.UserID
-INNER JOIN {databaseName}.{objectQualifier}Group AS b
+INNER JOIN {databaseSchema}.{objectQualifier}Group AS b
 ON b.GroupID = a.GroupID
 GROUP BY a.UserID, x_1.ForumID;
 --GO  
 
 
- CREATE VIEW {databaseName}.{objectQualifier}MessageSelectView
+ CREATE VIEW {databaseSchema}.{objectQualifier}MessageSelectView
  AS
  SELECT
 a.MessageID,
@@ -374,10 +374,10 @@ IFNULL(SIGN(a.Flags & 8)>0,false) AS IsDeleted,
 IFNULL(SIGN(a.Flags & 16)>0,false) AS IsApproved,
 a.BlogPostID
  FROM
-	{databaseName}.{objectQualifier}Message a;
+	{databaseSchema}.{objectQualifier}Message a;
 --GO
 
- CREATE VIEW {databaseName}.{objectQualifier}TopicSelectView
+ CREATE VIEW {databaseSchema}.{objectQualifier}TopicSelectView
  AS
  SELECT
 a.TopicID,
@@ -399,11 +399,11 @@ IFNULL(a.Flags,0) AS Flags,
 IFNULL(SIGN(a.Flags & 8)>0,false) AS IsDeleted,
 IFNULL(SIGN(a.Flags & 1024)>0,false)  AS IsQuestion
  FROM
-	{databaseName}.{objectQualifier}Topic a;
+	{databaseSchema}.{objectQualifier}Topic a;
 --GO
 
 
- CREATE VIEW {databaseName}.{objectQualifier}UserSelectView
+ CREATE VIEW {databaseSchema}.{objectQualifier}UserSelectView
  AS
  SELECT
 a.UserID,
@@ -437,7 +437,7 @@ a.AutoWatchTopics,
 ((a.Flags & 2) = 2) AS IsApproved,
 ((a.Flags & 16) = 16) AS IsActiveExcluded
  FROM
-	{databaseName}.{objectQualifier}User a;
+	{databaseSchema}.{objectQualifier}User a;
 --GO
 
 

@@ -332,6 +332,10 @@
     <Resource tag="COPYRIGHT_REMOVAL_KEY">Copyright Removal Key:</Resource>
     <Resource tag="COPYRIGHT_REMOVAL_KEY_HELP">Remove the copyright information and link back to VZF from the footer of your entire forum domain. Available&lt;a href="http://yetanotherforum.net/purchase.aspx"&gt;from VZF.NET site&lt;/a&gt;. </Resource>
     <Resource tag="HEADER">Current Board Settings</Resource>
+    <Resource tag="PERSONALFORUMSASSUBFORUMS">Personal forums as subforums:</Resource>
+    <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
+    <Resource tag="PERSONALFORUMSINCATEGORIES">Personal forums in categories:</Resource>
+    <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
     <Resource tag="TITLE">Board Settings</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -497,7 +501,6 @@
     <Resource tag="LOCKED">Locked:</Resource>
     <Resource tag="LOCKED_HELP">If the forum is locked, no one can post or reply in this forum.</Resource>
     <Resource tag="MSG_CATEGORY">You must select a category for the forum.</Resource>
-    <Resource tag="MSG_CATEGORY">You must enter an number value from 0 to 32767 for sort order.</Resource>
     <Resource tag="MSG_CHILD_PARENT">The chosen forum cannot be child forum as it's a parent.</Resource>
     <Resource tag="MSG_DESCRIPTION">You must enter a description for the forum.</Resource>
     <Resource tag="MSG_FORUMNAME_EXISTS">A forum with such a name already exists.</Resource>
@@ -627,7 +630,6 @@
     <Resource tag="MSG_AMBIGOUS_USER">Ambiguous user name specified!</Resource>
     <Resource tag="MSG_IMAGE">Medal image must be specified!</Resource>
     <Resource tag="MSG_SMALL_IMAGE">Small medal image must be specified!</Resource>
-    <Resource tag="MSG_VALID_USER">Please specify valid user!</Resource>
     <Resource tag="MSG_VALID_USER">Please specify valid user!</Resource>
     <Resource tag="ONLY_RIBBON">Show Only Ribbon Bar:</Resource>
     <Resource tag="ONLY_RIBBON_HELP">If checked, only ribbon bar is displayed in user box.</Resource>
@@ -801,11 +803,8 @@
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>
     <Resource tag="CANCEL">Cancel</Resource>
-    <Resource tag="GRANTALL">Grant All</Resource>
     <Resource tag="GROUPNAME">Role</Resource>
     <Resource tag="HEADER">Event Log Roles</Resource>
-    <Resource tag="PAGE">Real Page</Resource>
-    <Resource tag="REVOKEALL">Revoke All</Resource>
     <Resource tag="SAVE">Save</Resource>
     <Resource tag="TITLE">Event Log Roles</Resource>
   </page>
@@ -869,8 +868,6 @@
     <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>
     <Resource tag="CREATEDDATE">Created on </Resource>
-    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
-    <Resource tag="DELETE_TITLE">Deleting Forum</Resource>
     <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
     <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
     <Resource tag="FORUM_CANCOPYFORUMONLY_MSG">You can copy forums only.</Resource>
@@ -1029,6 +1026,7 @@
     <Resource tag="CHECK_FOR_SPAM">Choose a SPAM Service for Automatically SPAM Checking:</Resource>
     <Resource tag="CHECK_FOR_SPAM_HELP">Enables/disables automatically SPAM Checking via the &lt;a href="http://blogspam.net/"&gt;BlogSpam.net API&lt;/a&gt; or Akismet.com. If enabled SPAM Post gets rejected if detected.</Resource>
     <Resource tag="CLEAR_CACHE">Clear Cache</Resource>
+    <Resource tag="COLLAPSED">Collapsed</Resource>
     <Resource tag="COUNTRYIMAGE_TEMPLATE">Country image template:</Resource>
     <Resource tag="COUNTRYIMAGE_TEMPLATE_HELP">Template for rendering country image.</Resource>
     <Resource tag="CREATE_NNTPNAMES">Create NNTP user names:</Resource>
@@ -1077,6 +1075,7 @@
     <Resource tag="EVENTLOG_MAX_DAYS_HELP">Max number of days for event log. Older ones will be deleted</Resource>
     <Resource tag="EVENTLOG_MAX_MESSAGES">Max event log message</Resource>
     <Resource tag="EVENTLOG_MAX_MESSAGES_HELP">Max number of event log messages. Outdated will be deleted.</Resource>
+    <Resource tag="EXPANDED">Expanded</Resource>
     <Resource tag="EXTERN_NEWWINDOW">External Search Results In A New Window:</Resource>
     <Resource tag="EXTERN_NEWWINDOW_HELP">Show External Search Results In A New Window.</Resource>
     <Resource tag="EXTERN_SEARCH_PERMISS">External Search Permissions:</Resource>
@@ -1228,8 +1227,6 @@
     <Resource tag="MODAL_LOGIN_HELP">If checked, the Login Control is displayed as Login Box. Otherwise Login Control will be Displayed on a Single Page.</Resource>
     <Resource tag="MOSTACTIVEUSER_DAYS">Days to the most active users:</Resource>
     <Resource tag="MOSTACTIVEUSER_DAYS_HELP">The number of days when the most active users statistics is gathered.</Resource>
-    <Resource tag="MOSTAVTIVEUSER_DAYS">Days to the most active users:</Resource>
-    <Resource tag="MOSTAVTIVEUSER_DAYS_HELP">The number of days when the most active users statistics is gathered.</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE">My Topics List Page Size:</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Number entries on a page on the My Topics page. </Resource>
     <Resource tag="NAME_LENGTH">User Name Max Length:</Resource>
@@ -1243,12 +1240,6 @@
     <Resource tag="NOTIFICATION_MOBILE_HELP">Option to Show Native Notifcation Dialogs on Mobile Devices.</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT">Online User Status Cache Timeout:</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT_HELP">You can fine-tune it depending on your site activity (in milliseconds)</Resource>
-    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
-    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
-    <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
-    <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
-    <Resource tag="PERSONALFORUMS_NUMBER">User Personal Forums(Blogs) number:</Resource>
-    <Resource tag="PERSONALFORUMS_NUMBER_HELP">Number of personal forums a user can create.</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE">Poll Image File size:</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE_HELP">Max. file size for poll images in KB.</Resource>
     <Resource tag="POLLVOTING_PERIP">Poll Votes Dependent on IP:</Resource>
@@ -1337,6 +1328,8 @@
     <Resource tag="SERVERTIME_CORRECT_HELP">Enter a positive or a negative value in minutes between -720 and 720, if the server UTC time value is incorrect: </Resource>
     <Resource tag="SHOUTBOX_COUNT">Shoutbox Message Count:</Resource>
     <Resource tag="SHOUTBOX_COUNT_HELP">The Number of Messages that will be shown in the shoutbox.</Resource>
+    <Resource tag="SHOUTBOX_DEFAULTSTATE">Shout Box Default State:</Resource>
+    <Resource tag="SHOUTBOX_DEFAULTSTATE_HELP">The Default State for the Shout Box if it should be collapsed or expanded (Note: the State is saved as cookie, if you change the value you need to delete the cookie to see the changes).</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION">Show Active Discussions:</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION_HELP">Enable or disable display of active discussions list on board index page.</Resource>
     <Resource tag="SHOW_ATOM_LINKS">Show Atom Links:</Resource>
@@ -1469,6 +1462,8 @@
     <Resource tag="VIEWMEMBERLIST_PERMISSION_HELP">Allow viewing of members list to:</Resource>
     <Resource tag="VIEWPROFILE_PERMISSION">Profile Viewing Permissions:</Resource>
     <Resource tag="VIEWPROFILE_PERMISSION_HELP">Allow viewing of other users' profiles to:</Resource>
+    <Resource tag="VIEWSHOUTBOX_PERMISSION">Shout Box View Permission:</Resource>
+    <Resource tag="VIEWSHOUTBOX_PERMISSION_HELP">View Permission for the Shout Box to allow for all Users (Including Guests) or only registered users.</Resource>
     <Resource tag="WSERVICE_TOKEN">Web Service Token:</Resource>
     <Resource tag="WSERVICE_TOKEN_HELP">Token used to make secure web service calls. Constantly changing until you save your host settings.</Resource>
   </page>
@@ -1857,7 +1852,6 @@
     <Resource tag="ASK_DELETE">Zmazať túto prílohu?</Resource>
     <Resource tag="DELETE">Zmazať</Resource>
     <Resource tag="DISALLOWED_EXTENSIONS">Disallowed File Types</Resource>
-    <Resource tag="ERROR_TOOBIG">Takto veľké súbory nie je možné priložiť.</Resource>
     <Resource tag="FILEERROR">'{0}' nie je platný súbor pre nahranie.</Resource>
     <Resource tag="FILENAME">Meno súboru</Resource>
     <Resource tag="SELECT_FILE">Zvolte súbor, ktorý chcete nahrať.</Resource>
@@ -2568,7 +2562,6 @@
     <Resource tag="ACTIVE_USERS_MEMBERS2">{0:N0} členov</Resource>
     <Resource tag="ACTIVE_USERS_TIME">for last {0:N0} minutes</Resource>
     <Resource tag="ALPHABET_FILTER">Alphabet filter</Resource>
-    <Resource tag="ALPHABET_FILTER_BY">Filter list by letter {0}.</Resource>
     <Resource tag="ATOMICONTOOLTIPACTIVE">Subscribe to active topics via Atom.</Resource>
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Subscribe to your favorite topics via Atom.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Subscribe to forum Atom feed.</Resource>
@@ -2649,7 +2642,6 @@
     <Resource tag="SUBJECT">Predmet:</Resource>
     <Resource tag="TITLE">Odoslať stránku priateľovi</Resource>
     <Resource tag="TO">Poslať na (e-mailová adresa):</Resource>
-    <Resource tag="VALID_EMAIL">The Email address you have entered is invalid.</Resource>
   </page>
   <page name="EVENTLOG_EVENTS">
     <Resource tag="ERROR">Error</Resource>
@@ -3890,26 +3882,6 @@ Spoiler Content
 &lt;p&gt;&lt;strong&gt;How to vote?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;To vote in a poll, simply click on the option you want to vote for.&lt;/p&gt;
 &lt;p&gt;Generally, once you have voted in a poll, you will not be able to change your vote later, so place your vote carefully!&lt;/p&gt;</Resource>
-    <Resource tag="POLLSCONTENT">&lt;p&gt;Polls are an Option to vote on an issue or a question.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Create a new poll?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;When you post a new Topic, you have the Option 'Add Poll?' to create a new poll. If you don't see that Option you don’t have access to that Option.&lt;/p&gt;
-&lt;p&gt;This allows you to ask a question and specify a number of possible responses (Max 10 or the Administrator has set up a higher number) - &lt;em&gt;you can choose Images as Responses&lt;/em&gt;. Other members will then be able to vote for the response they wish, and the results of the voting will be displayed in the thread.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;An example poll might be:&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;What is your favorite color?&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;Blue&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Red&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Yellow&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Green&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;You may also want to specify a time limit for the poll. For example: run the poll for 10 Days or you can also set it to never expire.&lt;/p&gt;
-&lt;p&gt;You can also decide if the user should be able to see the results without making a vote or if you enable the Check box 'You should vote in all polls to see results.&lt;em&gt;'&lt;/em&gt; you need to vote before seeing any results.&lt;/p&gt;
-&lt;p&gt;'Bound voting' Option doesn't show results if group is open for voting.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;How to vote?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;To vote in a poll, simply click on the option you want to vote for.&lt;/p&gt;
-&lt;p&gt;Generally, once you have voted in a poll, you will not be able to change your vote later, so place your vote carefully!&lt;/p&gt;
-</Resource>
-    <Resource tag="POLLSTITLE">Creating and Participating in Polls</Resource>
     <Resource tag="POLLSTITLE">Creating and Participating in Polls</Resource>
     <Resource tag="POPUPSCONTENT">&lt;p&gt;When you have logged in and load the Page you may receive an Pop Up Notification on the center of your Browser Window.&lt;/p&gt;
 &lt;p&gt;This will inform you about several actions...&lt;/p&gt;
@@ -4125,15 +4097,6 @@ Spoiler Content
     <Resource tag="TITLE_REGISTRATION">Ďakujeme</Resource>
     <Resource tag="TITLE_SUSPENDED">Pozastavené</Resource>
   </page>
-  <page name="IRKOO">
-    <Resource tag="MIN_VOTE_DOWN">Vote Down requires %min_rating% reputation</Resource>
-    <Resource tag="MIN_VOTE_UP">Vote Up requires %min_rating% reputation</Resource>
-    <Resource tag="NOT_AUTHORIZED">Please login to vote</Resource>
-    <Resource tag="SELF">You cannot vote for your message</Resource>
-    <Resource tag="USER_REPUTATION">Users Reputation</Resource>
-    <Resource tag="VOTE_DOWN">Vote Down</Resource>
-    <Resource tag="VOTE_UP">Vote Up</Resource>
-  </page>
   <page name="LANGUAGE">
     <Resource tag="CHARSET" />
   </page>
@@ -4337,13 +4300,16 @@ Spoiler Content
     <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
-    <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
-    <Resource tag="PERSONALGROUPS">My Groups</Resource>
-    <Resource tag="PERSONALMASKS">My Access Masks</Resource>
     <Resource tag="TITLE">Personal Forums</Resource>
   </page>
   <page name="PERSONALFORUM_EDIT">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="CATEGORYALLOWED">Select a category:</Resource>
+    <Resource tag="CATEGORYALLOWED_HELP">You can create it directly in the categories from the list.</Resource>
+    <Resource tag="FORUMALLOWED">Select a forum:</Resource>
+    <Resource tag="FORUMALLOWED_HELP">You can create it as subforum? just select a category and then a forum.</Resource>
+    <Resource tag="FORUMCATEGORYALLOWED">Select a category to filter forums:</Resource>
+    <Resource tag="NOTSELECTED">You didn't pick a place to create your personal forum in.</Resource>
     <Resource tag="SAVE">Save</Resource>
     <Resource tag="TITLE_CREATE">Create Personal Forum</Resource>
     <Resource tag="TITLE_EDIT">Edit Personal Forum</Resource>
@@ -4411,10 +4377,8 @@ Spoiler Content
   <page name="POLLEDIT">
     <Resource tag="ASK_POLL_DELETE">Do you really want to remove the poll?</Resource>
     <Resource tag="ASK_POLL_DELETE_ALL">Do you really want to remove the poll completely?</Resource>
-    <Resource tag="ASK_POLLGROUP_DELETE">Do you really want to remove the poll group?</Resource>
     <Resource tag="ASK_POLLGROUP_DETACH">Do you really want to detach the poll group?</Resource>
     <Resource tag="ASK_POLLROUP_DELETE_ALL">Do you really want to remove the poll group completely?</Resource>
-    <Resource tag="ASK_POLLROUP_DELETE_EVR">Do you really want to remove the poll group from every place?</Resource>
     <Resource tag="ASK_POLLROUP_DETACH_EVR">Do you really want to detach the poll group from every place?</Resource>
     <Resource tag="CHOICE">Choice {0}:</Resource>
     <Resource tag="CREATEPOLL">Create Poll</Resource>
@@ -4445,7 +4409,6 @@ Spoiler Content
     <Resource tag="POLLGROUP_ATTACHED">Can't attach the group. A group is already attached.</Resource>
     <Resource tag="POLLGROUP_BOUNDWARN">You should vote in all polls to see results.</Resource>
     <Resource tag="POLLGROUP_CLOSEDBOUND">Bound voting</Resource>
-    <Resource tag="POLLGROUP_CLOSEDBOUND">Don't show results if group is open</Resource>
     <Resource tag="POLLGROUP_CLOSEDBOUND_WARN">Don't show results if the poll didn't expire</Resource>
     <Resource tag="POLLGROUP_LIST">Choose an existing poll group:</Resource>
     <Resource tag="POLLGROUPISBOUND">Your vote will be counted when you'll vote in all the polls.</Resource>
@@ -4461,9 +4424,7 @@ Spoiler Content
     <Resource tag="POLLSAVE">Save Poll</Resource>
     <Resource tag="REMOVEPOLL">Remove Poll</Resource>
     <Resource tag="REMOVEPOLL_ALL">Remove Poll Completely</Resource>
-    <Resource tag="REMOVEPOLLGROUP">Remove Group</Resource>
     <Resource tag="REMOVEPOLLGROUP_ALL">Remove Group Completely</Resource>
-    <Resource tag="REMOVEPOLLGROUP_EVERYWHERE">Remove Group Everywhere</Resource>
   </page>
   <page name="POSTMESSAGE">
     <Resource tag="ANNOUNCEMENT">Oznámenie</Resource>
@@ -4514,7 +4475,6 @@ Spoiler Content
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Topic name single word length cannot be be more than {0} characters. Suggestion: use abbreviations to shorten.</Resource>
     <Resource tag="TOPICATTACH">Attach files to this post?</Resource>
     <Resource tag="TOPICIMAGEATTACH">Add image to the topic?</Resource>
-    <Resource tag="TOPICNAME_TOOLONG">Maximal tolic name length should not be more than {0} characters. Use abbreviations.</Resource>
     <Resource tag="TOPICWATCH">Watch this topic and receive notifications of activity via e-mail?</Resource>
     <Resource tag="WAIT">Nasledujúcich {0:N0} sekúnd nebudete môcť odoslať ďalšiu správu.</Resource>
   </page>
@@ -4631,7 +4591,7 @@ Spoiler Content
     <Resource tag="TOPICBROWSERS">Používatelia, ktorí si prezerajú túto tému</Resource>
     <Resource tag="TOTAL">Total</Resource>
     <Resource tag="TUMBLR_TOPIC">Share on Tumblr</Resource>
-    <Resource tag="Twitter">Twitter</Resource>
+    <Resource tag="TWITTER">Twitter</Resource>
     <Resource tag="TWITTER_TITLE">Visit {0}'s Twitter Profile</Resource>
     <Resource tag="UNWATCHTOPIC">Ukončiť sledovanie tejto témy</Resource>
     <Resource tag="USERGENDER_FEM">Woman</Resource>

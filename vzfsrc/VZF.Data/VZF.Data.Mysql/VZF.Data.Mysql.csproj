@@ -48,9 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
     <Compile Include="Db.cs" />
-    <Compile Include="PollSave.cs" />
     <Compile Include="Profile\DataTypeMappers.cs" />
     <Compile Include="Profile\MySqlProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

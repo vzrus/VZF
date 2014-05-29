@@ -3,60 +3,60 @@
 -- They are distributed under terms of GPLv2 only licence as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2006-2012
 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}bitset;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}bitset;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_posts;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_posts;
 --GO 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_topics;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_topics;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_posts1;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_posts1;
 --GO 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_posts2;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_posts2;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_posts3;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_posts3;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_topics1;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_topics1;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_topics2;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_topics2;
 --GO 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_topics3;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_topics3;
 --GO 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}medal_gethide;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}medal_gethide;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}medal_getsortorder;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}medal_getsortorder;
 --GO 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_lasttopic;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_lasttopic;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_subforums;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_subforums;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}medal_getribbonsetting;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}medal_getribbonsetting;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_lastposted;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_lastposted;
 --GO 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}get_userstyle;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}get_userstyle;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}message_getthanksinfo;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}message_getthanksinfo;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_save_dependency;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_save_dependency;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}forum_save_parentschecker;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_save_parentschecker;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}biginttobool;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}biginttobool;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}biginttoint;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}biginttoint;
 --GO
 -- vaccess functions drops 
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}vaccess_s_readaccess_combo;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}vaccess_s_isadmin;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_isadmin;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}vaccess_s_isforummoderator;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_isforummoderator;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}vaccess_s_ismoderator;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_ismoderator;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}vaccess_s_moderatoraccess;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_moderatoraccess;
 --GO
-DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}registry_value;
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}registry_value;
 --GO
 
 -- vaccess functions 
@@ -64,22 +64,22 @@ DROP FUNCTION IF EXISTS {databaseName}.{objectQualifier}registry_value;
 /* ReadAccess Block */
 /* ********************************************************************  */ 
 
-CREATE FUNCTION {databaseName}.{objectQualifier}vaccess_s_readaccess_combo (i_UserID INT, i_ForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo (i_UserID INT, i_ForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
 RETURN GREATEST(IFNULL((SELECT
 c.Flags & 1 AS ReadAccess                              
-FROM          {databaseName}.{objectQualifier}UserForum AS b
-INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
+FROM          {databaseSchema}.{objectQualifier}UserForum AS b
+INNER JOIN    {databaseSchema}.{objectQualifier}AccessMask AS c
 ON c.AccessMaskID = b.AccessMaskID  
 WHERE b.UserID=i_UserID AND b.ForumID=IFNULL(i_ForumID,0) LIMIT 1),0),
 IFNULL((SELECT
 d.Flags & 1 AS ReadAccess
-FROM   {databaseName}.{objectQualifier}UserGroup AS b
-INNER JOIN {databaseName}.{objectQualifier}ForumAccess AS c
+FROM   {databaseSchema}.{objectQualifier}UserGroup AS b
+INNER JOIN {databaseSchema}.{objectQualifier}ForumAccess AS c
 ON c.GroupID = b.GroupID
-INNER JOIN {databaseName}.{objectQualifier}AccessMask AS d
+INNER JOIN {databaseSchema}.{objectQualifier}AccessMask AS d
 ON d.AccessMaskID = c.AccessMaskID
 WHERE b.UserID=i_UserID AND c.ForumID=IFNULL(i_ForumID,0) LIMIT 1),0));
 END;
@@ -89,14 +89,14 @@ END;
 /* isadmin Chunk */
 /* ********************************************************************  */
  
-CREATE FUNCTION {databaseName}.{objectQualifier}vaccess_s_isadmin(i_UserID INT, i_ForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}vaccess_s_isadmin(i_UserID INT, i_ForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
  -- DECLARE out_IsAdmin INT DEFAULT 0;
 RETURN (SELECT MAX(b.Flags & 1)
-			FROM {databaseName}.{objectQualifier}UserGroup a             
-		   JOIN {databaseName}.{objectQualifier}Group b
+			FROM {databaseSchema}.{objectQualifier}UserGroup a             
+		   JOIN {databaseSchema}.{objectQualifier}Group b
 			 ON b.GroupID = a.GroupID
 			 WHERE a.UserID=i_UserID  LIMIT 1);
  
@@ -109,7 +109,7 @@ END;
 /* IsForumModerator Block */
 /* ********************************************************************  */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}vaccess_s_isforummoderator(i_UserID INT, i_ForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}vaccess_s_isforummoderator(i_UserID INT, i_ForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -117,8 +117,8 @@ BEGIN
 -- DECLARE out_IsForumModerator INT DEFAULT 0;
 RETURN (IFNULL((SELECT         
 	  MAX(b.Flags & 8)     
-	  FROM  {databaseName}.{objectQualifier}UserGroup a             
-		   JOIN {databaseName}.{objectQualifier}Group b
+	  FROM  {databaseSchema}.{objectQualifier}UserGroup a             
+		   JOIN {databaseSchema}.{objectQualifier}Group b
 			 ON b.GroupID = a.GroupID
 			 WHERE a.UserID=i_UserID),0));
  
@@ -130,16 +130,16 @@ END;
 /* IsModerator Block */
 /* ********************************************************************  */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}vaccess_s_ismoderator(i_UserID INT, i_ForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}vaccess_s_ismoderator(i_UserID INT, i_ForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
 -- DECLARE IsModerator INT DEFAULT 0;
 return 
 (IFNULL((select count(v.UserID) 
-from ((({databaseName}.{objectQualifier}UserGroup v join {databaseName}.{objectQualifier}Group `w`
-on((v.GroupID= w.GroupID))) join {databaseName}.{objectQualifier}ForumAccess c)
-join {databaseName}.{objectQualifier}accessmask `y`) where ((v.UserID = i_UserID)
+from ((({databaseSchema}.{objectQualifier}UserGroup v join {databaseSchema}.{objectQualifier}Group `w`
+on((v.GroupID= w.GroupID))) join {databaseSchema}.{objectQualifier}ForumAccess c)
+join {databaseSchema}.{objectQualifier}accessmask `y`) where ((v.UserID = i_UserID)
 and (c.GroupID = w.GroupID) and (y.AccessMaskID = c.AccessMaskID)
 and ((y.Flags & 64) <> 0))),0));
  -- RETURN IsModerator;
@@ -151,7 +151,7 @@ and ((y.Flags & 64) <> 0))),0));
 /* ModeratorAccess Block */
 /* ********************************************************************  */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}vaccess_s_moderatoraccess(i_UserID INT, i_ForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}vaccess_s_moderatoraccess(i_UserID INT, i_ForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -160,10 +160,10 @@ DECLARE ici_ModeratorAccess INT;
 DECLARE out_ModeratorAccess INT;  
 
 SELECT ModeratorAccess  
-INTO ici_ModeratorAccess FROM {databaseName}.{objectQualifier}vaccessfull1  WHERE UserID=i_UserID AND ForumID=IFNULL(i_ForumID,0)  LIMIT 1;
+INTO ici_ModeratorAccess FROM {databaseSchema}.{objectQualifier}vaccessfull1  WHERE UserID=i_UserID AND ForumID=IFNULL(i_ForumID,0)  LIMIT 1;
 
 SELECT ModeratorAccess  
-INTO out_ModeratorAccess FROM {databaseName}.{objectQualifier}vaccessfull2  WHERE UserID=i_UserID AND ForumID=IFNULL(i_ForumID,0) LIMIT 1;
+INTO out_ModeratorAccess FROM {databaseSchema}.{objectQualifier}vaccessfull2  WHERE UserID=i_UserID AND ForumID=IFNULL(i_ForumID,0) LIMIT 1;
 
 IF (ici_ModeratorAccess IS NOT NULL) THEN
 SET out_ModeratorAccess=GREATEST(ici_ModeratorAccess,out_ModeratorAccess);
@@ -178,7 +178,7 @@ END;
 
  -- bitset FUNCTION CREATED BY VZ_TEAM
 
-CREATE FUNCTION {databaseName}.{objectQualifier}bitset(iFlags INT, iMask INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}bitset(iFlags INT, iMask INT)
 RETURNS TINYINT(1)
 NO SQL
 BEGIN
@@ -196,7 +196,7 @@ END ;
 /* forum_posts recursion emulation chain */
 /****************************************/
 
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_posts(iForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_posts(iForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -206,15 +206,15 @@ DECLARE itmpp INT;
 
 DECLARE ctpcr20 CURSOR  FOR
 SELECT b.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum b
+FROM   {databaseSchema}.{objectQualifier}Forum b
 WHERE  b.`ParentID` = iForumID;
 
 SELECT NumPosts INTO oNumPosts
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 IF EXISTS(SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 
 OPEN ctpcr20;
@@ -222,7 +222,7 @@ BEGIN
 DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
 LOOP
 FETCH ctpcr20 INTO itmpp;
-SET oNumPosts = oNumPosts+ {databaseName}.{objectQualifier}forum_posts1(itmpp);
+SET oNumPosts = oNumPosts+ {databaseSchema}.{objectQualifier}forum_posts1(itmpp);
 END LOOP;
 END;
 
@@ -235,7 +235,7 @@ END ;
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
  
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_posts1(iForumID  INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_posts1(iForumID  INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -244,17 +244,17 @@ DECLARE  itmpp1 INT;
 
 DECLARE ctpcr21 CURSOR  FOR
 SELECT b.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum b
+FROM   {databaseSchema}.{objectQualifier}Forum b
 WHERE  b.`ParentID` = iForumID;
 
 
 
 SELECT NumPosts INTO oNumPosts1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 
-IF EXISTS(SELECT 1 FROM   {databaseName}.{objectQualifier}Forum
+IF EXISTS(SELECT 1 FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 OPEN ctpcr21;
 
@@ -262,7 +262,7 @@ BEGIN
 DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
 LOOP
 FETCH ctpcr21 INTO itmpp1;
-SET oNumPosts1 = oNumPosts1+ {databaseName}.{objectQualifier}forum_posts2(itmpp1);
+SET oNumPosts1 = oNumPosts1+ {databaseSchema}.{objectQualifier}forum_posts2(itmpp1);
 END LOOP;
 END;
 CLOSE ctpcr21;
@@ -274,7 +274,7 @@ END;
 
 /* forum_posts2 FUNCTION CREATED BY VZ_TEAM */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_posts2(iForumID  INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_posts2(iForumID  INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -283,15 +283,15 @@ DECLARE itmpp2 INT;
 
 DECLARE ctpcr2p CURSOR  FOR
 SELECT b.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum b
+FROM   {databaseSchema}.{objectQualifier}Forum b
 WHERE  b.`ParentID` = iForumID;
 
 SELECT NumPosts INTO oNumPosts2
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 IF EXISTS (SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID)   THEN
 OPEN ctpcr2p;
 
@@ -299,7 +299,7 @@ BEGIN
 DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
 LOOP
 FETCH ctpcr2p INTO itmpp2;
-SET oNumPosts2 = oNumPosts2+ {databaseName}.{objectQualifier}forum_posts3(itmpp2);
+SET oNumPosts2 = oNumPosts2+ {databaseSchema}.{objectQualifier}forum_posts3(itmpp2);
 END LOOP;
 END;
 CLOSE ctpcr2p;
@@ -311,7 +311,7 @@ END ;
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
  
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_posts3(iForumID  INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_posts3(iForumID  INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -321,19 +321,19 @@ DECLARE  itmpp3 INT;
 
 DECLARE ctpcr3p CURSOR  FOR
 SELECT b.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum b
+FROM   {databaseSchema}.{objectQualifier}Forum b
 WHERE  b.`ParentID` = iForumID;
 
 
 
 SELECT NumPosts INTO oNumPosts3
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 
 
 IF EXISTS (SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 OPEN ctpcr3p;
 
@@ -357,7 +357,7 @@ END ;
 
 /* forum_topics FUNCTION CREATED BY VZ_TEAM */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_topics(iForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_topics(iForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -368,15 +368,15 @@ DECLARE  itmpt INT;
 
 DECLARE ctpcr  CURSOR  FOR
 SELECT a.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum a
+FROM   {databaseSchema}.{objectQualifier}Forum a
 WHERE  a.`ParentID` = iForumID;
 
 SELECT NumTopics INTO oNumTopics
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 IF EXISTS(SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 OPEN ctpcr ;
 
@@ -386,7 +386,7 @@ DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
 LOOP
 FETCH ctpcr INTO itmpt;
 
-SET oNumTopics = oNumTopics+ {databaseName}.{objectQualifier}forum_topics1(itmpt);
+SET oNumTopics = oNumTopics+ {databaseSchema}.{objectQualifier}forum_topics1(itmpt);
 END LOOP;
 END;
 
@@ -400,7 +400,7 @@ END;
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
  
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_topics1(iForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_topics1(iForumID INT)
 RETURNS int(11)
 READS SQL DATA
 BEGIN
@@ -409,15 +409,15 @@ DECLARE  itmpt1 INT;
 
 DECLARE ctpcr1t  CURSOR  FOR
 SELECT a.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum a
+FROM   {databaseSchema}.{objectQualifier}Forum a
 WHERE  a.`ParentID` = iForumID;
 
 SELECT NumTopics INTO oNumTopics1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 IF EXISTS (SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 OPEN ctpcr1t ;
 
@@ -425,7 +425,7 @@ BEGIN
 DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
 LOOP
 FETCH ctpcr1t INTO itmpt1;
-SET oNumTopics1 = oNumTopics1+{databaseName}.{objectQualifier}forum_topics2(itmpt1);
+SET oNumTopics1 = oNumTopics1+{databaseSchema}.{objectQualifier}forum_topics2(itmpt1);
 END LOOP;
 END;
 CLOSE ctpcr1t ;
@@ -437,7 +437,7 @@ END ;
 
 /* forum_topics2 FUNCTION CREATED BY VZ_TEAM */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_topics2(iForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_topics2(iForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -448,15 +448,15 @@ DECLARE itmpt2 INT DEFAULT 0;
 
 DECLARE ctpcr2t  CURSOR  FOR
 SELECT a.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum a
+FROM   {databaseSchema}.{objectQualifier}Forum a
 WHERE  a.`ParentID` = iForumID;
 
 SELECT NumTopics INTO oNumTopics2
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 IF EXISTS(SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 OPEN ctpcr2t ;
 
@@ -464,7 +464,7 @@ BEGIN
 DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
 LOOP
 FETCH ctpcr2t INTO itmpt2;
-SET oNumTopics2 = oNumTopics2+ {databaseName}.{objectQualifier}forum_topics3(itmpt2);
+SET oNumTopics2 = oNumTopics2+ {databaseSchema}.{objectQualifier}forum_topics3(itmpt2);
 END LOOP;
 END;
 
@@ -476,7 +476,7 @@ END;
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
 
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_topics3(iForumID INT)
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_topics3(iForumID INT)
 RETURNS INT
 READS SQL DATA
 BEGIN
@@ -487,15 +487,15 @@ DECLARE itmpt3 INT;
 
 DECLARE ctpcr3t  CURSOR  FOR
 SELECT a.`ForumID`
-FROM   {databaseName}.{objectQualifier}Forum a
+FROM   {databaseSchema}.{objectQualifier}Forum a
 WHERE  a.`ParentID` = iForumID;
 
 SELECT NumTopics INTO oNumTopics3
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ForumID = iForumID;
 
 IF EXISTS(SELECT 1
-FROM   {databaseName}.{objectQualifier}Forum
+FROM   {databaseSchema}.{objectQualifier}Forum
 WHERE  ParentID = iForumID) THEN
 OPEN ctpcr3t ;
 
@@ -517,7 +517,7 @@ END;
 /* medal_gethide FUNCTION CREATED BY VZ_TEAM */
 
  
-CREATE FUNCTION {databaseName}.{objectQualifier}medal_gethide
+CREATE FUNCTION {databaseSchema}.{objectQualifier}medal_gethide
 (
 i_Hide TINYINT(1),
 i_Flags int
@@ -533,7 +533,7 @@ END;
 
 /* medal_getsortorder FUNCTION CREATED BY VZ_TEAM */
 
-CREATE FUNCTION {databaseName}.{objectQualifier}medal_getsortorder
+CREATE FUNCTION {databaseSchema}.{objectQualifier}medal_getsortorder
 (
 i_SortOrder TINYINT,
 i_DefaultSortOrder TiNYINT,
@@ -550,7 +550,7 @@ END;
 
  /*FUNCTION CREATED BY VZ_TEAM */ 
 
- CREATE FUNCTION {databaseName}.{objectQualifier}forum_lasttopic 
+ CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_lasttopic 
  
  (	
 	i_ForumID INT,
@@ -571,13 +571,13 @@ READS SQL DATA
 				a.LastTopicID,
 				a.LastPosted
 			FROM
-				{databaseName}.{objectQualifier}Forum a
+				{databaseSchema}.{objectQualifier}Forum a
 			WHERE
 				a.ParentID=i_ForumID  AND
 				(
 					(i_UserID IS NULL AND (a.Flags & 2)=0) OR 
 					(((a.Flags & 2)=0 
-					OR {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+					OR {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
 				);
 	  
  
@@ -588,17 +588,17 @@ READS SQL DATA
 			a.LastPosted
 				INTO  i_LastTopicID,i_LastPosted
 		FROM
-			{databaseName}.{objectQualifier}Forum a
+			{databaseSchema}.{objectQualifier}Forum a
 		WHERE
 			a.ForumID=i_ForumID and
 			(
 				(i_UserID is null and (a.Flags & 2)=0) or 
-				(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+				(((a.Flags & 2)=0 or {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
 			);
 	END IF;
  
 	/*look for newer topic/message in subforums*/
-	IF EXISTS(select 1 from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID) THEN 		
+	IF EXISTS(select 1 from {databaseSchema}.{objectQualifier}Forum where ParentID=i_ForumID) THEN 		
 		
 	
 	 open cltt;
@@ -611,10 +611,10 @@ READS SQL DATA
 
 		-- get last topic/message info for subforum
 			SELECT 
-			{databaseName}.{objectQualifier}forum_lastposted(ici_SubforumID,i_UserID,ici_TopicID,ici_Posted) 				
+			{databaseSchema}.{objectQualifier}forum_lastposted(ici_SubforumID,i_UserID,ici_TopicID,ici_Posted) 				
 						INTO ici_TopicID; 
 									
-			SELECT LastPosted INTO ici_Posted FROM {databaseName}.{objectQualifier}Topic WHERE TopicID=ici_TopicID;
+			SELECT LastPosted INTO ici_Posted FROM {databaseSchema}.{objectQualifier}Topic WHERE TopicID=ici_TopicID;
 			
 					-- if subforum has newer topic/message, make it last for parent forum
 			IF i_LastPosted is not null AND ici_Posted is not null THEN
@@ -644,7 +644,7 @@ READS SQL DATA
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
  
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_subforums(i_ForumID int, i_UserID int) 
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_subforums(i_ForumID int, i_UserID int) 
 RETURNS INT
  READS SQL DATA
  BEGIN
@@ -654,9 +654,9 @@ RETURNS INT
 		CAST(COUNT(1) AS UNSIGNED)
 		INTO l_NumSubforums	
 	FROM 
-		{databaseName}.{objectQualifier}Forum a
+		{databaseSchema}.{objectQualifier}Forum a
 	WHERE 
-		((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0) AND
+		((a.Flags & 2)=0 or {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0) AND
 		(a.ParentID=i_ForumID);
  
 	RETURN l_NumSubforums;
@@ -665,7 +665,7 @@ RETURNS INT
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
 
- CREATE FUNCTION {databaseName}.{objectQualifier}medal_getribbonsetting
+ CREATE FUNCTION {databaseSchema}.{objectQualifier}medal_getribbonsetting
  (
 	i_RibbonURL VARCHAR(250),
 	i_Flags INT,
@@ -684,7 +684,7 @@ RETURNS INT
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
 
-CREATE FUNCTION {databaseName}.{objectQualifier}forum_lastposted 
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_lastposted 
  
  (	
 	i_ForumID INT,
@@ -705,12 +705,12 @@ READS SQL DATA
 				a.LastTopicID,
 				a.LastPosted
 			FROM
-				{databaseName}.{objectQualifier}Forum a
+				{databaseSchema}.{objectQualifier}Forum a
 			WHERE
 				a.ParentID=i_ForumID and
 				(
 					(i_UserID is null and (a.Flags & 2)=0) or 
-					(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+					(((a.Flags & 2)=0 or {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
 				);
 	   
 
@@ -722,17 +722,17 @@ READS SQL DATA
 			a.LastPosted
 				INTO i_LastTopicID,i_LastPosted  
 		FROM
-			{databaseName}.{objectQualifier}Forum a
+			{databaseSchema}.{objectQualifier}Forum a
 		WHERE
 			a.ForumID=i_ForumID and
 			(
 				(i_UserID is null and (a.Flags & 2)=0) or 
-				(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+				(((a.Flags & 2)=0 or {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
 			);
 	END IF;
  
 	/*look for newer topic/message in subforums*/
-	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
+	IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
  
 	THEN		
 		OPEN ctt;
@@ -744,11 +744,11 @@ READS SQL DATA
 
    /* get last topic/message info for subforum */
 		
-	--	SELECT {databaseName}.{objectQualifier}forum_lasttopic(ici_SubforumID, i_UserID, ici_TopicID, ici_Posted)
+	--	SELECT {databaseSchema}.{objectQualifier}forum_lasttopic(ici_SubforumID, i_UserID, ici_TopicID, ici_Posted)
 	--	INTO ici_TopicID;
 		
 		SELECT LastPosted INTO ici_Posted
-		FROM {databaseName}.{objectQualifier}Forum  		
+		FROM {databaseSchema}.{objectQualifier}Forum  		
 		WHERE ForumID = ici_SubforumID LIMIT 1;
 	
 			/* if subforum has newer topic/message, make it last for parent forum */
@@ -770,7 +770,7 @@ END;
 /* FUNCTION CREATED BY VZ_TEAM */ 
 
  
-  CREATE FUNCTION {databaseName}.{objectQualifier}get_userstyle
+  CREATE FUNCTION {databaseSchema}.{objectQualifier}get_userstyle
  (
 	i_UserID INT
  )
@@ -779,15 +779,15 @@ END;
  BEGIN
  
  declare ici_style varchar(255);
-	SET ici_style = ( SELECT c.Style FROM {databaseName}.{objectQualifier}User a 
-						JOIN {databaseName}.{objectQualifier}UserGroup b
+	SET ici_style = ( SELECT c.Style FROM {databaseSchema}.{objectQualifier}User a 
+						JOIN {databaseSchema}.{objectQualifier}UserGroup b
 						  ON a.UserID = b.UserID
-							JOIN {databaseName}.{objectQualifier}Group c                         
+							JOIN {databaseSchema}.{objectQualifier}Group c                         
 							  ON b.GroupID = c.GroupID 
 							  WHERE a.UserID = i_UserID AND LENGTH(c.Style) > 2 ORDER BY c.SortOrder ASC LIMIT 1);
 	   if ( ici_style is null or LENGTH(ici_style) < 3 ) THEN                  
-							  set ici_style = (SELECT c.Style FROM {databaseName}.{objectQualifier}Rank c 
-								JOIN {databaseName}.{objectQualifier}User d
+							  set ici_style = (SELECT c.Style FROM {databaseSchema}.{objectQualifier}Rank c 
+								JOIN {databaseSchema}.{objectQualifier}User d
 								  ON c.RankID = d.RankID AND LENGTH(c.Style) > 2 WHERE d.UserID = i_UserID LIMIT 1);
 				 END IF;
 	  RETURN ici_style;
@@ -796,7 +796,7 @@ END;
 --GO
 /* FUNCTION CREATED BY VZ_TEAM */ 
 
-  CREATE FUNCTION {databaseName}.{objectQualifier}message_getthanksinfo
+  CREATE FUNCTION {databaseSchema}.{objectQualifier}message_getthanksinfo
  (
 	i_MessageID INT,
 	i_ShowThanksDate TINYINT(1)
@@ -812,7 +812,7 @@ END;
    SELECT
 			CONVERT(i.ThanksFromUserID,char(11)), 
 	CASE i_ShowThanksDate WHEN 1 THEN (CONCAT(',' , (CONVERT(i.ThanksDate,char(40)))))  ELSE '' end
-			FROM	{databaseName}.{objectQualifier}Thanks i
+			FROM	{databaseSchema}.{objectQualifier}Thanks i
 			WHERE	i.MessageID = i_MessageID  ORDER BY i.ThanksDate;
 	
 	OPEN cth;		
@@ -832,7 +832,7 @@ END;
 /* FUNCTION CREATED BY VZ_TEAM */ 
 
 
-  CREATE FUNCTION {databaseName}.{objectQualifier}forum_save_parentschecker
+  CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_save_parentschecker
  (
 	i_ForumID INT,
 	i_ParentID INT
@@ -846,10 +846,10 @@ END;
 		declare i_frmtmp int;
 	declare i_prntmp int;
 	DECLARE ctt CURSOR FOR
-			select ForumID,ParentID from {databaseName}.{objectQualifier}Forum
+			select ForumID,ParentID from {databaseSchema}.{objectQualifier}Forum
 		where ParentID = i_ForumID;
 
-	select ForumID into i_dependency from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID AND ForumID = i_ParentID;
+	select ForumID into i_dependency from {databaseSchema}.{objectQualifier}Forum where ParentID=i_ForumID AND ForumID = i_ParentID;
 	if i_dependency > 0
 	then
 	return i_ParentID;
@@ -858,7 +858,7 @@ END;
 	-- simply disable it
 	return i_dependency;
 
-	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
+	IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
 	THEN		
 		OPEN ctt;
 	BEGIN	
@@ -868,7 +868,7 @@ END;
 	FETCH ctt INTO i_frmtmp, i_prntmp;
 		if i_frmtmp > 0 AND i_frmtmp IS NOT NULL then
 		   -- recursion doesn't work for mysql - use cascades             
-			-- set i_haschildren = {databaseName}.{objectQualifier}forum_save_parentschecker(i_frmtmp,i_ParentID);            
+			-- set i_haschildren = {databaseSchema}.{objectQualifier}forum_save_parentschecker(i_frmtmp,i_ParentID);            
 			if  i_prntmp = i_ParentID then
 			set i_dependency = i_ParentID;               
 			ELSEIF i_haschildren > 0  then
@@ -884,7 +884,7 @@ END;
 --GO
 
 
-  CREATE FUNCTION {databaseName}.{objectQualifier}biginttobool
+  CREATE FUNCTION {databaseSchema}.{objectQualifier}biginttobool
  (
 	toconv BIGINT
  )
@@ -896,7 +896,7 @@ END;
   --GO
 
 
-	CREATE FUNCTION {databaseName}.{objectQualifier}biginttoint
+	CREATE FUNCTION {databaseSchema}.{objectQualifier}biginttoint
  (
 	toconv BIGINT
  )
@@ -907,7 +907,7 @@ END;
  END;
   --GO
 
-CREATE FUNCTION {databaseName}.{objectQualifier}registry_value (
+CREATE FUNCTION {databaseSchema}.{objectQualifier}registry_value (
 	i_Name VARCHAR(64)
 	,i_BoardID INT
 	)
@@ -916,17 +916,17 @@ READS SQL DATA
 BEGIN
 	DECLARE ici_returnValue LONGTEXT;
 
-	IF i_BoardID IS NOT NULL AND EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}registry WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID) THEN
+	IF i_BoardID IS NOT NULL AND EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}registry WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID) THEN
   
 		SET ici_returnValue = (
 			SELECT `Value`
-			FROM {databaseName}.{objectQualifier}Registry
+			FROM {databaseSchema}.{objectQualifier}Registry
 			WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID);
   
 	ELSE  
 		SET ici_returnValue = (
 			SELECT `Value`
-			FROM {databaseName}.{objectQualifier}Registry
+			FROM {databaseSchema}.{objectQualifier}Registry
 			WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID IS NULL);
 	END IF;
 

@@ -751,9 +751,9 @@ namespace VZF.Data.DAL
             IDbConnection conn = this.GetConnection();
             var dt = new DataTable();
             try
-            {
+            { 
                 using (var cmd = conn.CreateCommand())
-                {
+                {   
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandType = commandType;
                     cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
@@ -762,7 +762,7 @@ namespace VZF.Data.DAL
                     {
                         cmd.Parameters.Add(parameter);
                     }
-
+                   
                     var qc = new QueryCounter(cmd.CommandText);
                     try
                     {
@@ -797,7 +797,7 @@ namespace VZF.Data.DAL
                                 transaction.Commit();
 
                                 dt.AcceptChanges();
-
+                               
                                 return dt;
                             }
                         }
@@ -827,7 +827,7 @@ namespace VZF.Data.DAL
                             reader.Close();
 
                             dt.AcceptChanges();
-
+                           
                             return dt;
                         }
                     }

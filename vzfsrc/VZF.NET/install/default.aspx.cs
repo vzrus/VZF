@@ -1316,7 +1316,7 @@ namespace YAF.Install
                 {
                     this.Culture.Items.FindByValue("en-US").Selected = true;
                 }
-
+                 
                 // this.DBUsernamePasswordHolder.Visible = CommonDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
                 this.PropertiesList.DataSource =
                     CommonDb.ConnectionParameters(this.Session["InstallModuleID"].ToType<int?>());
@@ -1401,14 +1401,10 @@ namespace YAF.Install
         private bool UpgradeDatabase(bool fullText)
         {
             {
-               
-
                 foreach (string script in CommonDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>()))
                 {
                     this.ExecuteScript(script, true);
-                }
-
-               
+                }              
 
                 int prevVersion = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 

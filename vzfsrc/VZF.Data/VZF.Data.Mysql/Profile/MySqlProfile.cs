@@ -110,12 +110,15 @@
         /// <summary>
         /// The profile exists.
         /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string ProfileExists()
+        /// <value>
+        ///   The <see cref="string"/>.
+        /// </value>
+        public static string ProfileExists
         {
-            return @"SELECT 1 FROM {0}  WHERE UserId = @i_UserID AND ApplicationName = @i_ApplicationName LIMIT 1";
+            get
+            {
+                return @"SELECT 1 FROM {0}  WHERE UserId = @i_UserID AND ApplicationName = @i_ApplicationName LIMIT 1";
+            }
         }
 
         #endregion  

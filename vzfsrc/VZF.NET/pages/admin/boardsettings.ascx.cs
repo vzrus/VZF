@@ -191,6 +191,8 @@ namespace YAF.Pages.Admin
             this.DefaultSendDigestEmail.Checked = this.Get<YafBoardSettings>().DefaultSendDigestEmail;
             this.JqueryUIThemeCDNHosted.Checked = this.Get<YafBoardSettings>().JqueryUIThemeCDNHosted;
             this.ForumEmail.Text = this.Get<YafBoardSettings>().ForumEmail;
+            this.PersonalForumsInCategories.Checked = this.Get<YafBoardSettings>().AllowPersonalForumsInCategories;
+            this.PersonalForumsAsSubForums.Checked = this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums;
 
             this.CopyrightRemovalKey.Text = this.Get<YafBoardSettings>().CopyrightRemovalDomainKey;
 

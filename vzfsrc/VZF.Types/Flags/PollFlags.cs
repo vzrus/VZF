@@ -1,28 +1,9 @@
-/* Yet Another Forum.NET
- * Copyright (C) 2003-2005 Bjørnar Henden
- * Copyright (C) 2006-2012 Jaben Cargman
- * http://www.yetanotherforum.net/
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
 namespace YAF.Types.Flags
 {
   using System;
 
     /// <summary>
-    /// The poll flags.
+    /// The poll question flags.
     /// </summary>
     [Serializable]
     public class PollFlags : FlagsBase
@@ -127,45 +108,41 @@ namespace YAF.Types.Flags
             None = 0,
 
             /// <summary>
-            /// The is admin.
-            /// </summary>
-            // = 1, 
-
-            /// <summary>
-            /// The is guest.
-            /// </summary>
-            // = 2, 
-
-            /// <summary>
-            /// The is start.
+            /// The is closed bound.
             /// </summary>
             IsClosedBound = 4,
-
 
             /// <summary>
             /// The allow multiple choices.
             /// </summary>
-            AllowMultipleChoices = 8
+            AllowMultipleChoices = 8,
+
+            /// <summary>
+            /// The show voters.
+            /// </summary>
+            ShowVoters =16,
+
+            /// <summary>
+            /// The allow skip vote.
+            /// </summary>
+            AllowSkipVote =32
 
             /* for future use
-          xxxxx = 1,
-          xxxxx = 2,        
-		  xxxxx = 16,
-			xxxxx = 32,
+            xxxxx = 1,
+            xxxxx = 2,	
 			xxxxx = 64,
 			xxxxx = 128,
 			xxxxx = 256,
 			xxxxx = 512
-			 */
+			*/
         }
 
         #endregion
 
         #region Single Flags (can be 32 of them)
 
-
         /// <summary>
-        /// Gets or sets whether the poll is closed bound.
+        /// Gets or sets a value indicating whether is closed bound.
         /// </summary>
         public bool IsClosedBound
         {
@@ -178,6 +155,57 @@ namespace YAF.Types.Flags
             set
             {
                 this[0] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow multiple choices.
+        /// </summary>
+        public bool AllowMultipleChoices
+        {
+            // int value 8
+            get
+            {
+                return this[1];
+            }
+
+            set
+            {
+                this[1] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether show voters.
+        /// </summary>
+        public bool ShowVoters
+        {
+            // int value 16
+            get
+            {
+                return this[3];
+            }
+
+            set
+            {
+                this[3] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow skip vote.
+        /// </summary>
+        public bool AllowSkipVote
+        {
+            // int value 32
+            get
+            {
+                return this[3];
+            }
+
+            set
+            {
+                this[3] = value;
             }
         }
 

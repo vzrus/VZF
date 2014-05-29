@@ -22,8 +22,7 @@ namespace YAF.Core.Nntp
   #region Using
 
   using System;
-  using System.Data;
-  using System.Data.SqlClient;
+ 
   using System.Linq;
   using System.Web;
 
@@ -271,10 +270,6 @@ namespace YAF.Core.Nntp
                 {
                   this.Logger.Error(exception, "YafNntp");
                 }
-              }
-              catch (SqlException exception)
-              {
-                this.Logger.Error(exception, "YafNntp DB Failure");
               }
             }
 

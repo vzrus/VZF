@@ -10,6 +10,7 @@
 namespace VZF.Data.DAL
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Common;
     using VZF.Utils;
     using YAF.Classes;
@@ -40,6 +41,8 @@ namespace VZF.Data.DAL
         /// The _grantee name.
         /// </summary>
         private static string _granteeName;
+
+        private static Dictionary<string, string> objectNameDictionary;
 
         /// <summary>
         /// The _host name.
@@ -128,6 +131,7 @@ namespace VZF.Data.DAL
         /// </exception>
         public static string GetVzfObjectName(string objectName, string providerName)
         {
+            
             switch (providerName)
             {
                 case "System.Data.SqlClient":
@@ -159,6 +163,7 @@ namespace VZF.Data.DAL
             var providerName =
                 SqlDbAccess.GetProviderName(connectionStringName);
             return GetVzfObjectName(objectName, providerName);
+            return new SQLCommand(connectionStringName, providerName).DataSource.WrapObjectName(objectName);
         }
 
        /* public static void AddWithValue(this DbCommand command, string parameterName, object parameterValue)

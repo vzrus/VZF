@@ -33,12 +33,15 @@ namespace VZF.Data.DAL
     using System.Globalization;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading;
+
+    using YAF.Classes;
 
     /// <summary>
     /// The data source.
     /// </summary>
-    public class DataSource
+    public class DataSource 
     {
         /// <summary>
         /// The _random.
@@ -228,14 +231,14 @@ namespace VZF.Data.DAL
             {
                 if (this._compositeIdentifierSeparatorPattern == ' ')
                 {
-                    var seperator = '.';
+                    var separator = '.';
                     var s = this._information.CompositeIdentifierSeparatorPattern;
                     if (!string.IsNullOrEmpty(s))
                     {
-                        seperator = s.Replace("\\", string.Empty)[0];
+                        separator = s.Replace("\\", string.Empty)[0];
                     }
 
-                    this._compositeIdentifierSeparatorPattern = seperator;
+                    this._compositeIdentifierSeparatorPattern = separator;
                 }
 
                 return this._compositeIdentifierSeparatorPattern;
@@ -374,6 +377,12 @@ namespace VZF.Data.DAL
             {
                 return objectName;
             }
+
+            objectName = string.Concat(Config.DatabaseObjectQualifier, objectName);
+            
+            // Firebird provider returns dot as a fake separator, composite object names  are not suppported at all.
+            objectName = !this._information.DataSourceProductName.ToLowerInvariant().Equals("firebird") ? 
+                string.Concat(Config.DatabaseSchemaName, this.JoinSeparator, objectName) : objectName.ToUpperInvariant();
 
             var quoteSuffix = this.QuoteSuffix;
             var quotePrefix = this.QuotePrefix;
@@ -546,10 +555,19 @@ namespace VZF.Data.DAL
 
                 // get data source information
                 this._information = new DataSourceInformation(
-                    conn.GetSchema(DbMetaDataCollectionNames.DataSourceInformation));
+                    conn.GetSchema(DbMetaDataCollectionNames.DataSourceInformation));              
             }
         }
 
+        /// <summary>
+        /// The initialize.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="providerName">
+        /// The provider name.
+        /// </param>
         private void Initialize(string connectionString, string providerName)
         {
             this.Initialize("Direct connection without connection name", connectionString, providerName);

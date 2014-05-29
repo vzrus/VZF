@@ -42,15 +42,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
     <Compile Include="Fts\Search.cs" />
     <Compile Include="Db.cs" />
-    <Compile Include="PollSave.cs" />
     <Compile Include="Profile\DataTypeMappers.cs" />
     <Compile Include="Profile\PgProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,29 +3,29 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_check_prov_tables()
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_prov_tables()
 				  RETURNS void AS
 $BODY$
 BEGIN
 
 IF NOT EXISTS (select 1 from pg_tables 
-			   where schemaname='databaseSchema' 
-				 AND tablename='objectQualifier_prov_application') THEN
-CREATE TABLE databaseSchema.objectQualifier_prov_application
+			   where schemaname='{databaseSchema}' 
+				 AND tablename='{objectQualifier}prov_application') THEN
+CREATE TABLE {databaseSchema}.{objectQualifier}prov_application
 			 (
 			 applicationid             uuid NOT NULL,
 			 applicationname           varchar(256),
 			 applicationnamelwd        varchar(256),
 			 description               text
 			 )
-	   WITH (OIDS=withOIDs);
+	   WITH (OIDS={withOIDs});
 END IF;
 
 
 IF NOT EXISTS (select 1 from pg_tables 
-			   where schemaname='databaseSchema' 
-			   AND tablename='objectQualifier_prov_membership') THEN
-CREATE TABLE databaseSchema.objectQualifier_prov_membership
+			   where schemaname='{databaseSchema}' 
+			   AND tablename='{objectQualifier}prov_membership') THEN
+CREATE TABLE {databaseSchema}.{objectQualifier}prov_membership
 			 (
 			 userid                    uuid NOT NULL,
 			 applicationid             uuid NOT NULL,
@@ -51,14 +51,14 @@ CREATE TABLE databaseSchema.objectQualifier_prov_membership
 			 joined                    timestamp,
 			 comment                   text
 			 )
-	   WITH (OIDS=withOIDs);
+	   WITH (OIDS={withOIDs});
 END IF; 
 
 
 IF NOT EXISTS (select 1 from pg_tables 
-			   where schemaname='databaseSchema' 
-				 AND tablename='objectQualifier_prov_profile') THEN
-CREATE TABLE databaseSchema.objectQualifier_prov_profile
+			   where schemaname='{databaseSchema}' 
+				 AND tablename='{objectQualifier}prov_profile') THEN
+CREATE TABLE {databaseSchema}.{objectQualifier}prov_profile
 			 (
 			 userid                    uuid NOT NULL,
 			 valueindex                text,
@@ -70,49 +70,49 @@ CREATE TABLE databaseSchema.objectQualifier_prov_profile
 			 isanonymous               boolean default false,
 			 username varchar (255) NOT NULL
 			 )
-	   WITH (OIDS=withOIDs);
+	   WITH (OIDS={withOIDs});
 END IF;
 
 IF NOT EXISTS (select 1 from pg_tables 
-			   where schemaname='databaseSchema' 
-				 AND tablename='objectQualifier_prov_role') THEN
-CREATE TABLE databaseSchema.objectQualifier_prov_role
+			   where schemaname='{databaseSchema}' 
+				 AND tablename='{objectQualifier}prov_role') THEN
+CREATE TABLE {databaseSchema}.{objectQualifier}prov_role
 			 (
 			 roleid                    uuid NOT NULL,
 			 applicationid             uuid NOT NULL,
 			 rolename                  varchar(256) NOT NULL,
 			 rolenamelwd               varchar(256) NOT NULL
 			 )
-	   WITH (OIDS=withOIDs);
+	   WITH (OIDS={withOIDs});
 END IF;
 
 IF NOT EXISTS (select 1 from pg_tables 
-			   where schemaname='databaseSchema' 
-				 AND tablename='objectQualifier_prov_rolemembership') THEN
-CREATE TABLE databaseSchema.objectQualifier_prov_rolemembership
+			   where schemaname='{databaseSchema}' 
+				 AND tablename='{objectQualifier}prov_rolemembership') THEN
+CREATE TABLE {databaseSchema}.{objectQualifier}prov_rolemembership
 			 (
 			 roleid                    uuid NOT NULL,
 			 userid                    uuid NOT NULL
 			 )
-	   WITH (OIDS=withOIDs);
+	   WITH (OIDS={withOIDs});
 END IF;
 
-IF (column_exists('databaseSchema.objectQualifier_prov_profile','username') IS TRUE) THEN
+IF (column_exists('{databaseSchema}.{objectQualifier}prov_profile','username') IS TRUE) THEN
    -- used only with internal providers
-   PERFORM databaseSchema.objectQualifier_fill_in_profileusername();
+   PERFORM {databaseSchema}.{objectQualifier}fill_in_profileusername();
 END IF;
-IF (column_exists('databaseSchema.objectQualifier_prov_profile','birthday') IS TRUE) THEN
+IF (column_exists('{databaseSchema}.{objectQualifier}prov_profile','birthday') IS TRUE) THEN
    -- used only with internal providers
-  ALTER TABLE databaseSchema.objectQualifier_prov_profile ALTER COLUMN birthday TYPE timestamp;
+  ALTER TABLE {databaseSchema}.{objectQualifier}prov_profile ALTER COLUMN birthday TYPE timestamp;
 END IF;
 END ;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;
 --GO
-	SELECT databaseSchema.objectQualifier_create_or_check_prov_tables();
+	SELECT {databaseSchema}.{objectQualifier}create_or_check_prov_tables();
 --GO
-	DROP FUNCTION databaseSchema.objectQualifier_create_or_check_prov_tables();
+	DROP FUNCTION {databaseSchema}.{objectQualifier}create_or_check_prov_tables();
 	--GO
 
 

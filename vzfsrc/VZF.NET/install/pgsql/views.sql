@@ -4,33 +4,33 @@
 -- Copyright vzrus(c) 2009-2012
 
 
- -- DROP VIEW IF EXISTS databaseSchema.objectQualifier_vaccessfull;
+ -- DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull;
  -- GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_vaccess;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccess;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_pmessageview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}pmessageview;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_userpmessageselectview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}userpmessageselectview;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_messageselectview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}messageselectview;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_topicselectview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}topicselectview;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_userselectview; 
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}userselectview; 
  -- GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_vaccessfull1;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull1;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_vaccessfull2;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}vaccessfull2;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_pollgroupclusterselectview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}pollgroupclusterselectview;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_pollselectview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}pollselectview;
  --GO
- DROP VIEW IF EXISTS databaseSchema.objectQualifier_forumselectview;
+ DROP VIEW IF EXISTS {databaseSchema}.{objectQualifier}forumselectview;
  --GO
-drop view if exists databaseSchema.objectQualifier_vaccessfull;
+drop view if exists {databaseSchema}.{objectQualifier}vaccessfull;
 --GO
-CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull AS
+CREATE OR REPLACE VIEW {databaseSchema}.{objectQualifier}vaccessfull AS
     (SELECT b.userid, 
             b.forumid, 
             (c.flags & 1) AS readaccess, 
@@ -46,8 +46,8 @@ CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull AS
             (c.flags & 1024) AS downloadaccess, 
             (c.flags & 32768) AS userforumaccess, 
             0 AS admingroup 
-     FROM (databaseSchema.objectQualifier_userforum b 
-     JOIN databaseSchema.objectQualifier_accessmask c 
+     FROM ({databaseSchema}.{objectQualifier}userforum b 
+     JOIN {databaseSchema}.{objectQualifier}accessmask c 
      ON ((c.accessmaskid = b.accessmaskid))) 
      UNION ALL 
      SELECT b.userid,
@@ -65,12 +65,12 @@ CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull AS
             (d.flags & 1024) AS downloadaccess,
             (d.flags & 32768) AS userforumaccess,
             (e.flags & 1) AS admingroup 
-    FROM (((databaseSchema.objectQualifier_usergroup b 
-    JOIN databaseSchema.objectQualifier_forumaccess c 
+    FROM ((({databaseSchema}.{objectQualifier}usergroup b 
+    JOIN {databaseSchema}.{objectQualifier}forumaccess c 
     ON ((c.groupid = b.groupid))) 
-    JOIN databaseSchema.objectQualifier_accessmask d 
+    JOIN {databaseSchema}.{objectQualifier}accessmask d 
     ON ((d.accessmaskid = c.accessmaskid))) 
-    JOIN databaseSchema.objectQualifier_group e 
+    JOIN {databaseSchema}.{objectQualifier}group e 
     ON ((e.groupid = b.groupid)))) 
     UNION ALL 
     SELECT 
@@ -89,19 +89,19 @@ CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull AS
           0 AS downloadaccess,
           0 AS userforumaccess,
           0 AS admingroup 
-     FROM databaseSchema.objectQualifier_user a;    
+     FROM {databaseSchema}.{objectQualifier}user a;    
 --GO
  
-CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccess AS
+CREATE OR REPLACE VIEW {databaseSchema}.{objectQualifier}vaccess AS
     SELECT a.userid, 
            x.forumid,
            MAX(b.flags & 1) AS isadmin,
            MAX(b.flags & 8)  AS isforummoderator,
            CAST(SIGN((SELECT count(1) AS count 
-                      FROM databaseSchema.objectQualifier_usergroup v,
-                      databaseSchema.objectQualifier_group w,
-                      databaseSchema.objectQualifier_forumaccess x,
-                      databaseSchema.objectQualifier_accessmask y 
+                      FROM {databaseSchema}.{objectQualifier}usergroup v,
+                      {databaseSchema}.{objectQualifier}group w,
+                      {databaseSchema}.{objectQualifier}forumaccess x,
+                      {databaseSchema}.{objectQualifier}accessmask y 
                       WHERE v.userid = a.userid 
                       AND w.groupid = v.groupid
                       AND x.groupid = w.groupid 
@@ -119,14 +119,14 @@ CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccess AS
            MAX(x.uploadaccess) AS uploadaccess, 
            MAX(x.downloadaccess) AS downloadaccess,
            MAX(x.userforumaccess) AS userforumaccess
-    FROM ((databaseSchema.objectQualifier_vaccessfull x 
-    JOIN databaseSchema.objectQualifier_usergroup a 
+    FROM (({databaseSchema}.{objectQualifier}vaccessfull x 
+    JOIN {databaseSchema}.{objectQualifier}usergroup a 
     ON ((a.userid = x.userid))) 
-    JOIN databaseSchema.objectQualifier_group b ON ((b.groupid = a.groupid))) 
+    JOIN {databaseSchema}.{objectQualifier}group b ON ((b.groupid = a.groupid))) 
     GROUP BY a.userid, x.forumid;
 --GO
  
-CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull1 AS
+CREATE OR REPLACE VIEW {databaseSchema}.{objectQualifier}vaccessfull1 AS
     SELECT
           b.userid,
           b.forumid,
@@ -143,12 +143,12 @@ CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull1 AS
           c.flags & 1024 AS DownloadAccess,
           c.flags & 32768 AS UserForumAccess,
           0 AS AdminGroup                                 
-    FROM  databaseSchema.objectQualifier_userforum AS b
-    INNER JOIN    databaseSchema.objectQualifier_accessmask AS c
+    FROM  {databaseSchema}.{objectQualifier}userforum AS b
+    INNER JOIN    {databaseSchema}.{objectQualifier}accessmask AS c
     ON c.accessmaskid = b.accessmaskid;
 --GO
 
-CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull2 AS
+CREATE OR REPLACE VIEW {databaseSchema}.{objectQualifier}vaccessfull2 AS
     SELECT
           b.userid,
           c.forumid,
@@ -165,11 +165,11 @@ CREATE OR REPLACE VIEW databaseSchema.objectQualifier_vaccessfull2 AS
           d.flags & 1024 AS DownloadAccess,
           d.flags & 32768 AS UserForumAccess,
           e.flags & 1 AS AdminGroup  
-    FROM   databaseSchema.objectQualifier_usergroup AS b
-    INNER JOIN databaseSchema.objectQualifier_forumaccess AS c
+    FROM   {databaseSchema}.{objectQualifier}usergroup AS b
+    INNER JOIN {databaseSchema}.{objectQualifier}forumaccess AS c
     ON c.groupid = b.groupid
-    INNER JOIN databaseSchema.objectQualifier_accessmask AS d
+    INNER JOIN {databaseSchema}.{objectQualifier}accessmask AS d
     ON d.accessmaskid = c.accessmaskid
-    INNER JOIN databaseSchema.objectQualifier_group e
+    INNER JOIN {databaseSchema}.{objectQualifier}group e
     ON e.groupid=b.groupid;
 --GO

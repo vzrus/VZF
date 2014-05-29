@@ -112,8 +112,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Autofac\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -139,6 +138,8 @@
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
@@ -1000,13 +1001,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="auth.aspx" />
-    <Content Include="Bin\Autofac.dll" />
     <Content Include="Bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Bin\FarsiLibrary.dll" />
-    <Content Include="Bin\FarsiLibrary.pdb" />
     <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
     <Content Include="Bin\Intelligencia.UrlRewriter.dll" />
-    <Content Include="Bin\Intelligencia.UrlRewriter.pdb" />
     <Content Include="Bin\Mono.Security.dll" />
     <Content Include="Bin\Mono.Security.Protocol.Tls.dll" />
     <Content Include="Bin\Moq.dll" />
@@ -3109,6 +3107,8 @@
     <Content Include="install\pgsql\fulltext_ru.sql" />
     <Content Include="install\pgsql\functions.sql" />
     <Content Include="install\pgsql\indexes.sql" />
+    <Content Include="install\pgsql\nestedsets.sql" />
+    <Content Include="install\pgsql\nestedsets_sp.sql" />
     <Content Include="install\pgsql\pkeys.sql" />
     <Content Include="install\pgsql\postinstall.sql" />
     <Content Include="install\pgsql\preinstall.sql" />
@@ -5223,7 +5223,6 @@
     <Content Include="editors\ckeditor\plugins\wsc\README.md" />
     <Content Include="editors\tiny_mce\themes\advanced\img\Thumbs.db" />
     <Content Include="install\mssql\procedures.sql.orig.orig" />
-    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\localfolder.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

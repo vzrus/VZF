@@ -163,7 +163,8 @@ namespace YAF.pages
             
             // sync roles just in case...
             RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
-            if (PageContext.PersonalForumsNumber < PageContext.UsrPersonalForums)
+
+            if ((this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums || this.Get<YafBoardSettings>().AllowPersonalForumsInCategories) && PageContext.PersonalForumsNumber < PageContext.UsrPersonalForums)
             {
                 this.NewForum.Visible = true;
             }

@@ -24,22 +24,19 @@
 
 namespace VZF.Data.Mysql
 {
-    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Text;
 
     using VZF.Types.Objects;
-    using VZF.Utils;
 
     using YAF.Classes;
     using YAF.Types;
-    using YAF.Types.Handlers;
 
     /// <summary>
     /// The Db.
     /// </summary>
-    public static partial class Db
+    public static class Db
     {
         // added by vzrus
         #region ConnectionStringOptions
@@ -55,14 +52,9 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static bool PasswordPlaceholderVisible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
+        /// <summary>
+        /// Gets the sql scripts delimiter regex pattern.
+        /// </summary>
         public static string SqlScriptsDelimiterRegexPattern
         {
             get
@@ -160,25 +152,15 @@ namespace VZF.Data.Mysql
         // MySQL InnoDB engine currently don't support fulltext....
 
         /// <summary>
-        /// The _full text supported.
-        /// </summary>
-        private static bool _fullTextSupported;
-
-        /// <summary>
         /// Gets a value indicating whether full text supported.
         /// </summary>
         public static bool FullTextSupported
         {
             get
             {
-                return _fullTextSupported;
+                return false;
             }
         }
-
-        /// <summary>
-        /// The _full text script.
-        /// </summary>
-        private const string _fullTextScript = "mysql/fulltext.sql";
 
         /// <summary>
         /// Gets the full text script.
@@ -187,7 +169,7 @@ namespace VZF.Data.Mysql
         {
             get
             {
-                return _fullTextScript;
+                return "mysql/fulltext.sql";
             }
         }
 
@@ -370,6 +352,7 @@ namespace VZF.Data.Mysql
         }
 
         // DB Maintenance page panel visibility
+
         /// <summary>
         /// Gets a value indicating whether panel get stats.
         /// </summary>
@@ -399,7 +382,7 @@ namespace VZF.Data.Mysql
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -632,24 +615,31 @@ namespace VZF.Data.Mysql
         // Set Recovery
 
         /// <summary>
-        /// The db_recovery_mode_warning.
+        /// The db_recovery_mode_new.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="dbRecoveryMode">
+        /// The db recovery mode.
+        /// </param>
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string db_recovery_mode_warning()
-        {
-            // Recovery operation is not aaplicable to the data layer.
-            return string.Empty;
-        }
-
         public static string db_recovery_mode_new([NotNull] string connectionString, string dbRecoveryMode)
         {
             return string.Empty;
         }
 
+        /// <summary>
+        /// The db_reindex_new.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_reindex_new()
         {
+            return string.Empty;
                     var sb = new StringBuilder();
                     sb.Append(string.Format(
                                     "ANALYZE TABLE {0}.{1}user;",
@@ -661,6 +651,15 @@ namespace VZF.Data.Mysql
                     return string.Format(@"REINDEX DATABASE {0};", Config.DatabaseSchemaName);
         }
 
+        /// <summary>
+        /// The db_getstats.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getstats(out string message)
         {
             message = "Analizing comleted. Unfortunately it's not verbose.";
@@ -668,19 +667,42 @@ namespace VZF.Data.Mysql
                             "ANALYZE TABLE {0}.{1}user;",
                              Config.DatabaseSchemaName,
                             Config.DatabaseObjectQualifier);
-
         }
 
+        /// <summary>
+        /// The db_getfirstcharset.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getfirstcharset()
         {
             return "SHOW VARIABLES LIKE 'character_set_database'";
         }
 
+        /// <summary>
+        /// The db_getfirstcollation.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getfirstcollation()
         {
             return "SHOW VARIABLES LIKE 'collation_database'";
         }
 
+        /// <summary>
+        /// The db_collations_data.
+        /// </summary>
+        /// <param name="charsetColumn">
+        /// The charset column.
+        /// </param>
+        /// <param name="collationColumn">
+        /// The collation column.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_collations_data(out string charsetColumn, out string collationColumn)
         {
             charsetColumn = "Charset";
@@ -688,6 +710,18 @@ namespace VZF.Data.Mysql
             return "SHOW CHARACTER SET;";
         }
 
+        /// <summary>
+        /// The db_checkvalidcharset.
+        /// </summary>
+        /// <param name="charsetColumn">
+        /// The charset column.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_checkvalidcharset(out string charsetColumn, out string value)
         {
             charsetColumn = "Variable_name";
