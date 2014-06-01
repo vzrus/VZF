@@ -27,10 +27,13 @@
         <ItemTemplate>
             <tr class="post">
                 <td>
-                    <%# this.Get<YafBoardSettings>().EnableDisplayName ? Eval("DisplayName") : Eval("DisplayName") %>
+                    <%# this.Get<YafBoardSettings>().EnableDisplayName ? Eval("DisplayName") : Eval("Name") %>
                 </td>
                 <td align="center">
                      <img id="AccessYesNo" alt="?" src='<%#  (bool)Eval("Accepted") ? YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS") : YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS") %>' runat="server" /> 
+                </td>
+                 <td>
+                    <%# Eval("Access") %>
                 </td>
                 <td>
                      <VZF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval("UserID") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>

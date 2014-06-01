@@ -3,13 +3,13 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
---databaseSchema.objectQualifier_check_or_create_keys arguments
+--{databaseSchema}.{objectQualifier}check_or_create_keys arguments
 -- constraint_schema,constraint_table, key_table(''(for pkeys)|'table_name'(for fkeys),constraint_name,constraint_column,constraint_type('p'(primary key)|'f'(foreign key))	
 
--- SELECT databaseSchema.objectQualifier_check_or_create_keys('databaseSchema','objectQualifier_prov_application','','pk_databaseSchema_objectQualifier_prov_application_applicationid','applicationid','p');
+-- SELECT {databaseSchema}.{objectQualifier}check_or_create_keys('{databaseSchema}','{objectQualifier}prov_application','','pk_{databaseSchema}_{objectQualifier}prov_application_applicationid','applicationid','p');
 -- GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_check_prov_pkeys
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_prov_pkeys
 						   ()
 						   RETURNS void AS
 $BODY$
@@ -17,31 +17,31 @@ BEGIN
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
 			   where contype='p' 
-				 and conname ='pk_databaseSchema_objectQualifier_prov_application_applicationid' LIMIT 1) THEN
-   ALTER TABLE ONLY databaseSchema.objectQualifier_prov_application
-   ADD CONSTRAINT pk_databaseSchema_objectQualifier_prov_application_applicationid 
+				 and conname ='pk_{databaseSchema}_{objectQualifier}prov_application_applicationid' LIMIT 1) THEN
+   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}prov_application
+   ADD CONSTRAINT pk_{databaseSchema}_{objectQualifier}prov_application_applicationid 
    PRIMARY KEY (applicationid);
 END IF;  
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
 			   where contype='p' 
-			   and conname ='pk_databaseSchema_objectQualifier_roleid_prov_role' LIMIT 1) THEN
-   ALTER TABLE ONLY databaseSchema.objectQualifier_prov_role
-   ADD CONSTRAINT pk_databaseSchema_objectQualifier_roleid_prov_role 
+			   and conname ='pk_{databaseSchema}_{objectQualifier}roleid_prov_role' LIMIT 1) THEN
+   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}prov_role
+   ADD CONSTRAINT pk_{databaseSchema}_{objectQualifier}roleid_prov_role 
    PRIMARY KEY (roleid);
 END IF; 
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
-			   where contype='p' and conname ='pk_databaseSchema_objectQualifier_userid_prov_membership' LIMIT 1) THEN
-   ALTER TABLE ONLY databaseSchema.objectQualifier_prov_membership
-   ADD CONSTRAINT pk_databaseSchema_objectQualifier_userid_prov_membership PRIMARY KEY (userid);
+			   where contype='p' and conname ='pk_{databaseSchema}_{objectQualifier}userid_prov_membership' LIMIT 1) THEN
+   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}prov_membership
+   ADD CONSTRAINT pk_{databaseSchema}_{objectQualifier}userid_prov_membership PRIMARY KEY (userid);
 END IF;
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
 			   where contype='p' 
-				 and conname ='pk_databaseSchema_objectQualifier_userid_prov_profile' LIMIT 1) THEN
-   ALTER TABLE ONLY databaseSchema.objectQualifier_prov_profile
-   ADD CONSTRAINT pk_databaseSchema_objectQualifier_userid_prov_profile PRIMARY KEY (userid);
+				 and conname ='pk_{databaseSchema}_{objectQualifier}userid_prov_profile' LIMIT 1) THEN
+   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}prov_profile
+   ADD CONSTRAINT pk_{databaseSchema}_{objectQualifier}userid_prov_profile PRIMARY KEY (userid);
 END IF;
 
 
@@ -51,7 +51,7 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;   
 	--GO
-	SELECT databaseSchema.objectQualifier_create_or_check_prov_pkeys();
+	SELECT {databaseSchema}.{objectQualifier}create_or_check_prov_pkeys();
 	--GO
-	DROP FUNCTION databaseSchema.objectQualifier_create_or_check_prov_pkeys();
+	DROP FUNCTION {databaseSchema}.{objectQualifier}create_or_check_prov_pkeys();
 --GO

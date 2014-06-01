@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{37839554-BE73-4954-9771-99EE5B70F3DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VZF.Providers.Mysql</RootNamespace>
+    <AssemblyName>VZF.Providers.Mysql</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\VZF.NET\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GuidConverter.cs" />
+    <Compile Include="Membership\DB.cs" />
+    <Compile Include="Membership\UserPasswordInfo.cs" />
+    <Compile Include="Membership\VzfMySqlMembershipProvider.cs" />
+    <Compile Include="Profile\DB.cs" />
+    <Compile Include="Profile\YafProfileProvider.cs" />
+    <Compile Include="Roles\DB.cs" />
+    <Compile Include="Roles\YafRoleProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
+      <Project>{753C328A-21A5-4E20-969A-6BCC36019F77}</Project>
+      <Name>VZF.Classes.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Core\VZF.Core.csproj">
+      <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>
+      <Name>VZF.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">
+      <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
+      <Name>VZF.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Mysql\VZF.Data.Mysql.csproj">
+      <Project>{41c7a2fc-480d-4f44-9d04-fd318be5b306}</Project>
+      <Name>VZF.Data.Mysql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
+      <Name>VZF.Data.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
+      <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
+      <Name>VZF.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
+      <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
+      <Name>VZF.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Providers.Common\VZF.Providers.Common.csproj">
+      <Project>{e9abbe0e-2961-4d7c-a7d9-8c114747e5c1}</Project>
+      <Name>VZF.Providers.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vzf14.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

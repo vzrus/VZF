@@ -126,7 +126,7 @@ namespace VZF.Utils
         {
             get
             {
-                return 52;
+                return 53;
             }
         }
 
@@ -148,7 +148,7 @@ namespace VZF.Utils
         {
             get
             {
-                return new DateTime(2014, 6, 1);
+                return new DateTime(2014, 6, 2);
             }
         }
 
@@ -167,14 +167,15 @@ namespace VZF.Utils
 
             if (((code >> 8) & 0x0F) > 0)
             {
-                version += ".{0}".FormatWith(((code >> 8) & 0x0F));
+                version += ".{0}".FormatWith((code >> 8) & 0x0F);
             }
 
+            version = "1.9.6.2";
             if (((code >> 4) & 0x0F) > 0)
             {
                 var value = (code >> 4) & 0x0F;
 
-                var number = String.Empty;
+                var number = string.Empty;
 
                 if ((code & 0x0F) > 1)
                 {
@@ -185,6 +186,8 @@ namespace VZF.Utils
                     number = AppVersionDate.ToString("yyyyMMdd");
                 }
 
+                value = 3;
+                number = "1 " + number;
                 switch (value)
                 {
                     case 1:
@@ -204,7 +207,7 @@ namespace VZF.Utils
                         break;
                 }
             }
-
+          
             return version;
         }
 

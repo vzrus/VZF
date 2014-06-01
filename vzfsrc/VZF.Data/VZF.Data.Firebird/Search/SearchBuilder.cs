@@ -118,10 +118,10 @@ namespace VZF.Data.Firebird.Search
 
             searchSql +=
                 @" a.FORUMID AS ""ForumID"", a.TOPICID AS ""TopicID"", a.TOPIC AS ""Topic"", b.USERID AS ""UserID"" , COALESCE(c.USERNAME, b.NAME) AS ""Name"", c.MESSAGEID AS ""MessageID"", c.POSTED AS ""Posted"", '' AS ""Message"", c.FLAGS AS ""Flags""";
-            searchSql += " FROM " + ObjectName.GetVzfObjectName("TOPIC", mid) + " a LEFT JOIN "
-                         + ObjectName.GetVzfObjectName("MESSAGE", mid) + @" c ON a.TOPICID = c.TOPICID LEFT JOIN "
-                         + ObjectName.GetVzfObjectName("USER", mid) + @" b ON c.USERID = b.USERID join "
-                         + ObjectName.GetVzfObjectName("VACCESS", mid) + @" x ON x.FORUMID=a.FORUMID ";
+            searchSql += " FROM " + SqlDbAccess.GetVzfObjectName("TOPIC", mid) + " a LEFT JOIN "
+                         + SqlDbAccess.GetVzfObjectName("MESSAGE", mid) + @" c ON a.TOPICID = c.TOPICID LEFT JOIN "
+                         + SqlDbAccess.GetVzfObjectName("USER", mid) + @" b ON c.USERID = b.USERID join "
+                         + SqlDbAccess.GetVzfObjectName("VACCESS", mid) + @" x ON x.FORUMID=a.FORUMID ";
             searchSql +=
                 string.Format(
                     @"WHERE x.READACCESS<>0 AND x.USERID={0} AND c.ISAPPROVED <> 0 AND a.TOPICMOVEDID IS NULL AND a.ISDELETED = 0 AND c.ISDELETED = 0 ",

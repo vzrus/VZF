@@ -7,6 +7,7 @@
 <%@ Import Namespace="VZF.Utils.Helpers" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server" ID="AdminMenu">
+    <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
 	<table class="content" width="100%" cellspacing="1" cellpadding="0">
 		<asp:Repeater ID="RoleListNet" runat="server" OnItemCommand="RoleListNet_ItemCommand">
 			<HeaderTemplate>
@@ -132,5 +133,6 @@
 			</td>
 		</tr>
 	</table>
+     <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
 </VZF:AdminMenu>
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

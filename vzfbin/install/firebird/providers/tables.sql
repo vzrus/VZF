@@ -1,6 +1,6 @@
 
 /* Yet Another Forum.NET Firebird data layer by vzrus
- * Copyright (C) 2006-2013 Vladimir Zakharov
+ * Copyright (C) 2006-2014 Vladimir Zakharov
  * https://github.com/vzrus
  * http://sourceforge.net/projects/yaf-datalayers/
  * This program is free software; you can redistribute it and/or
@@ -28,10 +28,10 @@
 EXECUTE BLOCK
 AS
 BEGIN
--- Source table: objQual_P_APPLICATION
+-- Source table: {objectQualifier}P_APPLICATION
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATIONS a 
-				WHERE a.RDB$RELATION_NAME='objQual_P_APPLICATION')) THEN
-	EXECUTE STATEMENT 'CREATE TABLE objQual_P_APPLICATION
+				WHERE a.RDB$RELATION_NAME='{objectQualifier}P_APPLICATION')) THEN
+	EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}P_APPLICATION
 					   (
 					   APPLICATIONID                       CHAR(16) CHARACTER SET OCTETS NOT NULL,
 					   APPLICATIONNAME                     VARCHAR(128) CHARACTER SET UTF8 COLLATE UNICODE,
@@ -43,10 +43,10 @@ end
 EXECUTE BLOCK
 AS
 BEGIN
--- Source table: objQual_P_MEMBERSHIP
+-- Source table: {objectQualifier}P_MEMBERSHIP
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATIONS a 
-				WHERE a.RDB$RELATION_NAME='objQual_P_MEMBERSHIP')) THEN
-	EXECUTE STATEMENT 'CREATE TABLE objQual_P_MEMBERSHIP
+				WHERE a.RDB$RELATION_NAME='{objectQualifier}P_MEMBERSHIP')) THEN
+	EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}P_MEMBERSHIP
 					   (
 					   USERID               CHAR(16) CHARACTER SET OCTETS NOT NULL,
 					   APPLICATIONID        CHAR(16) CHARACTER SET OCTETS NOT NULL,
@@ -78,10 +78,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 
--- Source table: objQual_P_PROFILE
+-- Source table: {objectQualifier}P_PROFILE
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATIONS a 
-				WHERE a.RDB$RELATION_NAME='objQual_P_PROFILE')) THEN
-	EXECUTE STATEMENT 'CREATE TABLE objQual_P_PROFILE
+				WHERE a.RDB$RELATION_NAME='{objectQualifier}P_PROFILE')) THEN
+	EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}P_PROFILE
 					   (
 					   USERID               CHAR(16) CHARACTER SET OCTETS NOT NULL,
 					   VALUEINDEX           BLOB SUB_TYPE 1,
@@ -95,10 +95,10 @@ IF (NOT EXISTS( SELECT 1 FROM RDB$RELATIONS a
 EXECUTE BLOCK
 AS
 BEGIN
--- Source table: objQual_P_ROLE
+-- Source table: {objectQualifier}P_ROLE
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATIONS a 
-				WHERE a.RDB$RELATION_NAME='objQual_P_ROLE')) THEN
-	EXECUTE STATEMENT 'CREATE TABLE objQual_P_ROLE
+				WHERE a.RDB$RELATION_NAME='{objectQualifier}P_ROLE')) THEN
+	EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}P_ROLE
 					   (
 					   ROLEID               CHAR(16) CHARACTER SET OCTETS NOT NULL,
 					   APPLICATIONID        CHAR(16) CHARACTER SET OCTETS NOT NULL,
@@ -112,10 +112,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 
--- Source table: objQual_P_ROLEMEMBERSHIP
+-- Source table: {objectQualifier}P_ROLEMEMBERSHIP
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATIONS a 
-				WHERE a.RDB$RELATION_NAME='objQual_P_ROLEMEMBERSHIP')) THEN
-	EXECUTE STATEMENT 'CREATE TABLE objQual_P_ROLEMEMBERSHIP
+				WHERE a.RDB$RELATION_NAME='{objectQualifier}P_ROLEMEMBERSHIP')) THEN
+	EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}P_ROLEMEMBERSHIP
 					   (
 					   ROLEID               CHAR(16) CHARACTER SET OCTETS NOT NULL,
 					   USERID               CHAR(16) CHARACTER SET OCTETS NOT NULL

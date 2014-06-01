@@ -6193,7 +6193,7 @@ declare ici_ReplyTo	INT DEFAULT NULL;
         LastUserID		= i_UserID,
         LastUserName	= i_UserName
     WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted)));
-CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_TopicID);
+-- CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_TopicID);
 CALL {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
 CALL {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
 

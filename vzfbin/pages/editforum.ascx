@@ -12,9 +12,19 @@
             <td class="header2" height="30" colspan="2">
             </td>
         </tr>
-        <tr>
+       <tr id="tr_categoriesallowed" Visible="false" runat="server">
             <td class="postheader">
-                <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="CATEGORY" LocalizedPage="ADMIN_EDITFORUM" />
+                <VZF:HelpLabel ID="HelpLabel55" runat="server" LocalizedTag="CATEGORYALLOWED" LocalizedPage="PERSONALFORUM_EDIT" />
+            </td>
+            <td class="post">
+                <asp:DropDownList Width="250" ID="CategoryAllowed" runat="server" 
+                    DataValueField="CategoryID" DataTextField="Name">
+                </asp:DropDownList>
+            </td>
+        </tr>
+        <tr id="tr_categoriesforforumsallowed" Visible="false" runat="server">
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="FORUMCATEGORYALLOWED" LocalizedPage="PERSONALFORUM_EDIT" />
             </td>
             <td class="post">
                 <asp:DropDownList Width="250" ID="CategoryList" runat="server" OnSelectedIndexChanged="Category_Change"
@@ -22,9 +32,9 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr>
+        <tr id="tr_forumsallowed" Visible="false" runat="server">
             <td class="postheader">
-                <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="PARENT_FORUM" LocalizedPage="ADMIN_EDITFORUM" />
+                <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="FORUMALLOWED" LocalizedPage="PERSONALFORUM_EDIT" />
                 <strong></strong>
                 <br />
             </td>

@@ -115,7 +115,7 @@ namespace VZF.Kernel
                     YafContext.Current.PageUserID,
                     false))
             {
-                var dd = ds.Tables[ObjectName.GetVzfObjectName("Category", YafContext.Current.PageModuleID)];
+                var dd = ds.Tables[SqlDbAccess.GetVzfObjectName("Category", YafContext.Current.PageModuleID)];
                 if (dd != null && dd.Rows.Count > 0)
                 {
                     deleteImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "DELETE_SMALL_ICON");

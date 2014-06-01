@@ -8,13 +8,13 @@
 -- #############################################################################
 -- PROVIDER FUNCTION SCRIPT BY VZ_TEAM 
 
--- Function: databaseSchema.objectQualifier_prov_createapplication(varchar)
+-- Function: {databaseSchema}.{objectQualifier}prov_createapplication(varchar)
 
--- DROP FUNCTION databaseSchema.objectQualifier_prov_createapplication(varchar);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}prov_createapplication(varchar);
 
 
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_createapplication(
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_createapplication(
 						IN i_applicationname varchar, 
 						IN i_newguid uuid, 
 					   OUT i_applicationid uuid)
@@ -24,12 +24,12 @@ BEGIN
 
 	  SELECT applicationid
 	  INTO  i_applicationid 
-	  FROM databaseSchema.objectQualifier_prov_application 
+	  FROM {databaseSchema}.{objectQualifier}prov_application 
 	  WHERE applicationnamelwd=LOWER(i_applicationname);
 	  
 	  IF (i_applicationid IS NULL) THEN 	
 	  i_applicationid := i_newguid;
-			 INSERT  INTO databaseSchema.objectQualifier_prov_application (applicationid, applicationname, applicationnamelwd)
+			 INSERT  INTO {databaseSchema}.{objectQualifier}prov_application (applicationid, applicationname, applicationnamelwd)
 			 VALUES  (i_applicationid, i_applicationname, LOWER(i_applicationname));
 	  END IF;
 
@@ -40,7 +40,7 @@ BEGIN
   COST 100;
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_upgrade
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_upgrade
 						   (
 						   i_previousversion integer,  
 						   i_newversion  integer, 
@@ -51,10 +51,10 @@ $BODY$
 BEGIN
 -- RESOLVE SALT ISSUE IN 193 BETA and RC2
 IF ((i_previousversion  = 31) OR (i_previousversion  = 32)) THEN			
-			UPDATE databaseSchema.objectQualifier_prov_membership 
+			UPDATE {databaseSchema}.{objectQualifier}prov_membership 
 			SET passwordsalt='UwB5AHMAdABlAG0ALgBCAHkAdABlAFsAXQA=' 
 			WHERE passwordsalt IS NOT NULL;
-			UPDATE databaseSchema.objectQualifier_prov_membership 
+			UPDATE {databaseSchema}.{objectQualifier}prov_membership 
 			SET joined=i_utctimestamp 
 			WHERE joined IS NULL;		
 		END IF;
@@ -67,7 +67,7 @@ IF ((i_previousversion  = 31) OR (i_previousversion  = 32)) THEN
 
 -- PROVIDER FUNCTION SCRIPT BY VZ_TEAM 
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_changepassword
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_changepassword
 						   (
 						   IN i_applicationname varchar,
 						   IN i_username varchar,
@@ -82,13 +82,13 @@ $BODY$
 BEGIN 
 	
 	
-	UPDATE databaseSchema.objectQualifier_prov_membership 
+	UPDATE {databaseSchema}.{objectQualifier}prov_membership 
 	SET password=i_password, 
 		passwordsalt=i_passwordsalt,
 		passwordformat=i_passwordformat, 
 		passwordanswer=i_passwordanswer
 	WHERE usernamelwd=LOWER(i_username) 
-	AND (applicationid =(SELECT databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)));
+	AND (applicationid =(SELECT {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)));
  RETURN;
 END;
 $BODY$
@@ -101,7 +101,7 @@ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;
 
 -- DROP FUNCTION objectQualifier_prov_ChangePasswordQuestionAndAnswer(varchar, varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_changepasswordquestionandanswer
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_changepasswordquestionandanswer
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -112,22 +112,22 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_changepasswordque
 				  RETURNS void AS
 $BODY$
 BEGIN 	
-	UPDATE databaseSchema.objectQualifier_prov_membership 
+	UPDATE {databaseSchema}.{objectQualifier}prov_membership 
 	SET passwordquestion=i_passwordquestion,
 	 passwordanswer=i_passwordanswer
 	WHERE usernamelwd=LOWER(i_username) 
-	AND (applicationid=(SELECT databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)));
+	AND (applicationid=(SELECT {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)));
 	RETURN; 
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;  
 --GO
 
--- Function: databaseSchema.objectQualifier_prov_createuser(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean)
+-- Function: {databaseSchema}.{objectQualifier}prov_createuser(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean)
 
--- DROP FUNCTION databaseSchema.objectQualifier_prov_createuser(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}prov_createuser(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_createuser
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_createuser
 						   (
 						   IN i_applicationname varchar,
 						   IN i_username varchar,
@@ -151,8 +151,8 @@ BEGIN
 	   ici_userkey := i_newuserkey;
 	END IF;
 		
-	INSERT INTO databaseSchema.objectQualifier_prov_membership(userid,applicationid,username,usernamelwd,password,passwordsalt,passwordformat,email,emaillwd,passwordquestion,passwordanswer,isapproved,joined)
-		VALUES (ici_userkey,(SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)),i_username, LOWER(i_username), i_password, i_passwordsalt, i_passwordformat, i_email, LOWER(i_email), i_passwordquestion, i_passwordanswer, i_isapproved,i_utctimestamp);
+	INSERT INTO {databaseSchema}.{objectQualifier}prov_membership(userid,applicationid,username,usernamelwd,password,passwordsalt,passwordformat,email,emaillwd,passwordquestion,passwordanswer,isapproved,joined)
+		VALUES (ici_userkey,(SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)),i_username, LOWER(i_username), i_password, i_passwordsalt, i_passwordformat, i_email, LOWER(i_email), i_passwordquestion, i_passwordanswer, i_isapproved,i_utctimestamp);
 	
 	RETURN;
 END;$BODY$
@@ -165,7 +165,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_deleteuser(varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_deleteuser
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_deleteuser
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -181,17 +181,17 @@ BEGIN
 	-- get the userID
 	SELECT   userid 
 		INTO ici_userid 
-		FROM databaseSchema.objectQualifier_prov_membership 
-		WHERE (applicationid=(SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid))) 
+		FROM {databaseSchema}.{objectQualifier}prov_membership 
+		WHERE (applicationid=(SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid))) 
 		  AND usernamelwd = LOWER(i_username);
  -- TODO implement i_deleteallrelated
 	IF (ici_userid IS NOT NULL) THEN 	
 		/*Delete records from membership*/
-		DELETE FROM databaseSchema.objectQualifier_prov_membership WHERE userid = ici_userid;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_membership WHERE userid = ici_userid;
 		/*Delete from Role table*/
-		DELETE FROM databaseSchema.objectQualifier_prov_rolemembership WHERE userid = ici_userid;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_rolemembership WHERE userid = ici_userid;
 		/*Delete from Profile table*/
-		DELETE FROM databaseSchema.objectQualifier_prov_profile WHERE userid = ici_userid;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_profile WHERE userid = ici_userid;
 	END IF;
 	RETURN;	
 END;$BODY$
@@ -207,29 +207,29 @@ END;$BODY$
 
 --DROP FUNCTION objectQualifier_prov_findusersbyemail(varchar, varchar, integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyemail
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_findusersbyemail
 						   (
 						   i_applicationname varchar,
 						   i_emailaddress varchar,
 						   i_pageindex integer,
 						   i_pagesize integer,
 						   IN i_newguid uuid)
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_findusersbyemail_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_findusersbyemail_return_type AS
 $BODY$DECLARE 
 			 ici_pagelowerbound integer:=0;
 			 ici_pageupperbound integer:=0;
 			 i_totalrecords   integer:=0;
 			 rownumber integer:=0;
 			 ici_applicationid uuid;
-			 _rec databaseSchema.objectQualifier_prov_findusersbyemail_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_findusersbyemail_return_type%ROWTYPE;
 BEGIN 
-SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
+SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
 	 ici_pagelowerbound := i_pagesize*i_pageindex;
 	 ici_pageupperbound := i_pagesize -1 + ici_pagelowerbound ;
 	
 		FOR _rec IN
-	SELECT m.*, rownumber  FROM databaseSchema.objectQualifier_prov_membership m 
-	INNER JOIN databaseSchema.objectQualifier_prov_application a 
+	SELECT m.*, rownumber  FROM {databaseSchema}.{objectQualifier}prov_membership m 
+	INNER JOIN {databaseSchema}.{objectQualifier}prov_application a 
 	ON m.applicationid= a.applicationid 
 	WHERE (a.applicationid= ici_applicationid)
 	AND m.emaillwd = LOWER(i_emailaddress) 	
@@ -248,7 +248,7 @@ END;$BODY$
 
 --DROP FUNCTION objectQualifier_prov_findusersbyname(varchar, varchar, integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyname
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_findusersbyname
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -256,24 +256,24 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyname
 						   i_pagesize integer,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_findusersbyname_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_findusersbyname_return_type AS
 $BODY$DECLARE 
 			 ici_pagelowerbound integer:=0;
 			 ici_pageupperbound integer:=0;
 			 i_totalrecords   integer;
 			 rownumber integer:=0;
 			 ici_applicationid uuid;
-			 _rec databaseSchema.objectQualifier_prov_findusersbyname_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_findusersbyname_return_type%ROWTYPE;
 
 BEGIN
-SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
+SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
 	 ici_pagelowerbound := i_pagesize*i_pageindex;
 	 ici_pageupperbound := i_pagesize -1 + ici_pagelowerbound ;      
  
 		 FOR _rec IN 
 	SELECT m.*, rownumber
-	FROM databaseSchema.objectQualifier_prov_membership m 
-	INNER JOIN databaseSchema.objectQualifier_prov_application a 
+	FROM {databaseSchema}.{objectQualifier}prov_membership m 
+	INNER JOIN {databaseSchema}.{objectQualifier}prov_application a 
 	ON m.applicationid= a.applicationid  
 	WHERE (a.applicationid= ici_applicationid)
 	AND m.usernamelwd 
@@ -298,14 +298,14 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_getallusers(varchar, integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getallusers
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_getallusers
 						   (
 						   i_applicationname varchar,
 						   i_pageindex integer,
 						   i_pagesize integer,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_getallusers_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_getallusers_return_type AS
 $BODY$    
 DECLARE      
 	   ici_pagelowerbound integer;
@@ -313,16 +313,16 @@ DECLARE
 	   ici_totalrecords   integer;
 	   rownumber integer:=0;
 	   ici_applicationid uuid;
-	   _rec databaseSchema.objectQualifier_prov_getallusers_return_type%ROWTYPE;
+	   _rec {databaseSchema}.{objectQualifier}prov_getallusers_return_type%ROWTYPE;
 
 BEGIN   
- SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
+ SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
 	 ici_pagelowerbound = i_pagesize*i_pageindex;
 	 ici_pageupperbound = i_pagesize -1 + ici_pagelowerbound ; 	
  
  FOR _rec IN
-	SELECT m.*, rownumber FROM databaseSchema.objectQualifier_prov_membership m 
-	 INNER JOIN databaseSchema.objectQualifier_prov_application a 
+	SELECT m.*, rownumber FROM {databaseSchema}.{objectQualifier}prov_membership m 
+	 INNER JOIN {databaseSchema}.{objectQualifier}prov_application a 
 	ON m.applicationid= a.applicationid 
 	WHERE a.applicationid= ici_applicationid
 	
@@ -346,7 +346,7 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestamp);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_resetpassword
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_resetpassword
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -362,12 +362,12 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_resetpassword
 $BODY$
 BEGIN  
 	
-	UPDATE databaseSchema.objectQualifier_prov_membership SET
+	UPDATE {databaseSchema}.{objectQualifier}prov_membership SET
 	password = i_password,
 	passwordsalt = i_passwordsalt,
 	passwordformat = i_passwordformat,
 	lastpasswordchange = i_currenttimeutc
-	WHERE applicationid= (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)) AND
+	WHERE applicationid= (SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)) AND
 	usernamelwd = LOWER(i_username);
 	RETURN;
  
@@ -381,7 +381,7 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_GetUser(varchar, varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getuser
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_getuser
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -390,24 +390,24 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getuser
 						   IN i_newguid uuid,
 						   i_utctimestamp timestamp
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_getuser_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_getuser_return_type AS
 $BODY$DECLARE 
 			 ici_applicationid uuid;
-			 _rec databaseSchema.objectQualifier_prov_getuser_return_type;
+			 _rec {databaseSchema}.{objectQualifier}prov_getuser_return_type;
 
 BEGIN 	
-	 SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	 
+	 SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	 
 	 INTO ici_applicationid;
 	
 	IF (i_userkey IS NULL) THEN 
-	FOR _rec IN	SELECT m.*  FROM databaseSchema.objectQualifier_prov_membership m  
+	FOR _rec IN	SELECT m.*  FROM {databaseSchema}.{objectQualifier}prov_membership m  
 				  WHERE m.usernamelwd = LOWER(i_username) 
 				  AND m.applicationid = ici_applicationid
 				  LOOP
 				  RETURN NEXT _rec;
 				  END LOOP;
 	ELSE 
-		FOR _rec IN SELECT m.*  FROM databaseSchema.objectQualifier_prov_membership m 
+		FOR _rec IN SELECT m.*  FROM {databaseSchema}.{objectQualifier}prov_membership m 
 				  WHERE m.userid = i_userkey AND m.applicationid= ici_applicationid
 				  LOOP
 				  RETURN NEXT _rec;
@@ -418,7 +418,7 @@ BEGIN
 	/*IF USER IS ONLINE DO AN UPDATE USER*/	
 	IF (i_userisonline IS TRUE) THEN 
 	-- SELECT TIMESTAMP current_timestamp at time zone 'UTC'() AT TIME ZONE utc_offset INTO i_CurrentUtc;
-		UPDATE databaseSchema.objectQualifier_prov_membership 
+		UPDATE {databaseSchema}.{objectQualifier}prov_membership 
 		SET lastactivity = i_utctimestamp
 		WHERE usernamelwd = LOWER(i_username) 
 		and applicationid= ici_applicationid;
@@ -435,7 +435,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestamp, timestamp, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_updateuser
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_updateuser
 						   (
 						   i_applicationname varchar,
 						   i_userkey uuid,
@@ -455,7 +455,7 @@ $BODY$DECLARE
 BEGIN
 	
  
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	
 	INTO ici_applicationid;
 	
 		/* Check UserKey */
@@ -466,7 +466,7 @@ BEGIN
  
 	/* Check for UniqueEmail */ 		
 		IF ((i_uniqueemail IS TRUE) 
-		AND (EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_prov_membership m 
+		AND (EXISTS (SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_membership m 
 		WHERE m.userid != i_userkey AND m.emaillwd=LOWER(i_email) 
 		AND m.applicationid=ici_applicationid)))
 	THEN 
@@ -475,7 +475,7 @@ BEGIN
 	END IF;			
 	
 	
-	UPDATE databaseSchema.objectQualifier_prov_membership SET
+	UPDATE {databaseSchema}.{objectQualifier}prov_membership SET
 	username = i_username,
 	usernamelwd = LOWER(i_username),
 	email = i_email,
@@ -499,7 +499,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_unlockuser(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_unlockuser
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_unlockuser
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -508,10 +508,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_unlockuser
 				  RETURNS void AS
 $BODY$
 BEGIN 	
-	UPDATE databaseSchema.objectQualifier_prov_membership SET
+	UPDATE {databaseSchema}.{objectQualifier}prov_membership SET
 	islockedout = 0,
 	failedpasswordattempts = 0
-	WHERE applicationid= (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)) AND
+	WHERE applicationid= (SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)) AND
 	usernamelwd = LOWER(i_username);
 	RETURN;
  
@@ -525,7 +525,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_getnumberofusersonline(varchar, integer, timestamp);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getnumberofusersonline
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_getnumberofusersonline
 						   (
 						   i_applicationname varchar,
 						   i_timewindow integer,
@@ -542,10 +542,10 @@ BEGIN
  dd := CAST(CAST(i_timewindow AS varchar) || ' minute' AS interval); 
 	   ici_activitydate:= i_currenttimeutc - dd ; 	
 	SELECT COUNT(1) INTO ici_numberactive 
-	FROM databaseSchema.objectQualifier_prov_membership m 
-	INNER JOIN databaseSchema.objectQualifier_prov_application a 
+	FROM {databaseSchema}.{objectQualifier}prov_membership m 
+	INNER JOIN {databaseSchema}.{objectQualifier}prov_application a 
 	ON m.applicationid= a.applicationid 
-	WHERE a.applicationid= (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)) AND m.lastlogin >= ici_activitydate;
+	WHERE a.applicationid= (SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)) AND m.lastlogin >= ici_activitydate;
 	 
 	 RETURN ici_numberactive;
  
@@ -562,21 +562,21 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_getusernamebyemail(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getusernamebyemail
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_getusernamebyemail
 						   (
 						   i_applicationname varchar,
 						   i_email varchar,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_getusernamebyemail_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_getusernamebyemail_return_type AS
 $BODY$DECLARE 
 			 ici_applicationid uuid;
-			 _rec databaseSchema.objectQualifier_prov_getusernamebyemail_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_getusernamebyemail_return_type%ROWTYPE;
 BEGIN 	
-SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
+SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
 FOR _rec IN 
-	SELECT m.username FROM databaseSchema.objectQualifier_prov_membership m 
-	INNER JOIN databaseSchema.objectQualifier_prov_application a 
+	SELECT m.username FROM {databaseSchema}.{objectQualifier}prov_membership m 
+	INNER JOIN {databaseSchema}.{objectQualifier}prov_application a 
 	ON m.applicationid= a.applicationid 
 	WHERE a.applicationid= ici_applicationid AND m.emaillwd = LOWER(i_email)
 LOOP
@@ -598,7 +598,7 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_addusertorole(varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_addusertorole
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_addusertorole
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -612,25 +612,25 @@ $BODY$DECLARE
 			 ici_applicationid uuid;
 BEGIN	
 	
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
  
 	SELECT userid INTO ici_iserid 
-	FROM databaseSchema.objectQualifier_prov_membership m 
+	FROM {databaseSchema}.{objectQualifier}prov_membership m 
 	WHERE m.usernamelwd=LOWER(i_username) 
 	AND m.applicationid= ici_applicationid;
 
 	SELECT roleid  INTO ici_roleid 
-	FROM databaseSchema.objectQualifier_prov_role r 
+	FROM {databaseSchema}.{objectQualifier}prov_role r 
 	WHERE r.rolenamelwd=LOWER(i_rolename) 
 	AND r.applicationid= ici_applicationid LIMIT 1;
 
 	IF (ici_iserid IS NULL OR ici_roleid IS NULL) THEN
 		RETURN;
 	END IF;
-	IF (NOT EXISTS(SELECT 1 FROM databaseSchema.objectQualifier_prov_rolemembership rm 
+	IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_rolemembership rm 
 	WHERE rm.userid=ici_iserid 
 	AND rm.roleid=ici_roleid LIMIT 1)) THEN
-		INSERT INTO databaseSchema.objectQualifier_prov_rolemembership (roleid, userid)
+		INSERT INTO {databaseSchema}.{objectQualifier}prov_rolemembership (roleid, userid)
 		VALUES (ici_roleid, ici_iserid);
 		END IF;
 		RETURN;
@@ -644,7 +644,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_createrole(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_createrole
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_createrole
 						   (
 						   i_applicationname varchar,
 						   i_rolename varchar,
@@ -656,23 +656,23 @@ $BODY$DECLARE
 			 ici_applicationid uuid;
 
 BEGIN 	
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	 INTO ici_applicationid;
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	 INTO ici_applicationid;
 	
-	IF (NOT EXISTS(SELECT 1 FROM databaseSchema.objectQualifier_prov_role r 
+	IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_role r 
 	WHERE r.applicationid= ici_applicationid 
 	AND r.rolenamelwd = LOWER(i_rolename))) THEN
-		INSERT INTO databaseSchema.objectQualifier_prov_role (roleid, applicationid, rolename, rolenamelwd) VALUES (i_newroleguid,ici_applicationid, i_rolename,LOWER(i_rolename)); END IF;		
+		INSERT INTO {databaseSchema}.{objectQualifier}prov_role (roleid, applicationid, rolename, rolenamelwd) VALUES (i_newroleguid,ici_applicationid, i_rolename,LOWER(i_rolename)); END IF;		
 RETURN;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;
 --GO
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: databaseSchema.objectQualifier_prov_role_deleterole(varchar, varchar, boolean)
+-- Function: {databaseSchema}.{objectQualifier}prov_role_deleterole(varchar, varchar, boolean)
 
--- DROP FUNCTION databaseSchema.objectQualifier_prov_role_deleterole(varchar, varchar, boolean);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}prov_role_deleterole(varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_deleterole
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_deleterole
 						   (
 						   i_applicationname varchar,
 						   i_rolename varchar,
@@ -685,17 +685,17 @@ $BODY$DECLARE
 			 ici_errorcode integer:=0;  	
 BEGIN 	
 	
-	SELECT r.roleid INTO ici_roleid FROM databaseSchema.objectQualifier_prov_role r WHERE r.rolenamelwd=LOWER(i_rolename) AND r.applicationid= (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid));
+	SELECT r.roleid INTO ici_roleid FROM {databaseSchema}.{objectQualifier}prov_role r WHERE r.rolenamelwd=LOWER(i_rolename) AND r.applicationid= (SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid));
 	
 	IF (i_deleteonlyifroleisempty IS NOT FALSE) THEN
-		IF (EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_prov_rolemembership rm WHERE rm.roleid=ici_roleid)) THEN
+		IF (EXISTS (SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_rolemembership rm WHERE rm.roleid=ici_roleid)) THEN
 			SELECT 2 INTO ici_errorcode; END IF;
 	ELSE
-		DELETE FROM databaseSchema.objectQualifier_prov_rolemembership WHERE roleid=ici_roleid;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_rolemembership WHERE roleid=ici_roleid;
 	END IF;	
  
 	IF (ici_errorcode = 0) THEN
-		DELETE FROM  databaseSchema.objectQualifier_prov_role WHERE roleid=ici_roleid; END IF;
+		DELETE FROM  {databaseSchema}.{objectQualifier}prov_role WHERE roleid=ici_roleid; END IF;
 	 
 	 RETURN COALESCE(ici_errorcode,0);	
 END;
@@ -709,7 +709,7 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_exists(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_exists
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_exists
 						   (
 						   i_applicationname varchar,
 						   i_rolename varchar,
@@ -719,9 +719,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_exists
 $BODY$
 	BEGIN	
 	
-	RETURN (SELECT COUNT(1) FROM databaseSchema.objectQualifier_prov_role r
+	RETURN (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}prov_role r
 		WHERE (r.rolenamelwd = LOWER(i_rolename)) 
-		AND  (r.applicationid=(SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid))));
+		AND  (r.applicationid=(SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid))));
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;
@@ -731,23 +731,23 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_getroles(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_getroles
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_getroles
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_role_getroles_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_role_getroles_return_type AS
 $BODY$DECLARE 
 			 ici_applicationid uuid;
-			 _rec databaseSchema.objectQualifier_prov_role_getroles_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_role_getroles_return_type%ROWTYPE;
 BEGIN 	
 	
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
  
 	IF i_username IS NULL THEN
 	FOR _rec IN 
-		SELECT r.* FROM databaseSchema.objectQualifier_prov_role r 
+		SELECT r.* FROM {databaseSchema}.{objectQualifier}prov_role r 
 		WHERE r.rolenamelwd = LOWER(rolename) AND r.applicationid= ici_applicationid
 LOOP
 RETURN NEXT _rec;
@@ -757,11 +757,11 @@ END LOOP;
 		SELECT
 			r.*
 		FROM
-			databaseSchema.objectQualifier_prov_role r
+			{databaseSchema}.{objectQualifier}prov_role r
 		INNER JOIN
-			databaseSchema.objectQualifier_prov_rolemembership rm ON r.roleid = rm.roleid
+			{databaseSchema}.{objectQualifier}prov_rolemembership rm ON r.roleid = rm.roleid
 		INNER JOIN
-			databaseSchema.objectQualifier_prov_membership m ON m.userid = rm.userid
+			{databaseSchema}.{objectQualifier}prov_membership m ON m.userid = rm.userid
 		WHERE
 			r.applicationid = ici_applicationid
 			AND m.usernamelwd = LOWER(i_username)
@@ -780,7 +780,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_removeuserfromrole(varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_removeuserfromrole
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_removeuserfromrole
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
@@ -795,18 +795,18 @@ $BODY$DECLARE
 
 BEGIN
  
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;	
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;	
 	
 	SELECT r.roleid INTO ici_roleid 
-	FROM databaseSchema.objectQualifier_prov_role r 
+	FROM {databaseSchema}.{objectQualifier}prov_role r 
 	WHERE r.rolenamelwd = LOWER(i_rolename) 
 	AND r.applicationid= ici_applicationid  ;
 	SELECT m.userid INTO ici_iserid 
-	FROM databaseSchema.objectQualifier_prov_membership m 
+	FROM {databaseSchema}.{objectQualifier}prov_membership m 
 	WHERE m.usernamelwd=LOWER(i_username) 
 	AND m.applicationid= ici_applicationid ;
 	
-	DELETE FROM databaseSchema.objectQualifier_prov_rolemembership WHERE roleid = ici_roleid AND userid=ici_iserid;
+	DELETE FROM {databaseSchema}.{objectQualifier}prov_rolemembership WHERE roleid = ici_roleid AND userid=ici_iserid;
 	
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -824,29 +824,29 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_findusersinrole(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_findusersinrole
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_findusersinrole
 						   (
 						   i_applicationname varchar,
 						   i_rolename varchar,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_role_findusersinrole_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_role_findusersinrole_return_type AS
 $BODY$DECLARE
 			 ici_roleid uuid;
 			 ici_applicationid uuid;
-			 _rec databaseSchema.objectQualifier_prov_role_findusersinrole_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_role_findusersinrole_return_type%ROWTYPE;
 BEGIN	
 	
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	
 	INTO ici_applicationid;
  
-	SELECT r.roleid INTO ici_roleid FROM databaseSchema.objectQualifier_prov_role r 
-	INNER JOIN  databaseSchema.objectQualifier_prov_application a 
+	SELECT r.roleid INTO ici_roleid FROM {databaseSchema}.{objectQualifier}prov_role r 
+	INNER JOIN  {databaseSchema}.{objectQualifier}prov_application a 
 	ON r.applicationid= a.applicationid 
 	WHERE r.rolenamelwd=LOWER(i_rolename) 
 	AND a.applicationid= ici_applicationid ;
  FOR _rec IN
-	SELECT m.* FROM databaseSchema.objectQualifier_prov_membership m INNER JOIN databaseSchema.objectQualifier_prov_rolemembership rm ON m.userid = rm.userid WHERE rm.roleid = ici_roleid
+	SELECT m.* FROM {databaseSchema}.{objectQualifier}prov_membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_rolemembership rm ON m.userid = rm.userid WHERE rm.roleid = ici_roleid
 LOOP
 RETURN NEXT _rec;
 END LOOP;
@@ -862,23 +862,23 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_isuserinrole(varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_isuserinrole
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_role_isuserinrole
 						   (
 						   i_applicationname varchar,
 						   i_username varchar,
 						   i_rolename varchar,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_role_isuserinrole_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_role_isuserinrole_return_type AS
 $BODY$DECLARE 
-			 _rec databaseSchema.objectQualifier_prov_role_isuserinrole_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_role_isuserinrole_return_type%ROWTYPE;
 			 ici_applicationid uuid;
 BEGIN  
- SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
+ SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
  FOR _rec IN
-	SELECT m.* FROM  databaseSchema.objectQualifier_prov_rolemembership rm 
-		INNER JOIN databaseSchema.objectQualifier_prov_membership m ON rm.userid = m.userid
-		INNER JOIN databaseSchema.objectQualifier_prov_role r ON rm.roleid = r.roleid
+	SELECT m.* FROM  {databaseSchema}.{objectQualifier}prov_rolemembership rm 
+		INNER JOIN {databaseSchema}.{objectQualifier}prov_membership m ON rm.userid = m.userid
+		INNER JOIN {databaseSchema}.{objectQualifier}prov_role r ON rm.roleid = r.roleid
 		WHERE m.usernamelwd=LOWER(i_username) AND r.rolenamelwd =LOWER(i_rolename) AND r.applicationid= ici_applicationid
 LOOP 
 RETURN NEXT _rec;
@@ -898,7 +898,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_profile_deleteinactive(varchar, timestamp);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteinactive
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_profile_deleteinactive
 						   (
 						   i_applicationname varchar,
 						   i_inactivesincedate timestamp,
@@ -910,8 +910,8 @@ $BODY$DECLARE
 BEGIN 	 
  
 	 DELETE
-	 FROM    databaseSchema.objectQualifier_prov_profile
-	 WHERE   applicationid = (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid))
+	 FROM    {databaseSchema}.{objectQualifier}prov_profile
+	 WHERE   applicationid = (SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid))
 						 AND (lastactivitydate <= i_inactivesincedate);
 	   GET DIAGNOSTICS deleted = ROW_COUNT;  
    
@@ -927,7 +927,7 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_profile_deleteprofiles(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteprofiles
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_profile_deleteprofiles
 						   (
 						   i_applicationname varchar,
 						   i_usernames varchar,
@@ -946,7 +946,7 @@ $BODY$DECLARE
 BEGIN
    
  
-	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
+	SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
  
 	 WHILE (ici_currentpos <= length(i_usernames)) LOOP
 		 SELECT SUBSTRING_INDEX(i_usernames, ',', ici_currentpos) INTO ici_nextpos; 
@@ -959,7 +959,7 @@ BEGIN
 		 IF (length(ici_username) > 0) THEN 
 		 BEGIN        
 			SELECT 0 INTO ici_deleteduser;  
-			DELETE FROM databaseSchema.objectQualifier_prov_profile 
+			DELETE FROM {databaseSchema}.{objectQualifier}prov_profile 
 			WHERE username = ici_username 
 			AND applicationid= ici_applicationid; 
 			GET DIAGNOSTICS deleted = ROW_COUNT;
@@ -993,7 +993,7 @@ $BODY$
 
  -- DROP FUNCTION objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestamp);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getprofiles
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_profile_getprofiles
 						   (
 						   i_applicationname varchar,
 						   i_pageindex integer,
@@ -1002,29 +1002,29 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getprofil
 						   i_inactivesincedate timestamp,
 						   IN i_newguid uuid
 						   )
-				  RETURNS SETOF databaseSchema.objectQualifier_prov_profile_getprofiles_return_type AS
+				  RETURNS SETOF {databaseSchema}.{objectQualifier}prov_profile_getprofiles_return_type AS
 $BODY$DECLARE
 			 ici_applicationid uuid;
 			 ici_pagelowerbound integer;
 			 ici_pageupperbound integer;
 			 ici_totalrecords   integer;
 			 rownumber integer:=0;
-			 _rec databaseSchema.objectQualifier_prov_profile_getprofiles_return_type%ROWTYPE;
+			 _rec {databaseSchema}.{objectQualifier}prov_profile_getprofiles_return_type%ROWTYPE;
 BEGIN 
- SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
+ SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
 	 -- Set the page bounds
 	 ici_pagelowerbound = i_pagesize*i_pageindex;
 	 ici_pageupperbound= i_pagesize -1 + ici_pagelowerbound;
 	   
  SELECT  COUNT(p.username) INTO ici_totalrecords
-	 FROM     databaseSchema.objectQualifier_prov_profile p
+	 FROM     {databaseSchema}.{objectQualifier}prov_profile p
 	 WHERE    p.applicationid= ici_applicationid   
 			 AND (i_inactivesincedate IS NULL OR p.lastactivitydate <= i_inactivesincedate)
 			 AND (i_usernametomatch IS NULL OR p.username = i_usernametomatch);
 		 
  FOR _rec IN 
 	 SELECT   ici_totalrecords, p.*
-	 FROM     databaseSchema.objectQualifier_prov_profile p
+	 FROM     {databaseSchema}.{objectQualifier}prov_profile p
 	 WHERE    p.applicationid= ici_applicationid     
 			 AND (i_inactivesincedate IS NULL OR lastactivitydate <= i_inactivesincedate)
 			 AND (i_usernametomatch IS NULL OR p.username = i_usernametomatch)
@@ -1052,7 +1052,7 @@ END LOOP;
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  -- Function: objectQualifier_prov_profile_getnumberinactiveprofiles(varchar, timestamp)
  
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getnumberinactiveprofiles
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}prov_profile_getnumberinactiveprofiles
 						   (
 						   i_applicationname varchar,
 						   i_inactivesincedate timestamp,
@@ -1063,8 +1063,8 @@ $BODY$
 BEGIN  	
  
 	RETURN (SELECT  COUNT(1)
-	 FROM    databaseSchema.objectQualifier_prov_profile 
-	 WHERE   (applicationid= (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)))     
+	 FROM    {databaseSchema}.{objectQualifier}prov_profile 
+	 WHERE   (applicationid= (SELECT  {databaseSchema}.{objectQualifier}prov_createapplication(i_applicationname,i_newguid)))     
 		 AND (lastactivitydate <= i_inactivesincedate));
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER

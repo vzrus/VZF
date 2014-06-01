@@ -1101,9 +1101,10 @@ namespace YAF.Pages.Admin
                                 MimeType = null,
                                 Votes = 0
                             });
-
-                    var pollGroup = new PollGroup
+                   
+                    CommonDb.poll_save(new PollGroup
                                         {
+                                            mid = PageContext.PageModuleID,
                                             CategoryId = null,
                                             ForumId = null,
                                             TopicId = (int?)topicId,
@@ -1141,9 +1142,8 @@ namespace YAF.Pages.Admin
                                                                         }
                                                             }
                                                     }
-                                        };
+                                        });
 
-                    CommonDb.poll_save(PageContext.PageModuleID, pollGroup);
                 }
 
                 if (_messagesToCreate > 0)

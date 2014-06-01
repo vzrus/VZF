@@ -1,6 +1,5 @@
 ﻿namespace VZF.Data.Common
 {
-    using System.Data;
     using System.Text;
 
     using VZF.Data.MySql.Mappers;
@@ -16,20 +15,34 @@
         #region ProfileMirror
 
         /// <summary>
+        /// Gets the profile exists.
+        /// </summary>
+        public static string ProfileExists
+        {
+            get
+            {
+                return @"SELECT 1 FROM {0}  WHERE UserId = @i_UserID AND ApplicationName = @i_ApplicationName LIMIT 1";
+            }
+        }
+
+        /// <summary>
         /// The set profile properties.
         /// </summary>
         /// <param name="setStr">
-        /// The set Str.
+        /// The set str.
         /// </param>
         /// <param name="columnStr">
-        /// The column Str.
+        /// The column str.
         /// </param>
         /// <param name="valueStr">
-        /// The value Str.
+        /// The value str.
         /// </param>
         /// <param name="profileExists">
-        /// The profile Exists.
+        /// The profile exists.
         /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string SetProfileProperties(
             [NotNull] string setStr,
             [NotNull] string columnStr,
@@ -46,27 +59,11 @@
             else
             {
                 sqlCommand.Append("INSERT {0}").Append(" (UserID,").Append(columnStr.Trim(','));
-                sqlCommand.Append(") VALUES (@i_UserID,")
-                          .Append(valueStr.Trim(','))
-                          .Append(");");
+                sqlCommand.Append(") VALUES (@i_UserID,").Append(valueStr.Trim(',')).Append(");");
             }
 
             return sqlCommand.ToString();
         }
-
-        /// <summary>
-        /// The get profile structure.
-        /// </summary>
-        /// <param name="mid">
-        /// The connection string.
-        /// </param>
-        /// <returns>
-        /// The <see cref="DataTable"/>.
-        /// </returns>
-        public static string GetProfileStructure()
-        {
-            return @"SELECT * FROM {0} LIMIT 1";
-        }        
 
         /// <summary>
         /// The add profile column.
@@ -81,14 +78,16 @@
         /// The size.
         /// </param>
         /// <param name="tableName">
-        /// The table Name.
+        /// The table name.
         /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string AddProfileColumn([NotNull] string name, string type, int size, string tableName)
         {
             type = DataTypeMappers.typeToDbValueMap(name, type, size);
 
-            return "ALTER TABLE {0} ADD {1} {2}".FormatWith(
-                tableName, name, type);
+            return "ALTER TABLE {0} ADD {1} {2}".FormatWith(tableName, name, type);
         }
 
         /// <summary>
@@ -98,7 +97,10 @@
         /// The chunk.
         /// </param>
         /// <returns>
-        /// The get db type and size from string.
+        /// The <see>
+        ///         <cref>string[]</cref>
+        ///     </see>
+        ///     .
         /// </returns>
         public static string[] GetDbTypeAndSizeFromString(string[] chunk)
         {
@@ -107,20 +109,6 @@
             return chunk;
         }
 
-        /// <summary>
-        /// The profile exists.
-        /// </summary>
-        /// <value>
-        ///   The <see cref="string"/>.
-        /// </value>
-        public static string ProfileExists
-        {
-            get
-            {
-                return @"SELECT 1 FROM {0}  WHERE UserId = @i_UserID AND ApplicationName = @i_ApplicationName LIMIT 1";
-            }
-        }
-
-        #endregion  
+        #endregion
     }
 }

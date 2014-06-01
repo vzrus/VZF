@@ -251,10 +251,20 @@
     font-size: 11pt;    
 }
 
+.yafnet .MessageDetails {
+    background-color: #dfdddd;
+    background-color: rgba(25, 25, 25, 0.1);
+    border: 1px inset #dfdddd;
+    border: 1px inset rgba(25, 25, 25, 0.1);
+    font-family: Consolas, "Lucida Console", Monaco, monospace;
+    font-size: 0.9em;
+    margin-top: 2em;
+    padding: 5px;
+}
+
 .yafnet .MessageDetails span
 {
     font-weight: bold;
-    font-size: 8pt;
 }
 
 .yafnet .forumLinkCol div.forumheading,
@@ -1108,9 +1118,13 @@
     background-color:red;
     height:20px;
     -webkit-border-radius: 0.4em;
+    -ms-border-radius: 0.4em;
     border-radius: 0.4em;
+    -webkit-box-shadow:1px 1px 1px gray;
+    -ms-box-shadow:1px 1px 1px gray;
     box-shadow:1px 1px 1px gray;
 }
+
 .yafnet .Unread a {color:white!important;font-weight:bold!important;font-size:0.9em!important;}
 
 /* Alpha Sort Control */

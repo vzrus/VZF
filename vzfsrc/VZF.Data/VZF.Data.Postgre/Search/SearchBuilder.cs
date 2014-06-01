@@ -118,15 +118,15 @@ namespace VZF.Data.Postgre.Search
 
             searchSql.Append(
                 " a.forumid, a.topicid, a.topic, b.userid, COALESCE(c.username, b.name) as Name, c.messageid as \"MessageID\", c.posted, c.message as \"Message\", c.flags FROM ");
-            searchSql.Append(ObjectName.GetVzfObjectName("topic", mid));
+            searchSql.Append(SqlDbAccess.GetVzfObjectName("topic", mid));
             searchSql.Append(" a JOIN ");
-            searchSql.Append(ObjectName.GetVzfObjectName("forum", mid));
+            searchSql.Append(SqlDbAccess.GetVzfObjectName("forum", mid));
             searchSql.Append(" f ON f.forumid = a.forumid LEFT JOIN ");
-            searchSql.Append(ObjectName.GetVzfObjectName("message", mid));
+            searchSql.Append(SqlDbAccess.GetVzfObjectName("message", mid));
             searchSql.Append(" c ON a.topicid = c.topicid LEFT JOIN ");
-            searchSql.Append(ObjectName.GetVzfObjectName("user", mid));
+            searchSql.Append(SqlDbAccess.GetVzfObjectName("user", mid));
             searchSql.Append(" b ON c.userid = b.userid join ");
-            searchSql.Append(ObjectName.GetVzfObjectName("vaccess", mid));
+            searchSql.Append(SqlDbAccess.GetVzfObjectName("vaccess", mid));
             searchSql.Append(" x ON x.forumid=a.forumid ");
             searchSql.Append(
                 "WHERE x.readaccess<>0 AND x.userid={0} AND c.isapproved IS TRUE AND a.topicmovedid IS NULL AND a.isdeleted IS FALSE AND c.isdeleted IS FALSE "

@@ -24,6 +24,7 @@
 namespace VZF.Data.DAL
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Configuration;
     using System.Text;
 
@@ -103,6 +104,29 @@ namespace VZF.Data.DAL
         /// </summary>
         public const string Other = "Other";
 
+        public static ConcurrentDictionary<string, ConcurrentDictionary<string, string>> _providerInformation;
+
+        private ConcurrentDictionary<string, string> _providerInformationDetails;
+
+        public ConcurrentDictionary<string, string> ProviderInformationDetails
+        {
+            get { return this._providerInformationDetails; }
+            set { this._providerInformationDetails = value; }
+        }
+        
+        public static ConcurrentDictionary<string, ConcurrentDictionary<string, string>> ProviderInformation
+        {
+            get
+            {
+                return _providerInformation;
+            }
+
+            set
+            {
+                _providerInformation = value;
+            }
+        }
+
         /// <summary>
         /// The get connection data.
         /// </summary>
@@ -129,10 +153,10 @@ namespace VZF.Data.DAL
 
             // Look for modules special configs.
             string connectionStringName =
-                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+                Config.GetConfigValueAsString(String.Format("VZF.ConnectionStringNameModule{0}", mid));
            
             // They were not found gte default.
-            if (string.IsNullOrEmpty(connectionStringName))
+            if (String.IsNullOrEmpty(connectionStringName))
             {
                 connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
             }
@@ -177,10 +201,10 @@ namespace VZF.Data.DAL
 
             // Look for modules special configs.
             connectionStringName =
-                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+                Config.GetConfigValueAsString(String.Format("VZF.ConnectionStringNameModule{0}", mid));
 
             // They were not found gte default.
-            if (string.IsNullOrEmpty(connectionStringName))
+            if (String.IsNullOrEmpty(connectionStringName))
             {
                 connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
             }
@@ -213,10 +237,10 @@ namespace VZF.Data.DAL
 
             // Look for modules special configs.
             string connectionStringName =
-                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+                Config.GetConfigValueAsString(String.Format("VZF.ConnectionStringNameModule{0}", mid));
 
             // They were not found gte default.
-            if (string.IsNullOrEmpty(connectionStringName))
+            if (String.IsNullOrEmpty(connectionStringName))
             {
                 connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
             }
@@ -264,10 +288,10 @@ namespace VZF.Data.DAL
 
             // Look for modules special configs.
             string connectionStringName =
-                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+                Config.GetConfigValueAsString(String.Format("VZF.ConnectionStringNameModule{0}", mid));
 
             // They were not found gte default.
-            if (string.IsNullOrEmpty(connectionStringName))
+            if (String.IsNullOrEmpty(connectionStringName))
             {
                 connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
             }
@@ -334,7 +358,7 @@ namespace VZF.Data.DAL
           string connectionStringName = Config.GetConfigValueAsString(sb.ToString());
 
           // They were not found gte default.
-          if (string.IsNullOrEmpty(connectionStringName))
+          if (String.IsNullOrEmpty(connectionStringName))
           {
               connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
           }
@@ -359,8 +383,8 @@ namespace VZF.Data.DAL
             string dataEngine;
             string connectionString;
 
-            string namePattern = string.Empty;
-            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            string namePattern = String.Empty;
+            GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
             return dataEngine;
         }
@@ -376,7 +400,7 @@ namespace VZF.Data.DAL
         /// </returns>
         public static string GetProviderNameFromConnectionString(string connectionString)
         {
-            string defaultName = string.Empty;
+            string defaultName = String.Empty;
           
             foreach (ConnectionStringSettings cs in ConfigurationManager.ConnectionStrings)
             {
@@ -393,6 +417,16 @@ namespace VZF.Data.DAL
             }
 
             return defaultName;
+        }
+
+        public static string GetVzfObjectName(string objectName, int? mid)
+        {
+            return new VzfSqlCommand(GetConnectionStringName(mid, String.Empty)).DataSource.WrapObjectName(objectName);
+        }
+
+        public static string GetVzfObjectNameFromConnectionString(string objectName, string connectionStringName)
+        {
+            return new VzfSqlCommand(connectionStringName).DataSource.WrapObjectName(objectName);
         }
     }
 }

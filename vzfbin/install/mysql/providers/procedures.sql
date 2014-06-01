@@ -3,84 +3,84 @@
 -- They are distributed under terms of GPLv2 only licence as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2006-2012
 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_CreateApplication;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_CreateApplication;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_upgrade;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_upgrade;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_changepassword;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_changepassword;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_deleteuser;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_deleteuser;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_deleterole;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_deleterole;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_getallusers;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_getallusers;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_resetpassword;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_resetpassword;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_getuser;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_getuser;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_profile_deleteinactive;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_profile_deleteinactive;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_profile_getnumberinactiveprofiles;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_profile_getnumberinactiveprofiles;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_createrole;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_createrole;
  --GO 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_findusersinrole;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_findusersinrole;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_isuserinrole;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_isuserinrole;
  --GO 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_unlockuser;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_unlockuser;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_changepasswordquestionandanswer;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_changepasswordquestionandanswer;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_createuser;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_createuser;
  --GO 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_findusersbyemail;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_findusersbyemail;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_findusersbyname;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_findusersbyname;
  --GO 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_addusertorole;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_addusertorole;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_getnumberofusersonline;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_getnumberofusersonline;
  --GO 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_getusernamebyemail;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_getusernamebyemail;
  --GO 
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_profile_deleteprofiles;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_profile_deleteprofiles;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_profile_getprofiles_count;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_profile_getprofiles_count;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_profile_getprofiles;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_profile_getprofiles;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_exists;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_exists;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_getroles;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_getroles;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_role_removeuserfromrole;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_role_removeuserfromrole;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_updateuser;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_updateuser;
  --GO
- DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}prov_setprofileproperties;
+ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}prov_setprofileproperties;
  --GO
  
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_CreateApplication
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_CreateApplication
  (
  i_ApplicationName VARCHAR(256),
  OUT i_ApplicationID BINARY(16) 
  )
  MODIFIES SQL DATA
  BEGIN
-	SET i_ApplicationID = (SELECT ApplicationID FROM {databaseName}.{objectQualifier}prov_Application WHERE ApplicationNameLwd=LOWER(i_ApplicationName));
+	SET i_ApplicationID = (SELECT ApplicationID FROM {databaseSchema}.{objectQualifier}prov_Application WHERE ApplicationNameLwd=LOWER(i_ApplicationName));
 	
 	IF (i_ApplicationID IS NULL) THEN 	
 			SET i_ApplicationID = UNHEX(REPLACE(UUID(),'-',''));
-			 INSERT  {databaseName}.{objectQualifier}prov_Application (ApplicationID, ApplicationName, ApplicationNameLwd)
+			 INSERT  {databaseSchema}.{objectQualifier}prov_Application (ApplicationID, ApplicationName, ApplicationNameLwd)
 			 VALUES  (i_ApplicationID, i_ApplicationName, LOWER(i_ApplicationName));
 	 END IF;
  END;
  
 --GO
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_upgrade
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_upgrade
 (
 i_PreviousVersion int,
 i_NewVersion int,
@@ -90,8 +90,8 @@ MODIFIES SQL DATA
 BEGIN
 -- RESOLVE SALT ISSUE IN 193 RC2
 IF ((i_PreviousVersion = 31) OR (i_PreviousVersion = 32)) THEN					
-		UPDATE {databaseName}.{objectQualifier}prov_Membership SET PasswordSalt='UwB5AHMAdABlAG0ALgBCAHkAdABlAFsAXQA=' WHERE PasswordSalt IS NOT NULL;
-		UPDATE {databaseName}.{objectQualifier}prov_Membership SET Joined=i_UTCTIMESTAMP WHERE Joined IS NULL;
+		UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET PasswordSalt='UwB5AHMAdABlAG0ALgBCAHkAdABlAFsAXQA=' WHERE PasswordSalt IS NOT NULL;
+		UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET Joined=i_UTCTIMESTAMP WHERE Joined IS NULL;
 		END IF;	
 	
 END; 
@@ -100,7 +100,7 @@ END;
 
 /* 1-PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_changepassword(
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_changepassword(
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
  i_Password VARCHAR(256),
@@ -112,9 +112,9 @@ END;
  BEGIN
 	DECLARE i_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, i_ApplicationId);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, i_ApplicationId);
 	
-	UPDATE {databaseName}.{objectQualifier}prov_Membership SET Password=i_Password, PasswordSalt=i_PasswordSalt,
+	UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET Password=i_Password, PasswordSalt=i_PasswordSalt,
 		PasswordFormat=i_PasswordFormat, PasswordAnswer=i_PasswordAnswer
 	WHERE UsernameLwd=LOWER(i_UserName) and ApplicationID=i_ApplicationID;
  
@@ -122,7 +122,7 @@ END;
 --GO 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_deleteuser
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_deleteuser
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -133,26 +133,26 @@ END;
 	DECLARE ici_ApplicationID BINARY(16);
 		DECLARE ici_UserID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 	/*get the userID*/
-	SELECT   UserID INTO ici_UserID FROM {databaseName}.{objectQualifier}prov_Membership WHERE ApplicationID = ici_ApplicationID AND UsernameLwd = LOWER(i_UserName);
+	SELECT   UserID INTO ici_UserID FROM {databaseSchema}.{objectQualifier}prov_Membership WHERE ApplicationID = ici_ApplicationID AND UsernameLwd = LOWER(i_UserName);
  
 	IF (ici_UserID IS NOT NULL) THEN
 	
 		/*Delete records from membership*/
-		DELETE FROM {databaseName}.{objectQualifier}prov_Membership WHERE UserID = ici_UserID;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_Membership WHERE UserID = ici_UserID;
 		/*Delete from Role table*/
-		DELETE FROM {databaseName}.{objectQualifier}prov_RoleMembership WHERE UserID = ici_UserID;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_RoleMembership WHERE UserID = ici_UserID;
 		/*Delete from Profile table*/
-		DELETE FROM {databaseName}.{objectQualifier}prov_Profile WHERE UserID = ici_UserID;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_Profile WHERE UserID = ici_UserID;
 	END IF;	
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_deleterole
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_deleterole
  (
  i_ApplicationName VARCHAR(256),
  i_Rolename VARCHAR(256),
@@ -164,20 +164,20 @@ END;
 	DECLARE ici_ErrorCode INT;
 	DECLARE ici_ApplicationID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);	
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);	
 	
 	SET ici_ErrorCode = 0;
-	SET ici_RoleID = (SELECT RoleID FROM {databaseName}.{objectQualifier}prov_Role r WHERE r.RolenameLwd=LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID);
+	SET ici_RoleID = (SELECT RoleID FROM {databaseSchema}.{objectQualifier}prov_Role r WHERE r.RolenameLwd=LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID);
 	
 	IF (i_DeleteOnlyIfRoleIsEmpty <> 0) THEN
-		IF (EXISTS (SELECT 1 FROM {databaseName}.{objectQualifier}prov_RoleMembership rm WHERE rm.RoleID=ici_RoleID)) THEN
+		IF (EXISTS (SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_RoleMembership rm WHERE rm.RoleID=ici_RoleID)) THEN
 			SET ici_ErrorCode = 2; END IF;
 	ELSE
-		DELETE FROM {databaseName}.{objectQualifier}prov_RoleMembership WHERE RoleID=ici_RoleID;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_RoleMembership WHERE RoleID=ici_RoleID;
 	END IF;	
  
 	IF (ici_ErrorCode = 0) THEN
-		DELETE FROM {databaseName}.{objectQualifier}prov_Role WHERE RoleID=ici_RoleID; END IF;
+		DELETE FROM {databaseSchema}.{objectQualifier}prov_Role WHERE RoleID=ici_RoleID; END IF;
 	 
 	 SELECT ici_ErrorCode;	
 END;
@@ -185,7 +185,7 @@ END;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_getallusers
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_getallusers
  (
  i_ApplicationName VARCHAR(256),
  i_PageIndex INT,
@@ -201,7 +201,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_getallusers
 	 DECLARE ici_PagingUpperBoundary INT;
 	
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 
   IF (i_PageIndex < 0 ) THEN
@@ -215,9 +215,9 @@ END IF;
 	 DROP TABLE IF EXISTS tmpRowNumber;
 	CREATE TEMPORARY TABLE tmpRowNumber (RowNumber SERIAL, UserID BINARY(16), UNIQUE KEY (UserID, RowNumber));
 	
-	INSERT INTO tmpRowNumber (UserID) SELECT m.UserID FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN {databaseName}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID WHERE a.ApplicationID = ici_ApplicationID;
+	INSERT INTO tmpRowNumber (UserID) SELECT m.UserID FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID WHERE a.ApplicationID = ici_ApplicationID;
  SET i_TotalRecords = (SELECT COUNT(RowNumber) FROM tmpRowNumber);
-	SELECT m.*, r.RowNumber FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN tmpRowNumber r ON m.UserID = r.UserID WHERE r.RowNumber >= ici_PagingLowerBoundary AND r.RowNumber <= ici_PagingUpperBoundary;     
+	SELECT m.*, r.RowNumber FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN tmpRowNumber r ON m.UserID = r.UserID WHERE r.RowNumber >= ici_PagingLowerBoundary AND r.RowNumber <= ici_PagingUpperBoundary;     
 	
 	DROP TABLE IF EXISTS tmpRowNumber;	
 	
@@ -226,7 +226,7 @@ END IF;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_resetpassword
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_resetpassword
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -241,9 +241,9 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_resetpassword
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
-	UPDATE {databaseName}.{objectQualifier}prov_Membership SET
+	UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET
 	Password = i_Password,
 	PasswordSalt = i_PasswordSalt,
 	PasswordFormat = i_PasswordFormat,
@@ -254,7 +254,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_resetpassword
  END;
 --GO 
   
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_getuser
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_getuser
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -266,26 +266,26 @@ i_UTCTIMESTAMP datetime
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
 	IF (i_UserKey IS NULL) THEN
-		SELECT m.* FROM {databaseName}.{objectQualifier}prov_Membership m 
+		SELECT m.* FROM {databaseSchema}.{objectQualifier}prov_Membership m 
 				  WHERE m.UsernameLwd = LOWER(i_UserName) AND m.ApplicationID = ici_ApplicationID LIMIT 1;
 	ELSE
-		SELECT m.* FROM {databaseName}.{objectQualifier}prov_Membership m 
+		SELECT m.* FROM {databaseSchema}.{objectQualifier}prov_Membership m 
 				  WHERE m.UserID = UNHEX(REPLACE(i_UserKey,'-','')) AND m.ApplicationID = ici_ApplicationID LIMIT 1;
 		END IF; 
 	
 	/*IF USER IS ONLINE DO AN UPDATE USER*/	
 	IF (i_UserIsOnline = 1) THEN 	
-		UPDATE {databaseName}.{objectQualifier}prov_Membership SET LastActivity = i_UTCTIMESTAMP WHERE UsernameLwd = LOWER(i_UserName) and ApplicationID = ici_ApplicationID;
+		UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET LastActivity = i_UTCTIMESTAMP WHERE UsernameLwd = LOWER(i_UserName) and ApplicationID = ici_ApplicationID;
 	END IF;		
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_profile_deleteinactive
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_profile_deleteinactive
  (
  i_ApplicationName VARCHAR(256),
  i_InactiveSinceDate DATETIME
@@ -294,13 +294,13 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_profile_deleteinactive
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 	 DELETE
-	 FROM    {databaseName}.{objectQualifier}prov_Profile
+	 FROM    {databaseSchema}.{objectQualifier}prov_Profile
 	 WHERE   UserID IN
 			 (   SELECT  UserID
-				 FROM    {databaseName}.{objectQualifier}prov_Membership m
+				 FROM    {databaseSchema}.{objectQualifier}prov_Membership m
 				 WHERE   ApplicationID = ici_ApplicationID
 						 AND (UNIX_TIMESTAMP(LastActivity) <= UNIX_TIMESTAMP(i_InactiveSinceDate))
 			 );
@@ -310,17 +310,17 @@ END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_profile_getnumberinactiveprofiles
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_profile_getnumberinactiveprofiles
 	( i_ApplicationName        VARCHAR(256),
 	 i_InactiveSinceDate      DATETIME)
 
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 	 SELECT  COUNT(1)
-	 FROM    {databaseName}.{objectQualifier}prov_Membership m, {databaseName}.{objectQualifier}prov_Profile p
+	 FROM    {databaseSchema}.{objectQualifier}prov_Membership m, {databaseSchema}.{objectQualifier}prov_Profile p
 	 WHERE   ApplicationID = ici_ApplicationID
 		 AND m.UserID = p.UserID
 		 AND (UNIX_TIMESTAMP(LastActivity) <= UNIX_TIMESTAMP(i_InactiveSinceDate));
@@ -328,7 +328,7 @@ END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_createrole
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_createrole
  (
  i_ApplicationName VARCHAR(256),
  i_Rolename VARCHAR(256)
@@ -336,16 +336,16 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_createrole
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
-	IF (NOT EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}prov_Role r WHERE r.ApplicationID = ici_ApplicationID AND r.RolenameLwd = LOWER(i_Rolename))) THEN
-		INSERT INTO {databaseName}.{objectQualifier}prov_Role (RoleID, ApplicationID,  RoleName, RoleNameLwd) VALUES (UNHEX(REPLACE(UUID(),'-','')),ici_ApplicationID, i_Rolename,LOWER(i_Rolename)); END IF;		
+	IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_Role r WHERE r.ApplicationID = ici_ApplicationID AND r.RolenameLwd = LOWER(i_Rolename))) THEN
+		INSERT INTO {databaseSchema}.{objectQualifier}prov_Role (RoleID, ApplicationID,  RoleName, RoleNameLwd) VALUES (UNHEX(REPLACE(UUID(),'-','')),ici_ApplicationID, i_Rolename,LOWER(i_Rolename)); END IF;		
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_findusersinrole
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_findusersinrole
  (
  i_ApplicationName VARCHAR(256),
  i_Rolename VARCHAR(256)
@@ -354,18 +354,18 @@ END;
 	DECLARE ici_RoleID BINARY(16);
 	DECLARE ici_ApplicationID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
-	SET ici_RoleID = (SELECT RoleID FROM {databaseName}.{objectQualifier}prov_Role r INNER JOIN {databaseName}.{objectQualifier}prov_Application a ON r.ApplicationID = a.ApplicationID WHERE r.RolenameLwd=LOWER(i_Rolename) AND a.ApplicationID = ici_ApplicationID);
+	SET ici_RoleID = (SELECT RoleID FROM {databaseSchema}.{objectQualifier}prov_Role r INNER JOIN {databaseSchema}.{objectQualifier}prov_Application a ON r.ApplicationID = a.ApplicationID WHERE r.RolenameLwd=LOWER(i_Rolename) AND a.ApplicationID = ici_ApplicationID);
  
-	SELECT m.* FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN {databaseName}.{objectQualifier}prov_RoleMembership rm ON m.UserID = rm.UserID WHERE rm.RoleID = ici_RoleID;
+	SELECT m.* FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_RoleMembership rm ON m.UserID = rm.UserID WHERE rm.RoleID = ici_RoleID;
 		
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_isuserinrole
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_isuserinrole
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -374,18 +374,18 @@ END;
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
-	SELECT m.* FROM {databaseName}.{objectQualifier}prov_RoleMembership rm 
-		INNER JOIN {databaseName}.{objectQualifier}prov_Membership m ON rm.UserID = m.UserID
-		INNER JOIN {databaseName}.{objectQualifier}prov_Role r ON rm.RoleID = r.RoleID
+	SELECT m.* FROM {databaseSchema}.{objectQualifier}prov_RoleMembership rm 
+		INNER JOIN {databaseSchema}.{objectQualifier}prov_Membership m ON rm.UserID = m.UserID
+		INNER JOIN {databaseSchema}.{objectQualifier}prov_Role r ON rm.RoleID = r.RoleID
 		WHERE m.UsernameLwd=LOWER(i_UserName) AND r.RolenameLwd =LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID LIMIT 1;
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_unlockuser
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_unlockuser
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256)
@@ -393,9 +393,9 @@ END;
  BEGIN
 	DECLARE ici_ApplicationID  BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
-	UPDATE {databaseName}.{objectQualifier}prov_Membership SET
+	UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET
 	IsLockedOut = 0,
 	FailedPasswordAttempts = 0
 	WHERE ApplicationID = ici_ApplicationID AND
@@ -406,7 +406,7 @@ END;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_changepasswordquestionandanswer
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_changepasswordquestionandanswer
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -416,16 +416,16 @@ END;
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
-	UPDATE {databaseName}.{objectQualifier}prov_Membership SET PasswordQuestion=i_PasswordQuestion, PasswordAnswer=i_PasswordAnswer
+	UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET PasswordQuestion=i_PasswordQuestion, PasswordAnswer=i_PasswordAnswer
 	WHERE UsernameLwd=LOWER(i_UserName) and ApplicationID=ici_ApplicationID;
  
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_createuser
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_createuser
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -440,17 +440,17 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_createuser
  )
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16); 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	IF i_UserKey IS NULL THEN
 		SET i_UserKey =UUID();END IF;
 		
-	INSERT INTO {databaseName}.{objectQualifier}prov_Membership (UserID, UserUUID,ApplicationID, Username,UsernameLwd,Password,PasswordSalt,PasswordFormat,Email,EmailLwd,PasswordQuestion,PasswordAnswer,IsApproved)
+	INSERT INTO {databaseSchema}.{objectQualifier}prov_Membership (UserID, UserUUID,ApplicationID, Username,UsernameLwd,Password,PasswordSalt,PasswordFormat,Email,EmailLwd,PasswordQuestion,PasswordAnswer,IsApproved)
 		VALUES (UNHEX(REPLACE(i_UserKey,'-','')),i_UserKey, ici_ApplicationID,i_UserName, LOWER(i_UserName), i_Password, i_PasswordSalt, i_PasswordFormat, i_Email, LOWER(i_Email), i_PasswordQuestion, i_PasswordAnswer, i_IsApproved);
 END;
 --GO 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_findusersbyemail
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_findusersbyemail
  (
  i_ApplicationName VARCHAR(256),
  i_EmailAddress VARCHAR(256),
@@ -466,7 +466,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_findusersbyemail
 	 DECLARE ici_PagingUpperBoundary INT;
 	/* DECLARE i_TotalRecords   INT;*/
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 
 	 IF (i_PageIndex < 0 ) THEN
@@ -481,12 +481,12 @@ END IF;
 	 DROP TABLE IF EXISTS tmpRowNumber;
 	CREATE TEMPORARY TABLE tmpRowNumber (RowNumber SERIAL, UserID BINARY(16), UNIQUE KEY (UserID, RowNumber));
 	
-	INSERT INTO tmpRowNumber (UserID) SELECT m.UserID FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN {databaseName}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID  WHERE a.ApplicationID = ici_ApplicationID AND m.EmailLwd = LOWER(i_EmailAddress);
+	INSERT INTO tmpRowNumber (UserID) SELECT m.UserID FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID  WHERE a.ApplicationID = ici_ApplicationID AND m.EmailLwd = LOWER(i_EmailAddress);
  
 	
 	 
 	SET i_TotalRecords = (SELECT COUNT(RowNumber) FROM tmpRowNumber);
-		SELECT m.*, r.RowNumber FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN tmpRowNumber r ON m.UserID = r.UserID WHERE r.RowNumber >= ici_PagingLowerBoundary AND r.RowNumber <= ici_PagingUpperBoundary;
+		SELECT m.*, r.RowNumber FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN tmpRowNumber r ON m.UserID = r.UserID WHERE r.RowNumber >= ici_PagingLowerBoundary AND r.RowNumber <= ici_PagingUpperBoundary;
 	DROP TABLE IF EXISTS tmpRowNumber;
 	/*SELECT i_TotalRecords;*/
 	
@@ -495,7 +495,7 @@ END;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_findusersbyname
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_findusersbyname
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -511,7 +511,7 @@ DECLARE i_PagingLowerBoundary INT;
 	 DECLARE i_TotalRecords   INT;
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 	 
 	 IF (i_PageIndex < 0 ) THEN
@@ -525,10 +525,10 @@ END IF;
 
 	 DROP TABLE IF EXISTS tmpRowNumber;
 	CREATE TEMPORARY TABLE tmpRowNumber (RowNumber SERIAL, UserID BINARY(16), UNIQUE KEY (UserID, RowNumber));
-	INSERT INTO tmpRowNumber(UserID) SELECT m.UserID FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN {databaseName}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID WHERE a.ApplicationID = ici_ApplicationID AND m.UsernameLwd LIKE  CONCAT('%' ,LOWER(i_UserName), '%');
+	INSERT INTO tmpRowNumber(UserID) SELECT m.UserID FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID WHERE a.ApplicationID = ici_ApplicationID AND m.UsernameLwd LIKE  CONCAT('%' ,LOWER(i_UserName), '%');
  
 	SET i_TotalRecords = (SELECT COUNT(RowNumber) FROM tmpRowNumber);
-		SELECT m.*, r.RowNumber FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN tmpRowNumber r ON m.UserID = r.UserID WHERE r.RowNumber >= i_PagingLowerBoundary AND r.RowNumber <= i_PagingUpperBoundary;
+		SELECT m.*, r.RowNumber FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN tmpRowNumber r ON m.UserID = r.UserID WHERE r.RowNumber >= i_PagingLowerBoundary AND r.RowNumber <= i_PagingUpperBoundary;
 	DROP TABLE IF EXISTS tmpRowNumber;
 	/*SELECT i_TotalRecords;*/
 	
@@ -537,7 +537,7 @@ END;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_addusertorole
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_addusertorole
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -548,19 +548,19 @@ END;
 	DECLARE ici_RoleID BINARY(16);
 	DECLARE ici_ApplicationID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
-	SET ici_UserID = (SELECT UserID FROM {databaseName}.{objectQualifier}prov_Membership m WHERE m.UsernameLwd=LOWER(i_UserName) AND m.ApplicationID = ici_ApplicationID);
-	SET ici_RoleID = (SELECT RoleID FROM {databaseName}.{objectQualifier}prov_Role r WHERE r.RolenameLwd=LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID);
+	SET ici_UserID = (SELECT UserID FROM {databaseSchema}.{objectQualifier}prov_Membership m WHERE m.UsernameLwd=LOWER(i_UserName) AND m.ApplicationID = ici_ApplicationID);
+	SET ici_RoleID = (SELECT RoleID FROM {databaseSchema}.{objectQualifier}prov_Role r WHERE r.RolenameLwd=LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID);
 	IF (ici_UserID IS NOT NULL AND ici_RoleID IS NOT NULL) THEN
-		IF (NOT EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}prov_RoleMembership rm WHERE rm.UserID=ici_UserID AND rm.RoleID=ici_RoleID)) THEN
-		  INSERT INTO {databaseName}.{objectQualifier}prov_RoleMembership (RoleID, UserID) VALUES (ici_RoleID, ici_UserID);
+		IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_RoleMembership rm WHERE rm.UserID=ici_UserID AND rm.RoleID=ici_RoleID)) THEN
+		  INSERT INTO {databaseSchema}.{objectQualifier}prov_RoleMembership (RoleID, UserID) VALUES (ici_RoleID, ici_UserID);
 		END IF;
 	END IF;
 END;
 --GO 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_getnumberofusersonline
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_getnumberofusersonline
  (
  i_ApplicationName VARCHAR(256),
  i_TimeWindow INT,
@@ -574,10 +574,10 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_getnumberofusersonline
 		SET ici_ActivityDate = DATE_SUB(i_CurrentTimeUTC, INTERVAL i_TimeWindow DAY);
 
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
 	
-	SET ici_NumberActive = (SELECT COUNT(1) FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN {databaseName}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID  WHERE a.ApplicationID = ici_ApplicationID AND m.LastLogin >= ici_ActivityDate);
+	SET ici_NumberActive = (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID  WHERE a.ApplicationID = ici_ApplicationID AND m.LastLogin >= ici_ActivityDate);
 	 
 	 SELECT ici_NumberActive;
  
@@ -586,21 +586,21 @@ END;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_getusernamebyemail
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_getusernamebyemail
  (
  i_ApplicationName VARCHAR(256),
  i_Email VARCHAR(256)
  )
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
-	SELECT m.Username FROM {databaseName}.{objectQualifier}prov_Membership m INNER JOIN {databaseName}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID  WHERE a.ApplicationID = ici_ApplicationID AND m.EmailLwd = LOWER(i_Email);
+	SELECT m.Username FROM {databaseSchema}.{objectQualifier}prov_Membership m INNER JOIN {databaseSchema}.{objectQualifier}prov_Application a ON m.ApplicationID = a.ApplicationID  WHERE a.ApplicationID = ici_ApplicationID AND m.EmailLwd = LOWER(i_Email);
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_profile_deleteprofiles
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_profile_deleteprofiles
  (
  i_ApplicationName VARCHAR(256),
  i_UserNames VARCHAR(4000)
@@ -615,7 +615,7 @@ END;
 	 DECLARE ici_ErrorCode    INT DEFAULT 0; 
    
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 	 WHILE (ici_CurrentPos <= LEN(i_UserNames)) DO
 		 SELECT SUBSTRING_INDEX(i_UserNames, ',', ici_CurrentPos) INTO ici_NextPos; 
@@ -628,9 +628,9 @@ END;
 		 IF (LEN(ici_UserName) > 0) THEN         
 			 SELECT 0 INTO ici_DeletedUser; 
  
-			DELETE LOW_PRIORITY FROM {databaseName}.{objectQualifier}prov_Profile 
+			DELETE LOW_PRIORITY FROM {databaseSchema}.{objectQualifier}prov_Profile 
 			WHERE UserID IN 
-			(SELECT UserID FROM {databaseName}.{objectQualifier}prov_Membership 
+			(SELECT UserID FROM {databaseSchema}.{objectQualifier}prov_Membership 
 			WHERE UsernameLwd = LOWER(ici_UserName) 
 			AND ApplicationID = ici_ApplicationID);
 			 
@@ -654,7 +654,7 @@ END;
 --GO 
 /* Legacy to delete */
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_profile_getprofiles
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_profile_getprofiles
  (
 	i_ApplicationName        VARCHAR(256),
 	i_PageIndex              INT,
@@ -670,7 +670,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_profile_getprofiles
 		
    
 
-CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 /*Set the page bounds*/
 
 	 SET i_PageLowerBound = i_PageSize*i_PageIndex;
@@ -684,8 +684,8 @@ SET @_UserNameToMatch= i_UserNameToMatch;
 			
 PREPARE stmt_ppl FROM 'SELECT SQL_CALC_FOUND_ROWS 0 AS TotalCount,m.UserID,m.UserName, m.LastActivity, p.*
 	 FROM  
-	 {databaseName}.{objectQualifier}prov_Profile p 
-	 JOIN {databaseName}.{objectQualifier}prov_Membership m
+	 {databaseSchema}.{objectQualifier}prov_Profile p 
+	 JOIN {databaseSchema}.{objectQualifier}prov_Membership m
 	 ON m.UserID = p.UserID
 	 WHERE   (? IS NULL OR IFNULL(m.LastActivity,?) <=?)
 			 AND (? IS NULL OR m.UserNameLwd = LOWER(?)) 
@@ -702,7 +702,7 @@ PREPARE stmt_ppl FROM 'SELECT SQL_CALC_FOUND_ROWS 0 AS TotalCount,m.UserID,m.Use
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
  
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_exists
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_exists
  (
  i_ApplicationName VARCHAR(256),
  i_Rolename VARCHAR(256)
@@ -710,15 +710,15 @@ PREPARE stmt_ppl FROM 'SELECT SQL_CALC_FOUND_ROWS 0 AS TotalCount,m.UserID,m.Use
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
-	SELECT COUNT(1) FROM {databaseName}.{objectQualifier}prov_Role
+	SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}prov_Role
 		WHERE RolenameLwd = LOWER(i_Rolename) AND ApplicationID = ici_ApplicationID;
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_getroles
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_getroles
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256)
@@ -726,19 +726,19 @@ END;
  BEGIN
 	DECLARE ici_ApplicationID BINARY(16);
 	
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
  
 	IF (i_UserName is null) THEN
-		SELECT r.* FROM {databaseName}.{objectQualifier}prov_Role r WHERE r.ApplicationID = ici_ApplicationID;
+		SELECT r.* FROM {databaseSchema}.{objectQualifier}prov_Role r WHERE r.ApplicationID = ici_ApplicationID;
 	ELSE
 		SELECT
 			r.*
 		FROM
-			{databaseName}.{objectQualifier}prov_Role r
+			{databaseSchema}.{objectQualifier}prov_Role r
 		INNER JOIN
-			{databaseName}.{objectQualifier}prov_RoleMembership rm ON r.RoleID = rm.RoleID
+			{databaseSchema}.{objectQualifier}prov_RoleMembership rm ON r.RoleID = rm.RoleID
 		INNER JOIN
-			{databaseName}.{objectQualifier}prov_Membership m ON m.UserID = rm.UserID
+			{databaseSchema}.{objectQualifier}prov_Membership m ON m.UserID = rm.UserID
 		WHERE
 			r.ApplicationID  = ici_ApplicationID
 			AND m.UsernameLwd = LOWER(i_UserName);
@@ -748,7 +748,7 @@ END;
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
 
- CREATE PROCEDURE {databaseName}.{objectQualifier}prov_role_removeuserfromrole
+ CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_role_removeuserfromrole
  (
  i_ApplicationName VARCHAR(256),
  i_UserName VARCHAR(256),
@@ -759,18 +759,18 @@ END;
 	DECLARE ici_RoleID BINARY(16);
 	DECLARE ici_ApplicationID BINARY(16);
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);	
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);	
 	
-	SET ici_RoleID = (SELECT RoleID FROM {databaseName}.{objectQualifier}prov_Role r WHERE r.RolenameLwd = LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID);
-	SET ici_UserID = (SELECT UserID FROM {databaseName}.{objectQualifier}prov_Membership m WHERE m.UsernameLwd=LOWER(i_UserName) AND m.ApplicationID = ici_ApplicationID);
+	SET ici_RoleID = (SELECT RoleID FROM {databaseSchema}.{objectQualifier}prov_Role r WHERE r.RolenameLwd = LOWER(i_Rolename) AND r.ApplicationID = ici_ApplicationID);
+	SET ici_UserID = (SELECT UserID FROM {databaseSchema}.{objectQualifier}prov_Membership m WHERE m.UsernameLwd=LOWER(i_UserName) AND m.ApplicationID = ici_ApplicationID);
 	
-	DELETE FROM {databaseName}.{objectQualifier}prov_RoleMembership WHERE RoleID = ici_RoleID AND UserID=ici_UserID;
+	DELETE FROM {databaseSchema}.{objectQualifier}prov_RoleMembership WHERE RoleID = ici_RoleID AND UserID=ici_UserID;
 	
 END;
 --GO 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_updateuser
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_updateuser
  (
  i_ApplicationName VARCHAR(256),
  i_UserKey CHAR(36),
@@ -786,7 +786,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_updateuser
 	DECLARE ici_ApplicationID BINARY(16);
 	DECLARE i_Return INT DEFAULT 1;
  
-	CALL {databaseName}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
+	CALL {databaseSchema}.{objectQualifier}prov_CreateApplication (i_ApplicationName, ici_ApplicationID);
 	
 		/* Check UserKey */
 	sproc:BEGIN
@@ -797,14 +797,14 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_updateuser
  
 	/* Check for UniqueEmail */
 	IF (i_UniqueEmail = 1) THEN 	
-		IF (EXISTS (SELECT 1 FROM {databaseName}.{objectQualifier}prov_Membership m WHERE m.UserID != UNHEX(REPLACE(i_UserKey,'-','')) AND m.EmailLwd=LOWER(i_Email) AND m.ApplicationID=ici_ApplicationID) )
+		IF (EXISTS (SELECT 1 FROM {databaseSchema}.{objectQualifier}prov_Membership m WHERE m.UserID != UNHEX(REPLACE(i_UserKey,'-','')) AND m.EmailLwd=LOWER(i_Email) AND m.ApplicationID=ici_ApplicationID) )
 		   THEN  
 		   SET i_Return = 2;		 
 		   LEAVE sproc; 
 		   END IF; 			
 		END IF;
 	
-	UPDATE {databaseName}.{objectQualifier}prov_Membership SET
+	UPDATE {databaseSchema}.{objectQualifier}prov_Membership SET
 	Username = i_UserName,
 	UsernameLwd = LOWER(i_UserName),
 	Email = i_Email,
@@ -823,7 +823,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_updateuser
    END;
 --GO
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */ 
-CREATE PROCEDURE {databaseName}.{objectQualifier}prov_setprofileproperties
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}prov_setprofileproperties
  (
  i_userId VARCHAR(64),
  i_index LONGTEXT,
@@ -831,7 +831,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}prov_setprofileproperties
  i_binaryData LONGBLOB
  )
  BEGIN
-INSERT INTO {databaseName}.{objectQualifier}prov_Profile(UserID,valueindex,stringdata,binarydata) 
+INSERT INTO {databaseSchema}.{objectQualifier}prov_Profile(UserID,valueindex,stringdata,binarydata) 
 VALUES (UNHEX(REPLACE(i_userId,'-','')), i_index , i_stringData , i_binaryData) 
 ON DUPLICATE KEY UPDATE
 valueindex=VALUES(valueindex), stringdata=VALUES(stringdata),

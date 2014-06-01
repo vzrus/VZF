@@ -441,17 +441,12 @@ namespace VZF.Data.Postgre
         {
             charsetColumn = collationColumn = string.Empty;
             return string.Empty;
-        }    
+        }
 
-        /// <summary>
-        /// Gets qualified object name
-        /// </summary>
-        /// <param name="name">Base name of an object</param>
-        /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
-        public static string GetObjectName(string name)
+        public static string GetProfileStructure()
         {
-            return string.Format("{0}.{1}{2}", Config.DatabaseSchemaName, Config.DatabaseObjectQualifier, name);
-        }      
+            return "select * from {0} limit 1;";
+        }
 
         #endregion        
     }

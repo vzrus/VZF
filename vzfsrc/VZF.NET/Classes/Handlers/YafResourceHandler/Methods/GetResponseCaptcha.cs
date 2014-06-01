@@ -30,6 +30,7 @@ namespace YAF
 
     using YAF.Core;
     using YAF.Types;
+   using  YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using VZF.Utils;
 
@@ -66,7 +67,7 @@ namespace YAF
            }
             catch (Exception x)
            {
-                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, 1);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Error);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
            }

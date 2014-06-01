@@ -327,33 +327,11 @@ namespace YAF.Classes
         public static string DatabaseObjectQualifier
         {
             get
-            {
-                // Change case here if required
-                if (DatabaseObjectCase == "upper")
-                {
-                    return GetConfigValueAsString("YAF.DatabaseObjectQualifier").ToUpperInvariant();
-                }
-
-                if (DatabaseObjectCase == "lower")
-                {
-                    return GetConfigValueAsString("YAF.DatabaseObjectQualifier").ToLowerInvariant();
-                }
+            {          
 
                 return GetConfigValueAsString("YAF.DatabaseObjectQualifier");
             }
-        }
-
-        /// <summary>
-        ///     Gets DatabaseObjectQualifier.
-        /// </summary>
-        [NotNull]
-        public static string DatabaseObjectCase
-        {
-            get
-            {
-                return GetConfigValueAsString("YAF.DatabaseObjectCase");
-            }
-        }
+        }     
 
         /// <summary>
         ///     Gets DatabaseOwner.

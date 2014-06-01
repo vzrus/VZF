@@ -811,7 +811,7 @@ namespace VZF.Controls
             
             // Sync to User Profile Mirror table while it's dirty
             SettingsPropertyValueCollection settingsPropertyValueCollection = userProfile.PropertyValues;
-            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), "UserProfile", this._currentUserId, userProfile.UserName, settingsPropertyValueCollection);
+            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), Constants.SpecialObjectNames.UserProfileMirrorTable, this._currentUserId, userProfile.UserName, settingsPropertyValueCollection);
            
             userProfile.Save();
         }

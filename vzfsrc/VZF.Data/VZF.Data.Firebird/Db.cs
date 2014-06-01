@@ -220,7 +220,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -517,9 +517,9 @@ namespace VZF.Data.Firebird
         /// </summary>
         /// <param name="name">Base name of an object</param>
         /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
-        public static string GetObjectName(string name)
+        public static string GetProfileStructure()
         {
-            return string.Format("{0}{1}", Config.DatabaseObjectQualifier, name);
+            return "select * from {0} rows 1;";
         }
 
         #endregion

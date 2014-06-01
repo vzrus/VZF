@@ -28,14 +28,13 @@ namespace YAF.Core.Data
 
     using VZF.Data.Common;
     using VZF.Data.Utils;
+    using VZF.Utils;
 
     using YAF.Classes;
-    
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Data;
     using YAF.Types.Interfaces.Extensions;
-    using VZF.Utils;
 
     #endregion
 

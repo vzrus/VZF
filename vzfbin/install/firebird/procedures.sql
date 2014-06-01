@@ -1,5 +1,5 @@
 ﻿/* Yet Another Forum.NET Firebird data layer by vzrus
-  Copyright (C) 2006-2013 Vladimir Zakharov
+  Copyright (C) 2006-2014 Vladimir Zakharov
   https://github.com/vzrus
   http://sourceforge.net/projects/yaf-datalayers/
   This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-CREATE PROCEDURE  objQual_vaccess_ULF(I_USERID INTEGER, I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}vaccess_ULF(I_USERID INTEGER, I_FORUMID INTEGER)
 RETURNS
 (
 USERID INTEGER,
@@ -92,7 +92,7 @@ COALESCE(USERID, :I_USERID),COALESCE(FORUMID,0),COALESCE(READACCESS,0), COALESCE
 COALESCE(POLLACCESS,0),COALESCE(VOTEACCESS,0),COALESCE(MODERATORACCESS,0),COALESCE(EDITACCESS,0),
 DELETEACCESS,UPLOADACCESS,DOWNLOADACCESS,USERFORUMACCESS
 FROM
- objQual_VACCESSFULL1  
+ {objectQualifier}VACCESSFULL1  
  WHERE USERID=:I_USERID AND FORUMID = COALESCE(:I_FORUMID,0)
  INTO
 :ICI_USERID,:ici_ForumID,
@@ -107,7 +107,7 @@ COALESCE(POLLACCESS,0),COALESCE(VOTEACCESS,0),COALESCE(MODERATORACCESS,0),
 COALESCE(EDITACCESS,0),COALESCE(DELETEACCESS,0),COALESCE(UPLOADACCESS,0),
 COALESCE(DOWNLOADACCESS,0),COALESCE(USERFORUMACCESS,0)
 FROM
- objQual_VACCESSFULL2  
+ {objectQualifier}VACCESSFULL2  
  WHERE USERID=:I_USERID AND FORUMID = COALESCE(:I_FORUMID,0)
  INTO 
 :out_UserID,:out_ForumID,
@@ -119,8 +119,8 @@ FROM
       MAX(BIN_AND(b.FLAGS, 1)),
       MAX(BIN_AND(b.FLAGS, 2)),
      MAX(BIN_AND(b.FLAGS, 8))      
-      FROM objQual_USERGROUP a             
-           JOIN objQual_GROUP b
+      FROM {objectQualifier}USERGROUP a             
+           JOIN {objectQualifier}GROUP b
              ON b.GROUPID = a.GROUPID
              WHERE a.USERID=:I_USERID
               INTO  :out_IsAdmin, :out_IsGuest, :out_IsForumModerator ;
@@ -132,11 +132,11 @@ SELECT
 (SELECT :out_IsGuest  FROM RDB$DATABASE)  AS ISGUEST,
 (SELECT :out_IsForumModerator  FROM RDB$DATABASE)  AS ISFORUMMODERATOR,
 (SELECT COUNT(v.USERID) 
-FROM          objQual_USERGROUP AS v
-INNER JOIN    objQual_GROUP AS w
+FROM          {objectQualifier}USERGROUP AS v
+INNER JOIN    {objectQualifier}GROUP AS w
 ON v.GROUPID = w.GROUPID
-CROSS JOIN  objQual_FORUMACCESS AS x
-CROSS JOIN  objQual_ACCESSMASK AS y
+CROSS JOIN  {objectQualifier}FORUMACCESS AS x
+CROSS JOIN  {objectQualifier}ACCESSMASK AS y
 WHERE (v.USERID = :I_USERID)
 AND (x.GROUPID = w.GROUPID)
 AND (y.ACCESSMASKID = x.ACCESSMASKID)
@@ -165,7 +165,7 @@ SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_vaccess_UL(I_USERID INTEGER, I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}vaccess_UL(I_USERID INTEGER, I_FORUMID INTEGER)
 RETURNS
 (
 "IsAdmin" INTEGER,
@@ -183,8 +183,8 @@ BEGIN
  SELECT         
       SIGN(MAX(BIN_AND(b.FLAGS, 1))),     
       SIGN(MAX(BIN_AND(b.FLAGS, 8)))      
-      FROM objQual_USERGROUP a             
-           JOIN objQual_GROUP b
+      FROM {objectQualifier}USERGROUP a             
+           JOIN {objectQualifier}GROUP b
              ON b.GROUPID = a.GROUPID
              WHERE a.USERID=:I_USERID
               INTO  :out_IsAdmin, :out_IsForumModerator ;
@@ -193,11 +193,11 @@ SELECT
 (SELECT :out_IsAdmin  FROM RDB$DATABASE) AS "IsAdmin",
 (SELECT :out_IsForumModerator  FROM RDB$DATABASE)  AS "IsForumModerator",
 (SELECT     SIGN(COUNT(v.USERID)) 
-FROM          objQual_USERGROUP AS v
-INNER JOIN    objQual_GROUP AS w
+FROM          {objectQualifier}USERGROUP AS v
+INNER JOIN    {objectQualifier}GROUP AS w
 ON v.GROUPID = w.GROUPID
-CROSS JOIN  objQual_FORUMACCESS AS x
-CROSS JOIN  objQual_ACCESSMASK AS y
+CROSS JOIN  {objectQualifier}FORUMACCESS AS x
+CROSS JOIN  {objectQualifier}ACCESSMASK AS y
 WHERE (v.USERID = :I_USERID)
 AND (x.GROUPID = w.GROUPID)
 AND (y.ACCESSMASKID = x.ACCESSMASKID)
@@ -211,7 +211,7 @@ SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_SAVESTYLE(
+CREATE PROCEDURE  {objectQualifier}USER_SAVESTYLE(
                            I_GROUPID INTEGER, I_RANKID INTEGER) 
                   AS
 DECLARE   ici_usridtmp integer ;
@@ -219,38 +219,148 @@ DECLARE	  ici_styletmp varchar(255);
 DECLARE	  ici_rankidtmp integer ;
                   
 BEGIN
-FOR select userid,userstyle,rankid from objQual_USER
+FOR select userid,userstyle,rankid from {objectQualifier}USER
 INTO :ici_usridtmp,:ici_styletmp,:ici_rankidtmp
 DO
 BEGIN
-UPDATE objQual_USER SET USERSTYLE = COALESCE(( SELECT f.STYLE FROM objQual_USERGROUP e 
-            join objQual_GROUP f on f.GROUPID=e.GROUPID WHERE e.USERID = :ici_usridtmp AND CHAR_LENGTH(f.STYLE) > 2 ORDER BY f.SORTORDER rows 1), 
-            (SELECT r.STYLE FROM objQual_RANK r where RANKID =  :ici_rankidtmp)) 
+UPDATE {objectQualifier}USER SET USERSTYLE = COALESCE(( SELECT f.STYLE FROM {objectQualifier}USERGROUP e 
+            join {objectQualifier}GROUP f on f.GROUPID=e.GROUPID WHERE e.USERID = :ici_usridtmp AND CHAR_LENGTH(f.STYLE) > 2 ORDER BY f.SORTORDER rows 1), 
+            (SELECT r.STYLE FROM {objectQualifier}RANK r where RANKID =  :ici_rankidtmp)) 
         WHERE USERID = :ici_usridtmp;
 END
 END; 
 --GO
-EXECUTE PROCEDURE objQual_USER_SAVESTYLE null,null;
+EXECUTE PROCEDURE {objectQualifier}USER_SAVESTYLE null,null;
 --GO
-CREATE PROCEDURE  objQual_ACCESSMASK_DELETE(I_ACCESSMASKID INTEGER)
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_DELETE(I_ACCESSMASKID INTEGER)
   RETURNS (I_FLAG INTEGER)
  AS
 BEGIN
   I_FLAG = 1;
- IF (EXISTS (SELECT 1 FROM objQual_FORUMACCESS 
+ IF (EXISTS (SELECT 1 FROM {objectQualifier}FORUMACCESS 
             WHERE  ACCESSMASKID = :I_ACCESSMASKID)
-    OR EXISTS (SELECT 1 FROM   objQual_USERFORUM 
+    OR EXISTS (SELECT 1 FROM   {objectQualifier}USERFORUM 
            WHERE  ACCESSMASKID = :I_ACCESSMASKID)) THEN
   I_FLAG = 0;
  ELSE
-    DELETE FROM objQual_ACCESSMASK 
+    DELETE FROM {objectQualifier}ACCESSMASK 
       WHERE       ACCESSMASKID = :I_ACCESSMASKID;
 SUSPEND;
   END;
 --GO 
 
 
-CREATE PROCEDURE  objQual_ACCESSMASK_LIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_LIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL,I_PAGEINDEX INTEGER,
+		I_PAGESIZE INTEGER) 
+RETURNS
+(
+"AccessMaskID" INTEGER,
+"BoardID" INTEGER,
+"Name" VARCHAR(128) CHARACTER SET UTF8,
+"Flags" INTEGER,
+"SortOrder" INTEGER,
+"IsUserMask" BOOL,
+"IsAdminMask" BOOL,
+"CreatedByUserID" INTEGER,
+"CreatedByUserName" VARCHAR(255) CHARACTER SET UTF8,
+"CreatedByUserDisplayName" VARCHAR(255) CHARACTER SET UTF8,
+"TotalRows" INTEGER
+)
+AS
+DECLARE VARIABLE ICI_FIRSTSELECTROWNUMBER INTEGER DEFAULT 0;
+DECLARE ICI_TOROW  INTEGER DEFAULT 0;
+DECLARE ICI_TOTALROWS INTEGER DEFAULT 0;
+BEGIN 
+
+    if (I_ACCESSMASKID is null) THEN
+	BEGIN
+	I_PAGEINDEX = :I_PAGEINDEX + 1;	 
+    select count(1)  
+         from 
+            {objectQualifier}ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
+            AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
+            -- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
+            AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
+        into :ICI_TOTALROWS ;
+            
+        ICI_FIRSTSELECTROWNUMBER = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1;
+        ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
+        FOR select 
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+            a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME,
+			(SELECT :ICI_TOTALROWS FROM RDB$DATABASE) as TotalRows
+        from 
+            {objectQualifier}ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
+            AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
+            -- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
+            AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
+        order by 
+            a.SORTORDER ASC ROWS (:ICI_FIRSTSELECTROWNUMBER) TO (:ICI_TOROW)
+            INTO
+            :"AccessMaskID",
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+            :"IsUserMask",
+            :"IsAdminMask",
+            :"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName",
+			:"TotalRows"
+             DO SUSPEND;
+			 END
+    else
+        FOR select FIRST 1
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+            a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME,
+			(SELECT 1 FROM RDB$DATABASE) as TotalRows			 
+        from 
+            {objectQualifier}ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            a.ACCESSMASKID = :I_ACCESSMASKID
+        order by 
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID",
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+            :"IsUserMask",
+            :"IsAdminMask",
+            :"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName",
+			:"TotalRows"
+            DO SUSPEND;
+end
+--GO
+
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_PFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
 RETURNS
 (
 "AccessMaskID" INTEGER,
@@ -275,89 +385,11 @@ begin
             a.SORTORDER,
             a.ISUSERMASK,
             a.ISADMINMASK,
-            a.CREATEDBYUSERID,
+			a.CREATEDBYUSERID,
             a.CREATEDBYUSERNAME,
-            a.CREATEDBYUSERDISPLAYNAME	 
+            a.CREATEDBYUSERDISPLAYNAME
         from 
-            objQual_ACCESSMASK a 
-        where
-            a.BOARDID = :I_BOARDID and
-            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
-            AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
-            -- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
-            AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
-        order by 
-            a.SORTORDER ASC
-            INTO
-            :"AccessMaskID" ,
-            :"BoardID",
-            :"Name",
-            :"Flags",
-            :"SortOrder",
-            :"IsUserMask",
-            :"IsAdminMask",
-            :"CreatedByUserID",
-            :"CreatedByUserName",
-            :"CreatedByUserDisplayName"
-             DO SUSPEND;
-    else
-        FOR select FIRST 1
-            a.ACCESSMASKID,
-            a.BOARDID,
-            a.NAME,
-            a.FLAGS,
-            a.SORTORDER,
-            a.ISUSERMASK,
-            a.ISADMINMASK,
-            a.CREATEDBYUSERID,
-            a.CREATEDBYUSERNAME,
-            a.CREATEDBYUSERDISPLAYNAME			 
-        from 
-            objQual_ACCESSMASK a 
-        where
-            a.BOARDID = :I_BOARDID and
-            a.ACCESSMASKID = :I_ACCESSMASKID
-        order by 
-            a.SORTORDER ASC
-            INTO
-            :"AccessMaskID",
-            :"BoardID",
-            :"Name",
-            :"Flags",
-            :"SortOrder",
-            :"IsUserMask",
-            :"IsAdminMask",
-            :"CreatedByUserID",
-            :"CreatedByUserName",
-            :"CreatedByUserDisplayName"
-            DO SUSPEND;
-end
---GO
-
-CREATE PROCEDURE  objQual_ACCESSMASK_PFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
-RETURNS
-(
-"AccessMaskID" INTEGER,
-"BoardID" INTEGER,
-"Name" VARCHAR(128) CHARACTER SET UTF8,
-"Flags" INTEGER,
-"SortOrder" INTEGER,
-"IsUserMask" BOOL,
-"IsAdminMask" BOOL
-)
-as
-begin
-    if (I_ACCESSMASKID is null) THEN
-        FOR select 
-            a.ACCESSMASKID,
-            a.BOARDID,
-            a.NAME,
-            a.FLAGS,
-            a.SORTORDER,
-            a.ISUSERMASK,
-            a.ISADMINMASK 
-        from 
-            objQual_ACCESSMASK a 
+            {objectQualifier}ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
@@ -373,7 +405,10 @@ begin
             :"Flags",
             :"SortOrder",
             :"IsUserMask",
-            :"IsAdminMask"
+            :"IsAdminMask",
+			:"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
              DO SUSPEND;
     else
         FOR select FIRST 1
@@ -383,9 +418,12 @@ begin
             a.FLAGS,
             a.SORTORDER,
             a.ISUSERMASK,
-            a.ISADMINMASK 
+            a.ISADMINMASK,
+			a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME 
         from 
-            objQual_ACCESSMASK a 
+            {objectQualifier}ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
@@ -398,13 +436,17 @@ begin
             :"Flags",
             :"SortOrder",
             :"IsUserMask",
-            :"IsAdminMask"
+            :"IsAdminMask",
+			:"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
             DO SUSPEND;
 end
 --GO
 
 
-CREATE PROCEDURE  objQual_ACCESSMASK_AFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_AFORUMLIST(
+I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
 RETURNS
 (
 "AccessMaskID" INTEGER,
@@ -413,7 +455,10 @@ RETURNS
 "Flags" INTEGER,
 "SortOrder" INTEGER,
 "IsUserMask" BOOL,
-"IsAdminMask" BOOL
+"IsAdminMask" BOOL,
+"CreatedByUserID" INTEGER,
+"CreatedByUserName" VARCHAR(255) CHARACTER SET UTF8,
+"CreatedByUserDisplayName" VARCHAR(255) CHARACTER SET UTF8
 )
 as
 begin
@@ -425,9 +470,12 @@ begin
             a.FLAGS,
             a.SORTORDER,
             a.ISUSERMASK,
-            a.ISADMINMASK 
+            a.ISADMINMASK,
+			a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME
         from 
-            objQual_ACCESSMASK a 
+            {objectQualifier}ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
@@ -441,7 +489,10 @@ begin
             :"Flags",
             :"SortOrder",
             :"IsUserMask",
-            :"IsAdminMask"
+            :"IsAdminMask",
+			:"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
              DO SUSPEND;
     else
         FOR select FIRST 1
@@ -451,9 +502,12 @@ begin
             a.FLAGS,
             a.SORTORDER,
             a.ISUSERMASK,
-            a.ISADMINMASK 
+            a.ISADMINMASK,
+			a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME
         from 
-            objQual_ACCESSMASK a 
+            {objectQualifier}ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
@@ -467,13 +521,16 @@ begin
             :"Flags",
             :"SortOrder",
             :"IsUserMask",
-            :"IsAdminMask"
+            :"IsAdminMask",
+			:"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
             DO SUSPEND;
 end
 --GO
 
 
-CREATE PROCEDURE  objQual_ACCESSMASK_SAVE(
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_SAVE(
     I_ACCESSMASKID		INTEGER,
     I_BOARDID			INTEGER,
     I_NAME				VARCHAR(128),
@@ -519,16 +576,16 @@ begin
     if (:I_USERID is not null) THEN
     begin
     SELECT FIRST 1 NAME, DISPLAYNAME 
-    FROM objQual_USER where USERID = :I_USERID
+    FROM {objectQualifier}USER where USERID = :I_USERID
     INTO :ICI_USERNAME, :ICI_USERDISPLAYNAME;
     end
 
     if (:I_ACCESSMASKID is null) THEN
-        insert INTO objQual_ACCESSMASK(ACCESSMASKID,NAME,BOARDID,FLAGS,SORTORDER,ISUSERMASK,ISADMINMASK,CREATEDBYUSERID,CREATEDBYUSERNAME,CREATEDBYUSERDISPLAYNAME,CREATEDDATE)
-        values((SELECT NEXT VALUE FOR SEQ_objQual_ACCESSMASK_ACCESSMASKID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_FLAGS,:I_SORTORDER,:I_ISUSERMASK,:I_ISADMINMASK,:I_USERID,:ICI_USERNAME, :ICI_USERDISPLAYNAME,:I_UTCTIMESTAMP)
+        insert INTO {objectQualifier}ACCESSMASK(ACCESSMASKID,NAME,BOARDID,FLAGS,SORTORDER,ISUSERMASK,ISADMINMASK,CREATEDBYUSERID,CREATEDBYUSERNAME,CREATEDBYUSERDISPLAYNAME,CREATEDDATE)
+        values((SELECT NEXT VALUE FOR SEQ_{objectQualifier}ACCESSMASK_ACCESSMASKID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_FLAGS,:I_SORTORDER,:I_ISUSERMASK,:I_ISADMINMASK,:I_USERID,:ICI_USERNAME, :ICI_USERDISPLAYNAME,:I_UTCTIMESTAMP)
         RETURNING ACCESSMASKID INTO :I_ACCESSMASKID;
     else
-        update objQual_ACCESSMASK set
+        update {objectQualifier}ACCESSMASK set
             NAME			= :I_NAME,
             FLAGS			= :I_FLAGS,
             SORTORDER       = :I_SORTORDER,
@@ -537,19 +594,19 @@ begin
 if (:I_USERID is null) THEN
     begin 
     SELECT FIRST 1 NAME, DISPLAYNAME 
-    FROM objQual_USER where BoardID = :I_BOARDID and BIN_AND(FLAGS,4) = 4 ORDER BY JOINED 
+    FROM {objectQualifier}USER where BoardID = :I_BOARDID and BIN_AND(FLAGS,4) = 4 ORDER BY JOINED 
     INTO :ICI_USERNAME, :ICI_USERDISPLAYNAME;
     end
 
-    if (not exists(SELECT FIRST 1 1 FROM  objQual_AccessMaskHistory
+    if (not exists(SELECT FIRST 1 1 FROM  {objectQualifier}AccessMaskHistory
      where ACCESSMASKID = :I_ACCESSMASKID and ChangedDate = :I_UTCTIMESTAMP)) THEN
     begin
-    insert into objQual_AccessMaskHistory(AccessMaskID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
+    insert into {objectQualifier}AccessMaskHistory(AccessMaskID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
         values(:I_ACCESSMASKID,:I_USERID, :ICI_USERNAME,:ICI_USERDISPLAYNAME,:I_UTCTIMESTAMP);
     end	
     else
     begin
-    UPDATE objQual_AccessMaskHistory
+    UPDATE {objectQualifier}AccessMaskHistory
     SET ChangedUserID = :I_USERID,ChangedUserName = :ICI_USERNAME,ChangedDisplayName = :ICI_USERDISPLAYNAME
     WHERE AccessMaskID = :I_ACCESSMASKID AND ChangedDate = :I_UTCTIMESTAMP;
     end	 
@@ -558,7 +615,7 @@ end;
 --GO
 -- active_list is implemented
 
-CREATE PROCEDURE  objQual_ACTIVE_LISTFORUM(I_FORUMID INTEGER, I_STYLEDNICKS BOOL)
+CREATE PROCEDURE  {objectQualifier}ACTIVE_LISTFORUM(I_FORUMID INTEGER, I_STYLEDNICKS BOOL)
 RETURNS
 (
 "UserID"  INTEGER,
@@ -582,8 +639,8 @@ begin
                    ELSE (SELECT '' FROM RDB$DATABASE) END,		
         COUNT(a.USERID) AS "UserCount"
     from
-        objQual_ACTIVE a 
-        join objQual_USER b 
+        {objectQualifier}ACTIVE a 
+        join {objectQualifier}USER b 
         on b.USERID=a.USERID
     where
         a.FORUMID = :I_FORUMID
@@ -611,7 +668,7 @@ DO SUSPEND;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_ACTIVE_LISTTOPIC(I_TOPICID INTEGER, I_STYLEDNICKS BOOL)
+CREATE PROCEDURE  {objectQualifier}ACTIVE_LISTTOPIC(I_TOPICID INTEGER, I_STYLEDNICKS BOOL)
 RETURNS
 (
 "UserID"  INTEGER,
@@ -635,8 +692,8 @@ begin
                    ELSE (SELECT '' FROM RDB$DATABASE) END,				 
         COUNT(a.USERID) AS "UserCount"
     from
-        objQual_ACTIVE a 
-        join objQual_USER b 
+        {objectQualifier}ACTIVE a 
+        join {objectQualifier}USER b 
         on b.USERID=a.USERID		
     where
         a.TOPICID = :I_TOPICID
@@ -662,24 +719,24 @@ begin
 DO SUSPEND;
 end;
 --GO
-CREATE PROCEDURE  objQual_ATTACHMENT_DELETE(I_ATTACHMENTID integer)
+CREATE PROCEDURE  {objectQualifier}ATTACHMENT_DELETE(I_ATTACHMENTID integer)
  as 
  begin
-    delete from objQual_ATTACHMENT 
+    delete from {objectQualifier}ATTACHMENT 
     where ATTACHMENTID=:I_ATTACHMENTID;
  end;
 --GO
 
-CREATE PROCEDURE  objQual_ATTACHMENT_DOWNLOAD(I_ATTACHMENTID integer)
+CREATE PROCEDURE  {objectQualifier}ATTACHMENT_DOWNLOAD(I_ATTACHMENTID integer)
 as
 begin
-    update objQual_ATTACHMENT 
+    update {objectQualifier}ATTACHMENT 
     set DOWNLOADS=DOWNLOADS+1 
     where ATTACHMENTID=:I_ATTACHMENTID;
 end;
 
 --GO
-CREATE PROCEDURE  objQual_ATTACHMENT_LIST(I_MESSAGEID integer,I_ATTACHMENTID INTEGER,I_BOARDID INTEGER,
+CREATE PROCEDURE  {objectQualifier}ATTACHMENT_LIST(I_MESSAGEID integer,I_ATTACHMENTID INTEGER,I_BOARDID INTEGER,
 I_PAGEINDEX INTEGER,
 I_PAGESIZE INTEGER) 
 RETURNS
@@ -724,12 +781,12 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
             (SELECT null FROM RDB$DATABASE) AS "TopicName",
             (SELECT 1 FROM RDB$DATABASE) 
         from
-            objQual_ATTACHMENT a
-            inner join objQual_MESSAGE b on b.MESSAGEID = a.MESSAGEID
-            inner join objQual_TOPIC c on c.TOPICID = b.TOPICID
-            inner join objQual_FORUM d on d.FORUMID = c.FORUMID
-            inner join objQual_CATEGORY e on e.CATEGORYID = d.CATEGORYID
-            inner join objQual_BOARD brd on brd.BOARDID = e.BOARDID
+            {objectQualifier}ATTACHMENT a
+            inner join {objectQualifier}MESSAGE b on b.MESSAGEID = a.MESSAGEID
+            inner join {objectQualifier}TOPIC c on c.TOPICID = b.TOPICID
+            inner join {objectQualifier}FORUM d on d.FORUMID = c.FORUMID
+            inner join {objectQualifier}CATEGORY e on e.CATEGORYID = d.CATEGORYID
+            inner join {objectQualifier}BOARD brd on brd.BOARDID = e.BOARDID
         where
             a.MESSAGEID=:I_MESSAGEID
             INTO
@@ -769,12 +826,12 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
             (SELECT null FROM RDB$DATABASE) AS  "TopicName"	,
             (SELECT 1 FROM RDB$DATABASE)		
         from
-            objQual_ATTACHMENT a
-            inner join objQual_MESSAGE b on b.MESSAGEID = a.MESSAGEID
-            inner join objQual_TOPIC c on c.TOPICID = b.TOPICID
-            inner join objQual_FORUM d on d.FORUMID = c.FORUMID
-            inner join objQual_CATEGORY e on e.CATEGORYID = d.CATEGORYID
-            inner join objQual_BOARD brd on brd.BOARDID = e.BOARDID
+            {objectQualifier}ATTACHMENT a
+            inner join {objectQualifier}MESSAGE b on b.MESSAGEID = a.MESSAGEID
+            inner join {objectQualifier}TOPIC c on c.TOPICID = b.TOPICID
+            inner join {objectQualifier}FORUM d on d.FORUMID = c.FORUMID
+            inner join {objectQualifier}CATEGORY e on e.CATEGORYID = d.CATEGORYID
+            inner join {objectQualifier}BOARD brd on brd.BOARDID = e.BOARDID
         where 
             a.ATTACHMENTID=:I_ATTACHMENTID 
             INTO
@@ -799,12 +856,12 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
     begin
     I_PAGEINDEX = :I_PAGEINDEX + 1;	 
      select count(1)  
-        FROM   objQual_ATTACHMENT a
-            inner join objQual_MESSAGE b on b.MESSAGEID = a.MESSAGEID
-            inner join objQual_TOPIC c on c.TOPICID = b.TOPICID
-            inner join objQual_FORUM d on d.FORUMID = c.FORUMID
-            inner join objQual_CATEGORY e on e.CATEGORYID = d.CATEGORYID
-            inner join objQual_BOARD brd on brd.BOARDID = e.BOARDID
+        FROM   {objectQualifier}ATTACHMENT a
+            inner join {objectQualifier}MESSAGE b on b.MESSAGEID = a.MESSAGEID
+            inner join {objectQualifier}TOPIC c on c.TOPICID = b.TOPICID
+            inner join {objectQualifier}FORUM d on d.FORUMID = c.FORUMID
+            inner join {objectQualifier}CATEGORY e on e.CATEGORYID = d.CATEGORYID
+            inner join {objectQualifier}BOARD brd on brd.BOARDID = e.BOARDID
         WHERE  e.BOARDID = :I_BOARDID
         into :ICI_TOTALROWS ;
             
@@ -827,12 +884,12 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
             c.TOPIC AS "TopicName",
            (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) 
         from 
-            objQual_ATTACHMENT a
-            inner join objQual_MESSAGE b on b.MESSAGEID = a.MESSAGEID
-            inner join objQual_TOPIC c on c.TOPICID = b.TOPICID
-            inner join objQual_FORUM d on d.FORUMID = c.FORUMID
-            inner join objQual_CATEGORY e on e.CATEGORYID = d.CATEGORYID
-            inner join objQual_BOARD brd on brd.BOARDID = e.BOARDID
+            {objectQualifier}ATTACHMENT a
+            inner join {objectQualifier}MESSAGE b on b.MESSAGEID = a.MESSAGEID
+            inner join {objectQualifier}TOPIC c on c.TOPICID = b.TOPICID
+            inner join {objectQualifier}FORUM d on d.FORUMID = c.FORUMID
+            inner join {objectQualifier}CATEGORY e on e.CATEGORYID = d.CATEGORYID
+            inner join {objectQualifier}BOARD brd on brd.BOARDID = e.BOARDID
         where
             e.BOARDID = :I_BOARDID 
         order by
@@ -858,25 +915,25 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_ATTACHMENT_SAVE(I_MESSAGEID INTEGER,I_FILENAME VARCHAR(255),I_BYTES INTEGER,I_CONTENTTYPE VARCHAR(128),I_FILEDATA BLOB SUB_TYPE 0 SEGMENT SIZE 80) 
+CREATE PROCEDURE  {objectQualifier}ATTACHMENT_SAVE(I_MESSAGEID INTEGER,I_FILENAME VARCHAR(255),I_BYTES INTEGER,I_CONTENTTYPE VARCHAR(128),I_FILEDATA BLOB SUB_TYPE 0 SEGMENT SIZE 80) 
 as begin
-    insert into objQual_ATTACHMENT(ATTACHMENTID,MESSAGEID, FILENAME,BYTES,
+    insert into {objectQualifier}ATTACHMENT(ATTACHMENTID,MESSAGEID, FILENAME,BYTES,
     CONTENTTYPE,DOWNLOADS,FILEDATA) 
-    values((SELECT NEXT VALUE FOR SEQ_objQual_ATTACHMENT_ATTACHMENTID FROM RDB$DATABASE),:I_MESSAGEID,:I_FILENAME,:I_BYTES,
+    values((SELECT NEXT VALUE FOR SEQ_{objectQualifier}ATTACHMENT_ATTACHMENTID FROM RDB$DATABASE),:I_MESSAGEID,:I_FILENAME,:I_BYTES,
     :I_CONTENTTYPE,0,:I_FileData);
 end;
 --GO
 
-CREATE  PROCEDURE objQual_bannedip_delete(
+CREATE  PROCEDURE {objectQualifier}bannedip_delete(
 I_ID INTEGER)
 AS
 BEGIN
-DELETE FROM objQual_BANNEDIP
+DELETE FROM {objectQualifier}BANNEDIP
 WHERE       "ID" = :I_ID;
 END;
 --GO
 
-CREATE  PROCEDURE objQual_bannedip_list(
+CREATE  PROCEDURE {objectQualifier}bannedip_list(
 I_BOARDID INTEGER,
 I_ID      INTEGER,
 I_PAGEINDEX INTEGER,
@@ -904,7 +961,7 @@ IF (ici_ID IS NULL OR ici_ID=0) THEN
 BEGIN
 I_PAGEINDEX = :I_PAGEINDEX + 1;	 
 select count(1)  
-        FROM   objQual_BANNEDIP
+        FROM   {objectQualifier}BANNEDIP
         WHERE  BOARDID = :I_BOARDID
         into :ICI_TOTALROWS ;
             
@@ -917,7 +974,7 @@ FOR SELECT ID,
            REASON,
            USERID,
            (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) as TotalRows
-FROM   objQual_BANNEDIP
+FROM   {objectQualifier}BANNEDIP
 WHERE  BOARDID = :I_BOARDID ORDER BY MASK  ROWS (:ICI_FIRSTSELECTROWNUMBER) TO (:ICI_TOROW)
 INTO
 :"ID",
@@ -938,7 +995,7 @@ FOR SELECT ID,
            REASON,
            USERID,
            (SELECT CAST(1 AS INTEGER) FROM RDB$DATABASE)
-FROM   objQual_BANNEDIP
+FROM   {objectQualifier}BANNEDIP
 WHERE  BOARDID = :I_BOARDID
 AND "ID" = :ici_ID
 INTO
@@ -954,7 +1011,7 @@ END
 END;
 --GO
 
-CREATE  PROCEDURE objQual_bannedip_save(
+CREATE  PROCEDURE {objectQualifier}bannedip_save(
 I_ID      INTEGER,
 I_BOARDID INTEGER,
 I_MASK    VARCHAR(57),
@@ -969,14 +1026,14 @@ BEGIN
 IF (I_ID > 0) THEN ici_ID=I_ID;
 IF (ici_ID IS NULL OR ici_ID = 0)  THEN
 BEGIN
- IF (NOT EXISTS(SELECT 1 FROM objQual_BANNEDIP WHERE MASK=:I_MASK)) THEN
-INSERT INTO objQual_BANNEDIP
+ IF (NOT EXISTS(SELECT 1 FROM {objectQualifier}BANNEDIP WHERE MASK=:I_MASK)) THEN
+INSERT INTO {objectQualifier}BANNEDIP
 ("ID",BOARDID,
 MASK,
 SINCE,
 REASON,
 USERID)
-VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_BANNEDIP_ID FROM RDB$DATABASE),:I_BOARDID,
+VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}BANNEDIP_ID FROM RDB$DATABASE),:I_BOARDID,
 :I_MASK,
 :I_UTCTIMESTAMP,
 :I_REASON,
@@ -987,7 +1044,7 @@ EXIT;
 END
 
 ELSE IF (ici_ID > 0) THEN
-UPDATE objQual_BANNEDIP
+UPDATE {objectQualifier}BANNEDIP
 SET    MASK = :I_MASK, REASON = :I_REASON,
 USERID = :I_USERID
 WHERE  "ID" = :ici_ID;
@@ -995,33 +1052,33 @@ WHERE  "ID" = :ici_ID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_BBCODE_DELETE
+CREATE PROCEDURE  {objectQualifier}BBCODE_DELETE
  (
     I_BBCODEID INTEGER
  )
  AS
  BEGIN
     IF (I_BBCODEID IS NOT NULL) THEN
-        DELETE FROM objQual_BBCODE WHERE BBCODEID = :I_BBCODEID;
+        DELETE FROM {objectQualifier}BBCODE WHERE BBCODEID = :I_BBCODEID;
     ELSE
-        DELETE FROM objQual_BBCODE; 
+        DELETE FROM {objectQualifier}BBCODE; 
  END;
 --GO
 
-CREATE  PROCEDURE objQual_FORUM_UPDATESTATS(I_FORUMID INTEGER)
+CREATE  PROCEDURE {objectQualifier}FORUM_UPDATESTATS(I_FORUMID INTEGER)
 AS
 BEGIN
-        UPDATE objQual_FORUM 
+        UPDATE {objectQualifier}FORUM 
            SET 
-        NUMPOSTS = (SELECT COUNT(1) FROM objQual_MESSAGE x 
-                               JOIN objQual_TOPIC y 
+        NUMPOSTS = (SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
+                               JOIN {objectQualifier}TOPIC y 
                                   ON y.TOPICID=x.TOPICID 
                                    WHERE y.FORUMID = :I_FORUMID 
                                      AND x.ISAPPROVED = 1 
                                        AND x.ISDELETED = 0 
                                          AND y.ISDELETED = 0 ),
-        NUMTOPICS = (SELECT COUNT(distinct x.TOPICID) FROM objQual_TOPIC x 
-                               JOIN objQual_MESSAGE y 
+        NUMTOPICS = (SELECT COUNT(distinct x.TOPICID) FROM {objectQualifier}TOPIC x 
+                               JOIN {objectQualifier}MESSAGE y 
                                   ON y.TOPICID=x.TOPICID 
                                    WHERE x.FORUMID = :I_FORUMID 
                                      AND y.ISAPPROVED = 1 
@@ -1030,45 +1087,45 @@ BEGIN
     WHERE FORUMID=:I_FORUMID;
 END;
 --GO
-/* CREATE PROCEDURE  objQual_FORUM_UPDATELASTPOST(I_FORUMID INTEGER) as
+/* CREATE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST(I_FORUMID INTEGER) as
 begin
-    update objQual_FORUM set
+    update {objectQualifier}FORUM set
         LASTPOSTED = (select FIRST  1 y.POSTED 
-        from objQual_TOPIC x 
-        join objQual_MESSAGE y 
+        from {objectQualifier}TOPIC x 
+        join {objectQualifier}MESSAGE y 
         on y.TOPICID=x.TOPICID 
         where x.FORUMID = :I_FORUMID 
         and bin_and(y.FLAGS , 24)=16 
         and x.ISDELETED = 0 
         order by y.POSTED desc),
         LASTTOPICID = (select FIRST  1 y.TOPICID 
-        from objQual_TOPIC x 
-        join objQual_MESSAGE y 
+        from {objectQualifier}TOPIC x 
+        join {objectQualifier}MESSAGE y 
         on y.TOPICID=x.TOPICID where x.FORUMID = :I_FORUMID 
         and bin_and(y.FLAGS , 24)=16 and x.ISDELETED = 0
         order by y.POSTED desc),
         LASTMESSAGEID = (select FIRST  1 y.MESSAGEID 
-        from objQual_TOPIC x 
-        join objQual_MESSAGE y 
+        from {objectQualifier}TOPIC x 
+        join {objectQualifier}MESSAGE y 
         on y.TOPICID=x.TOPICID where x.FORUMID = :I_FORUMID 
         and bin_and(y.FLAGS , 24)=16 and x.ISDELETED = 0
         order by y.POSTED desc),
         LASTUSERID = (select FIRST  1 y.USERID 
-        from objQual_TOPIC x 
-        join objQual_MESSAGE y 
+        from {objectQualifier}TOPIC x 
+        join {objectQualifier}MESSAGE y 
         on y.TOPICID=x.TOPICID where x.FORUMID = :I_FORUMID 
         and bin_and(y.FLAGS, 24)=16 and x.ISDELETED = 0
         order by y.POSTED desc),
         LASTUSERNAME = (select FIRST  1 y.USERNAME 
-        from objQual_TOPIC x 
-        join objQual_MESSAGE y 
+        from {objectQualifier}TOPIC x 
+        join {objectQualifier}MESSAGE y 
         on y.TOPICID=x.TOPICID where x.FORUMID = :I_FORUMID 
         and bin_and(y.FLAGS, 24)=16 and x.ISDELETED = 0
         order by y.POSTED desc)
     where FORUMID = :I_FORUMID;
 end
  GO */
-CREATE PROCEDURE  objQual_FORUM_UPDATELASTPOST(I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST(I_FORUMID INTEGER)
 AS
 DECLARE VARIABLE ici_ParentID INTEGER;
 DECLARE VARIABLE ici_tmpParent INTEGER;
@@ -1092,16 +1149,16 @@ DECLARE VARIABLE ici_MaxTPosted TIMESTAMP;
 BEGIN
 
 SELECT z.PARENTID
-FROM objQual_FORUM z
+FROM {objectQualifier}FORUM z
 WHERE z.FORUMID = :I_FORUMID
 INTO :ici_ParentID;
 
 
 SELECT FIRST 1 DISTINCT y.POSTED,y.TOPICID,y.MESSAGEID,y.USERID,y.USERNAME,y.USERDISPLAYNAME
 FROM
-objQual_FORUM z
-JOIN objQual_TOPIC x ON z.FORUMID=x.FORUMID 
-JOIN objQual_MESSAGE y ON y.TOPICID=x.TOPICID
+{objectQualifier}FORUM z
+JOIN {objectQualifier}TOPIC x ON z.FORUMID=x.FORUMID 
+JOIN {objectQualifier}MESSAGE y ON y.TOPICID=x.TOPICID
 WHERE x.FORUMID = :I_FORUMID
 AND BIN_AND(y.FLAGS, 24)=16
 AND x.ISDELETED = 0
@@ -1115,7 +1172,7 @@ LASTMESSAGEID,
 LASTUSERID,
 LASTUSERNAME,
 LASTUSERDISPLAYNAME
-from objQual_FORUM
+from {objectQualifier}FORUM
 WHERE PARENTID =:I_FORUMID ORDER BY LASTPOSTED DESC 
 INTO 
 :ici_LastPostedTmp,:ici_LastTopicIDTmp,:ici_LastMessageIDTmp,:ici_LastUserIDTmp,:ici_LastUserNameTmp,:ici_LastUserDisplayNameTmp;
@@ -1147,7 +1204,7 @@ END
 IF ((ici_LastTopicID IS NOT NULL AND ici_LastPostedTmp IS NOT NULL AND (ici_LastPostedTmp <= ici_LastPosted)) OR (ici_LastTopicID IS NOT NULL AND 
 ici_LastPostedTmp IS NULL)) THEN
 
-UPDATE objQual_FORUM
+UPDATE {objectQualifier}FORUM
    SET
         LASTPOSTED = :ici_LastPosted,
                 LASTTOPICID = :ici_LastTopicID,
@@ -1158,7 +1215,7 @@ UPDATE objQual_FORUM
  WHERE FORUMID = :I_FORUMID;
 
 
-EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :I_FORUMID;
+EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :I_FORUMID;
 
 
 
@@ -1166,12 +1223,12 @@ EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :I_FORUMID;
 
 IF (ici_ParentID >0)  THEN
 
-     -- EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS(I_FORUMID);
+     -- EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(I_FORUMID);
 
 /* In peers to use in parent*/
 
 SELECT  FIRST 1 MAX(LASTPOSTED)
-FROM objQual_FORUM
+FROM {objectQualifier}FORUM
 WHERE PARENTID = :ici_ParentID
 AND FORUMID != :I_FORUMID AND LASTPOSTED IS NOT NULL
 INTO :ici_tmpMaxPosted3;
@@ -1196,7 +1253,7 @@ ici_tmpMaxPosted3 = NULL;
 /* In parent themes
 SELECT DISTINCTROW LastPosted
 INTO ici_tmpMaxPosted3
-FROM objQual_TOPIC
+FROM {objectQualifier}TOPIC
 WHERE ForumID=ici_ParentID ORDER BY LastPosted LIMIT 1;
 
 
@@ -1218,12 +1275,12 @@ LASTMESSAGEID,
 LASTUSERID,
 LASTUSERNAME,
 LASTUSERDISPLAYNAME
-FROM objQual_FORUM
+FROM {objectQualifier}FORUM
 WHERE LASTPOSTED =:ici_MaxTPosted ORDER BY LASTPOSTED DESC
 INTO :ici_LastPosted,:ici_LastTopicID,:ici_LastMessageID,:ici_LastUserID,:ici_LastUserName,:ici_LastUserDisplayName;
 
 
-      UPDATE objQual_FORUM
+      UPDATE {objectQualifier}FORUM
           SET
         LASTPOSTED = :ici_LastPosted,
                 LASTTOPICID = :ici_LastTopicID,
@@ -1233,12 +1290,12 @@ INTO :ici_LastPosted,:ici_LastTopicID,:ici_LastMessageID,:ici_LastUserID,:ici_La
                 LASTUSERDISPLAYNAME = :ici_LastUserDisplayName 
       WHERE FORUMID = :ici_ParentID;
 END
-EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_ParentID;
+EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ParentID;
 
 
 
 SELECT DISTINCT PARENTID 
-  FROM  objQual_FORUM
+  FROM  {objectQualifier}FORUM
   WHERE FORUMID = :ici_ParentID
   INTO  :ici_tmpParent ;
 
@@ -1253,7 +1310,7 @@ IF (ici_tmpParent > 0) THEN
 BEGIN
 
 SELECT  FIRST 1 MAX(LASTPOSTED)
-FROM objQual_FORUM
+FROM {objectQualifier}FORUM
 WHERE PARENTID = :ici_tmpParent
 AND LASTPOSTED IS NOT NULL
 ORDER BY LASTPOSTED DESC
@@ -1266,7 +1323,7 @@ LASTTOPICID,
 LASTMESSAGEID,
 LASTUSERID,
 LASTUSERNAME
-FROM objQual_FORUM
+FROM {objectQualifier}FORUM
 WHERE LastPosted =ici_MaxTPosted ORDER BY LastPosted DESC
 INTO :ici_LastPosted,
 :ici_LastTopicID,
@@ -1275,7 +1332,7 @@ INTO :ici_LastPosted,
 :ici_LastUserName;
 
 
-        UPDATE objQual_FORUM SET
+        UPDATE {objectQualifier}FORUM SET
                 LASTPOSTED = :ici_LastPosted,
                 LASTTOPICID = :ici_LastTopicID,
                 LASTMESSAGEID = :ici_LastMessageID,
@@ -1285,10 +1342,10 @@ INTO :ici_LastPosted,
                 FORUMID = :ici_tmpParent
         AND ((LASTPOSTED <= :ici_LastPosted)
         OR LASTPOSTED IS NULL);
-        EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_tmpParent;
+        EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_tmpParent;
           
          SELECT DISTINCT PARENTID 
-  FROM  objQual_FORUM
+  FROM  {objectQualifier}FORUM
   WHERE FORUMID = :ici_tmpParent
   INTO  :ici_tmpParent;
 -- end while
@@ -1298,7 +1355,7 @@ INTO :ici_LastPosted,
 END;
 --GO
 
-CREATE PROCEDURE  objQual_POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOPICID integer, I_FORUMID integer, I_CATEGORYID integer, I_BOARDID intEGER, I_REMOVECOMPLETELY BOOL, I_REMOVEEVERYWHERE BOOL)
+CREATE PROCEDURE  {objectQualifier}POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOPICID integer, I_FORUMID integer, I_CATEGORYID integer, I_BOARDID intEGER, I_REMOVECOMPLETELY BOOL, I_REMOVEEVERYWHERE BOOL)
  as
  declare VARIABLE TMP intEGER;
   begin  		
@@ -1307,44 +1364,44 @@ CREATE PROCEDURE  objQual_POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOPICID inte
          if (I_REMOVEEVERYWHERE <> 1) THEN
              begin
                    if (I_TOPICID > 0) THEN
-                   Update objQual_TOPIC set POLLID = NULL where TOPICID = :I_TOPICID;                 
+                   Update {objectQualifier}TOPIC set POLLID = NULL where TOPICID = :I_TOPICID;                 
                   
                    if (I_FORUMID > 0) THEN
-                   Update objQual_FORUM set POLLGROUPID = NULL where FORUMID = :I_FORUMID;
+                   Update {objectQualifier}FORUM set POLLGROUPID = NULL where FORUMID = :I_FORUMID;
               
                    if (I_CATEGORYID > 0) THEN
-                   Update objQual_CATEGORY set POLLGROUPID = NULL where CATEGORYID = :I_CATEGORYID;                
+                   Update {objectQualifier}CATEGORY set POLLGROUPID = NULL where CATEGORYID = :I_CATEGORYID;                
              end        
             
           -- we remove poll group links from all places where they are
          if ( I_REMOVEEVERYWHERE = 1 OR I_REMOVECOMPLETELY = 1) THEN
          begin
-                   Update objQual_TOPIC set POLLID = NULL where POLLID = :I_POLLGROUPID; 
-                   Update objQual_FORUM set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID;
-                   Update objQual_CATEGORY set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID;				 
+                   Update {objectQualifier}TOPIC set POLLID = NULL where POLLID = :I_POLLGROUPID; 
+                   Update {objectQualifier}FORUM set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID;
+                   Update {objectQualifier}CATEGORY set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID;				 
          end
 
          -- simply remove all polls
     if (I_REMOVECOMPLETELY = 1 ) THEN
     begin	
     
-    FOR select POLLID from objQual_POLL where POLLGROUPID =  :I_POLLGROUPID
+    FOR select POLLID from {objectQualifier}POLL where POLLGROUPID =  :I_POLLGROUPID
     into :TMP
     DO
     BEGIN  
-            DELETE FROM  objQual_POLLVOTE WHERE POLLID = :TMP;
-            DELETE FROM  objQual_CHOICE WHERE POLLID = :TMP;			
+            DELETE FROM  {objectQualifier}POLLVOTE WHERE POLLID = :TMP;
+            DELETE FROM  {objectQualifier}CHOICE WHERE POLLID = :TMP;			
             suspend;					
     END
-    DELETE FROM  objQual_POLL WHERE POLLGROUPID = :I_POLLGROUPID;
-    DELETE FROM  objQual_POLLGROUPCLUSTER WHERE POLLGROUPID = :I_POLLGROUPID;
+    DELETE FROM  {objectQualifier}POLL WHERE POLLGROUPID = :I_POLLGROUPID;
+    DELETE FROM  {objectQualifier}POLLGROUPCLUSTER WHERE POLLGROUPID = :I_POLLGROUPID;
     
     END
 
     -- don't remove cluster if the polls are not removed from db 
     end
 --GO
- CREATE PROCEDURE  objQual_TOPIC_DELETE (I_TOPICID INTEGER,I_UPDATELASTPOST BOOL,I_ERASETOPIC BOOL)
+ CREATE PROCEDURE  {objectQualifier}TOPIC_DELETE (I_TOPICID INTEGER,I_UPDATELASTPOST BOOL,I_ERASETOPIC BOOL)
     AS
     DECLARE VARIABLE ici_ForumID INTEGER;   
     DECLARE VARIABLE ici_pollID INTEGER;
@@ -1352,82 +1409,82 @@ CREATE PROCEDURE  objQual_POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOPICID inte
     BEGIN
     /*SET NOCOUNT ON*/   
 
-    SELECT FORUMID  FROM  objQual_TOPIC 
+    SELECT FORUMID  FROM  {objectQualifier}TOPIC 
     WHERE TOPICID=:I_TOPICID
     INTO :ici_ForumID;
     
-    UPDATE  objQual_TOPIC SET LASTMESSAGEID = NULL 
+    UPDATE  {objectQualifier}TOPIC SET LASTMESSAGEID = NULL 
     WHERE TOPICID = :I_TOPICID;
     
  
 
-  UPDATE  objQual_FORUM SET
+  UPDATE  {objectQualifier}FORUM SET
     LASTTOPICID = NULL,
     LASTMESSAGEID = NULL,
     LASTUSERID = NULL,
     LASTUSERNAME = NULL,
     LASTUSERDISPLAYNAME = NULL,
     LASTPOSTED = NULL
-    WHERE LASTMESSAGEID IN (SELECT MESSAGEID from  objQual_MESSAGE 
+    WHERE LASTMESSAGEID IN (SELECT MESSAGEID from  {objectQualifier}MESSAGE 
     where TOPICID = :I_TOPICID);
     
     
     
      
-    UPDATE  objQual_ACTIVE SET TOPICID = NULL WHERE TOPICID = :I_TOPICID;
+    UPDATE  {objectQualifier}ACTIVE SET TOPICID = NULL WHERE TOPICID = :I_TOPICID;
 
 -- delete messages and topics
-    DELETE FROM  objQual_NNTPTOPIC WHERE TOPICID = :I_TOPICID;	
-    UPDATE objQual_TOPIC SET POLLID = NULL WHERE TOPICID = :I_TOPICID AND TOPICMOVEDID IS NOT NULL;
+    DELETE FROM  {objectQualifier}NNTPTOPIC WHERE TOPICID = :I_TOPICID;	
+    UPDATE {objectQualifier}TOPIC SET POLLID = NULL WHERE TOPICID = :I_TOPICID AND TOPICMOVEDID IS NOT NULL;
     IF (I_ERASETOPIC = 0) THEN
     BEGIN
-        UPDATE  objQual_TOPIC set FLAGS = BIN_OR(FLAGS, 8) where TOPICMOVEDID = :I_TOPICID OR TOPICID = :I_TOPICID;
-        UPDATE  objQual_MESSAGE set FLAGS = BIN_OR(FLAGS, 8) where TOPICID = :I_TOPICID;
+        UPDATE  {objectQualifier}TOPIC set FLAGS = BIN_OR(FLAGS, 8) where TOPICMOVEDID = :I_TOPICID OR TOPICID = :I_TOPICID;
+        UPDATE  {objectQualifier}MESSAGE set FLAGS = BIN_OR(FLAGS, 8) where TOPICID = :I_TOPICID;
     END
     ELSE
     BEGIN
         -- remove polls	
-        SELECT POLLID FROM  objQual_TOPIC 
+        SELECT POLLID FROM  {objectQualifier}TOPIC 
         WHERE TOPICID = :I_TOPICID INTO :ici_pollID;
         
         IF (ici_pollID is not null) THEN
         BEGIN
-            UPDATE  objQual_TOPIC SET POLLID = null WHERE TOPICID = :I_TOPICID;			
-            EXECUTE PROCEDURE objQual_POLLGROUP_REMOVE :ici_pollID, :I_TOPICID, NULL, NULL, NULL, 0, 0;
+            UPDATE  {objectQualifier}TOPIC SET POLLID = null WHERE TOPICID = :I_TOPICID;			
+            EXECUTE PROCEDURE {objectQualifier}POLLGROUP_REMOVE :ici_pollID, :I_TOPICID, NULL, NULL, NULL, 0, 0;
            --  RETURNING_VALUES :ICI;
         END	
        
-        DELETE FROM  objQual_TOPIC WHERE TOPICMOVEDID = :I_TOPICID;
+        DELETE FROM  {objectQualifier}TOPIC WHERE TOPICMOVEDID = :I_TOPICID;
         
-        DELETE  FROM objQual_ATTACHMENT WHERE MESSAGEID 
-        IN (SELECT MESSAGEID FROM  objQual_MESSAGE WHERE TOPICID = :I_TOPICID);
-        DELETE  FROM objQual_MESSAGEHISTORY WHERE MESSAGEID 
-        IN (SELECT MESSAGEID FROM  objQual_MESSAGE WHERE TOPICID = :I_TOPICID);
-        DELETE  FROM objQual_MESSAGE WHERE TOPICID = :I_TOPICID;
-        DELETE  FROM objQual_WATCHTOPIC WHERE TOPICID = :I_TOPICID;
-        DELETE  FROM objQual_FAVORITETOPIC WHERE TOPICID = :I_TOPICID;
-        DELETE  FROM objQual_TOPIC WHERE TOPICMOVEDID = :I_TOPICID;
-        DELETE  FROM objQual_TOPIC WHERE TOPICID = :I_TOPICID;
-        DELETE  FROM objQual_TOPICREADTRACKING WHERE TOPICID = :I_TOPICID;
-        DELETE  FROM objQual_MESSAGEREPORTEDAUDIT WHERE MESSAGEID 
-        IN (SELECT MESSAGEID FROM  objQual_MESSAGE WHERE TOPICID = :I_TOPICID); 
-        DELETE  FROM objQual_MESSAGEREPORTED WHERE MESSAGEID 
-        IN (SELECT MESSAGEID FROM  objQual_MESSAGE WHERE TOPICID = :I_TOPICID);
-        DELETE  FROM objQual_FAVORITETOPIC  WHERE TOPICID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}ATTACHMENT WHERE MESSAGEID 
+        IN (SELECT MESSAGEID FROM  {objectQualifier}MESSAGE WHERE TOPICID = :I_TOPICID);
+        DELETE  FROM {objectQualifier}MESSAGEHISTORY WHERE MESSAGEID 
+        IN (SELECT MESSAGEID FROM  {objectQualifier}MESSAGE WHERE TOPICID = :I_TOPICID);
+        DELETE  FROM {objectQualifier}MESSAGE WHERE TOPICID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}WATCHTOPIC WHERE TOPICID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}FAVORITETOPIC WHERE TOPICID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}TOPIC WHERE TOPICMOVEDID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}TOPICREADTRACKING WHERE TOPICID = :I_TOPICID;
+        DELETE  FROM {objectQualifier}MESSAGEREPORTEDAUDIT WHERE MESSAGEID 
+        IN (SELECT MESSAGEID FROM  {objectQualifier}MESSAGE WHERE TOPICID = :I_TOPICID); 
+        DELETE  FROM {objectQualifier}MESSAGEREPORTED WHERE MESSAGEID 
+        IN (SELECT MESSAGEID FROM  {objectQualifier}MESSAGE WHERE TOPICID = :I_TOPICID);
+        DELETE  FROM {objectQualifier}FAVORITETOPIC  WHERE TOPICID = :I_TOPICID;
     END
     
    
 
     /*commit*/
     IF (I_UPDATELASTPOST<>0) THEN
-        EXECUTE PROCEDURE  objQual_FORUM_UPDATELASTPOST :ici_ForumID;
+        EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
     
     IF (ici_ForumID IS NOT NULL) THEN
-        EXECUTE PROCEDURE  objQual_FORUM_UPDATESTATS :ici_ForumID;
+        EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
 END;
 --GO
 
-CREATE  PROCEDURE objQual_FORUM_DELETE(
+CREATE  PROCEDURE {objectQualifier}FORUM_DELETE(
                 I_FORUMID INTEGER)
 AS
 DECLARE VARIABLE ici_LastTopicID INTEGER;
@@ -1445,75 +1502,75 @@ BEGIN
         
 /*Here we change Last things in forums */
 SELECT LASTMESSAGEID
-FROM objQual_FORUM
+FROM {objectQualifier}FORUM
 WHERE FORUMID = :I_FORUMID
 INTO :ici_LastMessageID;
 
 
-        UPDATE objQual_FORUM
+        UPDATE {objectQualifier}FORUM
         SET    LASTMESSAGEID = NULL,
                LASTTOPICID = NULL
         WHERE  FORUMID = :I_FORUMID;        
 
-        UPDATE objQual_TOPIC
+        UPDATE {objectQualifier}TOPIC
         SET    LASTMESSAGEID = NULL
         WHERE  FORUMID = :I_FORUMID;
 
-        UPDATE objQual_ACTIVE 
+        UPDATE {objectQualifier}ACTIVE 
         SET FORUMID=NULL 
         WHERE FORUMID=:I_FORUMID;
 
         
 
-       /* DELETE  objQual_WATCHTOPIC,objQual_TOPIC
-        FROM objQual_WATCHTOPIC, objQual_TOPIC
+       /* DELETE  {objectQualifier}WATCHTOPIC,{objectQualifier}TOPIC
+        FROM {objectQualifier}WATCHTOPIC, {objectQualifier}TOPIC
         WHERE FORUMID = :I_FORUMID
-        AND objQual_WATCHTOPIC.TOPICID = objQual_TOPIC.TOPICID;
+        AND {objectQualifier}WATCHTOPIC.TOPICID = {objectQualifier}TOPIC.TOPICID;
 
-        DELETE objQual_ACTIVE, objQual_TOPIC
-        FROM  objQual_ACTIVE, objQual_TOPIC
-        WHERE objQual_TOPIC.FORUMID = :I_FORUMID
-        AND   objQual_ACTIVE.TOPICID = objQual_TOPIC.TOPICID;
+        DELETE {objectQualifier}ACTIVE, {objectQualifier}TOPIC
+        FROM  {objectQualifier}ACTIVE, {objectQualifier}TOPIC
+        WHERE {objectQualifier}TOPIC.FORUMID = :I_FORUMID
+        AND   {objectQualifier}ACTIVE.TOPICID = {objectQualifier}TOPIC.TOPICID;
 
-        DELETE  objQual_NNTPTOPIC, objQual_NNTPFORUM
-         FROM         objQual_NNTPTOPIC, objQual_NNTPFORUM
-         WHERE        objQual_NNTPFORUM.FORUMID = :I_FORUMID
-         AND objQual_NNTPTOPIC.NNTPFORUMID = objQual_NNTPFORUM.NNTPFORUMID; */
+        DELETE  {objectQualifier}NNTPTOPIC, {objectQualifier}NNTPFORUM
+         FROM         {objectQualifier}NNTPTOPIC, {objectQualifier}NNTPFORUM
+         WHERE        {objectQualifier}NNTPFORUM.FORUMID = :I_FORUMID
+         AND {objectQualifier}NNTPTOPIC.NNTPFORUMID = {objectQualifier}NNTPFORUM.NNTPFORUMID; */
          
        DELETE  
-        FROM objQual_WATCHTOPIC
-        WHERE TOPICID IN (SELECT TOPICID FROM objQual_TOPIC WHERE FORUMID=:I_FORUMID);
+        FROM {objectQualifier}WATCHTOPIC
+        WHERE TOPICID IN (SELECT TOPICID FROM {objectQualifier}TOPIC WHERE FORUMID=:I_FORUMID);
         
        DELETE 
-        FROM  objQual_ACTIVE
-        WHERE TOPICID IN ( SELECT TOPICID FROM objQual_TOPIC WHERE FORUMID = :I_FORUMID);        
+        FROM  {objectQualifier}ACTIVE
+        WHERE TOPICID IN ( SELECT TOPICID FROM {objectQualifier}TOPIC WHERE FORUMID = :I_FORUMID);        
         
         /*DELETE 
-        FROM  objQual_TOPIC
+        FROM  {objectQualifier}TOPIC
         WHERE FORUMID = :I_FORUMID;*/   
       
-       DELETE           FROM         objQual_NNTPTOPIC
+       DELETE           FROM         {objectQualifier}NNTPTOPIC
          WHERE        NNTPFORUMID IN 
-         (SELECT  NNTPFORUMID FROM objQual_NNTPFORUM
+         (SELECT  NNTPFORUMID FROM {objectQualifier}NNTPFORUM
          WHERE FORUMID= :I_FORUMID);     
         
        
-        DELETE FROM objQual_NNTPFORUM
+        DELETE FROM {objectQualifier}NNTPFORUM
         WHERE       FORUMID = :I_FORUMID;
 
-        DELETE FROM objQual_WATCHFORUM
+        DELETE FROM {objectQualifier}WATCHFORUM
         WHERE       FORUMID = :I_FORUMID;
         
        /* Delete topics, messages and attachments*/        
       
  FOR SELECT   TOPICID
-        FROM     objQual_TOPIC
+        FROM     {objectQualifier}TOPIC
         WHERE    FORUMID = :I_FORUMID
         ORDER BY TOPICID DESC
         INTO :itmpTopicID
         DO
         BEGIN
-        EXECUTE PROCEDURE objQual_TOPIC_DELETE :itmpTopicID, 1, 1;        
+        EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :itmpTopicID, 1, 1;        
         END  
         
   
@@ -1521,117 +1578,117 @@ INTO :ici_LastMessageID;
       
         /* TopicDelete finished*/ 
       
-        DELETE FROM objQual_FORUMACCESS
+        DELETE FROM {objectQualifier}FORUMACCESS
         WHERE       FORUMID = :I_FORUMID;
       
         /*Delete UserForums*/
 
-        DELETE FROM objQual_USERFORUM
+        DELETE FROM {objectQualifier}USERFORUM
         WHERE       FORUMID = :I_FORUMID;
 
        /*And after this we can delete Forum itself*/
 
-        DELETE FROM objQual_FORUM
+        DELETE FROM {objectQualifier}FORUM
         WHERE       FORUMID = :I_FORUMID;
         /* Forum on update */
-        SELECT PARENTID FROM  objQual_FORUM
+        SELECT PARENTID FROM  {objectQualifier}FORUM
         WHERE FORUMID = :I_FORUMID
         INTO :ici_ParentID;
         
         IF (ici_ParentID > 0) THEN
         BEGIN
         SELECT  FIRST 1 DISTINCT LASTPOSTED         
-        FROM  objQual_FORUM
+        FROM  {objectQualifier}FORUM
         WHERE PARENTID = :ici_ParentID ORDER BY LASTPOSTED DESC
         INTO :ici_LastPosted ;
         
         IF (ici_LastPosted IS NOT NULL) THEN 
         BEGIN
         SELECT  FIRST 1 DISTINCT FORUMID 
-        FROM  objQual_FORUM
+        FROM  {objectQualifier}FORUM
         WHERE LASTPOSTED = :ici_LastPosted 
         ORDER BY FORUMID DESC
         INTO :ici_ParentID;
-        EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST :ici_ParentID;
-        EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_ParentID;
+        EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ParentID;
+        EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ParentID;
         END        
         END 
     END;
 --GO
 
- CREATE  PROCEDURE objQual_BOARD_DELETE(
+ CREATE  PROCEDURE {objectQualifier}BOARD_DELETE(
   I_BOARDID INTEGER)
   AS  
   DECLARE VARIABLE ITMP_FORUMID INTEGER;   
   BEGIN   
   FOR
    SELECT   a.FORUMID 
-  FROM     objQual_FORUM a
-  JOIN objQual_CATEGORY b
+  FROM     {objectQualifier}FORUM a
+  JOIN {objectQualifier}CATEGORY b
   ON b.CATEGORYID = a.CATEGORYID
   WHERE    b.BOARDID = :I_BOARDID
   ORDER BY a.FORUMID DESC   
   INTO :ITMP_FORUMID
   DO  
   BEGIN
-    EXECUTE PROCEDURE objQual_FORUM_DELETE :ITMP_FORUMID;          
+    EXECUTE PROCEDURE {objectQualifier}FORUM_DELETE :ITMP_FORUMID;          
   END   
      
-    DELETE FROM objQual_FORUMACCESS
+    DELETE FROM {objectQualifier}FORUMACCESS
   WHERE    EXISTS (SELECT 1
-  FROM   objQual_GROUP x
-  WHERE  x.GROUPID = objQual_FORUMACCESS.GROUPID
+  FROM   {objectQualifier}GROUP x
+  WHERE  x.GROUPID = {objectQualifier}FORUMACCESS.GROUPID
   AND x.BOARDID = :I_BOARDID);
      
      
-     DELETE FROM objQual_FORUM
+     DELETE FROM {objectQualifier}FORUM
   WHERE    EXISTS (SELECT 1
-  FROM   objQual_CATEGORY x
-  WHERE  x.CATEGORYID = objQual_FORUM.CATEGORYID
+  FROM   {objectQualifier}CATEGORY x
+  WHERE  x.CATEGORYID = {objectQualifier}FORUM.CATEGORYID
   AND x.BOARDID = :I_BOARDID);
-  DELETE FROM objQual_USERGROUP
+  DELETE FROM {objectQualifier}USERGROUP
   WHERE       EXISTS (SELECT 1
-  FROM   objQual_USER x
-  WHERE  x.USERID = objQual_USERGROUP.USERID
+  FROM   {objectQualifier}USER x
+  WHERE  x.USERID = {objectQualifier}USERGROUP.USERID
   AND x.BOARDID = :I_BOARDID);
-      DELETE FROM objQual_CATEGORY
+      DELETE FROM {objectQualifier}CATEGORY
   WHERE       BOARDID = :I_BOARDID;
-       DELETE FROM objQual_ACTIVEACCESS
+       DELETE FROM {objectQualifier}ACTIVEACCESS
   WHERE       BOARDID = :I_BOARDID;
-      DELETE FROM objQual_ACTIVE
+      DELETE FROM {objectQualifier}ACTIVE
   WHERE       BOARDID = :I_BOARDID;
-      DELETE FROM objQual_USER
+      DELETE FROM {objectQualifier}USER
   WHERE       BOARDID = :I_BOARDID;
-     DELETE FROM objQual_RANK
+     DELETE FROM {objectQualifier}RANK
   WHERE       BOARDID = :I_BOARDID;
-  DELETE FROM objQual_GROUP
+  DELETE FROM {objectQualifier}GROUP
   WHERE       BOARDID = :I_BOARDID;
-  DELETE FROM objQual_ACCESSMASK
+  DELETE FROM {objectQualifier}ACCESSMASK
   WHERE       BOARDID = :I_BOARDID;
-    DELETE FROM objQual_BBCODE
+    DELETE FROM {objectQualifier}BBCODE
   WHERE       BOARDID = :I_BOARDID;
-    DELETE FROM objQual_EXTENSION
+    DELETE FROM {objectQualifier}EXTENSION
   WHERE       BOARDID = :I_BOARDID;
-    DELETE FROM objQual_SHOUTBOXMESSAGE
+    DELETE FROM {objectQualifier}SHOUTBOXMESSAGE
   WHERE       BOARDID = :I_BOARDID;
-    DELETE FROM objQual_MEDAL
+    DELETE FROM {objectQualifier}MEDAL
   WHERE       BOARDID = :I_BOARDID;
-    DELETE FROM objQual_SMILEY
+    DELETE FROM {objectQualifier}SMILEY
   WHERE       BOARDID = :I_BOARDID;
-    DELETE FROM objQual_REPLACE_WORDS
+    DELETE FROM {objectQualifier}REPLACE_WORDS
   WHERE       BOARDID = :I_BOARDID;
-  DELETE FROM objQual_NNTPSERVER
+  DELETE FROM {objectQualifier}NNTPSERVER
   WHERE       BOARDID = :I_BOARDID;
-  DELETE FROM objQual_BANNEDIP
+  DELETE FROM {objectQualifier}BANNEDIP
   WHERE       BOARDID = :I_BOARDID;
-  DELETE FROM objQual_REGISTRY
+  DELETE FROM {objectQualifier}REGISTRY
   WHERE       BOARDID = :I_BOARDID;
-  DELETE FROM objQual_BOARD
+  DELETE FROM {objectQualifier}BOARD
   WHERE       BOARDID = :I_BOARDID;
   END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_MOVE(I_TOPICID INTEGER,I_FORUMID INTEGER,
+CREATE PROCEDURE  {objectQualifier}TOPIC_MOVE(I_TOPICID INTEGER,I_FORUMID INTEGER,
 I_SHOWMOVED BOOL, I_LINKDAYS INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
 AS
 DECLARE ici_OldForumID INTEGER;
@@ -1640,7 +1697,7 @@ BEGIN
  if (i_LinkDays > -1)
         then
         ici_newTimestamp = (SELECT DATEADD(:I_LINKDAYS DAY TO :I_UTCTIMESTAMP) FROM RDB$DATABASE);
-     SELECT  FORUMID FROM objQual_TOPIC 
+     SELECT  FORUMID FROM {objectQualifier}TOPIC 
      WHERE TOPICID = :I_TOPICID
      INTO :ici_OldForumID;
      -- vzrus addon ( don't make link in the same forum)
@@ -1649,29 +1706,29 @@ BEGIN
      IF (I_SHOWMOVED<>0) THEN
      BEGIN
          -- create a moved message
-         INSERT INTO objQual_TOPIC(TOPICID,FORUMID,USERID,USERNAME,USERDISPLAYNAME,POSTED,
+         INSERT INTO {objectQualifier}TOPIC(TOPICID,FORUMID,USERID,USERNAME,USERDISPLAYNAME,POSTED,
          TOPIC, DESCRIPTION,STATUS, VIEWS,FLAGS,"PRIORITY",POLLID,
          TOPICMOVEDID,LASTPOSTED,NUMPOSTS,LINKDATE)
-         SELECT (SELECT NEXT VALUE FOR SEQ_objQual_TOPIC_TOPICID FROM RDB$DATABASE),FORUMID,
+         SELECT (SELECT NEXT VALUE FOR SEQ_{objectQualifier}TOPIC_TOPICID FROM RDB$DATABASE),FORUMID,
          USERID,USERNAME,USERDISPLAYNAME,POSTED,TOPIC, DESCRIPTION,STATUS,(SELECT 0  FROM RDB$DATABASE),FLAGS,"PRIORITY",POLLID,(SELECT :I_TOPICID FROM RDB$DATABASE),LASTPOSTED, (SELECT 0 FROM RDB$DATABASE), :ici_newTimestamp
-         FROM objQual_TOPIC WHERE TOPICID = :I_TOPICID;
+         FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID;
      END
  
     -- move the topic 
-     UPDATE objQual_TOPIC SET FORUMID = :I_FORUMID WHERE TOPICID = :I_TOPICID;
+     UPDATE {objectQualifier}TOPIC SET FORUMID = :I_FORUMID WHERE TOPICID = :I_TOPICID;
  
     -- update last posts 
-     EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_OldForumID);
-     EXECUTE PROCEDURE  objQual_FORUM_UPDATELASTPOST(:I_FORUMID);
+     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_OldForumID);
+     EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST(:I_FORUMID);
      
     -- update stats 
-      EXECUTE PROCEDURE  objQual_FORUM_UPDATESTATS (:ici_OldForumID);
-      EXECUTE PROCEDURE  objQual_FORUM_UPDATESTATS (:I_FORUMID);
+      EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATESTATS (:ici_OldForumID);
+      EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATESTATS (:I_FORUMID);
 END     
 END;
 --GO 
 
-CREATE  PROCEDURE objQual_FORUM_MOVE(
+CREATE  PROCEDURE {objectQualifier}FORUM_MOVE(
                 I_FORUMOLDID INTEGER, I_FORUMNEWID INTEGER, I_UTCTIMESTAMP TIMESTAMP)
 AS
 DECLARE VARIABLE ici_LastTopicID INTEGER;
@@ -1686,60 +1743,60 @@ DECLARE  itmpTopicID INTEGER;
 
 BEGIN       
         -- Maybe an idea to use cascading foreign keys instead? Too bad they don't work on MS SQL 7.0...
-    update  objQual_FORUM set LastMessageID=null,LastTopicID = NULL where FORUMID=:I_FORUMOLDID;
-    update  objQual_ACTIVE set FORUMID=:I_FORUMNEWID where FORUMID=:I_FORUMOLDID;
-    update  objQual_NNTPFORUM set FORUMID=:I_FORUMNEWID where FORUMID=:I_FORUMOLDID;
-    update  objQual_WATCHFORUM set FORUMID=:I_FORUMNEWID where FORUMID=:I_FORUMOLDID;
-    delete from objQual_FORUMREADTRACKING where FORUMID = :I_FORUMOLDID;
+    update  {objectQualifier}FORUM set LastMessageID=null,LastTopicID = NULL where FORUMID=:I_FORUMOLDID;
+    update  {objectQualifier}ACTIVE set FORUMID=:I_FORUMNEWID where FORUMID=:I_FORUMOLDID;
+    update  {objectQualifier}NNTPFORUM set FORUMID=:I_FORUMNEWID where FORUMID=:I_FORUMOLDID;
+    update  {objectQualifier}WATCHFORUM set FORUMID=:I_FORUMNEWID where FORUMID=:I_FORUMOLDID;
+    delete from {objectQualifier}FORUMREADTRACKING where FORUMID = :I_FORUMOLDID;
   
    SELECT LASTMESSAGEID
-   FROM objQual_FORUM
+   FROM {objectQualifier}FORUM
    WHERE FORUMID = :I_FORUMOLDID
    INTO :ici_LastMessageID;
    
      FOR SELECT   TOPICID
-        FROM     objQual_TOPIC
+        FROM     {objectQualifier}TOPIC
         WHERE    FORUMID = :I_FORUMOLDID
         ORDER BY TOPICID DESC
         INTO :itmpTopicID
         DO
         BEGIN
-        EXECUTE PROCEDURE objQual_TOPIC_MOVE :itmpTopicID, :I_FORUMNEWID, 0, -1, :I_UTCTIMESTAMP;        
+        EXECUTE PROCEDURE {objectQualifier}TOPIC_MOVE :itmpTopicID, :I_FORUMNEWID, 0, -1, :I_UTCTIMESTAMP;        
         END  
 
             /* TopicDelete finished*/ 
       
-        DELETE FROM objQual_FORUMACCESS
+        DELETE FROM {objectQualifier}FORUMACCESS
         WHERE       FORUMID = :I_FORUMOLDID;
       
         /*Delete UserForums*/
 
-        DELETE FROM objQual_USERFORUM
+        DELETE FROM {objectQualifier}USERFORUM
         WHERE       FORUMID = :I_FORUMOLDID;
 
-        DELETE FROM objQual_FORUM
+        DELETE FROM {objectQualifier}FORUM
         WHERE       FORUMID = :I_FORUMOLDID;
         /* Forum on update */
-        SELECT PARENTID FROM  objQual_FORUM
+        SELECT PARENTID FROM  {objectQualifier}FORUM
         WHERE FORUMID = :I_FORUMNEWID
         INTO :ici_ParentID;
         
         IF (ici_ParentID > 0) THEN
         BEGIN
         SELECT  FIRST 1 DISTINCT LASTPOSTED         
-        FROM  objQual_FORUM
+        FROM  {objectQualifier}FORUM
         WHERE PARENTID = :ici_ParentID ORDER BY LASTPOSTED DESC
         INTO :ici_LastPosted ;
         
         IF (ici_LastPosted IS NOT NULL) THEN 
         BEGIN
         SELECT  FIRST 1 DISTINCT FORUMID 
-        FROM  objQual_FORUM
+        FROM  {objectQualifier}FORUM
         WHERE LASTPOSTED = :ici_LastPosted 
         ORDER BY FORUMID DESC
         INTO :ici_ParentID;
-        EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST :ici_ParentID;
-        EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_ParentID;
+        EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ParentID;
+        EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ParentID;
         END        
         END 
 
@@ -1748,7 +1805,7 @@ BEGIN
  
 
 
-CREATE  PROCEDURE objQual_BOARD_STATS
+CREATE  PROCEDURE {objectQualifier}BOARD_STATS
     (I_BOARDID INTEGER)
     RETURNS
     (
@@ -1761,10 +1818,10 @@ CREATE  PROCEDURE objQual_BOARD_STATS
 BEGIN
     IF (I_BOARDID IS NULL) THEN
         SELECT
-        (SELECT COUNT(1) FROM objQual_MESSAGE where ISAPPROVED = 1 AND ISDELETED = 0) AS NUMPOSTS,
-        (SELECT COUNT(1) FROM objQual_TOPIC where ISDELETED = 0) AS "NumTopics",
-        (SELECT COUNT(1) FROM objQual_USER where ISAPPROVED = 1) AS "NumUsers",
-        (SELECT min(JOINED) FROM objQual_USER) AS "BoardStart" FROM RDB$DATABASE
+        (SELECT COUNT(1) FROM {objectQualifier}MESSAGE where ISAPPROVED = 1 AND ISDELETED = 0) AS NUMPOSTS,
+        (SELECT COUNT(1) FROM {objectQualifier}TOPIC where ISDELETED = 0) AS "NumTopics",
+        (SELECT COUNT(1) FROM {objectQualifier}USER where ISAPPROVED = 1) AS "NumUsers",
+        (SELECT min(JOINED) FROM {objectQualifier}USER) AS "BoardStart" FROM RDB$DATABASE
         INTO
         :"NumPosts",
         :"NumTopics",
@@ -1774,23 +1831,23 @@ BEGIN
     ELSE
         
         SELECT
-        (SELECT COUNT(1) FROM  objQual_MESSAGE a
-        JOIN objQual_TOPIC b ON a.TOPICID=b.TOPICID
-        JOIN objQual_FORUM c ON b.FORUMID=c.FORUMID
-        JOIN objQual_CATEGORY d ON c.CATEGORYID=d.CATEGORYID
+        (SELECT COUNT(1) FROM  {objectQualifier}MESSAGE a
+        JOIN {objectQualifier}TOPIC b ON a.TOPICID=b.TOPICID
+        JOIN {objectQualifier}FORUM c ON b.FORUMID=c.FORUMID
+        JOIN {objectQualifier}CATEGORY d ON c.CATEGORYID=d.CATEGORYID
         WHERE a.ISAPPROVED = 1 
                   AND a.ISDELETED = 0 
                   AND b.ISDELETED = 0 
                   AND d.BOARDID=:I_BOARDID) AS "NumPosts",
-        (SELECT COUNT(1) FROM objQual_TOPIC a
-        JOIN objQual_FORUM b ON a.FORUMID=b.FORUMID
-        JOIN objQual_CATEGORY c ON b.CATEGORYID=c.CATEGORYID
+        (SELECT COUNT(1) FROM {objectQualifier}TOPIC a
+        JOIN {objectQualifier}FORUM b ON a.FORUMID=b.FORUMID
+        JOIN {objectQualifier}CATEGORY c ON b.CATEGORYID=c.CATEGORYID
         WHERE c.BOARDID=:I_BOARDID 
                   AND a.ISDELETED = 0) AS "NumTopics",
-        (SELECT COUNT(1) from objQual_USER 
+        (SELECT COUNT(1) from {objectQualifier}USER 
                 WHERE ISAPPROVED = 1 
                    AND BOARDID=:I_BOARDID) AS "NumUsers",
-            (SELECT MIN(JOINED) FROM objQual_USER where BOARDID=:I_BOARDID) AS "BoardStart"  
+            (SELECT MIN(JOINED) FROM {objectQualifier}USER where BOARDID=:I_BOARDID) AS "BoardStart"  
             FROM RDB$DATABASE
             INTO
         :"NumPosts",
@@ -1801,25 +1858,25 @@ BEGIN
 END;
 --GO
 
-CREATE  PROCEDURE objQual_CATEGORY_DELETE(
+CREATE  PROCEDURE {objectQualifier}CATEGORY_DELETE(
                 I_CATEGORYID INTEGER)
                 RETURNS(OUT_FLAG INTEGER)
                 AS                
 BEGIN
         
         IF (EXISTS (SELECT 1
-                   FROM   objQual_FORUM
+                   FROM   {objectQualifier}FORUM
                    WHERE  CATEGORYID = :I_CATEGORYID)) THEN       
             OUT_FLAG = 0;       
         ELSE
-            DELETE FROM objQual_CATEGORY
+            DELETE FROM {objectQualifier}CATEGORY
             WHERE       CATEGORYID = :I_CATEGORYID;
              OUT_FLAG = 1;        
        SUSPEND;
     END;
 --GO
 
- CREATE PROCEDURE  objQual_CATEGORY_LIST(I_BOARDID INTEGER,I_CATEGORYID INTEGER) 
+ CREATE PROCEDURE  {objectQualifier}CATEGORY_LIST(I_BOARDID INTEGER,I_CATEGORYID INTEGER) 
 returns (
   "CategoryID" INTEGER,
   "BoardID" INTEGER,
@@ -1838,7 +1895,7 @@ begin
                    SORTORDER,
                    POLLGROUPID,
                    CANHAVEPERSFORUMS 
-                   from objQual_CATEGORY 
+                   from {objectQualifier}CATEGORY 
         where BOARDID = :I_BOARDID 
         order by SORTORDER
         INTO :"CategoryID",
@@ -1858,7 +1915,7 @@ begin
                    SORTORDER,
                    POLLGROUPID,
                    CANHAVEPERSFORUMS 
-                   from objQual_CATEGORY 
+                   from {objectQualifier}CATEGORY 
         where BOARDID = :I_BOARDID 
         and CATEGORYID = :I_CATEGORYID
         INTO :"CategoryID",
@@ -1873,7 +1930,7 @@ begin
 end;
 --GO
 
- CREATE PROCEDURE  objQual_CATEGORY_PFACCESSLIST(I_BOARDID INTEGER,I_CATEGORYID INTEGER) 
+ CREATE PROCEDURE  {objectQualifier}CATEGORY_PFACCESSLIST(I_BOARDID INTEGER,I_CATEGORYID INTEGER) 
 returns (
   "CategoryID" INTEGER,
   "BoardID" INTEGER,
@@ -1893,8 +1950,8 @@ begin
                    c.SORTORDER,
                    c.POLLGROUPID,
                    c.CANHAVEPERSFORUMS,
-                   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
-                   from objQual_CATEGORY c 
+                   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM {objectQualifier}FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
+                   from {objectQualifier}CATEGORY c 
         where c.BOARDID = :I_BOARDID 
         order by c.SORTORDER
         INTO :"CategoryID",
@@ -1915,8 +1972,8 @@ begin
                    c.SORTORDER,
                    c.POLLGROUPID,
                    c.CANHAVEPERSFORUMS,
-                   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
-                   from objQual_CATEGORY c
+                   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM {objectQualifier}FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
+                   from {objectQualifier}CATEGORY c
         where c.BOARDID = :I_BOARDID 
         and c.CATEGORYID = :I_CATEGORYID
         INTO :"CategoryID",
@@ -1932,7 +1989,7 @@ begin
 end;
 --GO
 
- CREATE PROCEDURE  objQual_CATEGORY_GETADJACENTFORUM(I_BOARDID INTEGER,I_CATEGORYID INTEGER, I_PAGEUSERID INTEGER, I_ISAFTER BOOL) 
+ CREATE PROCEDURE  {objectQualifier}CATEGORY_GETADJACENTFORUM(I_BOARDID INTEGER,I_CATEGORYID INTEGER, I_PAGEUSERID INTEGER, I_ISAFTER BOOL) 
 returns (
   "ForumID" INTEGER,
   "SortOrder" INTEGER
@@ -1944,10 +2001,10 @@ begin
    -- find first forum in category and its sort order. If no forums, returns 0 for both and is a first forum in a category.
    if (:I_ISAFTER > 0) Then 
    begin 
-    select FIRST 1 COALESCE(f.FORUMID,0),COALESCE(f.SORTORDER,0) from objQual_FORUM f 
-    JOIN objQual_CATEGORY c
+    select FIRST 1 COALESCE(f.FORUMID,0),COALESCE(f.SORTORDER,0) from {objectQualifier}FORUM f 
+    JOIN {objectQualifier}CATEGORY c
     ON c.CATEGORYID = f.CATEGORYID
-    JOIN objQual_ACTIVEACCESS aa
+    JOIN {objectQualifier}ACTIVEACCESS aa
     ON (aa.FORUMID = f.FORUMID and aa.USERID = :I_PAGEUSERID)
     where c.BoardID = :I_BOARDID and c.CATEGORYID = :I_CATEGORYID order by f.SORTORDER 
     INTO  :"ForumID", :"SortOrder"; 
@@ -1956,7 +2013,7 @@ begin
    -- increase order to shift forums order in the category
   if  (:ici_ForumID > 0 and :ici_SortOrder = 0) THEN
   begin
-  UPDATE objQual_FORUM set SORTORDER = SORTORDER + 1 where CATEGORYID =  :I_CATEGORYID;
+  UPDATE {objectQualifier}FORUM set SORTORDER = SORTORDER + 1 where CATEGORYID =  :I_CATEGORYID;
   end
  --  SELECT ici_ForumID, ici_SortOrder FROM RDB$DATABASE
  --  INTO  :"ForumID", :"SortOrder";
@@ -1966,7 +2023,7 @@ end;
 
 
 
-CREATE  PROCEDURE objQual_CATEGORY_LISTREAD(
+CREATE  PROCEDURE {objectQualifier}CATEGORY_LISTREAD(
 I_BOARDID    INTEGER,
 I_USERID     INTEGER,
 I_CATEGORYID INTEGER)
@@ -1983,10 +2040,10 @@ FOR SELECT   a.CATEGORYID,
 a.NAME,
 a.CATEGORYIMAGE,
 a.CANHAVEPERSFORUMS
-FROM     objQual_CATEGORY a
-JOIN objQual_FORUM b
+FROM     {objectQualifier}CATEGORY a
+JOIN {objectQualifier}FORUM b
 ON b.CATEGORYID = a.CATEGORYID
-JOIN objQual_ACTIVEACCESS v
+JOIN {objectQualifier}ACTIVEACCESS v
 ON v.FORUMID = b.FORUMID
 WHERE    a.BOARDID = :I_BOARDID
 AND v.USERID = :I_USERID
@@ -2009,7 +2066,7 @@ END;
 
 
 
-CREATE PROCEDURE  objQual_CATEGORY_SAVE
+CREATE PROCEDURE  {objectQualifier}CATEGORY_SAVE
 (
 I_BOARDID    INTEGER,
 I_CATEGORYID INTEGER,
@@ -2023,7 +2080,7 @@ AS
 BEGIN
 IF (I_CATEGORYID > 0) THEN
 BEGIN
-UPDATE objQual_CATEGORY
+UPDATE {objectQualifier}CATEGORY
 SET    NAME = :I_NAME,
 CATEGORYIMAGE = :I_CATEGORYIMAGE,
 SORTORDER = :I_SORTORDER,
@@ -2034,8 +2091,8 @@ INTO :"CategoryID";
 END
 ELSE
 BEGIN
-SELECT NEXT VALUE FOR SEQ_objQual_CATEGORY_CATEGORYID FROM RDB$DATABASE INTO :"CategoryID";
-INSERT INTO objQual_CATEGORY
+SELECT NEXT VALUE FOR SEQ_{objectQualifier}CATEGORY_CATEGORYID FROM RDB$DATABASE INTO :"CategoryID";
+INSERT INTO {objectQualifier}CATEGORY
 (CATEGORYID,BOARDID,
 NAME,
 CATEGORYIMAGE,
@@ -2048,7 +2105,7 @@ END
 END;
 --GO
 
-CREATE  PROCEDURE objQual_CATEGORY_SIMPLELIST(
+CREATE  PROCEDURE {objectQualifier}CATEGORY_SIMPLELIST(
 I_STARTID INTEGER,
 I_LIMIT   INTEGER)
 RETURNS ("CategoryID" INTEGER,
@@ -2058,7 +2115,7 @@ BEGIN
 FOR SELECT   FIRST (:I_LIMIT) 
 c.CATEGORYID,
 c.NAME
-FROM     objQual_CATEGORY c
+FROM     {objectQualifier}CATEGORY c
 WHERE    c.CATEGORYID >= :I_STARTID
 AND c.CATEGORYID < (:I_LIMIT+:I_STARTID)
         ORDER BY c.CATEGORYID
@@ -2068,7 +2125,7 @@ AND c.CATEGORYID < (:I_LIMIT+:I_STARTID)
 END;
 --GO
 
-CREATE PROCEDURE  objQual_CHECKEMAIL_LIST
+CREATE PROCEDURE  {objectQualifier}CHECKEMAIL_LIST
 (
 I_EMAIL VARCHAR(128)
 )
@@ -2098,7 +2155,7 @@ FOR SELECT CHECKEMAILID,
            "EMAIL",
            CREATED,
            "HASH" 
-           FROM objQual_CHECKEMAIL
+           FROM {objectQualifier}CHECKEMAIL
 INTO
     :"CheckEmailID",
     :"UserID",
@@ -2111,7 +2168,7 @@ FOR SELECT CHECKEMAILID,
            USERID,
            "EMAIL",
            CREATED,
-           "HASH"  FROM objQual_CHECKEMAIL WHERE "EMAIL" = LOWER(:I_EMAIL)
+           "HASH"  FROM {objectQualifier}CHECKEMAIL WHERE "EMAIL" = LOWER(:I_EMAIL)
 INTO
     :"CheckEmailID",
     :"UserID",
@@ -2122,7 +2179,7 @@ INTO
 END;
 --GO
 
-CREATE PROCEDURE  objQual_CHECKEMAIL_SAVE
+CREATE PROCEDURE  {objectQualifier}CHECKEMAIL_SAVE
 (
 I_USERID INTEGER,
 I_HASH VARCHAR(32),
@@ -2131,18 +2188,18 @@ I_UTCTIMESTAMP TIMESTAMP
 )
 AS
 BEGIN
-INSERT INTO objQual_CHECKEMAIL
+INSERT INTO {objectQualifier}CHECKEMAIL
 (CHECKEMAILID,USERID,"EMAIL",CREATED,"HASH")
 VALUES
 (
-(SELECT NEXT VALUE FOR SEQ_objQual_CHECKEMAIL_CHECKEMAILID 
+(SELECT NEXT VALUE FOR SEQ_{objectQualifier}CHECKEMAIL_CHECKEMAILID 
 FROM RDB$DATABASE),
 :I_USERID,LOWER(:I_EMAIL),:I_UTCTIMESTAMP,:I_HASH);
 END;
 --GO
 
 
-CREATE PROCEDURE  objQual_CHECKEMAIL_UPDATE(I_HASH VARCHAR(32))
+CREATE PROCEDURE  {objectQualifier}CHECKEMAIL_UPDATE(I_HASH VARCHAR(32))
 RETURNS
 (
     "ProviderUserKey" VARCHAR(64),    
@@ -2162,7 +2219,7 @@ CHECKEMAILID,
 USERID,
 "EMAIL"
 FROM
-objQual_CHECKEMAIL
+{objectQualifier}CHECKEMAIL
 WHERE
 "HASH" = :I_HASH
 INTO :l_CheckEmailID,:l_UserID,:l_Email;
@@ -2174,15 +2231,15 @@ INTO :"ProviderUserKey",:"Email";
 ELSE
 BEGIN
 /*Update new user email*/
-UPDATE objQual_USER 
+UPDATE {objectQualifier}USER 
 SET "EMAIL" = LOWER(:l_Email), 
 FLAGS = BIN_OR(FLAGS, 2)  
 WHERE USERID = :l_UserID;
-DELETE FROM objQual_CHECKEMAIL 
+DELETE FROM {objectQualifier}CHECKEMAIL 
 WHERE CHECKEMAILID = :l_CheckEmailID;
 
 /*return the UserProviderKey*/
-SELECT UUID_TO_CHAR(PROVIDERUSERKEY), "EMAIL" FROM objQual_USER 
+SELECT UUID_TO_CHAR(PROVIDERUSERKEY), "EMAIL" FROM {objectQualifier}USER 
 WHERE USERID = :l_UserID
 INTO :"ProviderUserKey",:"Email";
 END
@@ -2192,7 +2249,7 @@ END;
 
 /*polls*/
 
-CREATE PROCEDURE  objQual_CHOICE_ADD(
+CREATE PROCEDURE  {objectQualifier}CHOICE_ADD(
 I_POLLID		INTEGER,
 I_CHOICE		VARCHAR(128),
 I_OBJECTPATH    VARCHAR(255),
@@ -2201,28 +2258,28 @@ I_MIMETYPE      VARCHAR(50)
 AS
 BEGIN
 
-INSERT INTO objQual_CHOICE
+INSERT INTO {objectQualifier}CHOICE
 (CHOICEID,POLLID, CHOICE, VOTES, OBJECTPATH, MIMETYPE)
 VALUES
-((SELECT NEXT VALUE FOR SEQ_objQual_CHOICE_CHOICEID 
+((SELECT NEXT VALUE FOR SEQ_{objectQualifier}CHOICE_CHOICEID 
 FROM RDB$DATABASE),:I_POLLID, :I_CHOICE, 0, :I_OBJECTPATH, :I_MIMETYPE);
 
 END;
 --GO
 
 
-CREATE PROCEDURE  objQual_CHOICE_DELETE(
+CREATE PROCEDURE  {objectQualifier}CHOICE_DELETE(
 I_CHOICEID	INTEGER
 )
 AS
 BEGIN
-DELETE FROM objQual_CHOICE
+DELETE FROM {objectQualifier}CHOICE
 WHERE CHOICEID = :I_CHOICEID;
 END;
 --GO
 
 
-CREATE PROCEDURE  objQual_CHOICE_UPDATE(
+CREATE PROCEDURE  {objectQualifier}CHOICE_UPDATE(
 I_CHOICEID	INTEGER,
 I_CHOICE	VARCHAR(128),
 I_OBJECTPATH    VARCHAR(255),
@@ -2231,7 +2288,7 @@ I_MIMETYPE      VARCHAR(50)
 AS
 BEGIN
 
-UPDATE objQual_CHOICE
+UPDATE {objectQualifier}CHOICE
 SET CHOICE = :I_CHOICE,
 OBJECTPATH = :I_OBJECTPATH,
 MIMETYPE = :I_MIMETYPE
@@ -2242,34 +2299,34 @@ END;
 
 
 
-CREATE PROCEDURE  objQual_CHOICE_VOTE
+CREATE PROCEDURE  {objectQualifier}CHOICE_VOTE
 (I_CHOICEID INTEGER,I_USERID INTEGER, I_REMOTEIP VARCHAR(39))
 AS
 DECLARE l_PollID INTEGER;
 BEGIN
 
-SELECT POLLID FROM objQual_CHOICE 
+SELECT POLLID FROM {objectQualifier}CHOICE 
 WHERE CHOICEID = :I_CHOICEID INTO :l_PollID;
 
 IF (I_USERID IS NULL) THEN
 BEGIN
 IF (I_REMOTEIP IS NOT NULL) THEN
-INSERT INTO objQual_POLLVOTE (POLLVOTEID,POLLID, USERID, REMOTEIP,CHOICEID) 
-VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_POLLVOTE_POLLVOTEID 
+INSERT INTO {objectQualifier}POLLVOTE (POLLVOTEID,POLLID, USERID, REMOTEIP,CHOICEID) 
+VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}POLLVOTE_POLLVOTEID 
 FROM RDB$DATABASE),:l_PollID,NULL,:I_REMOTEIP,:I_CHOICEID);
 END
 ELSE
-INSERT INTO objQual_POLLVOTE (POLLVOTEID,POLLID, USERID, REMOTEIP, CHOICEID) 
-VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_POLLVOTE_POLLVOTEID 
+INSERT INTO {objectQualifier}POLLVOTE (POLLVOTEID,POLLID, USERID, REMOTEIP, CHOICEID) 
+VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}POLLVOTE_POLLVOTEID 
 FROM RDB$DATABASE),:l_PollID,:I_USERID,:I_REMOTEIP,:I_CHOICEID);
 
 
-UPDATE objQual_CHOICE SET VOTES = VOTES + 1 
+UPDATE {objectQualifier}CHOICE SET VOTES = VOTES + 1 
 WHERE CHOICEID = :I_CHOICEID;
 END;
 --GO
 
-CREATE  PROCEDURE objQual_EVENTLOG_CREATE(
+CREATE  PROCEDURE {objectQualifier}EVENTLOG_CREATE(
 I_USERID      INTEGER,
 I_SOURCE      VARCHAR(128),
 I_DESCRIPTION BLOB SUB_TYPE 1,
@@ -2279,13 +2336,13 @@ AS
 DECLARE topLogID INTEGER;
 DECLARE recCount INTEGER;
 BEGIN
-INSERT INTO objQual_EVENTLOG
+INSERT INTO {objectQualifier}EVENTLOG
 (EVENTLOGID, EVENTTIME, USERID,
 SOURCE,
 DESCRIPTION,
 "TYPE")
 VALUES     
-((SELECT NEXT VALUE FOR SEQ_objQual_EVENTLOG_EVENTLOGID 
+((SELECT NEXT VALUE FOR SEQ_{objectQualifier}EVENTLOG_EVENTLOGID 
 FROM RDB$DATABASE), :I_UTCTIMESTAMP,:I_USERID,
 :I_SOURCE,
 :I_DESCRIPTION,
@@ -2294,7 +2351,7 @@ FROM RDB$DATABASE), :I_UTCTIMESTAMP,:I_USERID,
     END;
 --GO
 
-CREATE  PROCEDURE objQual_EVENTLOG_DELETE
+CREATE  PROCEDURE {objectQualifier}EVENTLOG_DELETE
  (
     I_EVENTLOGID INTEGER, 
     I_BOARDID  INTEGER,
@@ -2305,22 +2362,22 @@ CREATE  PROCEDURE objQual_EVENTLOG_DELETE
      /*either EventLogID or BoardID must be null, not both at the same time*/
     if (I_EVENTLOGID IS NULL) THEN 
         /* delete all events of this board*/
-        DELETE FROM objQual_EVENTLOG
+        DELETE FROM {objectQualifier}EVENTLOG
         WHERE
             (USERID IS NULL or
-            USERID IN (SELECT USERID FROM objQual_USER WHERE BOARDID=:I_BOARDID));
+            USERID IN (SELECT USERID FROM {objectQualifier}USER WHERE BOARDID=:I_BOARDID));
     
     ELSE 
          /*delete just one event*/
-        DELETE FROM objQual_EVENTLOG WHERE EVENTLOGID=:I_EVENTLOGID;
+        DELETE FROM {objectQualifier}EVENTLOG WHERE EVENTLOGID=:I_EVENTLOGID;
     
  END;
 --GO
 
-CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}EXTENSION_DELETE (I_EXTENSIONID INTEGER) 
  AS
  BEGIN
-    DELETE FROM objQual_EXTENSION 
+    DELETE FROM {objectQualifier}EXTENSION 
     WHERE EXTENSIONID = :I_EXTENSIONID;
  END;
 --GO
@@ -2328,7 +2385,7 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
 
 
 
- CREATE PROCEDURE  objQual_EXTENSION_EDIT (I_EXTENSIONID INTEGER)
+ CREATE PROCEDURE  {objectQualifier}EXTENSION_EDIT (I_EXTENSIONID INTEGER)
  RETURNS
  (
  "ExtensionID" INTEGER,
@@ -2340,7 +2397,7 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
     SELECT EXTENSIONID,
            BOARDID,
            EXTENSION 
-    FROM objQual_EXTENSION 
+    FROM {objectQualifier}EXTENSION 
     WHERE EXTENSIONID = :I_EXTENSIONID 
     ORDER BY EXTENSION
     INTO :"ExtensionID",
@@ -2354,7 +2411,7 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
 
 
 
- CREATE PROCEDURE  objQual_FORUM_LISTALL_FROMCAT(I_BOARDID INTEGER,I_CATEGORYID INTEGER,I_ALLOWUSERFORUMSONLY BOOL) 
+ CREATE PROCEDURE  {objectQualifier}FORUM_LISTALL_FROMCAT(I_BOARDID INTEGER,I_CATEGORYID INTEGER,I_ALLOWUSERFORUMSONLY BOOL) 
  RETURNS
  (
 "CategoryID" integer,
@@ -2373,10 +2430,10 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
                a.NAME AS "Forum", 
                a.PARENTID,
                a.POLLGROUPID,
-               a.CANHAVEPERSFORUMS
-               FROM  objQual_FORUM a 
+               a.CANHAVEPERSFORUMS			  
+               FROM  {objectQualifier}FORUM a 
         INNER JOIN
-             objQual_CATEGORY b ON b.CATEGORYID = a.CATEGORYID
+             {objectQualifier}CATEGORY b ON b.CATEGORYID = a.CATEGORYID
         WHERE
             b.CATEGORYID=:I_CATEGORYID and
             b.BOARDID=:I_BOARDID
@@ -2397,7 +2454,7 @@ DO SUSPEND;
 --GO
 
 
-CREATE PROCEDURE  objQual_FORUM_LISTALLMYMODERATED(I_BOARDID INTEGER,I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}FORUM_LISTALLMYMODERATED(I_BOARDID INTEGER,I_USERID INTEGER)
 RETURNS
 (
 "CategoryID" integer,
@@ -2419,8 +2476,8 @@ BEGIN
             b.FORUMID,
             (SELECT 0 FROM RDB$DATABASE) AS INDENT
         FROM
-            objQual_CATEGORY a
-            JOIN objQual_FORUM b ON b.CATEGORYID=a.CATEGORYID
+            {objectQualifier}CATEGORY a
+            JOIN {objectQualifier}FORUM b ON b.CATEGORYID=a.CATEGORYID
         WHERE
             a.BOARDID=:I_BOARDID AND
             b.PARENTID IS NULL
@@ -2431,9 +2488,9 @@ BEGIN
             b.FORUMID,
             (SELECT 1  FROM RDB$DATABASE) AS INDENT
         FROM
-            objQual_CATEGORY a
-            JOIN objQual_FORUM b on b.CATEGORYID=a.CATEGORYID
-            JOIN objQual_FORUM c on c.PARENTID=b.FORUMID
+            {objectQualifier}CATEGORY a
+            JOIN {objectQualifier}FORUM b on b.CATEGORYID=a.CATEGORYID
+            JOIN {objectQualifier}FORUM c on c.PARENTID=b.FORUMID
         WHERE
             a.BOARDID=:I_BOARDID and
             b.PARENTID IS NULL
@@ -2444,17 +2501,17 @@ BEGIN
             d.FORUMID,
             (SELECT 2 FROM RDB$DATABASE) AS INDENT 
         FROM
-            objQual_CATEGORY a
-            JOIN objQual_FORUM b ON b.CATEGORYID=a.CATEGORYID
-            JOIN objQual_FORUM c ON c.PARENTID=b.FORUMID
-            JOIN objQual_FORUM d ON d.PARENTID=c.FORUMID
+            {objectQualifier}CATEGORY a
+            JOIN {objectQualifier}FORUM b ON b.CATEGORYID=a.CATEGORYID
+            JOIN {objectQualifier}FORUM c ON c.PARENTID=b.FORUMID
+            JOIN {objectQualifier}FORUM d ON d.PARENTID=c.FORUMID
         WHERE
             a.BOARDID=:I_BOARDID AND
             b.PARENTID IS NULL
         ) AS x
-        JOIN objQual_FORUM a ON a.FORUMID=x.FORUMID
-        JOIN objQual_CATEGORY b ON b.CATEGORYID=a.CATEGORYID
-        JOIN objQual_ACTIVEACCESS c ON c.FORUMID=a.FORUMID
+        JOIN {objectQualifier}FORUM a ON a.FORUMID=x.FORUMID
+        JOIN {objectQualifier}CATEGORY b ON b.CATEGORYID=a.CATEGORYID
+        JOIN {objectQualifier}ACTIVEACCESS c ON c.FORUMID=a.FORUMID
     WHERE
         c.USERID=:I_USERID AND
         b.BOARDID=:I_BOARDID AND
@@ -2471,16 +2528,16 @@ BEGIN
         DO SUSPEND;
 END;
 --GO
-CREATE PROCEDURE  objQual_FORUM_LISTSUBFORUMS(I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}FORUM_LISTSUBFORUMS(I_FORUMID INTEGER)
 RETURNS ("Subforums" INTEGER)
 AS
 BEGIN
-SELECT SUM(1) FROM objQual_FORUM WHERE PARENTID = :I_FORUMID INTO "Subforums";
+SELECT SUM(1) FROM {objectQualifier}FORUM WHERE PARENTID = :I_FORUMID INTO "Subforums";
 SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_FORUM_LISTTOPICS(I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}FORUM_LISTTOPICS(I_FORUMID INTEGER)
 RETURNS
  (
 "TopicID" integer,
@@ -2533,7 +2590,7 @@ FOR SELECT
     LASTMESSAGEFLAGS,	
     TOPICIMAGE,
     POLLID
-from objQual_TOPIC
+from {objectQualifier}TOPIC
 WHERE FORUMID = :I_FORUMID
 INTO
 :"TopicID",
@@ -2563,7 +2620,7 @@ DO SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER, I_ISUSERFORUM BOOL) 
+CREATE PROCEDURE  {objectQualifier}FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER, I_ISUSERFORUM BOOL) 
  RETURNS
  (
 "ForumID" integer,
@@ -2621,28 +2678,28 @@ CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER,
          b.ISHIDDEN,
          b.ISNOCOUNT,
          b.ISMODERATED,
-        (SELECT     COUNT(objQual_MESSAGE.MESSAGEID)
-        FROM         objQual_MESSAGE 
-                INNER JOIN  objQual_TOPIC 
-                ON objQual_MESSAGE.TOPICID =objQual_TOPIC.TOPICID
-        WHERE (BIN_AND(objQual_MESSAGE.FLAGS, 16)=0) 
-        and (BIN_AND(objQual_MESSAGE.FLAGS, 8)=0) 
-        AND (BIN_AND(objQual_TOPIC.FLAGS, 8) = 0) 
-        AND (objQual_TOPIC.FORUMID=b.FORUMID)) AS "MessageCount", 
+        (SELECT     COUNT({objectQualifier}MESSAGE.MESSAGEID)
+        FROM         {objectQualifier}MESSAGE 
+                INNER JOIN  {objectQualifier}TOPIC 
+                ON {objectQualifier}MESSAGE.TOPICID ={objectQualifier}TOPIC.TOPICID
+        WHERE (BIN_AND({objectQualifier}MESSAGE.FLAGS, 16)=0) 
+        and (BIN_AND({objectQualifier}MESSAGE.FLAGS, 8)=0) 
+        AND (BIN_AND({objectQualifier}TOPIC.FLAGS, 8) = 0) 
+        AND ({objectQualifier}TOPIC.FORUMID=b.FORUMID)) AS "MessageCount", 
         -- here was added flag 9 if 8 then add 256	to flags
-                (SELECT     count(objQual_MESSAGE.MESSAGEID)
-        FROM         objQual_MESSAGE 
-                INNER JOIN  objQual_TOPIC 
-                ON objQual_MESSAGE.TOPICID = objQual_TOPIC.TOPICID
-        WHERE (BIN_AND(objQual_MESSAGE.FLAGS, 128)=128) 
-                AND (BIN_AND(objQual_MESSAGE.FLAGS, 8)=0) 
-                AND (BIN_AND(objQual_TOPIC.FLAGS, 8) = 0) 
-                AND (objQual_TOPIC.FORUMID=b.FORUMID)) AS "ReportedCount" 		
+                (SELECT     count({objectQualifier}MESSAGE.MESSAGEID)
+        FROM         {objectQualifier}MESSAGE 
+                INNER JOIN  {objectQualifier}TOPIC 
+                ON {objectQualifier}MESSAGE.TOPICID = {objectQualifier}TOPIC.TOPICID
+        WHERE (BIN_AND({objectQualifier}MESSAGE.FLAGS, 128)=128) 
+                AND (BIN_AND({objectQualifier}MESSAGE.FLAGS, 8)=0) 
+                AND (BIN_AND({objectQualifier}TOPIC.FLAGS, 8) = 0) 
+                AND ({objectQualifier}TOPIC.FORUMID=b.FORUMID)) AS "ReportedCount" 		
             FROM
-        objQual_CATEGORY a 
-            JOIN objQual_FORUM b 
+        {objectQualifier}CATEGORY a 
+            JOIN {objectQualifier}FORUM b 
             ON b.CATEGORYID=a.CATEGORYID
-            JOIN objQual_ACTIVEACCESS c 
+            JOIN {objectQualifier}ACTIVEACCESS c 
             ON c.FORUMID=b.FORUMID 
             WHERE
         a.BOARDID=:I_BOARDID AND
@@ -2683,7 +2740,7 @@ CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER,
  END;
 --GO
 
-CREATE PROCEDURE  objQual_FORUM_SAVE(
+CREATE PROCEDURE  {objectQualifier}FORUM_SAVE(
     I_FORUMID 		INTEGER,
     I_CATEGORYID	INTEGER,
     I_PARENTID		INTEGER,
@@ -2722,20 +2779,20 @@ BEGIN
 
        IF (:I_USERID IS NOT NULL) THEN
     BEGIN	
-    SELECT FIRST 1 Name,  DisplayName FROM objQual_USER where USERID = :i_UserID
+    SELECT FIRST 1 Name,  DisplayName FROM {objectQualifier}USER where USERID = :i_UserID
     INTO :l_UserName, :l_UserDisplayName;
     END
     -- guests should not create forums?
     ELSE
     BEGIN 
-    SELECT BoardID FROM objQual_CATEGORY WHERE CATEGORYID = :I_CATEGORYID
+    SELECT BoardID FROM {objectQualifier}CATEGORY WHERE CATEGORYID = :I_CATEGORYID
     INTO :l_BoardID;
-    SELECT FIRST 1 Name, DisplayName FROM objQual_USER where BOARDID = :l_BoardID and BIN_AND(Flags,4) = 4  ORDER BY Joined DESC
+    SELECT FIRST 1 Name, DisplayName FROM {objectQualifier}USER where BOARDID = :l_BoardID and BIN_AND(Flags,4) = 4  ORDER BY Joined DESC
     INTO :l_UserName, :l_UserDisplayName;
     END
 
   IF (:I_FORUMID IS NOT NULL AND :I_FORUMID>0) THEN
-  UPDATE objQual_FORUM
+  UPDATE {objectQualifier}FORUM
   SET
   PARENTID=:I_PARENTID,
   NAME= :I_NAME,
@@ -2753,8 +2810,8 @@ BEGIN
   ELSE
   BEGIN
   -- use an existing trigger delete it
-  SELECT NEXT VALUE FOR SEQ_objQual_FORUM_FORUMID FROM RDB$DATABASE INTO :I_FORUMID;
-  INSERT INTO objQual_FORUM(FORUMID,PARENTID,NAME,DESCRIPTION,
+  SELECT NEXT VALUE FOR SEQ_{objectQualifier}FORUM_FORUMID FROM RDB$DATABASE INTO :I_FORUMID;
+  INSERT INTO {objectQualifier}FORUM(FORUMID,PARENTID,NAME,DESCRIPTION,
   SORTORDER,CATEGORYID,NUMTOPICS,NUMPOSTS,REMOTEURL,THEMEURL,FLAGS, IMAGEURL,
   STYLES, ISUSERFORUM,CREATEDBYUSERID,CREATEDBYUSERNAME,CREATEDBYUSERDISPLAYNAME,
   CREATEDDATE,CANHAVEPERSFORUMS)
@@ -2763,16 +2820,16 @@ BEGIN
   :I_STYLES,:I_ISUSERFORUM,  :I_USERID,:l_UserName, :l_UserDisplayName,
   :I_UTCTIMESTAMP,:I_CANHAVEPERSFORUMS); 
 
-  INSERT INTO objQual_FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID)
+  INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID)
   SELECT GROUPID,(SELECT :I_FORUMID FROM RDB$DATABASE),(SELECT :I_ACCESSMASKID FROM RDB$DATABASE)
-  FROM objQual_GROUP
-  WHERE BOARDID IN (SELECT BOARDID  from objQual_CATEGORY
+  FROM {objectQualifier}GROUP
+  WHERE BOARDID IN (SELECT BOARDID  from {objectQualifier}CATEGORY
   WHERE CATEGORYID=:I_CATEGORYID);
   END
  
-    if (exists (select first 1 1 from objQual_FORUMHISTORY where FORUMID = :I_FORUMID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
+    if (exists (select first 1 1 from {objectQualifier}FORUMHISTORY where FORUMID = :I_FORUMID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
     begin
-    update objQual_FORUMHISTORY set 
+    update {objectQualifier}FORUMHISTORY set 
            CHANGEDUSERID = :I_USERID,	
            CHANGEDUSERNAME = :l_UserName,
            CHANGEDDISPLAYNAME = :l_UserDisplayName
@@ -2780,7 +2837,7 @@ BEGIN
     end
     else
     begin
-    INSERT INTO objQual_FORUMHISTORY(FORUMID, CHANGEDUSERID,CHANGEDUSERNAME,CHANGEDDISPLAYNAME,CHANGEDDATE)
+    INSERT INTO {objectQualifier}FORUMHISTORY(FORUMID, CHANGEDUSERID,CHANGEDUSERNAME,CHANGEDDISPLAYNAME,CHANGEDDATE)
     VALUES (:I_FORUMID,:I_USERID,:l_UserName,:l_UserDisplayName,:I_UTCTIMESTAMP);
     end
   o_ForumID=:I_FORUMID;
@@ -2788,7 +2845,7 @@ BEGIN
   END;
 --GO
 
-CREATE PROCEDURE  objQual_FORUM_SIMPLELIST(
+CREATE PROCEDURE  {objectQualifier}FORUM_SIMPLELIST(
                  I_STARTID INTEGER,
                  I_LIMIT   INTEGER)                 
 RETURNS                
@@ -2810,7 +2867,7 @@ RETURNS
                   f.FORUMID,
                   f.NAME,
                   f.LASTPOSTED
-         FROM     objQual_FORUM f
+         FROM     {objectQualifier}FORUM f
          WHERE    f.FORUMID >= :l_StartID
          AND f.FORUMID < (:l_StartID + :l_Limit)
          ORDER BY f.FORUMID
@@ -2823,7 +2880,7 @@ RETURNS
      END;
  --GO
  
-CREATE PROCEDURE  objQual_FORUMACCESS_GROUP(I_GROUPID INTEGER, I_USERID INTEGER, I_INCLUDEUSERFORUMS BOOL) 
+CREATE PROCEDURE  {objectQualifier}FORUMACCESS_GROUP(I_GROUPID INTEGER, I_USERID INTEGER, I_INCLUDEUSERFORUMS BOOL) 
 RETURNS
 (
 "GroupID" integer,
@@ -2847,12 +2904,12 @@ AS
          b.PARENTID AS "ParentID",
          brd.NAME
     FROM 
-        objQual_FORUMACCESS a
-        INNER JOIN objQual_FORUM b 
+        {objectQualifier}FORUMACCESS a
+        INNER JOIN {objectQualifier}FORUM b 
         on b.FORUMID=a.FORUMID
-        INNER JOIN objQual_CATEGORY c 
+        INNER JOIN {objectQualifier}CATEGORY c 
         on c.CATEGORYID=b.CATEGORYID
-        INNER JOIN objQual_BOARD brd 
+        INNER JOIN {objectQualifier}BOARD brd 
         on brd.BOARDID=c.BOARDID
     WHERE 
         (a.GROUPID = :I_GROUPID 
@@ -2876,7 +2933,7 @@ AS
 --GO
 
 
-CREATE  PROCEDURE objQual_FORUMACCESS_LIST(
+CREATE  PROCEDURE {objectQualifier}FORUMACCESS_LIST(
                 I_FORUMID INTEGER, I_USERID INTEGER, I_INCLUDEUSERMASKS BOOL)
  RETURNS
   (
@@ -2892,8 +2949,8 @@ BEGIN
                   a.FORUMID,
                   a.ACCESSMASKID,
                b.NAME AS "GroupName"
-        FROM   objQual_FORUMACCESS a
-               INNER JOIN objQual_GROUP b 
+        FROM   {objectQualifier}FORUMACCESS a
+               INNER JOIN {objectQualifier}GROUP b 
                ON b.GROUPID=a.GROUPID
         WHERE  a.FORUMID = :I_FORUMID AND (b.ISUSERGROUP = 0 OR (b.ISUSERGROUP = 1 AND b.CREATEDBYUSERID = :I_USERID))
         INTO 
@@ -2907,8 +2964,8 @@ BEGIN
                   a.FORUMID,
                   a.ACCESSMASKID,
                b.NAME AS "GroupName"
-        FROM   objQual_FORUMACCESS a
-               INNER JOIN objQual_GROUP b 
+        FROM   {objectQualifier}FORUMACCESS a
+               INNER JOIN {objectQualifier}GROUP b 
                ON b.GROUPID=a.GROUPID
         WHERE  a.FORUMID = :I_FORUMID AND b.ISUSERGROUP = 0
         INTO 
@@ -2922,38 +2979,40 @@ END;
 --GO
 
 
-CREATE  PROCEDURE objQual_FORUMACCESS_SAVE(
+CREATE  PROCEDURE {objectQualifier}FORUMACCESS_SAVE(
                 I_FORUMID      INTEGER,
                 I_GROUPID      INTEGER,
                 I_ACCESSMASKID INTEGER)
  AS
 BEGIN
-        UPDATE objQual_FORUMACCESS
+        UPDATE {objectQualifier}FORUMACCESS
         SET    ACCESSMASKID = :I_ACCESSMASKID
         WHERE  FORUMID = :I_FORUMID
         AND GROUPID = :I_GROUPID;
     END;
 --GO
 
-  CREATE  PROCEDURE objQual_GROUP_DELETE(
+  CREATE  PROCEDURE {objectQualifier}GROUP_DELETE(
         I_GROUPID INTEGER)
         AS
         BEGIN
-        DELETE FROM objQual_EVENTLOGGROUPACCESS
+        DELETE FROM {objectQualifier}EVENTLOGGROUPACCESS
         WHERE       GROUPID = :I_GROUPID;
-        DELETE FROM objQual_FORUMACCESS
+        DELETE FROM {objectQualifier}FORUMACCESS
         WHERE       GROUPID = :I_GROUPID;
-        DELETE FROM objQual_USERGROUP
+        DELETE FROM {objectQualifier}USERGROUP
         WHERE       GROUPID = :I_GROUPID;
-        DELETE FROM objQual_GROUP
+        DELETE FROM {objectQualifier}GROUP
         WHERE       GROUPID = :I_GROUPID;
         END;
 
 --GO
 
- CREATE  PROCEDURE objQual_GROUP_LIST(
+ CREATE  PROCEDURE {objectQualifier}GROUP_LIST(
         I_BOARDID INTEGER,
-        I_GROUPID INTEGER        
+        I_GROUPID INTEGER,
+		I_PAGEINDEX INTEGER,
+		I_PAGESIZE INTEGER        
         )
         RETURNS
         (
@@ -2964,22 +3023,39 @@ BEGIN
 "PMLimit" integer,
 "Style" varchar(255),
 "SortOrder" integer,
-"Description" varchar(128),
+"Description" varchar(255),
 "UsrSigChars" integer,
 "UsrSigBBCodes"  varchar(255),
 "UsrSigHTMLTags" varchar(255),
 "UsrAlbums" integer,
 "UsrAlbumImages"  integer,
+"IsAdminGroup" bool,
 "IsUserGroup" bool,
 "UsrPersonalForums" integer,
 "UsrPersonalMasks" integer, 
-"UsrPersonalGroups" integer                    
+"UsrPersonalGroups" integer,
+"CreatedByUserID"    integer,
+"CreatedByUserName" varchar(255),
+"CreatedByUserDisplayName" varchar(255),
+"TotalRows" integer                    
 )
         AS
-        BEGIN
+        DECLARE VARIABLE ICI_FIRSTSELECTROWNUMBER INTEGER DEFAULT 0;
+        DECLARE ICI_TOROW  INTEGER DEFAULT 0;
+		DECLARE ICI_TOTALROWS INTEGER DEFAULT 0;
+BEGIN
 
-        IF (I_GROUPID IS NULL) THEN
-        FOR SELECT GROUPID,
+IF (I_GROUPID IS NULL) THEN
+BEGIN
+I_PAGEINDEX = :I_PAGEINDEX + 1;	 
+select count(1)  
+        FROM   {objectQualifier}GROUP
+        WHERE  BOARDID = :I_BOARDID
+        into :ICI_TOTALROWS ;
+            
+        ICI_FIRSTSELECTROWNUMBER = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1;
+        ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
+FOR SELECT GROUPID,
                    BOARDID,
                    NAME,
                    FLAGS,
@@ -2992,14 +3068,18 @@ BEGIN
                    USRSIGHTMLTAGS,
                    USRALBUMS,
                    USRALBUMIMAGES,
+				   ISADMINGROUP,
                    ISUSERGROUP,
                    USRPERSONALFORUMS,
                    USRPERSONALMASKS,
-                   USRPERSONALGROUPS
-        FROM   objQual_GROUP
-        WHERE  BOARDID = :I_BOARDID ORDER BY SORTORDER
-        INTO
-        :"GroupID",
+                   USRPERSONALGROUPS,
+				   CREATEDBYUSERID,
+				   CREATEDBYUSERNAME,
+				   CREATEDBYUSERDISPLAYNAME,
+           (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) as TotalRows
+FROM   {objectQualifier}GROUP
+WHERE  BOARDID = :I_BOARDID ORDER BY SORTORDER  ROWS (:ICI_FIRSTSELECTROWNUMBER) TO (:ICI_TOROW)
+INTO    :"GroupID",
         :"BoardID",
         :"Name",
         :"Flags",
@@ -3012,12 +3092,18 @@ BEGIN
         :"UsrSigHTMLTags",
         :"UsrAlbums",
         :"UsrAlbumImages",
+		:"IsAdminGroup",
         :"IsUserGroup",
         :"UsrPersonalForums",
         :"UsrPersonalMasks", 
-        :"UsrPersonalGroups"        
-        DO SUSPEND;
-        ELSE
+        :"UsrPersonalGroups", 
+		:"CreatedByUserID",
+        :"CreatedByUserName",
+        :"CreatedByUserDisplayName",         
+        :"TotalRows"
+DO SUSPEND;
+END
+      ELSE
         FOR SELECT GROUPID,
                    BOARDID,
                    NAME,
@@ -3031,11 +3117,16 @@ BEGIN
                    USRSIGHTMLTAGS,
                    USRALBUMS,
                    USRALBUMIMAGES,
+				   ISADMINGROUP,
                    ISUSERGROUP,
                    USRPERSONALFORUMS,
                    USRPERSONALMASKS,
-                   USRPERSONALGROUPS
-        FROM   objQual_GROUP
+                   USRPERSONALGROUPS,
+				   CREATEDBYUSERID,
+				   CREATEDBYUSERNAME,
+				   CREATEDBYUSERDISPLAYNAME,
+				   (SELECT 1 FROM RDB$DATABASE)
+        FROM   {objectQualifier}GROUP
         WHERE  BOARDID = :I_BOARDID
         AND GROUPID = :I_GROUPID
         INTO
@@ -3052,15 +3143,20 @@ BEGIN
         :"UsrSigHTMLTags",
         :"UsrAlbums",
         :"UsrAlbumImages",
+		:"IsAdminGroup",
         :"IsUserGroup",
         :"UsrPersonalForums",
         :"UsrPersonalMasks", 
-        :"UsrPersonalGroups"		  
+        :"UsrPersonalGroups",
+		:"CreatedByUserID",
+        :"CreatedByUserName",
+        :"CreatedByUserDisplayName",         
+        :"TotalRows"	  
         DO SUSPEND;
         END;
 --GO
 
-CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
+CREATE  PROCEDURE {objectQualifier}GROUP_BYUSERLIST(
         I_BOARDID INTEGER,
         I_GROUPID INTEGER,
         I_USERID INTEGER,
@@ -3109,7 +3205,7 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
                    USRPERSONALFORUMS,
                    USRPERSONALMASKS,
                    USRPERSONALGROUPS
-        FROM   objQual_GROUP
+        FROM   {objectQualifier}GROUP
         WHERE  BOARDID = :I_BOARDID 
         AND CREATEDBYUSERID = :I_USERID 
         ORDER BY SORTORDER
@@ -3152,7 +3248,7 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
                    USRPERSONALFORUMS,
                    USRPERSONALMASKS,
                    USRPERSONALGROUPS
-        FROM   objQual_GROUP
+        FROM   {objectQualifier}GROUP
         WHERE  BOARDID = :I_BOARDID
         AND GROUPID = :I_GROUPID
         AND CREATEDBYUSERID = :I_USERID 
@@ -3180,19 +3276,19 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
 --GO
 
 CREATE PROCEDURE 
- objQual_GROUP_MEDAL_DELETE
+ {objectQualifier}GROUP_MEDAL_DELETE
     (I_GROUPID INTEGER,
     I_MEDALID INTEGER)
     AS
  BEGIN
  
-    DELETE FROM objQual_GROUPMEDAL 
+    DELETE FROM {objectQualifier}GROUPMEDAL 
     WHERE GROUPID=:I_GROUPID 
     AND MEDALID=:I_MEDALID;
  
  END;
 --GO
-CREATE PROCEDURE  objQual_GROUP_MEDAL_LIST
+CREATE PROCEDURE  {objectQualifier}GROUP_MEDAL_LIST
     (I_GROUPID INTEGER,
     I_MEDALID INTEGER)
     RETURNS
@@ -3243,10 +3339,10 @@ CREATE PROCEDURE  objQual_GROUP_MEDAL_LIST
         b.ONLYRIBBON,
         b.SORTORDER AS "CurrentSortOrder"
     FROM
-        objQual_MEDAL a
-        INNER JOIN objQual_GROUPMEDAL b 
+        {objectQualifier}MEDAL a
+        INNER JOIN {objectQualifier}GROUPMEDAL b 
         ON b.MEDALID = a.MEDALID
-        INNER JOIN objQual_GROUP c 
+        INNER JOIN {objectQualifier}GROUP c 
         ON  c.GROUPID = b.GROUPID
     WHERE
         (:I_GROUPID IS NULL OR b.GROUPID = :I_GROUPID) 
@@ -3281,7 +3377,7 @@ CREATE PROCEDURE  objQual_GROUP_MEDAL_LIST
 END;
 --GO
 
-CREATE PROCEDURE  objQual_GROUP_MEDAL_SAVE
+CREATE PROCEDURE  {objectQualifier}GROUP_MEDAL_SAVE
     (I_GROUPID INTEGER,
     I_MEDALID INTEGER,
     I_MESSAGE varchar(128),
@@ -3291,9 +3387,9 @@ CREATE PROCEDURE  objQual_GROUP_MEDAL_SAVE
     AS
  BEGIN
  
-    IF (EXISTS (SELECT 1 FROM objQual_GROUPMEDAL 
+    IF (EXISTS (SELECT 1 FROM {objectQualifier}GROUPMEDAL 
     WHERE GROUPID=:I_GROUPID AND MEDALID=:I_MEDALID)) THEN
-        UPDATE objQual_GROUPMEDAL
+        UPDATE {objectQualifier}GROUPMEDAL
         SET
             MESSAGE = :I_MESSAGE,
             HIDE = :I_HIDE,
@@ -3304,7 +3400,7 @@ CREATE PROCEDURE  objQual_GROUP_MEDAL_SAVE
             MEDALID=:I_MEDALID;
     
     ELSE 
-        INSERT INTO objQual_GROUPMEDAL
+        INSERT INTO {objectQualifier}GROUPMEDAL
             (GROUPID,MEDALID,MESSAGE,HIDE,ONLYRIBBON,SORTORDER)
         VALUES
             (:I_GROUPID,:I_MEDALID,:I_MESSAGE,:I_HIDE,:I_ONLYRIBBON,:I_SORTORDER);
@@ -3313,7 +3409,7 @@ CREATE PROCEDURE  objQual_GROUP_MEDAL_SAVE
 END;
 --GO
 
-CREATE  PROCEDURE objQual_GROUP_MEMBER(
+CREATE  PROCEDURE {objectQualifier}GROUP_MEMBER(
         I_BOARDID INTEGER,
         I_USERID  INTEGER)
         RETURNS 
@@ -3334,10 +3430,10 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
 		a.ISUSERGROUP,
         a.STYLE, 
         (SELECT COUNT(1)
-        FROM   objQual_USERGROUP x
+        FROM   {objectQualifier}USERGROUP x
         WHERE  x.USERID = :I_USERID
         AND x.GROUPID = a.GROUPID) AS "Member"
-        FROM     objQual_GROUP a
+        FROM     {objectQualifier}GROUP a
         WHERE    a.BOARDID = :I_BOARDID
         ORDER BY a.NAME
         INTO
@@ -3351,7 +3447,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         END;
 --GO
 
- CREATE  PROCEDURE objQual_GROUP_SAVE(
+ CREATE  PROCEDURE {objectQualifier}GROUP_SAVE(
         I_GROUPID      INTEGER,
         I_BOARDID      INTEGER,
         I_NAME         VARCHAR(128),
@@ -3399,18 +3495,18 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
     
           IF (:I_USERID IS NOT NULL) THEN
     BEGIN	
-    SELECT FIRST 1 Name,  DisplayName FROM objQual_USER where USERID = :i_UserID
+    SELECT FIRST 1 Name,  DisplayName FROM {objectQualifier}USER where USERID = :i_UserID
     INTO :l_UserName, :l_UserDisplayName;
     END
     -- guests should not create forums?
     ELSE
     BEGIN    
-    SELECT FIRST 1 Name, DisplayName FROM objQual_USER where BOARDID = :I_BOARDID and BIN_AND(Flags,4) = 4  ORDER BY Joined DESC
+    SELECT FIRST 1 Name, DisplayName FROM {objectQualifier}USER where BOARDID = :I_BOARDID and BIN_AND(Flags,4) = 4  ORDER BY Joined DESC
     INTO :l_UserName, :l_UserDisplayName;
     END
 
         IF (:I_GROUPID > 0 AND :I_GROUPID IS NOT NULL) THEN        
-            UPDATE objQual_GROUP
+            UPDATE {objectQualifier}GROUP
             SET    NAME = :I_NAME,
                    FLAGS = :iciFlags,
                    PMLIMIT = :I_PMLIMIT,
@@ -3423,15 +3519,16 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                    USRALBUMS = :I_USRALBUMS,
                    USRALBUMIMAGES = :I_USRALBUMIMAGES,
                    ISUSERGROUP =:I_ISUSERGROUP,
+				   ISHIDDEN =:I_ISHIDDEN,
                    USRPERSONALFORUMS =:I_PERSONALFORUMSNUMBER,
                    USRPERSONALMASKS =:I_PERSONALACCESSMASKSNUMBER,
                    USRPERSONALGROUPS =:I_PERSONALGROUPSNUMBER
             WHERE  GROUPID = :I_GROUPID;        
         ELSE 
         BEGIN
-             SELECT NEXT VALUE FOR SEQ_objQual_GROUP_GROUPID 
+             SELECT NEXT VALUE FOR SEQ_{objectQualifier}GROUP_GROUPID 
              FROM RDB$DATABASE INTO :I_GROUPID;  
-             INSERT INTO objQual_GROUP
+             INSERT INTO {objectQualifier}GROUP
                        (GROUPID,
                         NAME,
                         BOARDID,
@@ -3446,6 +3543,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         USRALBUMS,
                         USRALBUMIMAGES,
                         ISUSERGROUP,
+						ISHIDDEN, 
                         CREATEDBYUSERID,
                         CREATEDBYUSERNAME,
                         CREATEDBYUSERDISPLAYNAME,
@@ -3467,6 +3565,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         :I_USRALBUMS,
                         :I_USRALBUMIMAGES,
                         :I_ISUSERGROUP,
+						:I_ISHIDDEN,
                         :I_USERID,
                         :l_UserName,
                         :l_UserDisplayName,
@@ -3474,25 +3573,25 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         :I_PERSONALFORUMSNUMBER,
                         :I_PERSONALACCESSMASKSNUMBER,
                         :I_PERSONALGROUPSNUMBER) RETURNING GROUPID INTO :I_GROUPID;            
-            INSERT INTO objQual_FORUMACCESS
+            INSERT INTO {objectQualifier}FORUMACCESS
                        (GROUPID,
                         FORUMID,
                         ACCESSMASKID)
             SELECT (SELECT :I_GROUPID FROM RDB$DATABASE),
                    a.FORUMID,
                    (SELECT :I_ACCESSMASKID  FROM RDB$DATABASE)
-            FROM   objQual_FORUM a
-                   JOIN objQual_CATEGORY b
+            FROM   {objectQualifier}FORUM a
+                   JOIN {objectQualifier}CATEGORY b
                      ON b.CATEGORYID = a.CATEGORYID
             WHERE  b.BOARDID = :I_BOARDID;
          END
           -- save new user style    
           IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE) > 2) THEN
-                EXECUTE PROCEDURE objQual_USER_SAVESTYLE :I_GROUPID, NULL ;	
+                EXECUTE PROCEDURE {objectQualifier}USER_SAVESTYLE :I_GROUPID, NULL ;	
       
-    if (exists (select first 1 1 from objQual_GROUPHISTORY where GROUPID = :I_GROUPID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
+    if (exists (select first 1 1 from {objectQualifier}GROUPHISTORY where GROUPID = :I_GROUPID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
     begin
-    update objQual_GROUPHISTORY set 
+    update {objectQualifier}GROUPHISTORY set 
            CHANGEDUSERID = :I_USERID,	
            CHANGEDUSERNAME = :l_UserName,
            CHANGEDDISPLAYNAME = :l_UserDisplayName
@@ -3500,7 +3599,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
     end
     else
     begin
-    INSERT INTO objQual_GROUPHISTORY(GROUPID, CHANGEDUSERID,CHANGEDUSERNAME,CHANGEDDISPLAYNAME,CHANGEDDATE)
+    INSERT INTO {objectQualifier}GROUPHISTORY(GROUPID, CHANGEDUSERID,CHANGEDUSERNAME,CHANGEDDISPLAYNAME,CHANGEDDATE)
     VALUES (:I_GROUPID,:I_USERID,:l_UserName,:l_UserDisplayName,:I_UTCTIMESTAMP);
     end
         
@@ -3509,15 +3608,15 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
     END;
 --GO
 
-CREATE PROCEDURE  objQual_GROUP_RANK_STYLE( I_BOARDID INTEGER)
+CREATE PROCEDURE  {objectQualifier}GROUP_RANK_STYLE( I_BOARDID INTEGER)
 RETURNS 
 ("LegendID" INTEGER,"Name" VARCHAR(128), "Style"  VARCHAR(255)) 
 AS
 begin
-FOR SELECT (SELECT 1 FROM RDB$DATABASE) AS "LegendID","NAME",STYLE FROM objQual_GROUP
+FOR SELECT (SELECT 1 FROM RDB$DATABASE) AS "LegendID","NAME",STYLE FROM {objectQualifier}GROUP
 WHERE BoardID = :I_BOARDID GROUP BY SORTORDER,NAME,STYLE 
 UNION ALL
-SELECT (SELECT 2 FROM RDB$DATABASE) AS "LegendID","NAME",STYLE FROM objQual_RANK
+SELECT (SELECT 2 FROM RDB$DATABASE) AS "LegendID","NAME",STYLE FROM {objectQualifier}RANK
 WHERE BoardID = :I_BOARDID GROUP BY SORTORDER,NAME,STYLE
 INTO
 :"LegendID",
@@ -3528,7 +3627,7 @@ SUSPEND;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_MAIL_CREATE
+CREATE PROCEDURE  {objectQualifier}MAIL_CREATE
  (
     I_FROM VARCHAR(128),
     I_FROMNAME VARCHAR(128),
@@ -3541,14 +3640,14 @@ CREATE PROCEDURE  objQual_MAIL_CREATE
  )
 AS
  BEGIN
-    INSERT INTO objQual_MAIL
+    INSERT INTO {objectQualifier}MAIL
         (MAILID,FROMUSER,FROMUSERNAME,TOUSER,TOUSERNAME,CREATED,SUBJECT,BODY,BODYHTML)
     VALUES
-        ((SELECT NEXT VALUE FOR SEQ_objQual_MAIL_MAILID FROM RDB$DATABASE),:I_FROM,:I_FROMNAME,:I_TO,:I_TONAME,:I_UTCTIMESTAMP,:I_SUBJECT,:I_BODY,:I_BODYHTML);	
+        ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}MAIL_MAILID FROM RDB$DATABASE),:I_FROM,:I_FROMNAME,:I_TO,:I_TONAME,:I_UTCTIMESTAMP,:I_SUBJECT,:I_BODY,:I_BODYHTML);	
  END;
 --GO
 
-CREATE PROCEDURE  objQual_MAIL_CREATEWATCH
+CREATE PROCEDURE  {objectQualifier}MAIL_CREATEWATCH
  (
     I_TOPICID INTEGER,
     I_FROM VARCHAR(128),
@@ -3561,9 +3660,9 @@ CREATE PROCEDURE  objQual_MAIL_CREATEWATCH
  )
  AS
  BEGIN
-    INSERT INTO objQual_MAIL(MAILID,FROMUSER,FROMUSERNAME,TOUSER,TOUSERNAME,CREATED,SUBJECT,BODY,BODYHTML)
+    INSERT INTO {objectQualifier}MAIL(MAILID,FROMUSER,FROMUSERNAME,TOUSER,TOUSERNAME,CREATED,SUBJECT,BODY,BODYHTML)
     SELECT
-       (SELECT NEXT VALUE FOR SEQ_objQual_MAIL_MAILID FROM RDB$DATABASE),
+       (SELECT NEXT VALUE FOR SEQ_{objectQualifier}MAIL_MAILID FROM RDB$DATABASE),
        (SELECT :I_FROM FROM RDB$DATABASE),
        (SELECT :I_FROMNAME FROM RDB$DATABASE),
         b."EMAIL",
@@ -3573,16 +3672,16 @@ CREATE PROCEDURE  objQual_MAIL_CREATEWATCH
         (SELECT :I_BODY  FROM RDB$DATABASE),
         (SELECT :I_BODYHTML  FROM RDB$DATABASE) 
     FROM
-        objQual_WATCHTOPIC a
-        INNER JOIN objQual_USER b on b.USERID=a.USERID
+        {objectQualifier}WATCHTOPIC a
+        INNER JOIN {objectQualifier}USER b on b.USERID=a.USERID
     WHERE
         b.USERID <> :I_USERID AND
         a.TOPICID = :I_TOPICID AND
         (a.LASTMAIL IS NULL OR a.LASTMAIL < b.LASTVISIT);
     
-    INSERT INTO objQual_MAIL(MAILID,FROMUSER,FROMUSERNAME,TOUSER,TOUSERNAME,CREATED,SUBJECT,BODY,BODYHTML)
+    INSERT INTO {objectQualifier}MAIL(MAILID,FROMUSER,FROMUSERNAME,TOUSER,TOUSERNAME,CREATED,SUBJECT,BODY,BODYHTML)
     SELECT
-        (SELECT NEXT VALUE FOR SEQ_objQual_MAIL_MAILID FROM RDB$DATABASE),
+        (SELECT NEXT VALUE FOR SEQ_{objectQualifier}MAIL_MAILID FROM RDB$DATABASE),
        (SELECT :I_FROM FROM RDB$DATABASE),
        (SELECT :I_FROMNAME FROM RDB$DATABASE),
         b."EMAIL",
@@ -3592,33 +3691,33 @@ CREATE PROCEDURE  objQual_MAIL_CREATEWATCH
         (SELECT :I_BODY  FROM RDB$DATABASE),
         (SELECT :I_BODYHTML  FROM RDB$DATABASE) 
     FROM
-        objQual_WATCHFORUM a
-        INNER JOIN objQual_USER b ON b.USERID=a.USERID
-        INNER JOIN objQual_TOPIC c ON c.FORUMID=a.FORUMID
+        {objectQualifier}WATCHFORUM a
+        INNER JOIN {objectQualifier}USER b ON b.USERID=a.USERID
+        INNER JOIN {objectQualifier}TOPIC c ON c.FORUMID=a.FORUMID
     WHERE
         b.USERID <> :I_USERID AND
         c.TOPICID = :I_TOPICID AND
         (a.LASTMAIL IS NULL OR a.LASTMAIL < b.LASTVISIT) AND
-        (NOT EXISTS (SELECT 1 FROM objQual_WATCHTOPIC x WHERE x.USERID=b.USERID AND x.TOPICID=c.TOPICID));
+        (NOT EXISTS (SELECT 1 FROM {objectQualifier}WATCHTOPIC x WHERE x.USERID=b.USERID AND x.TOPICID=c.TOPICID));
  
-    UPDATE objQual_WATCHTOPIC SET LASTMAIL = :I_UTCTIMESTAMP
+    UPDATE {objectQualifier}WATCHTOPIC SET LASTMAIL = :I_UTCTIMESTAMP
     WHERE TOPICID = :I_TOPICID
     AND USERID <> :I_USERID;
     
-    UPDATE objQual_WATCHFORUM SET LASTMAIL = :I_UTCTIMESTAMP
-    WHERE FORUMID = (SELECT FORUMID FROM objQual_TOPIC WHERE TOPICID = :I_TOPICID)
+    UPDATE {objectQualifier}WATCHFORUM SET LASTMAIL = :I_UTCTIMESTAMP
+    WHERE FORUMID = (SELECT FORUMID FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID)
     AND USERID <> :I_USERID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MAIL_DELETE(I_MAILID INTEGER)
+CREATE PROCEDURE  {objectQualifier}MAIL_DELETE(I_MAILID INTEGER)
 AS
 BEGIN
-    DELETE FROM objQual_MAIL WHERE MAILID = :I_MAILID;
+    DELETE FROM {objectQualifier}MAIL WHERE MAILID = :I_MAILID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MAIL_LIST
+CREATE PROCEDURE  {objectQualifier}MAIL_LIST
 (
     I_PROCESSID INTEGER, I_UTCTIMESTAMP TIMESTAMP
  )
@@ -3640,17 +3739,17 @@ CREATE PROCEDURE  objQual_MAIL_LIST
  AS
  BEGIN
  -- CREATE TEMPORARY TABLE IF NOT EXISTS tmp_table55 
- -- SELECT  FIRST 10 DISTINCT "MailID" FROM objQual_MAIL 
+ -- SELECT  FIRST 10 DISTINCT "MailID" FROM {objectQualifier}MAIL 
  -- WHERE SENDATTEMPT < current_timestamp
  -- OR SENDATTEMPT IS NULL ORDER BY "MailID";
   
-    UPDATE objQual_MAIL
+    UPDATE {objectQualifier}MAIL
     SET 
         SENDTRIES = SENDTRIES + 1,
         SENDATTEMPT = DATEADD(5 MINUTE TO :I_UTCTIMESTAMP),
         PROCESSID = :I_PROCESSID
     WHERE
-        MAILID IN (SELECT MAILID FROM (SELECT  FIRST 10 DISTINCT MAILID FROM objQual_MAIL 
+        MAILID IN (SELECT MAILID FROM (SELECT  FIRST 10 DISTINCT MAILID FROM {objectQualifier}MAIL 
  WHERE SENDATTEMPT < :I_UTCTIMESTAMP
   OR SENDATTEMPT IS NULL   ORDER BY SENDATTEMPT desc, CREATED desc));
         -- MailID IN (SELECT MailID FROM tmp_table55);
@@ -3669,7 +3768,7 @@ CREATE PROCEDURE  objQual_MAIL_LIST
   SENDTRIES,
   SENDATTEMPT,
   PROCESSID 
-  FROM  objQual_MAIL
+  FROM  {objectQualifier}MAIL
     WHERE PROCESSID = :I_PROCESSID 
     ORDER BY SENDATTEMPT desc, CREATED desc
     INTO
@@ -3692,7 +3791,7 @@ DO SUSPEND;
 
 
 
-CREATE PROCEDURE  objQual_MEDAL_DELETE
+CREATE PROCEDURE  {objectQualifier}MEDAL_DELETE
         (I_BOARDID	INTEGER,
     I_MEDALID	INTEGER,
     I_CATEGORY	VARCHAR(128))
@@ -3701,43 +3800,43 @@ BEGIN
  
     IF (I_MEDALID IS NOT NULL) THEN
     BEGIN
-        DELETE from objQual_GROUPMEDAL WHERE MEDALID = :I_MEDALID;
-        DELETE from objQual_USERMEDAL WHERE MEDALID = :I_MEDALID; 
-        DELETE from objQual_MEDAL WHERE MEDALID=:I_MEDALID;
+        DELETE from {objectQualifier}GROUPMEDAL WHERE MEDALID = :I_MEDALID;
+        DELETE from {objectQualifier}USERMEDAL WHERE MEDALID = :I_MEDALID; 
+        DELETE from {objectQualifier}MEDAL WHERE MEDALID=:I_MEDALID;
     END
     ELSE IF (I_CATEGORY IS NOT NULL AND I_BOARDID IS NOT NULL) THEN
     BEGIN
-        DELETE from objQual_GROUPMEDAL 
+        DELETE from {objectQualifier}GROUPMEDAL 
             WHERE MEDALID in 
-            (SELECT MEDALID FROM objQual_MEDAL 
+            (SELECT MEDALID FROM {objectQualifier}MEDAL 
             WHERE CATEGORY=:I_CATEGORY and BOARDID=:I_BOARDID);
  
-        DELETE from objQual_USERMEDAL 
+        DELETE from {objectQualifier}USERMEDAL 
             WHERE MEDALID in 
-            (SELECT MEDALID FROM objQual_MEDAL 
+            (SELECT MEDALID FROM {objectQualifier}MEDAL 
             WHERE CATEGORY=:I_CATEGORY and BOARDID=:I_BOARDID);
  
-        DELETE from objQual_MEDAL WHERE CATEGORY=:I_CATEGORY;
+        DELETE from {objectQualifier}MEDAL WHERE CATEGORY=:I_CATEGORY;
     END
     ELSE IF  (I_BOARDID IS NOT NULL) THEN
     BEGIN
-        DELETE from objQual_GROUPMEDAL 
+        DELETE from {objectQualifier}GROUPMEDAL 
             WHERE MEDALID in 
-            (SELECT MEDALID FROM objQual_MEDAL 
+            (SELECT MEDALID FROM {objectQualifier}MEDAL 
             WHERE BOARDID=:I_BOARDID);
  
-        DELETE from objQual_USERMEDAL 
+        DELETE from {objectQualifier}USERMEDAL 
             WHERE MEDALID in 
-            (SELECT MEDALID FROM objQual_MEDAL 
+            (SELECT MEDALID FROM {objectQualifier}MEDAL 
             WHERE BOARDID=:I_BOARDID);
 
-        DELETE from objQual_MEDAL WHERE BOARDID=:I_BOARDID;
+        DELETE from {objectQualifier}MEDAL WHERE BOARDID=:I_BOARDID;
     END
  
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MEDAL_LIST
+CREATE PROCEDURE  {objectQualifier}MEDAL_LIST
     (I_BOARDID	INTEGER,
     I_MEDALID	INTEGER,
     I_CATEGORY	VARCHAR(128))
@@ -3767,7 +3866,7 @@ BEGIN
         FOR SELECT 
             * 
         FROM 
-            objQual_MEDAL 
+            {objectQualifier}MEDAL 
         WHERE 
             MEDALID=:I_MEDALID 
         ORDER BY 
@@ -3796,7 +3895,7 @@ BEGIN
         FOR  SELECT 
             * 
         FROM 
-            objQual_MEDAL 
+            {objectQualifier}MEDAL 
         WHERE 
             CATEGORY=:I_CATEGORY and BOARDID=:I_BOARDID
         ORDER BY 
@@ -3824,7 +3923,7 @@ BEGIN
         FOR SELECT 
             * 
         FROM 
-            objQual_MEDAL 
+            {objectQualifier}MEDAL 
         WHERE 
             BOARDID=:I_BOARDID
         ORDER BY 
@@ -3851,7 +3950,7 @@ BEGIN
      
 END;
 --GO
-CREATE PROCEDURE  objQual_MEDAL_LISTUSERS
+CREATE PROCEDURE  {objectQualifier}MEDAL_LISTUSERS
     (I_MEDALID	INTEGER)
     RETURNS
     (
@@ -3866,8 +3965,8 @@ CREATE PROCEDURE  objQual_MEDAL_LISTUSERS
     SELECT 
         a.USERID, a.NAME
     FROM 
-        objQual_USER a
-        INNER JOIN objQual_USERMEDAL b 
+        {objectQualifier}USER a
+        INNER JOIN {objectQualifier}USERMEDAL b 
         ON a.USERID = b.USERID
     WHERE
         b.MEDALID=:I_MEDALID
@@ -3876,9 +3975,9 @@ CREATE PROCEDURE  objQual_MEDAL_LISTUSERS
     SELECT 
         a.USERID, a.NAME
     FROM 
-        objQual_USER a
-        INNER JOIN objQual_USERGROUP b ON a.USERID = b.USERID
-        INNER JOIN objQual_GROUPMEDAL c ON c.GROUPID = b.GROUPID
+        {objectQualifier}USER a
+        INNER JOIN {objectQualifier}USERGROUP b ON a.USERID = b.USERID
+        INNER JOIN {objectQualifier}GROUPMEDAL c ON c.GROUPID = b.GROUPID
     WHERE
         c.MEDALID=:I_MEDALID)
         INTO 
@@ -3890,7 +3989,7 @@ CREATE PROCEDURE  objQual_MEDAL_LISTUSERS
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MEDAL_RESORT
+CREATE PROCEDURE  {objectQualifier}MEDAL_RESORT
     (I_BOARDID INTEGER,I_MEDALID INTEGER,I_MOVE INTEGER)
 AS
 DECLARE VARIABLE i_Position INTEGER;
@@ -3903,7 +4002,7 @@ BEGIN
         SORTORDER,
         CATEGORY        
     FROM 
-        objQual_MEDAL 
+        {objectQualifier}MEDAL 
     WHERE 
         BOARDID=:I_BOARDID and MEDALID=:I_MEDALID
         INTO :i_Position,:I_CATEGORY;
@@ -3913,7 +4012,7 @@ BEGIN
  
     IF (I_MOVE > 0) THEN
         UPDATE 
-            objQual_MEDAL
+            {objectQualifier}MEDAL
         SET 
             SORTORDER=SORTORDER-1
         WHERE 
@@ -3923,7 +4022,7 @@ BEGIN
                          AND SORTORDER between 1 and 255; 	
     IF (I_MOVE < 0) THEN
         UPDATE
-            objQual_MEDAL
+            {objectQualifier}MEDAL
         SET
             SORTORDER=SORTORDER+1
         WHERE 
@@ -3938,7 +4037,7 @@ BEGIN
     IF (i_Position<0) THEN 
     i_Position = 0; 
          
-    UPDATE objQual_MEDAL
+    UPDATE {objectQualifier}MEDAL
         SET SORTORDER=:i_Position
         WHERE BOARDID=:I_BOARDID AND 
         MEDALID=:I_MEDALID;
@@ -3946,7 +4045,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MEDAL_SAVE
+CREATE PROCEDURE  {objectQualifier}MEDAL_SAVE
  (	I_BOARDID INTEGER,
     I_MEDALID INTEGER,
     I_NAME varchar(128),
@@ -3970,8 +4069,8 @@ BEGIN
  
     IF (I_MEDALID IS NULL) THEN
     BEGIN 	
-    SELECT NEXT VALUE FOR SEQ_objQual_MEDAL_MEDALID FROM RDB$DATABASE INTO :rcount;
-        INSERT INTO objQual_MEDAL
+    SELECT NEXT VALUE FOR SEQ_{objectQualifier}MEDAL_MEDALID FROM RDB$DATABASE INTO :rcount;
+        INSERT INTO {objectQualifier}MEDAL
             (BOARDID,MEDALID,NAME,DESCRIPTION,MESSAGE,CATEGORY,
             MEDALURL,RIBBONURL,SMALLMEDALURL,SMALLRIBBONURL,
             SMALLMEDALWIDTH,SMALLMEDALHEIGHT,SMALLRIBBONWIDTH,SMALLRIBBONHEIGHT,
@@ -3983,7 +4082,7 @@ BEGIN
             :I_SORTORDER,:I_FLAGS);
     END
     ELSE 
-        UPDATE objQual_MEDAL
+        UPDATE {objectQualifier}MEDAL
             SET BOARDID = :I_BOARDID,
                 NAME = :I_NAME,
                 DESCRIPTION = :I_DESCRIPTION,
@@ -4008,7 +4107,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_UPGRADE(I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USER_UPGRADE(I_USERID INTEGER)
     AS
     DECLARE variable ici_RankID	INTEGER;
     DECLARE variable ICI_FLAGS	INTEGER;
@@ -4027,8 +4126,8 @@ CREATE PROCEDURE  objQual_USER_UPGRADE(I_USERID INTEGER)
     a.NUMPOSTS,
     a.BOARDID 
     FROM
-    objQual_USER a
-    INNER JOIN objQual_RANK b 
+    {objectQualifier}USER a
+    INNER JOIN {objectQualifier}RANK b 
     ON b.RANKID = a.RANKID
     WHERE
     a.USERID = :I_USERID
@@ -4044,7 +4143,7 @@ CREATE PROCEDURE  objQual_USER_UPGRADE(I_USERID INTEGER)
     BEGIN
         -- retrieve board current user's rank beling to	
     select  BOARDID
-    from   objQual_RANK
+    from   {objectQualifier}RANK
     where  RANKID = :ici_RankID
     INTO :ici_RankBoardID;
 
@@ -4054,7 +4153,7 @@ CREATE PROCEDURE  objQual_USER_UPGRADE(I_USERID INTEGER)
         -- get highest rank user can get
         select first 1
                RANKID
-        from   objQual_RANK
+        from   {objectQualifier}RANK
         where  BOARDID = :ici_BoardId
                and BIN_AND(FLAGS, 2) = 2
                and MinPosts <= :ici_NumPosts
@@ -4068,7 +4167,7 @@ CREATE PROCEDURE  objQual_USER_UPGRADE(I_USERID INTEGER)
     SELECT FIRST 1
      RANKID        
     FROM
-        objQual_RANK
+        {objectQualifier}RANK
     WHERE
         BIN_AND(FLAGS, 2) = 2 and
         MINPOSTS <= :ici_NumPosts and
@@ -4079,7 +4178,7 @@ CREATE PROCEDURE  objQual_USER_UPGRADE(I_USERID INTEGER)
         :ici_RankID;        
     end	
     IF (ROW_COUNT = 1) THEN
-        UPDATE objQual_USER 
+        UPDATE {objectQualifier}USER 
         SET RANKID = :ici_RankID 
         WHERE USERID = :I_USERID; 
     END  
@@ -4087,7 +4186,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_MESSAGE_APPROVE(I_MESSAGEID INTEGER)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_APPROVE(I_MESSAGEID INTEGER)
 AS
     DECLARE VARIABLE ICI_USERID	INTEGER;
     DECLARE VARIABLE ici_ForumID	INTEGER;
@@ -4109,37 +4208,37 @@ BEGIN
          a.USERDISPLAYNAME,
          a.FLAGS 		
     FROM
-        objQual_MESSAGE a
-        inner join objQual_TOPIC b on b.TOPICID=a.TOPICID
+        {objectQualifier}MESSAGE a
+        inner join {objectQualifier}TOPIC b on b.TOPICID=a.TOPICID
     WHERE
         a.MESSAGEID = :I_MESSAGEID
         INTO :ICI_USERID,:ici_TopicID,
         :ici_ForumID,:ici_Posted,:ici_UserName,:ici_UserDisplayName,:ici_NewFlag;
  
     /* update Message table, set meesage flag to approved */
-    UPDATE objQual_MESSAGE 
+    UPDATE {objectQualifier}MESSAGE 
      SET
         FLAGS = BIN_OR(FLAGS, 16)
     WHERE MESSAGEID = :I_MESSAGEID;
 
     /*update User table to increase postcount*/
-    IF (EXISTS(SELECT FIRST 1 1 FROM objQual_FORUM 
+    IF (EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}FORUM 
     WHERE FORUMID=:ici_ForumID 
     AND BIN_AND(FLAGS, 4)=0)) THEN
     BEGIN
-        UPDATE objQual_USER set NUMPOSTS = NUMPOSTS + 1 
+        UPDATE {objectQualifier}USER set NUMPOSTS = NUMPOSTS + 1 
         where USERID = :ICI_USERID;
         /*upgrade user, i.e. promote rank if conditions allow it*/
-        EXECUTE PROCEDURE objQual_USER_UPGRADE :ICI_USERID;
+        EXECUTE PROCEDURE {objectQualifier}USER_UPGRADE :ICI_USERID;
     END
     /*update Forum table with last topic/post info*/
 
   SELECT DISTINCT PARENTID 
-  FROM  objQual_FORUM
+  FROM  {objectQualifier}FORUM
   WHERE FORUMID = :ici_ForumID
   INTO  :ici_ParentID;  
  
-    UPDATE objQual_FORUM set
+    UPDATE {objectQualifier}FORUM set
         LASTPOSTED = :ici_Posted,
         LASTTOPICID = :ici_TopicID,
         LASTMESSAGEID = :I_MESSAGEID,
@@ -4150,7 +4249,7 @@ BEGIN
     
     WHILE (ici_ParentID > 0) DO
     BEGIN
-        UPDATE objQual_FORUM SET
+        UPDATE {objectQualifier}FORUM SET
                 LASTPOSTED = :ici_Posted,
                 LASTTOPICID = :ici_TopicID,
                 LASTMESSAGEID = :I_MESSAGEID,
@@ -4162,7 +4261,7 @@ BEGIN
         AND ((LASTPOSTED < :ici_Posted)
         OR LASTPOSTED IS NULL);         
          SELECT DISTINCT PARENTID 
-  FROM  objQual_FORUM
+  FROM  {objectQualifier}FORUM
   WHERE FORUMID = :ici_ParentID
   INTO  :ici_ParentID;  
   END	
@@ -4170,23 +4269,23 @@ BEGIN
 
  
    -- update Topic table with info about last post in topic
-    UPDATE objQual_TOPIC set
+    UPDATE {objectQualifier}TOPIC set
         LASTPOSTED = :ici_Posted,
         LASTMESSAGEID = :I_MESSAGEID,
         LASTUSERID = :ICI_USERID,
         LASTUSERNAME = :ici_UserName,
         LASTUSERDISPLAYNAME = :ici_UserDisplayName,
-        NUMPOSTS = (select count(1) from objQual_MESSAGE x 
-        WHERE x.TOPICID=objQual_TOPIC.TOPICID
+        NUMPOSTS = (select count(1) from {objectQualifier}MESSAGE x 
+        WHERE x.TOPICID={objectQualifier}TOPIC.TOPICID
          and x.ISAPPROVED = 1 and x.ISDELETED = 0)
         WHERE TOPICID = :ici_TopicID;
     
     /*update forum stats*/
-    EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_ForumID; 	
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID; 	
 END;
 --GO
 
-CREATE  PROCEDURE objQual_TOPIC_UPDATELASTPOST(
+CREATE  PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(
      I_FORUMID INTEGER,
      I_TOPICID INTEGER)
      AS
@@ -4201,72 +4300,72 @@ CREATE  PROCEDURE objQual_TOPIC_UPDATELASTPOST(
      ici_TopicID = I_TOPICID;
 
      IF (ici_TopicID IS NOT NULL) THEN
-     UPDATE objQual_TOPIC
+     UPDATE {objectQualifier}TOPIC
      SET    
      LASTPOSTED = (SELECT FIRST 1 DISTINCT x.POSTED
-                   FROM     objQual_MESSAGE x
-                   WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                   FROM     {objectQualifier}MESSAGE x
+                   WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                    AND BIN_AND(x.FLAGS, 24) = 16
                    ORDER BY POSTED DESC),
      LASTMESSAGEID=(SELECT  FIRST 1 DISTINCT x.MESSAGEID
-                    FROM     objQual_MESSAGE x
-                    WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                    FROM     {objectQualifier}MESSAGE x
+                    WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                     AND BIN_AND(x.FLAGS, 24) = 16
                     ORDER BY POSTED DESC),
      LASTUSERID=(SELECT  FIRST 1 DISTINCT x.USERID
-                    FROM    objQual_MESSAGE x
-                    WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                    FROM    {objectQualifier}MESSAGE x
+                    WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                     AND BIN_AND(x.FLAGS, 24) = 16
                     ORDER BY POSTED DESC) ,
      LASTUSERNAME=(SELECT FIRST 1 DISTINCT x.USERNAME
-                   FROM     objQual_MESSAGE x
-                   WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                   FROM     {objectQualifier}MESSAGE x
+                   WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                    AND BIN_AND(x.FLAGS, 24) = 16
                    ORDER BY x.POSTED DESC),				 
      LASTUSERDISPLAYNAME=(SELECT FIRST 1 DISTINCT x.USERDISPLAYNAME
-                   FROM     objQual_MESSAGE x
-                   WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                   FROM     {objectQualifier}MESSAGE x
+                   WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                    AND BIN_AND(x.FLAGS, 24) = 16
                    ORDER BY x.POSTED DESC) 
          WHERE  TOPICID = :ici_TopicID;
         ELSE
-        UPDATE objQual_TOPIC
+        UPDATE {objectQualifier}TOPIC
         SET    LASTPOSTED=(SELECT  FIRST 1 DISTINCT x.POSTED
-                             FROM     objQual_MESSAGE x
-                             WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                             FROM     {objectQualifier}MESSAGE x
+                             WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                              AND BIN_AND(x.FLAGS, 24) = 16
                              ORDER BY POSTED DESC),
                LASTMESSAGEID=(SELECT FIRST 1  DISTINCT x.MESSAGEID
-                                FROM     objQual_MESSAGE x
-                                WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                                FROM     {objectQualifier}MESSAGE x
+                                WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                                 AND BIN_AND(x.FLAGS, 24) = 16
                                 ORDER BY POSTED DESC),
                LASTUSERID=(SELECT FIRST 1 DISTINCT  x.USERID
-                             FROM     objQual_MESSAGE x
-                             WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                             FROM     {objectQualifier}MESSAGE x
+                             WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                              AND BIN_AND(x.FLAGS, 24) = 16
                              ORDER BY POSTED DESC),
                LASTUSERNAME = (SELECT FIRST 1 DISTINCT x.USERNAME
-                               FROM     objQual_MESSAGE x
-                               WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                               FROM     {objectQualifier}MESSAGE x
+                               WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                                AND BIN_AND(x.FLAGS, 24) = 16
                                ORDER BY POSTED DESC),
                LASTUSERDISPLAYNAME = (SELECT FIRST 1 DISTINCT x.USERDISPLAYNAME
-                               FROM     objQual_MESSAGE x
-                               WHERE    x.TOPICID = objQual_TOPIC.TOPICID
+                               FROM     {objectQualifier}MESSAGE x
+                               WHERE    x.TOPICID = {objectQualifier}TOPIC.TOPICID
                                AND BIN_AND(x.FLAGS, 24) = 16
                                ORDER BY POSTED DESC)
      WHERE  TOPICMOVEDID IS NULL
      AND (:ICI_FORUMID IS NULL
      OR FORUMID = :ICI_FORUMID);
 
-    EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ICI_FORUMID);
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ICI_FORUMID);
     
      END ;
   --GO
   
 
-  CREATE  PROCEDURE objQual_MESSAGE_FINDUNREAD(
+  CREATE  PROCEDURE {objectQualifier}MESSAGE_FINDUNREAD(
         I_TOPICID  INTEGER,
         I_MESSAGEID  INTEGER,
         I_LASTREAD TIMESTAMP,
@@ -4297,7 +4396,7 @@ CREATE  PROCEDURE objQual_TOPIC_UPDATELASTPOST(
          -- find first message id
 
         SELECT  FIRST 1 MESSAGEID
-        FROM     objQual_MESSAGE
+        FROM     {objectQualifier}MESSAGE
         WHERE    TOPICID = :I_TOPICID	
         ORDER BY POSTED 
         INTO :ici_firstmessageid;
@@ -4308,7 +4407,7 @@ BEGIN
 -- loop through begining with the last message
 FOR 
         SELECT MESSAGEID
-        FROM     objQual_MESSAGE
+        FROM     {objectQualifier}MESSAGE
         WHERE    TOPICID = :I_TOPICID	
         AND POSTED > :I_LASTREAD
          AND ISAPPROVED = 1
@@ -4336,7 +4435,7 @@ BEGIN
 -- loop through begining with the last message
 FOR 
         SELECT MESSAGEID
-        FROM     objQual_MESSAGE
+        FROM     {objectQualifier}MESSAGE
         WHERE    TOPICID = :I_TOPICID	
         AND POSTED > :I_LASTREAD
          AND ISAPPROVED = 1
@@ -4366,7 +4465,7 @@ END
           if ("MessageID" is null ) then
               BEGIN
               select FIRST 1 m.MESSAGEID, (SELECT :ici_one  FROM RDB$DATABASE) , (SELECT :ICI_FIRSTMESSAGEID FROM RDB$DATABASE) 
-              from objQual_MESSAGE m
+              from {objectQualifier}MESSAGE m
               where
               m.TOPICID = :I_TOPICID	
               AND m.ISAPPROVED = 1
@@ -4386,18 +4485,18 @@ END
     END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_GETREPLIES(I_MESSAGEID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}MESSAGE_GETREPLIES(I_MESSAGEID INTEGER) 
 RETURNS ("MessageID" INTEGER)
 AS
  BEGIN
-    FOR SELECT MESSAGEID FROM objQual_MESSAGE 
+    FOR SELECT MESSAGEID FROM {objectQualifier}MESSAGE 
     WHERE REPLYTO = :I_MESSAGEID
     INTO :"MessageID"
     DO SUSPEND;
  END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_LIST(I_MESSAGEID INTEGER)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_LIST(I_MESSAGEID INTEGER)
  RETURNS
  (
 "MessageID" integer,
@@ -4461,10 +4560,10 @@ CREATE PROCEDURE  objQual_MESSAGE_LIST(I_MESSAGEID INTEGER)
         a.EXTERNALMESSAGEID,
         a.REFERENCEMESSAGEID		
     FROM
-        objQual_MESSAGE a
-        INNER JOIN objQual_USER b ON b.USERID = a.USERID
-        INNER JOIN objQual_TOPIC c ON c.TOPICID = a.TOPICID
-        INNER JOIN objQual_FORUM d ON c.FORUMID = d.FORUMID
+        {objectQualifier}MESSAGE a
+        INNER JOIN {objectQualifier}USER b ON b.USERID = a.USERID
+        INNER JOIN {objectQualifier}TOPIC c ON c.TOPICID = a.TOPICID
+        INNER JOIN {objectQualifier}FORUM d ON c.FORUMID = d.FORUMID
     WHERE
         a.MESSAGEID = :I_MESSAGEID
         INTO
@@ -4500,7 +4599,7 @@ CREATE PROCEDURE  objQual_MESSAGE_LIST(I_MESSAGEID INTEGER)
  END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_LISTREPORTED(I_FORUMID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}MESSAGE_LISTREPORTED(I_FORUMID INTEGER) 
  RETURNS
  (
 "MessageID" integer,
@@ -4534,17 +4633,17 @@ CREATE PROCEDURE  objQual_MESSAGE_LISTREPORTED(I_FORUMID INTEGER)
         c.TOPIC,
         b.TopicID,
         (SELECT count(LOGID) 
-        FROM objQual_MESSAGEREPORTEDAUDIT 
-        WHERE objQual_MESSAGEREPORTEDAUDIT.MESSAGEID = a.MESSAGEID) 
+        FROM {objectQualifier}MESSAGEREPORTEDAUDIT 
+        WHERE {objectQualifier}MESSAGEREPORTEDAUDIT.MESSAGEID = a.MESSAGEID) 
         AS "NumberOfReports"
     FROM
-        objQual_MESSAGEREPORTED a
+        {objectQualifier}MESSAGEREPORTED a
     INNER JOIN
-        objQual_MESSAGE b ON a.MESSAGEID = b.MESSAGEID
+        {objectQualifier}MESSAGE b ON a.MESSAGEID = b.MESSAGEID
     INNER JOIN
-        objQual_TOPIC c ON b.TOPICID = c.TOPICID
+        {objectQualifier}TOPIC c ON b.TOPICID = c.TOPICID
     INNER JOIN
-        objQual_USER d ON b.USERID = d.USERID
+        {objectQualifier}USER d ON b.USERID = d.USERID
     WHERE
         c.FORUMID = :I_FORUMID AND
         BIN_AND(c.FLAGS, 16)=0 AND
@@ -4573,14 +4672,14 @@ DO SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_LISTREPORTERS(I_MESSAGEID integer, I_USERID integer)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_LISTREPORTERS(I_MESSAGEID integer, I_USERID integer)
  RETURNS("UserID" integer, "UserName" varchar(128),"UserDisplayName" varchar(128),"ReportedNumber" integer,"ReportText" varchar(128))
 AS
 BEGIN
 IF ( :I_USERID > 0 ) THEN	
     FOR SELECT b.USERID, a.NAME,a.DISPLAYNAME, b.REPORTEDNUMBER,b.REPORTTEXT
-    FROM objQual_USER a,
-    objQual_MESSAGEREPORTEDAUDIT b
+    FROM {objectQualifier}USER a,
+    {objectQualifier}MESSAGEREPORTEDAUDIT b
     WHERE a.USERID = b.USERID AND b.MESSAGEID = :I_MESSAGEID AND a.USERID = :I_USERID
     INTO
     :"UserID", 
@@ -4591,8 +4690,8 @@ IF ( :I_USERID > 0 ) THEN
 DO SUSPEND;
 ELSE
 FOR SELECT b.USERID, a.NAME,a.DISPLAYNAME, b.REPORTEDNUMBER,b.REPORTTEXT
-    FROM objQual_USER a,
-    objQual_MESSAGEREPORTEDAUDIT b
+    FROM {objectQualifier}USER a,
+    {objectQualifier}MESSAGEREPORTEDAUDIT b
     WHERE a.USERID = b.USERID AND b.MESSAGEID = :I_MESSAGEID
     INTO
     :"UserID", 
@@ -4605,7 +4704,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_MESSAGE_MOVE (I_MESSAGEID INTEGER, I_MOVETOTOPIC INTEGER)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_MOVE (I_MESSAGEID INTEGER, I_MOVETOTOPIC INTEGER)
  
  AS
  DECLARE VARIABLE ici_Position INTEGER;
@@ -4622,32 +4721,32 @@ CREATE PROCEDURE  objQual_MESSAGE_MOVE (I_MESSAGEID INTEGER, I_MOVETOTOPIC INTEG
  BEGIN
 
 SELECT POSTED  
-FROM objQual_MESSAGE  
+FROM {objectQualifier}MESSAGE  
 WHERE MESSAGEID= :I_MESSAGEID
 INTO :ici_Posted;
                 SELECT     FORUMID
-                FROM         objQual_TOPIC
+                FROM         {objectQualifier}TOPIC
                 WHERE     TOPICID = :I_MOVETOTOPIC 
                 INTO :ici_NewForumID;
  
                 SELECT     TOPICID
-                FROM         objQual_MESSAGE
+                FROM         {objectQualifier}MESSAGE
                 WHERE     MESSAGEID = :I_MESSAGEID
                 INTO :ici_OldTopicID;
                  
                 SELECT     FORUMID
-                FROM         objQual_TOPIC
+                FROM         {objectQualifier}TOPIC
                 WHERE     TOPICID = :ici_OldTopicID
                 INTO :ici_OldForumID;
  
             SELECT     MESSAGEID
-            FROM         objQual_MESSAGE
+            FROM         {objectQualifier}MESSAGE
             WHERE     ("POSITION" = 0) 
             AND (TOPICID = :I_MOVETOTOPIC)
             INTO :ici_ReplyToID;
  
             SELECT     MAX("POSITION") + 1 AS Expr1
-            FROM         objQual_MESSAGE
+            FROM         {objectQualifier}MESSAGE
             WHERE     (TOPICID = :I_MOVETOTOPIC) 
             and POSTED < :ici_Posted
             INTO :ici_Position;
@@ -4655,18 +4754,18 @@ INTO :ici_Posted;
           IF (ici_Position IS NULL) THEN 
           ici_Position = 0; 
  
- update objQual_MESSAGE SET
+ update {objectQualifier}MESSAGE SET
         "POSITION" = "POSITION"+1
      WHERE     (TOPICID = :I_MOVETOTOPIC) 
      and POSTED > :ici_Posted;
  
- update objQual_MESSAGE set
+ update {objectQualifier}MESSAGE set
         "POSITION" = "POSITION"-1
      WHERE     (TOPICID = :ici_OldTopicID) 
      and POSTED > :ici_Posted;
  
     -- Update LastMessageID in Topic and Forum
-    UPDATE objQual_TOPIC set
+    UPDATE {objectQualifier}TOPIC set
         LASTPOSTED = NULL,
         LASTMESSAGEID = NULL,
         LASTUSERID = NULL,
@@ -4674,7 +4773,7 @@ INTO :ici_Posted;
         LASTUSERDISPLAYNAME = NULL
     WHERE LASTMESSAGEID = :I_MESSAGEID;
  
-    UPDATE objQual_FORUM set
+    UPDATE {objectQualifier}FORUM set
         LASTPOSTED = NULL,
         LASTTOPICID = NULL,
         LASTMESSAGEID = NULL,
@@ -4684,7 +4783,7 @@ INTO :ici_Posted;
     WHERE LASTMESSAGEID = :I_MESSAGEID;
 
  
- UPDATE objQual_MESSAGE SET
+ UPDATE {objectQualifier}MESSAGE SET
     TOPICID = :I_MOVETOTOPIC,
     REPLYTO = :ici_ReplyToID,
     "POSITION" = :ici_Position
@@ -4693,54 +4792,54 @@ INTO :ici_Posted;
     -- Delete topic if there are no more messages   
 
     IF (NOT EXISTS (SELECT 1  
-    FROM objQual_MESSAGE 
+    FROM {objectQualifier}MESSAGE 
     WHERE TOPICID = :ici_OldTopicID 
     and ISDELETED = 0)) THEN 
 	BEGIN
 		 SELECT UserID, UserName, UserDisplayName  
- FROM objQual_MESSAGE WHERE MessageID=:I_MESSAGEID
+ FROM {objectQualifier}MESSAGE WHERE MessageID=:I_MESSAGEID
  INTO :ici_UserID,:ici_UserName,:ici_UserDisplayName;
 
-	UPDATE objQual_TOPIC set
+	UPDATE {objectQualifier}TOPIC set
         USERID = :ici_UserID,
         USERNAME = :ici_UserName,
         USERDISPLAYNAME = :ici_UserDisplayName
     WHERE TOPICID = :I_MOVETOTOPIC;	
 	IF ((SELECT COUNT (MESSAGEID)
-    FROM objQual_MESSAGE 
+    FROM {objectQualifier}MESSAGE 
     WHERE TOPICID = :ici_OldTopicID 
     and ISDELETED = 0) = 0) THEN
 		ici_EraseOldTopic = 1;
-    EXECUTE PROCEDURE objQual_TOPIC_DELETE(:ici_OldTopicID,0,:ici_EraseOldTopic);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:ici_OldTopicID,0,:ici_EraseOldTopic);
 	END 
 	 
     -- update lastpost
-    EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST(:ici_OldForumID,:ici_OldTopicID);
-    EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_OldForumID);
-    EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST(:ici_NewForumID,:I_MOVETOTOPIC);
-    EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_NewForumID);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_OldForumID,:ici_OldTopicID);
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_OldForumID);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_NewForumID,:I_MOVETOTOPIC);
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_NewForumID);
     -- update topic numposts
-    UPDATE objQual_TOPIC SET
+    UPDATE {objectQualifier}TOPIC SET
         NUMPOSTS = 
-        (SELECT COUNT(1) from objQual_MESSAGE x 
-        WHERE x.TOPICID=objQual_TOPIC.TOPICID 
+        (SELECT COUNT(1) from {objectQualifier}MESSAGE x 
+        WHERE x.TOPICID={objectQualifier}TOPIC.TOPICID 
         and x.ISAPPROVED = 1 and x.ISDELETED = 0)
     WHERE TOPICID = :ici_OldTopicID;
-    UPDATE objQual_TOPIC set	  
+    UPDATE {objectQualifier}TOPIC set	  
         NUMPOSTS = (SELECT COUNT(1) 
-        from objQual_MESSAGE x 
-        WHERE x.TOPICID=objQual_TOPIC.TOPICID 
+        from {objectQualifier}MESSAGE x 
+        WHERE x.TOPICID={objectQualifier}TOPIC.TOPICID 
         and x.ISAPPROVED = 1 and x.ISDELETED = 0)
     WHERE TOPICID = :I_MOVETOTOPIC;
  
-    EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_NewForumID);
-    EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS(:ici_NewForumID);
-    EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS(:ici_OldForumID);
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_NewForumID);
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(:ici_NewForumID);
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(:ici_OldForumID);
  
  END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_REPLY_LIST(I_MESSAGEID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}MESSAGE_REPLY_LIST(I_MESSAGEID INTEGER) 
 RETURNS
 (
 "MessageID" integer,
@@ -4763,9 +4862,9 @@ BEGIN
         COALESCE(a.USERNAME,b.NAME) AS "UserName",
         b.SIGNATURE
     FROM
-        objQual_MESSAGE a
-        INNER JOIN objQual_USER b on b.USERID = a.USERID
-        INNER JOIN objQual_TOPIC c on c.TOPICID = a.TOPICID
+        {objectQualifier}MESSAGE a
+        INNER JOIN {objectQualifier}USER b on b.USERID = a.USERID
+        INNER JOIN {objectQualifier}TOPIC c on c.TOPICID = a.TOPICID
     WHERE
         BIN_AND(a.FLAGS, 16)=16 AND
         a.REPLYTO = :I_MESSAGEID
@@ -4784,7 +4883,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_REPORT
+CREATE PROCEDURE  {objectQualifier}MESSAGE_REPORT
 (I_MESSAGEID INTEGER, 
 I_REPORTERID INTEGER, 
 I_REPORTEDDATE TIMESTAMP,
@@ -4792,68 +4891,68 @@ I_REPORTTEXT VARCHAR(4000),
 I_UTCTIMESTAMP TIMESTAMP) 
 AS
  BEGIN
-        IF (NOT EXISTS (SELECT MESSAGEID FROM objQual_MESSAGEREPORTED 
+        IF (NOT EXISTS (SELECT MESSAGEID FROM {objectQualifier}MESSAGEREPORTED 
     WHERE MESSAGEID=:I_MESSAGEID)) THEN
-        INSERT INTO objQual_MESSAGEREPORTED(MESSAGEID, MESSAGE)
+        INSERT INTO {objectQualifier}MESSAGEREPORTED(MESSAGEID, MESSAGE)
         SELECT 		    
             a.MESSAGEID,
             a.MESSAGE
         FROM
-            objQual_MESSAGE a
+            {objectQualifier}MESSAGE a
         WHERE
             a.MESSAGEID = :I_MESSAGEID; 	
     IF (NOT EXISTS (SELECT MESSAGEID 
-    from objQual_MESSAGEREPORTEDAUDIT 
+    from {objectQualifier}MESSAGEREPORTEDAUDIT 
     WHERE MESSAGEID=:I_MESSAGEID AND USERID=:I_REPORTERID)) THEN
-        INSERT INTO objQual_MESSAGEREPORTEDAUDIT(LOGID,MESSAGEID,USERID,REPORTED,REPORTTEXT) 
-        VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_MESSAGE_LOGID FROM RDB$DATABASE),:I_MESSAGEID,:I_REPORTERID,:I_REPORTEDDATE, CAST(:I_UTCTIMESTAMP AS varchar(40)) || '??' || :I_REPORTTEXT); 
+        INSERT INTO {objectQualifier}MESSAGEREPORTEDAUDIT(LOGID,MESSAGEID,USERID,REPORTED,REPORTTEXT) 
+        VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}MESSAGE_LOGID FROM RDB$DATABASE),:I_MESSAGEID,:I_REPORTERID,:I_REPORTEDDATE, CAST(:I_UTCTIMESTAMP AS varchar(40)) || '??' || :I_REPORTTEXT); 
     ELSE 	  
-        UPDATE objQual_MESSAGEREPORTEDAUDIT 
+        UPDATE {objectQualifier}MESSAGEREPORTEDAUDIT 
         SET REPORTEDNUMBER = ( CASE WHEN REPORTEDNUMBER < 2147483647 THEN  REPORTEDNUMBER + 1 ELSE REPORTEDNUMBER END ), REPORTED = :I_REPORTEDDATE, REPORTTEXT= (CASE WHEN (char_length(REPORTTEXT) + char_length(:I_REPORTTEXT ) + 255 < 4000)  THEN  REPORTTEXT || '|' ||  CAST(:I_UTCTIMESTAMP AS varchar(40)) || '??' ||  :I_REPORTTEXT ELSE REPORTTEXT END) 
         WHERE MESSAGEID = :I_MESSAGEID AND USERID = :I_REPORTERID ;	
 
 
     /*update Message table to set message with flag Reported*/
-    UPDATE objQual_MESSAGE 
+    UPDATE {objectQualifier}MESSAGE 
     SET FLAGS = BIN_OR(FLAGS, 128) 
     WHERE MESSAGEID = :I_MESSAGEID;
 
  END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_REPORTCOPYOVER(I_MESSAGEID INTEGER)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_REPORTCOPYOVER(I_MESSAGEID INTEGER)
 AS
  BEGIN
-    UPDATE objQual_MESSAGEREPORTED		
-    SET objQual_MESSAGEREPORTED.MESSAGE = 
-    (SELECT m.MESSAGE FROM objQual_MESSAGEREPORTED mr
-    JOIN objQual_MESSAGE m
+    UPDATE {objectQualifier}MESSAGEREPORTED		
+    SET {objectQualifier}MESSAGEREPORTED.MESSAGE = 
+    (SELECT m.MESSAGE FROM {objectQualifier}MESSAGEREPORTED mr
+    JOIN {objectQualifier}MESSAGE m
     ON m.MESSAGEID = mr.MESSAGEID
     WHERE mr.MESSAGEID = :I_MESSAGEID);
     
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_REPORTRESOLVE(I_MESSAGEFLAG INTEGER, I_MESSAGEID INTEGER, I_USERID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}MESSAGE_REPORTRESOLVE(I_MESSAGEFLAG INTEGER, I_MESSAGEID INTEGER, I_USERID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
  AS
  DECLARE VARIABLE ICI_POWERFLAG INTEGER;
  DECLARE ICI_NOTFLAG INTEGER;
  BEGIN
     ICI_POWERFLAG=POWER(2, :I_MESSAGEFLAG);
-    UPDATE objQual_MESSAGEREPORTED
+    UPDATE {objectQualifier}MESSAGEREPORTED
     SET RESOLVED = 1, 
     RESOLVEDBY = :I_USERID, 
     RESOLVEDDATE = :I_UTCTIMESTAMP
     WHERE MESSAGEID = :I_MESSAGEID; 	
     /* Remove Flag */
     ICI_NOTFLAG=BIN_XOR(:ICI_POWERFLAG,-1);
-    UPDATE objQual_MESSAGE 	
+    UPDATE {objectQualifier}MESSAGE 	
     SET FLAGS = BIN_AND(FLAGS,:ICI_NOTFLAG)
     WHERE MESSAGEID = :I_MESSAGEID;
  END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_SAVE(
+CREATE PROCEDURE  {objectQualifier}MESSAGE_SAVE(
     I_TOPICID		INTEGER,
     I_USERID		INTEGER,
     I_MESSAGE		BLOB SUB_TYPE 1,
@@ -4864,8 +4963,8 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
     I_BLOGPOSTID	VARCHAR(128),
     I_EXTERNALMESSAGEID VARCHAR(255),
     I_REFERENCEMESSAGEID VARCHAR(255),
-    I_FLAGS			INTEGER,
 	I_MESSAGEDESCRIPTION VARCHAR(255),
+    I_FLAGS			INTEGER,	
     I_UTCTIMESTAMP TIMESTAMP
  )
  RETURNS (I_MESSAGEID INTEGER)
@@ -4884,9 +4983,9 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
  
     SELECT  x.FORUMID,  y.FLAGS        
     FROM 
-        objQual_TOPIC x
+        {objectQualifier}TOPIC x
     INNER JOIN 
-        objQual_FORUM y ON y.FORUMID=x.FORUMID
+        {objectQualifier}FORUM y ON y.FORUMID=x.FORUMID
     WHERE x.TOPICID = :I_TOPICID
     INTO :ici_ForumID,:ici_ForumFlags;
  
@@ -4900,14 +4999,14 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
     ELSE IF (:I_REPLYTO<0) THEN
         -- Find post to reply to AND indent of this post 
         SELECT FIRST 1 DISTINCT  MESSAGEID, INDENT+1                
-        FROM objQual_MESSAGE
+        FROM {objectQualifier}MESSAGE
         WHERE TOPICID = :I_TOPICID AND REPLYTO IS NULL
         ORDER BY POSTED
         INTO :I_REPLYTO,:ici_Indent; 
     ELSE
         -- Got reply, find indent of this post 
             SELECT INDENT+1 
-            FROM objQual_MESSAGE
+            FROM {objectQualifier}MESSAGE
             WHERE MESSAGEID=:I_REPLYTO
             INTO :ici_Indent;
          
@@ -4916,20 +5015,20 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
     IF (I_REPLYTO IS NOT NULL) THEN
         BEGIN
          SELECT REPLYTO,"POSITION" 
-         FROM objQual_MESSAGE WHERE MESSAGEID=:I_REPLYTO
+         FROM {objectQualifier}MESSAGE WHERE MESSAGEID=:I_REPLYTO
          INTO :ici_temp,:ici_Position ;
         BEGIN
          IF (ici_temp IS NULL) THEN
             -- We are replying to first post 
              SELECT MAX("POSITION")+1               
-             FROM objQual_MESSAGE 
+             FROM {objectQualifier}MESSAGE 
              WHERE TOPICID=:I_TOPICID
              INTO :ici_Position;
  
            ELSE
         -- Last position of replies to parent post
              SELECT MIN("POSITION") 
-             FROM objQual_MESSAGE 
+             FROM {objectQualifier}MESSAGE 
              WHERE REPLYTO=:ici_temp AND "POSITION">:ici_Position
              INTO :ici_Position ;
  
@@ -4937,12 +5036,12 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
              IF (ici_Position IS NULL) THEN
              BEGIN
                  SELECT "POSITION"+1                   
-                 FROM objQual_MESSAGE 
+                 FROM {objectQualifier}MESSAGE 
                  WHERE MESSAGEID=:I_REPLYTO
                  INTO :ici_Position;
         -- Increase position of posts after this
 
-         UPDATE objQual_MESSAGE 
+         UPDATE {objectQualifier}MESSAGE 
          SET "POSITION"="POSITION"+1 
          WHERE TOPICID=:I_TOPICID 
          AND "POSITION">=:ici_Position; 
@@ -4950,15 +5049,15 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
          END
   END 	
 
-    SELECT SIGN(COUNT(Name)) FROM objQual_User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
+    SELECT SIGN(COUNT(Name)) FROM {objectQualifier}User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
        -- Here we set bit flag to 0
-    SELECT NEXT VALUE FOR SEQ_objQual_MESSAGE_MESSAGEID FROM RDB$DATABASE INTO :I_MESSAGEID;
-    INSERT INTO objQual_MESSAGE ( MESSAGEID,USERID, MESSAGE,DESCRIPTION, TOPICID, POSTED, USERNAME, USERDISPLAYNAME, IP, REPLYTO, "POSITION", INDENT, FLAGS, BLOGPOSTID, EXTERNALMESSAGEID, REFERENCEMESSAGEID)
-    VALUES ( :I_MESSAGEID, :I_USERID, :I_MESSAGE,:I_MESSAGEDESCRIPTION, :I_TOPICID, :I_POSTED,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT Name FROM objQual_User WHERE UserID = :i_UserID) END),(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DisplayName FROM objQual_User WHERE UserID = :i_UserID) END), :I_IP, :I_REPLYTO, :ici_Position, :ici_Indent, BIN_AND(:I_FLAGS,BIN_XOR(16,-1)), :I_BLOGPOSTID,:I_EXTERNALMESSAGEID,
+    SELECT NEXT VALUE FOR SEQ_{objectQualifier}MESSAGE_MESSAGEID FROM RDB$DATABASE INTO :I_MESSAGEID;
+    INSERT INTO {objectQualifier}MESSAGE ( MESSAGEID,USERID, MESSAGE,DESCRIPTION, TOPICID, POSTED, USERNAME, USERDISPLAYNAME, IP, REPLYTO, "POSITION", INDENT, FLAGS, BLOGPOSTID, EXTERNALMESSAGEID, REFERENCEMESSAGEID)
+    VALUES ( :I_MESSAGEID, :I_USERID, :I_MESSAGE,:I_MESSAGEDESCRIPTION, :I_TOPICID, :I_POSTED,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT Name FROM {objectQualifier}User WHERE UserID = :i_UserID) END),(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DisplayName FROM {objectQualifier}User WHERE UserID = :i_UserID) END), :I_IP, :I_REPLYTO, :ici_Position, :ici_Indent, BIN_AND(:I_FLAGS,BIN_XOR(16,-1)), :I_BLOGPOSTID,:I_EXTERNALMESSAGEID,
     :I_REFERENCEMESSAGEID );    
 
     IF ((BIN_AND(:I_FLAGS, 16) = 16)) THEN
-      EXECUTE PROCEDURE objQual_MESSAGE_APPROVE (:I_MESSAGEID); 
+      EXECUTE PROCEDURE {objectQualifier}MESSAGE_APPROVE (:I_MESSAGEID); 
           SUSPEND;
       END;	
     
@@ -4970,7 +5069,7 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
 
 
 
-CREATE PROCEDURE  objQual_MESSAGE_SIMPLELIST(
+CREATE PROCEDURE  {objectQualifier}MESSAGE_SIMPLELIST(
                 I_STARTID INTEGER,
                 I_LIMIT   INTEGER)
                 RETURNS
@@ -4986,7 +5085,7 @@ if (I_STARTID IS NULL) THEN I_STARTID=0;
 
       FOR SELECT   FIRST (:I_LIMIT) m.MESSAGEID,
                  m.TOPICID        
-        FROM     objQual_MESSAGE m
+        FROM     {objectQualifier}MESSAGE m
         WHERE    m.MESSAGEID >=:I_STARTID 
         AND  m.MESSAGEID <(:I_LIMIT+:I_STARTID)
         AND  m.TOPICID IS NOT NULL ORDER BY m.MESSAGEID
@@ -4999,7 +5098,7 @@ if (I_STARTID IS NULL) THEN I_STARTID=0;
 --GO 
 
 
-CREATE PROCEDURE  objQual_MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
       RETURNS
       (
 "MessageID" integer,
@@ -5008,7 +5107,8 @@ CREATE PROCEDURE  objQual_MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
 "UserDisplayName" varchar(128),
 "Posted" timestamp,
 "TopicID"  integer,
-"Topic" character varying(128),
+"Topic" character varying(255),
+"MessageCount" integer,
 "Message" BLOB SUB_TYPE 1,
 "Flags" integer,
 "IsModeratorChanged" BOOL
@@ -5023,13 +5123,14 @@ CREATE PROCEDURE  objQual_MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
       b.POSTED AS "Posted",
       a.TOPICID AS "TopicID",
       a.TOPIC AS "Topic",
+	  a.NUMPOSTS,
       b.MESSAGE AS "Message",
       b.FLAGS AS "Flags",
       b.ISMODERATORCHANGED AS "IsModeratorChanged"
       FROM
-      objQual_TOPIC a
-      INNER JOIN objQual_MESSAGE b on b.TOPICID = a.TOPICID
-      INNER JOIN objQual_USER c on c.USERID = b.USERID
+      {objectQualifier}TOPIC a
+      INNER JOIN {objectQualifier}MESSAGE b on b.TOPICID = a.TOPICID
+      INNER JOIN {objectQualifier}USER c on c.USERID = b.USERID
       WHERE
       a.FORUMID = :I_FORUMID AND
       BIN_AND(b.FLAGS, 16)=0 AND
@@ -5045,6 +5146,7 @@ CREATE PROCEDURE  objQual_MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
         :"Posted",
         :"TopicID",
         :"Topic",
+		:"MessageCount",
         :"Message",
         :"Flags",
         :"IsModeratorChanged"
@@ -5052,7 +5154,7 @@ CREATE PROCEDURE  objQual_MESSAGE_UNAPPROVED(I_FORUMID INTEGER)
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_UPDATE
+CREATE PROCEDURE  {objectQualifier}MESSAGE_UPDATE
 (I_MESSAGEID INTEGER,
 I_PRIORITY INTEGER,
 I_SUBJECT varchar(128),
@@ -5083,9 +5185,9 @@ BEGIN
     a.TOPICID,
     c.FLAGS       
     FROM 
-        objQual_MESSAGE a
-        INNER JOIN objQual_TOPIC b ON b.TOPICID = a.TOPICID
-        INNER JOIN objQual_FORUM c ON c.FORUMID = b.FORUMID
+        {objectQualifier}MESSAGE a
+        INNER JOIN {objectQualifier}TOPIC b ON b.TOPICID = a.TOPICID
+        INNER JOIN {objectQualifier}FORUM c ON c.FORUMID = b.FORUMID
     WHERE 
         a.MESSAGEID = :I_MESSAGEID
          INTO :ici_TopicID,:ici_ForumFlags;
@@ -5094,7 +5196,7 @@ BEGIN
     THEN I_FLAGS = BIN_OR(:I_FLAGS, 16); 
  
  -- insert current message variant - use OriginalMessage in future 	
-    insert into objQual_MESSAGEHISTORY
+    insert into {objectQualifier}MESSAGEHISTORY
        (MESSAGEID,		
         MESSAGE,
         IP,
@@ -5112,11 +5214,11 @@ BEGIN
     EDITREASON, 
     ISMODERATORCHANGED, 
     FLAGS
-    from objQual_MESSAGE where
+    from {objectQualifier}MESSAGE where
         MESSAGEID = :I_MESSAGEID;
     
  
-    UPDATE objQual_MESSAGE SET
+    UPDATE {objectQualifier}MESSAGE SET
         MESSAGE = :I_MESSAGE,
 	    DESCRIPTION	= :I_MESSAGEDESCRIPTION,
         EDITED = :I_UTCTIMESTAMP,
@@ -5128,33 +5230,33 @@ BEGIN
         MESSAGEID = :I_MESSAGEID;
  
     IF (I_PRIORITY IS NOT NULL) THEN
-        UPDATE objQual_TOPIC SET
+        UPDATE {objectQualifier}TOPIC SET
             "PRIORITY" = :I_PRIORITY
         WHERE
             TOPICID = :ici_TopicID;
     
  
     IF (NOT I_SUBJECT = '' AND I_SUBJECT IS NOT NULL) THEN
-        UPDATE objQual_TOPIC SET
+        UPDATE {objectQualifier}TOPIC SET
             TOPIC =:I_SUBJECT, DESCRIPTION = :I_DESCRIPTION,	
         STATUS = (SELECT :I_STATUS FROM RDB$DATABASE),
         STYLES = :I_STYLES
         WHERE
             TOPICID = :ici_TopicID;
 
-  EXECUTE PROCEDURE objQual_TOPIC_TAGSAVE(:ici_TopicID, :I_TAGS);
+  EXECUTE PROCEDURE {objectQualifier}TOPIC_TAGSAVE(:ici_TopicID, :I_TAGS);
     -- If forum is moderated, make sure last post pointers are correct
     
     IF (binFlag<>0) THEN 
-    EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST null,null;
-    -- EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST (ici_ForumID);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST null,null;
+    -- EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST (ici_ForumID);
     
 END;
 --GO
 
 
 
-CREATE PROCEDURE  objQual_MESSAGE_DELETE(I_MESSAGEID INTEGER, I_ERASEMESSAGE BOOL) 
+CREATE PROCEDURE  {objectQualifier}MESSAGE_DELETE(I_MESSAGEID INTEGER, I_ERASEMESSAGE BOOL) 
 AS
 DECLARE VARIABLE ici_TopicID		INTEGER;
     DECLARE VARIABLE ici_ForumID		INTEGER;   
@@ -5171,15 +5273,15 @@ BEGIN
     /*Find TopicID and ForumID*/
     SELECT b.TOPICID,b.FORUMID         
         FROM 
-            objQual_MESSAGE a
-            INNER JOIN  objQual_TOPIC b 
+            {objectQualifier}MESSAGE a
+            INNER JOIN  {objectQualifier}TOPIC b 
             ON b.TOPICID=a.TOPICID
         WHERE
             a.MESSAGEID=:I_MESSAGEID
             INTO :ici_TopicID,:ici_ForumID;
  
     /*UPDATE LastMessageID in Topic*/
-    UPDATE objQual_TOPIC SET 
+    UPDATE {objectQualifier}TOPIC SET 
         LASTPOSTED = NULL,
         LASTMESSAGEID = NULL,
         LASTUSERID = NULL,
@@ -5188,7 +5290,7 @@ BEGIN
     WHERE LASTMESSAGEID = :I_MESSAGEID;
 
     /*UPDATE LastMessageID in Forum*/
-    UPDATE objQual_FORUM SET 
+    UPDATE {objectQualifier}FORUM SET 
         LASTPOSTED = NULL,
         LASTTOPICID = NULL,
         LASTMESSAGEID = NULL,
@@ -5197,61 +5299,61 @@ BEGIN
         LASTUSERDISPLAYNAME = NULL
     WHERE LASTMESSAGEID = :I_MESSAGEID;
  
-    SELECT USERID FROM objQual_MESSAGE 
+    SELECT USERID FROM {objectQualifier}MESSAGE 
     WHERE MESSAGEID = :I_MESSAGEID
     INTO :ICI_USERID;	
  
     -- should it be physically deleted or not
     IF (I_ERASEMESSAGE = 1) THEN
     BEGIN
-        DELETE FROM objQual_ATTACHMENT 
+        DELETE FROM {objectQualifier}ATTACHMENT 
         WHERE MESSAGEID = :I_MESSAGEID;
-        DELETE FROM objQual_MESSAGEREPORTED 
+        DELETE FROM {objectQualifier}MESSAGEREPORTED 
         WHERE MESSAGEID = :I_MESSAGEID;
-        DELETE FROM objQual_MESSAGEREPORTEDAUDIT 
+        DELETE FROM {objectQualifier}MESSAGEREPORTEDAUDIT 
         WHERE MESSAGEID = :I_MESSAGEID;
-        DELETE FROM objQual_THANKS 
+        DELETE FROM {objectQualifier}THANKS 
         WHERE MESSAGEID = :I_MESSAGEID; 
-        DELETE FROM objQual_MESSAGEHISTORY 
+        DELETE FROM {objectQualifier}MESSAGEHISTORY 
         WHERE MESSAGEID = :I_MESSAGEID; 
-        DELETE FROM objQual_MESSAGE 
+        DELETE FROM {objectQualifier}MESSAGE 
         WHERE MESSAGEID = :I_MESSAGEID; 		
         END	
     ELSE 		
-        UPDATE objQual_MESSAGE SET FLAGS = BIN_OR(FLAGS, 8)
+        UPDATE {objectQualifier}MESSAGE SET FLAGS = BIN_OR(FLAGS, 8)
         WHERE MESSAGEID = :I_MESSAGEID;
 
     
     -- UPD user post count
-    UPDATE objQual_USER 
+    UPDATE {objectQualifier}USER 
     SET NUMPOSTS = 
     (SELECT count(MESSAGEID) 
-    FROM objQual_MESSAGE 
+    FROM {objectQualifier}MESSAGE 
     WHERE USERID = :ICI_USERID AND ISDELETED = 0 
     AND ISAPPROVED = 1) WHERE USERID = :ICI_USERID;
     
     /* Delete topic if there are no more messages*/
     IF (NOT EXISTS (SELECT FIRST 1 1  
-    FROM objQual_MESSAGE WHERE TOPICID = :ici_TopicID 
+    FROM {objectQualifier}MESSAGE WHERE TOPICID = :ici_TopicID 
     AND BIN_AND(FLAGS, 8)=0)) THEN	
-    EXECUTE PROCEDURE objQual_TOPIC_DELETE :ici_TopicID, 1, :I_ERASEMESSAGE; 
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :ici_TopicID, 1, :I_ERASEMESSAGE; 
  
     /*UPDATE lastpost*/
-    EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
-    EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST :ici_ForumID;
-    EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_ForumID;
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
  
     /*UPDATE topic numposts*/
-    UPDATE objQual_TOPIC SET
+    UPDATE {objectQualifier}TOPIC SET
         NUMPOSTS = 
-        (SELECT COUNT(1) FROM objQual_MESSAGE x 
-        WHERE x.TOPICID=objQual_TOPIC.TOPICID 
+        (SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
+        WHERE x.TOPICID={objectQualifier}TOPIC.TOPICID 
         and x.ISAPPROVED = 1 and x.ISDELETED = 0)
         WHERE TOPICID = :ici_TopicID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_DELETEUNDELETE
+CREATE PROCEDURE  {objectQualifier}MESSAGE_DELETEUNDELETE
 (I_MESSAGEID INTEGER, 
 I_ISMODERATORCHANGED BOOL, 
 I_DELETEREASON varchar(128), 
@@ -5270,15 +5372,15 @@ i_DelAction=:I_ISDELETEACTION*8;
     /*Find TopicID and ForumID*/
     SELECT b.TOPICID,b.FORUMID        
     FROM 
-        objQual_MESSAGE a
-        INNER JOIN objQual_TOPIC b 
+        {objectQualifier}MESSAGE a
+        INNER JOIN {objectQualifier}TOPIC b 
         ON b.TOPICID=a.TOPICID
     WHERE 
         a.MESSAGEID=:I_MESSAGEID
         INTO :ici_TopicID,:ici_ForumID;
  
     /*Update LastMessageID in Topic and Forum*/
-    UPDATE objQual_TOPIC SET
+    UPDATE {objectQualifier}TOPIC SET
         LASTPOSTED = NULL,
         LASTMESSAGEID = NULL,
         LASTUSERID = NULL,
@@ -5286,7 +5388,7 @@ i_DelAction=:I_ISDELETEACTION*8;
         LASTUSERDISPLAYNAME = NULL
     WHERE LASTMESSAGEID = :I_MESSAGEID;
  
-    UPDATE objQual_FORUM 
+    UPDATE {objectQualifier}FORUM 
             SET
         LASTPOSTED = NULL,
         LASTTOPICID = NULL,
@@ -5297,57 +5399,57 @@ i_DelAction=:I_ISDELETEACTION*8;
        WHERE LASTMESSAGEID = :I_MESSAGEID;
  /*get the userID for this message...*/ 	
      SELECT USERID  
-     FROM objQual_MESSAGE 
+     FROM {objectQualifier}MESSAGE 
      WHERE MESSAGEID = :I_MESSAGEID
      INTO :ICI_USERID;
  
     /* "Delete" message*/
-     UPDATE objQual_MESSAGE 
+     UPDATE {objectQualifier}MESSAGE 
      SET ISMODERATORCHANGED = :I_ISMODERATORCHANGED 
      WHERE MESSAGEID = :I_MESSAGEID 
      AND (BIN_AND(FLAGS, 8) <> :i_DelAction);
-    UPDATE objQual_MESSAGE 
+    UPDATE {objectQualifier}MESSAGE 
     SET DELETEREASON = :I_DELETEREASON 
     WHERE MESSAGEID = :I_MESSAGEID 
     AND (BIN_AND(FLAGS, 8) <> :i_DelAction);
-    UPDATE objQual_MESSAGE 
+    UPDATE {objectQualifier}MESSAGE 
     SET FLAGS = BIN_XOR(FLAGS, 8) WHERE MESSAGEID =:I_MESSAGEID 
     AND (BIN_AND(FLAGS, 8) <> :i_DelAction);
      
      /* update num posts for user now that the delete/undelete status has been toggled...*/
-     UPDATE objQual_USER 
+     UPDATE {objectQualifier}USER 
      SET NUMPOSTS = (SELECT count(MESSAGEID) 
-     FROM objQual_MESSAGE 
+     FROM {objectQualifier}MESSAGE 
      WHERE USERID = :ICI_USERID AND ISDELETED = 0 
      AND ISAPPROVED = 1) WHERE USERID = :ICI_USERID;
  
     /* Delete topic if there are no more messages*/
     IF (NOT EXISTS (SELECT FIRST 1 1  
-    FROM objQual_MESSAGE WHERE TOPICID = :ici_TopicID 
+    FROM {objectQualifier}MESSAGE WHERE TOPICID = :ici_TopicID 
     AND BIN_AND(FLAGS, 8)=0)) THEN	
-    EXECUTE PROCEDURE objQual_TOPIC_DELETE (:ici_TopicID,0,0);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE (:ici_TopicID,0,0);
     /*update lastpost*/
-    EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
-    EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST :ici_ForumID;
-    EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS :ici_ForumID;
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
     /* update topic numposts*/
-    UPDATE objQual_TOPIC set
+    UPDATE {objectQualifier}TOPIC set
         NUMPOSTS = 
-        (select count(1) from objQual_MESSAGE x 
-        WHERE x.TOPICID=objQual_TOPIC.TOPICID 
+        (select count(1) from {objectQualifier}MESSAGE x 
+        WHERE x.TOPICID={objectQualifier}TOPIC.TOPICID 
         and x.ISAPPROVED = 1 and x.ISDELETED = 0 )
     WHERE TOPICID = :ici_TopicID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPFORUM_DELETE(I_NNTPFORUMID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}NNTPFORUM_DELETE(I_NNTPFORUMID INTEGER) 
 AS
 BEGIN
-DELETE FROM objQual_NNTPTOPIC where NNTPFORUMID = :I_NNTPFORUMID;
-DELETE FROM objQual_NNTPFORUM where NNTPFORUMID = :I_NNTPFORUMID;
+DELETE FROM {objectQualifier}NNTPTOPIC where NNTPFORUMID = :I_NNTPFORUMID;
+DELETE FROM {objectQualifier}NNTPFORUM where NNTPFORUMID = :I_NNTPFORUMID;
 END;
 --GO
-CREATE PROCEDURE  objQual_NNTPFORUM_LIST(
+CREATE PROCEDURE  {objectQualifier}NNTPFORUM_LIST(
 I_BOARDID INTEGER,
 I_MINUTES INTEGER,
 I_NNTPFORUMID INTEGER,
@@ -5390,10 +5492,10 @@ BEGIN
         b.DATECUTOFF,
         c.NAME AS "ForumName" 
     FROM
-        objQual_NNTPSERVER a
-        JOIN objQual_NNTPFORUM b 
+        {objectQualifier}NNTPSERVER a
+        JOIN {objectQualifier}NNTPFORUM b 
                 ON b.NNTPSERVERID = a.NNTPSERVERID
-        JOIN objQual_FORUM c 
+        JOIN {objectQualifier}FORUM c 
                 ON c.FORUMID = b.FORUMID
     WHERE
         (:I_MINUTES IS NULL 
@@ -5424,7 +5526,7 @@ DO SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPFORUM_SAVE(
+CREATE PROCEDURE  {objectQualifier}NNTPFORUM_SAVE(
                  I_NNTPFORUMID INTEGER,
                  I_NNTPSERVERID INTEGER,
                  I_GROUPNAME varchar(128),
@@ -5435,10 +5537,10 @@ CREATE PROCEDURE  objQual_NNTPFORUM_SAVE(
 AS
 BEGIN
     IF (I_NNTPFORUMID IS NULL) THEN
-        INSERT INTO objQual_NNTPFORUM(NNTPFORUMID,NNTPSERVERID,GROUPNAME,FORUMID,LASTMESSAGENO,LASTUPDATE,"ACTIVE", DATECUTOFF )
-        VALUES((SELECT NEXT VALUE FOR SEQ_objQual_NNTPFORUM_NNTPFORUMID FROM RDB$DATABASE),:I_NNTPSERVERID,:I_GROUPNAME,:I_FORUMID,0,:I_UTCTIMESTAMP,:I_ACTIVE, :I_DATECUTOFF);
+        INSERT INTO {objectQualifier}NNTPFORUM(NNTPFORUMID,NNTPSERVERID,GROUPNAME,FORUMID,LASTMESSAGENO,LASTUPDATE,"ACTIVE", DATECUTOFF )
+        VALUES((SELECT NEXT VALUE FOR SEQ_{objectQualifier}NNTPFORUM_NNTPFORUMID FROM RDB$DATABASE),:I_NNTPSERVERID,:I_GROUPNAME,:I_FORUMID,0,:I_UTCTIMESTAMP,:I_ACTIVE, :I_DATECUTOFF);
     ELSE
-        UPDATE objQual_NNTPFORUM SET
+        UPDATE {objectQualifier}NNTPFORUM SET
             NNTPSERVERID = :I_NNTPSERVERID,
             GROUPNAME = :I_GROUPNAME,
             FORUMID = :I_FORUMID,
@@ -5449,48 +5551,48 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPFORUM_UPDATE(I_NNTPFORUMID INTEGER,I_LASTMESSAGENO INTEGER,I_USERID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}NNTPFORUM_UPDATE(I_NNTPFORUMID INTEGER,I_LASTMESSAGENO INTEGER,I_USERID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
 AS
 DECLARE	ici_ForumID	INTEGER;
 BEGIN 	
     
-    SELECT FORUMID from objQual_NNTPFORUM 
+    SELECT FORUMID from {objectQualifier}NNTPFORUM 
     where NNTPFORUMID=:I_NNTPFORUMID
     INTO :ici_ForumID ;
  
-    UPDATE objQual_NNTPFORUM SET
+    UPDATE {objectQualifier}NNTPFORUM SET
         LASTMESSAGENO = :I_LASTMESSAGENO,
         LASTUPDATE = :I_UTCTIMESTAMP
     WHERE NNTPFORUMID = :I_NNTPFORUMID;
  
-    UPDATE objQual_TOPIC SET 
+    UPDATE {objectQualifier}TOPIC SET 
         NUMPOSTS = 
-        (SELECT COUNT(1) FROM objQual_MESSAGE x 
-        WHERE x.TOPICID=objQual_TOPIC.TOPICID 
+        (SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
+        WHERE x.TOPICID={objectQualifier}TOPIC.TOPICID 
         AND x.ISAPPROVED = 1 AND x.ISDELETED = 0)
     WHERE FORUMID=:ici_ForumID;
  
-    /* EXECUTE PROCEDURE objQual_USER_UPGRADE(I_USERID) */
-    EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS(:ici_ForumID);
-    /* EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST ici_ForumID,null*/
+    /* EXECUTE PROCEDURE {objectQualifier}USER_UPGRADE(I_USERID) */
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(:ici_ForumID);
+    /* EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST ici_ForumID,null*/
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPSERVER_DELETE(I_NNTPSERVERID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}NNTPSERVER_DELETE(I_NNTPSERVERID INTEGER) 
 AS
 BEGIN
-    DELETE FROM objQual_NNTPTOPIC 
+    DELETE FROM {objectQualifier}NNTPTOPIC 
     WHERE NNTPFORUMID 
-    IN (SELECT NNTPFORUMID FROM objQual_NNTPFORUM 
+    IN (SELECT NNTPFORUMID FROM {objectQualifier}NNTPFORUM 
     WHERE NNTPSERVERID = :I_NNTPSERVERID);
-    DELETE FROM objQual_NNTPFORUM 
+    DELETE FROM {objectQualifier}NNTPFORUM 
     WHERE NNTPSERVERID = :I_NNTPSERVERID;
-    DELETE FROM objQual_NNTPSERVER 
+    DELETE FROM {objectQualifier}NNTPSERVER 
     WHERE NNTPSERVERID = :I_NNTPSERVERID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPSERVER_LIST(I_BOARDID INTEGER,I_NNTPSERVERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}NNTPSERVER_LIST(I_BOARDID INTEGER,I_NNTPSERVERID INTEGER)
 RETURNS
 (
 "NntpServerID" integer,
@@ -5504,7 +5606,7 @@ RETURNS
 AS
 BEGIN
     IF (I_NNTPSERVERID IS NULL) THEN
-        FOR SELECT * FROM objQual_NNTPSERVER 
+        FOR SELECT * FROM {objectQualifier}NNTPSERVER 
         WHERE BOARDID=:I_BOARDID ORDER BY NAME
         INTO
         :"NntpServerID",
@@ -5516,7 +5618,7 @@ BEGIN
         :"UserPass"
         DO SUSPEND;
     ELSE
-        FOR SELECT * FROM objQual_NNTPSERVER 
+        FOR SELECT * FROM {objectQualifier}NNTPSERVER 
         WHERE NNTPSERVERID=:I_NNTPSERVERID
         INTO
         :"NntpServerID",
@@ -5531,7 +5633,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPSERVER_SAVE(
+CREATE PROCEDURE  {objectQualifier}NNTPSERVER_SAVE(
     I_NNTPSERVERID 	INTEGER,
     I_BOARDID	INTEGER,
     I_NAME		VARCHAR(128),
@@ -5542,10 +5644,10 @@ CREATE PROCEDURE  objQual_NNTPSERVER_SAVE(
  )  
  AS BEGIN
     IF (I_NNTPSERVERID IS NULL) THEN
-        INSERT INTO objQual_NNTPSERVER(NNTPSERVERID,NAME,BOARDID,ADDRESS,"PORT",USERNAME,USERPASS)
-        VALUES((SELECT NEXT VALUE FOR SEQ_objQual_NNTPSERVER_NNTPSERVERID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_ADDRESS,:I_PORT,:I_USERNAME,:I_USERPASS);
+        INSERT INTO {objectQualifier}NNTPSERVER(NNTPSERVERID,NAME,BOARDID,ADDRESS,"PORT",USERNAME,USERPASS)
+        VALUES((SELECT NEXT VALUE FOR SEQ_{objectQualifier}NNTPSERVER_NNTPSERVERID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_ADDRESS,:I_PORT,:I_USERNAME,:I_USERPASS);
     ELSE
-        UPDATE objQual_NNTPSERVER SET
+        UPDATE {objectQualifier}NNTPSERVER SET
             NAME = :I_NAME,
             ADDRESS = :I_ADDRESS,
             "PORT" = :I_PORT,
@@ -5556,7 +5658,7 @@ CREATE PROCEDURE  objQual_NNTPSERVER_SAVE(
 END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPTOPIC_LIST(I_THREAD VARCHAR(64))
+CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_LIST(I_THREAD VARCHAR(64))
 RETURNS
 ( "NntpTopicID" INTEGER,
   "NntpForumID" INTEGER,
@@ -5567,7 +5669,7 @@ BEGIN
     FOR SELECT
         a.*
     FROM
-        objQual_NNTPTOPIC a
+        {objectQualifier}NNTPTOPIC a
     WHERE
         a."THREAD" = :I_THREAD
         INTO
@@ -5579,15 +5681,15 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_ACTIVEACCESS_RESET 
+CREATE PROCEDURE  {objectQualifier}ACTIVEACCESS_RESET 
  AS 
       BEGIN
-      DELETE FROM objQual_ACTIVE;
-      DELETE FROM objQual_ACTIVEACCESS;
+      DELETE FROM {objectQualifier}ACTIVE;
+      DELETE FROM {objectQualifier}ACTIVEACCESS;
       END;
 --GO
 
-CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
+CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_SAVEMESSAGE(
     I_NNTPFORUMID	INTEGER,
     I_TOPIC 			VARCHAR(128),
     I_BODY 			BLOB SUB_TYPE 1,
@@ -5613,32 +5715,32 @@ CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
  BEGIN
     
     SELECT FORUMID 
-    FROM objQual_NNTPFORUM 
+    FROM {objectQualifier}NNTPFORUM 
     WHERE NNTPFORUMID=:I_NNTPFORUMID
     INTO :ici_ForumID ;
         
-    IF (EXISTS(SELECT FIRST 1 1 FROM objQual_MESSAGE 
+    IF (EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}MESSAGE 
     WHERE EXTERNALMESSAGEID=:I_REFERENCEMESSAGEID)) THEN 
         
                 -- referenced message exists		
         SELECT TOPICID, REPLYTO  
-        FROM objQual_MESSAGE
+        FROM {objectQualifier}MESSAGE
         WHERE EXTERNALMESSAGEID=:I_REFERENCEMESSAGEID 
         INTO :ici_TopicID, :ici_ReplyTo;
     
 
      ELSE
-     if (NOT EXISTS(SELECT FIRST 1 1 FROM objQual_MESSAGE WHERE EXTERNALMESSAGEID=:I_EXTERNALMESSAGEID)) THEN
+     if (NOT EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}MESSAGE WHERE EXTERNALMESSAGEID=:I_EXTERNALMESSAGEID)) THEN
      BEGIN 
         if (I_REFERENCEMESSAGEID IS NULL) THEN
         BEGIN
             -- thread doesn't exists
-        SELECT NEXT VALUE FOR SEQ_objQual_TOPIC_TOPICID FROM RDB$DATABASE INTO :ici_TopicID;
-        INSERT INTO objQual_TOPIC(TOPICID,FORUMID,USERID,USERNAME,USERDISPLAYNAME,POSTED,TOPIC,VIEWS,"PRIORITY",NUMPOSTS)
+        SELECT NEXT VALUE FOR SEQ_{objectQualifier}TOPIC_TOPICID FROM RDB$DATABASE INTO :ici_TopicID;
+        INSERT INTO {objectQualifier}TOPIC(TOPICID,FORUMID,USERID,USERNAME,USERDISPLAYNAME,POSTED,TOPIC,VIEWS,"PRIORITY",NUMPOSTS)
         VALUES(:ici_TopicID, :ici_ForumID,:I_USERID,:I_USERNAME,:I_USERNAME,:I_POSTED,:I_TOPIC,0,0,0);
         
-        SELECT NEXT VALUE FOR SEQ_objQual_NNTPTOPIC_NNTPTOPICID FROM RDB$DATABASE INTO :ici_NntpTopicID;
-        INSERT INTO objQual_NNTPTOPIC(NNTPTOPICID,NNTPFORUMID,"THREAD",TOPICID)
+        SELECT NEXT VALUE FOR SEQ_{objectQualifier}NNTPTOPIC_NNTPTOPICID FROM RDB$DATABASE INTO :ici_NntpTopicID;
+        INSERT INTO {objectQualifier}NNTPTOPIC(NNTPTOPICID,NNTPFORUMID,"THREAD",TOPICID)
         VALUES (:ici_NntpTopicID,:I_NNTPFORUMID,'',:ici_TopicID);
         END
         /*thread doesn't exists*/
@@ -5647,7 +5749,7 @@ CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
 
      IF (ici_TopicID IS NOT NULL) THEN
      BEGIN
-         EXECUTE PROCEDURE objQual_MESSAGE_SAVE		 
+         EXECUTE PROCEDURE {objectQualifier}MESSAGE_SAVE		 
          :ici_TopicID,
          :I_USERID, 
          :I_BODY,
@@ -5658,8 +5760,8 @@ CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
          NULL,
          :I_EXTERNALMESSAGEID,
          :I_REFERENCEMESSAGEID,
-         17,
 		 NULL,
+         17,		
          :I_UTCTIMESTAMP
          RETURNING_VALUES :ici_MessageID;       
         
@@ -5670,14 +5772,14 @@ CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
      
  
     /* update user */
-    IF (EXISTS(SELECT 1 FROM objQual_FORUM 
+    IF (EXISTS(SELECT 1 FROM {objectQualifier}FORUM 
     WHERE FORUMID=:ici_ForumID AND BIN_AND(FLAGS, 4)=0)) THEN 	
-        UPDATE objQual_USER 
+        UPDATE {objectQualifier}USER 
         SET NUMPOSTS=NUMPOSTS+1 WHERE USERID=:I_USERID;
     
     
     /* update topic */
-    UPDATE objQual_TOPIC SET 
+    UPDATE {objectQualifier}TOPIC SET 
         LASTPOSTED		= :I_POSTED,
         LASTMESSAGEID	= :ici_MessageID,
         LASTUSERID		= :I_USERID,
@@ -5685,35 +5787,35 @@ CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
         NUMPOSTS = NUMPOSTS + 1
     WHERE TOPICID=:ici_TopicID;
         
-    UPDATE objQual_FORUM SET
+    UPDATE {objectQualifier}FORUM SET
         LASTPOSTED		= :I_POSTED,
         LASTTOPICID	= :ici_TopicID,
         LASTMESSAGEID	= :ici_MessageID,
         LASTUSERID		= :I_USERID,
         LASTUSERNAME	= :I_USERNAME
     WHERE FORUMID=:ici_ForumID AND (LASTPOSTED IS NULL OR LASTPOSTED < :I_POSTED);
-EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST(:ici_ForumID,:ici_TopicID);
-EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_ForumID);
-EXECUTE PROCEDURE objQual_FORUM_UPDATESTATS(:ici_ForumID);
+EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_ForumID,:ici_TopicID);
+EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_ForumID);
+EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(:ici_ForumID);
 
     /* update forum 
 
 SELECT ParentID 
 INTO ici_ParentID
-FROM objQual_FORUM
+FROM {objectQualifier}FORUM
 WHERE ForumID = ici_ForumID;
 
-    UPDATE objQual_FORUM SET
+    UPDATE {objectQualifier}FORUM SET
         LastPosted		= I_POSTED,
         LastTopicID	= ici_TopicID,
         LastMessageID	= ici_MessageID,
         LastUserID		= I_USERID,
         LastUserName	= I_USERNAME
     WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(I_POSTED)));
-EXECUTE PROCEDURE objQual_topic_updatelasttopic(ici_ForumID,ici_TopicID);
-EXECUTE PROCEDURE objQual_forum_updatelasttopic(ici_ForumID);
+EXECUTE PROCEDURE {objectQualifier}topic_updatelasttopic(ici_ForumID,ici_TopicID);
+EXECUTE PROCEDURE {objectQualifier}forum_updatelasttopic(ici_ForumID);
 WHILE ici_ParentID > 0 DO
-        UPDATE objQual_FORUM SET
+        UPDATE {objectQualifier}FORUM SET
                 LastPosted = I_POSTED,
                 LastTopicID = ici_TopicID,
                 LastMessageID = ici_MessageID,
@@ -5721,18 +5823,18 @@ WHILE ici_ParentID > 0 DO
                 LastUserName = I_USERNAME
             WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR UNIX_TIMESTAMP(LastPosted)<UNIX_TIMESTAMP(I_POSTED));    
          SELECT DISTINCTROW ParentID INTO  ici_ParentID
-  FROM  objQual_FORUM
+  FROM  {objectQualifier}FORUM
   WHERE ForumID = ici_ParentID;  
   END WHILE; 	
 END IF;*/ 
 END;
 --GO
 
-CREATE PROCEDURE  objQual_PMESSAGE_ARCHIVE(I_USERPMESSAGEID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_ARCHIVE(I_USERPMESSAGEID INTEGER) 
  AS
  BEGIN
     /* set IsArchived bit */
-    UPDATE objQual_USERPMESSAGE 
+    UPDATE {objectQualifier}USERPMESSAGE 
     SET FLAGS = BIN_OR(FLAGS, 4) 
     WHERE USERPMESSAGEID = :I_USERPMESSAGEID 
     AND ISARCHIVED = 0;
@@ -5740,39 +5842,39 @@ CREATE PROCEDURE  objQual_PMESSAGE_ARCHIVE(I_USERPMESSAGEID INTEGER)
 
 --GO
 
-CREATE PROCEDURE  objQual_PMESSAGE_DELETE(I_USERPMESSAGEID INTEGER, I_FROMOUTBOX BOOL) 
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_DELETE(I_USERPMESSAGEID INTEGER, I_FROMOUTBOX BOOL) 
 AS
 DECLARE VARIABLE ici_PMessageID INTEGER;
 DECLARE VARIABLE ici_MsgCount INTEGER;
 BEGIN 
     
     SELECT FIRST 1 PMESSAGEID 
-    FROM objQual_USERPMESSAGE 
+    FROM {objectQualifier}USERPMESSAGE 
     where USERPMESSAGEID = :I_USERPMESSAGEID 
     ORDER BY PMESSAGEID  
     INTO :ici_PMessageID;
  
     -- set IsInOutbox bit which will remove it from the senders outbox
-    /* UPDATE objQual_USERPMESSAGE SET FLAGS = BIN_XOR(FLAGS, 8) 
+    /* UPDATE {objectQualifier}USERPMESSAGE SET FLAGS = BIN_XOR(FLAGS, 8) 
     WHERE USERPMESSAGEID = :I_USERPMESSAGEID;
     
     
-    SELECT COUNT (USERPMESSAGEID) FROM objQual_USERPMESSAGE  
+    SELECT COUNT (USERPMESSAGEID) FROM {objectQualifier}USERPMESSAGE  
     WHERE  BIN_AND(FLAGS, 8)=0 
     INTO :ici_MsgCount;
     
     IF (ici_MsgCount = 0) THEN
     BEGIN
-        DELETE FROM objQual_USERPMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
-        DELETE FROM objQual_PMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
+        DELETE FROM {objectQualifier}USERPMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
+        DELETE FROM {objectQualifier}PMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
     END*/
     
  
-IF ( I_FROMOUTBOX = 1 AND EXISTS(SELECT 1 FROM objQual_USERPMESSAGE 
+IF ( I_FROMOUTBOX = 1 AND EXISTS(SELECT 1 FROM {objectQualifier}USERPMESSAGE 
 WHERE USERPMESSAGEID = :I_USERPMESSAGEID AND ISINOUTBOX = 1 ) ) THEN
     BEGIN
         -- set IsInOutbox bit which will remove it from the senders outbox
-        UPDATE objQual_USERPMESSAGE 
+        UPDATE {objectQualifier}USERPMESSAGE 
         SET FLAGS = BIN_XOR(Flags, 2) 
         WHERE USERPMESSAGEID = :I_USERPMESSAGEID;
     END
@@ -5780,29 +5882,29 @@ WHERE USERPMESSAGEID = :I_USERPMESSAGEID AND ISINOUTBOX = 1 ) ) THEN
     IF ( I_FROMOUTBOX = 0 OR I_FROMOUTBOX IS NULL ) THEN
     BEGIN
         -- The pmessage is in archive but still is in sender outbox  
-    IF ( EXISTS(SELECT (1) FROM objQual_USERPMESSAGE WHERE USERPMESSAGEID = :I_USERPMESSAGEID AND ISINOUTBOX = 1 AND ISARCHIVED = 1 AND ISDELETED = 0) ) THEN
+    IF ( EXISTS(SELECT (1) FROM {objectQualifier}USERPMESSAGE WHERE USERPMESSAGEID = :I_USERPMESSAGEID AND ISINOUTBOX = 1 AND ISARCHIVED = 1 AND ISDELETED = 0) ) THEN
     BEGIN
     -- Remove archive flag and set IsDeleted flag
-    UPDATE objQual_USERPMESSAGE SET FLAGS = BIN_XOR(FLAGS, 4)  WHERE USERPMESSAGEID = :I_USERPMESSAGEID;	
+    UPDATE {objectQualifier}USERPMESSAGE SET FLAGS = BIN_XOR(FLAGS, 4)  WHERE USERPMESSAGEID = :I_USERPMESSAGEID;	
     END
         -- set is deleted...
-        UPDATE objQual_USERPMESSAGE 
+        UPDATE {objectQualifier}USERPMESSAGE 
         SET FLAGS = BIN_XOR(Flags, 8) 
         WHERE USERPMESSAGEID = :I_USERPMESSAGEID;
     END	
     
     -- see if there are no longer references to this PM.
-    IF ( EXISTS(SELECT 1 FROM objQual_USERPMESSAGE 
+    IF ( EXISTS(SELECT 1 FROM {objectQualifier}USERPMESSAGE 
     WHERE USERPMESSAGEID = :I_USERPMESSAGEID AND ISINOUTBOX = 0 AND ISDELETED = 1 ) ) THEN
     BEGIN
         -- delete
-        DELETE FROM objQual_USERPMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
-        DELETE FROM objQual_PMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
+        DELETE FROM {objectQualifier}USERPMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
+        DELETE FROM {objectQualifier}PMESSAGE WHERE PMESSAGEID = :ici_PMessageID;
     END	
  END;
 --GO
 
-CREATE PROCEDURE  objQual_PMESSAGE_INFO
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_INFO
 RETURNS
  (
 "NumRead" integer,
@@ -5812,11 +5914,11 @@ RETURNS
 AS
 BEGIN
     FOR SELECT
-        (SELECT COUNT(1) FROM objQual_USERPMESSAGE 
+        (SELECT COUNT(1) FROM {objectQualifier}USERPMESSAGE 
         WHERE ISREAD<>0 AND ISDELETED<>8) AS "NumRead",
-        (SELECT COUNT(1) FROM objQual_USERPMESSAGE 
+        (SELECT COUNT(1) FROM {objectQualifier}USERPMESSAGE 
         WHERE ISREAD=0 AND ISDELETED<>8) AS "NumUnread",
-        (SELECT COUNT(1) FROM objQual_USERPMESSAGE WHERE ISDELETED<>8) AS "NumTotal"
+        (SELECT COUNT(1) FROM {objectQualifier}USERPMESSAGE WHERE ISDELETED<>8) AS "NumTotal"
         FROM RDB$DATABASE
         INTO
         :"NumRead",
@@ -5826,7 +5928,7 @@ DO SUSPEND;
 END;
  --GO
 
-CREATE PROCEDURE  objQual_PMESSAGE_LIST(I_FROMUSERID INTEGER,I_TOUSERID INTEGER,I_USERPMESSAGEID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_LIST(I_FROMUSERID INTEGER,I_TOUSERID INTEGER,I_USERPMESSAGEID INTEGER) 
 RETURNS
 (
 "PMessageID" integer,
@@ -5865,7 +5967,7 @@ BEGIN
     ISARCHIVED,
     ISDELETED,
     ISREPLY
-        FROM objQual_PMessageView
+        FROM {objectQualifier}PMessageView
         WHERE	((:I_USERPMESSAGEID IS NOT NULL 
         AND USERPMESSAGEID=:I_USERPMESSAGEID) OR 
                  (:I_TOUSERID   IS NOT NULL 
@@ -5893,10 +5995,10 @@ BEGIN
 DO SUSPEND;
 END;
 --GO
-CREATE PROCEDURE  objQual_PMESSAGE_MARKREAD(I_USERPMESSAGEID INTEGER)
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_MARKREAD(I_USERPMESSAGEID INTEGER)
 AS
  BEGIN
-    UPDATE objQual_USERPMESSAGE SET FLAGS = BIN_OR(FLAGS, 1) 
+    UPDATE {objectQualifier}USERPMESSAGE SET FLAGS = BIN_OR(FLAGS, 1) 
     WHERE USERPMESSAGEID = :I_USERPMESSAGEID 
     AND SIGN(BIN_AND(FLAGS, 1)) = 0;
 /* IsRead */
@@ -5904,7 +6006,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_PMESSAGE_SAVE(
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_SAVE(
     I_FROMUSERID	INTEGER,
     I_TOUSERID	INTEGER,
     I_SUBJECT	varchar(128),
@@ -5919,51 +6021,51 @@ CREATE PROCEDURE  objQual_PMESSAGE_SAVE(
  DECLARE VARIABLE ICI_USERID INTEGER;
 BEGIN
     
-    SELECT NEXT VALUE FOR SEQ_objQual_PMESSAGE_PMESSAGEID FROM RDB$DATABASE INTO :ici_PMessageID;
+    SELECT NEXT VALUE FOR SEQ_{objectQualifier}PMESSAGE_PMESSAGEID FROM RDB$DATABASE INTO :ici_PMessageID;
     IF (:I_REPLYTO < 0) THEN
     BEGIN
-    INSERT INTO objQual_PMESSAGE(PMESSAGEID,FROMUSERID,CREATED,SUBJECT,BODY,FLAGS)
+    INSERT INTO {objectQualifier}PMESSAGE(PMESSAGEID,FROMUSERID,CREATED,SUBJECT,BODY,FLAGS)
     VALUES(:ici_PMessageID,
     :I_FROMUSERID,:I_UTCTIMESTAMP,:I_SUBJECT,:I_BODY,:I_FLAGS);
     END
     ELSE
     BEGIN
-    INSERT INTO objQual_PMESSAGE(PMESSAGEID,REPLYTO, FROMUSERID,CREATED,SUBJECT,BODY,FLAGS)
+    INSERT INTO {objectQualifier}PMESSAGE(PMESSAGEID,REPLYTO, FROMUSERID,CREATED,SUBJECT,BODY,FLAGS)
     VALUES(:ici_PMessageID,:I_REPLYTO,
     :I_FROMUSERID,:I_UTCTIMESTAMP,:I_SUBJECT,:I_BODY,:I_FLAGS);
-    UPDATE objQual_USERPMESSAGE SET ISREPLY = 1 WHERE PMESSAGEID = :I_REPLYTO;
+    UPDATE {objectQualifier}USERPMESSAGE SET ISREPLY = 1 WHERE PMESSAGEID = :I_REPLYTO;
     END
 
     IF (I_TOUSERID = 0) THEN
     BEGIN
-        INSERT INTO objQual_USERPMESSAGE(USERPMESSAGEID,USERID,PMESSAGEID,FLAGS)
+        INSERT INTO {objectQualifier}USERPMESSAGE(USERPMESSAGEID,USERID,PMESSAGEID,FLAGS)
         SELECT
-                (SELECT NEXT VALUE FOR SEQ_objQual_USERPME_USERPMESSAGEID FROM RDB$DATABASE),
+                (SELECT NEXT VALUE FOR SEQ_{objectQualifier}USERPME_USERPMESSAGEID FROM RDB$DATABASE),
                 a.USERID,
                 (SELECT :ici_PMessageID FROM RDB$DATABASE),
                 (SELECT 2 FROM RDB$DATABASE)	
                 FROM
-                objQual_USER a
-                JOIN objQual_USERGROUP b 
+                {objectQualifier}USER a
+                JOIN {objectQualifier}USERGROUP b 
                 on b.USERID=a.USERID
-                JOIN objQual_GROUP c 
+                JOIN {objectQualifier}GROUP c 
                 on c.GROUPID=b.GROUPID 
                 WHERE
                 BIN_AND(c.FLAGS, 2)=0 AND
-                c.BOARDID=(SELECT BOARDID from objQual_USER x 
+                c.BOARDID=(SELECT BOARDID from {objectQualifier}USER x 
                 WHERE  x.USERID=:I_FROMUSERID) 
                 AND a.USERID<>:I_FROMUSERID
                         GROUP BY a.USERID;
                         
     END
     ELSE 	
-        INSERT INTO objQual_USERPMESSAGE(USERPMESSAGEID,USERID,PMESSAGEID,FLAGS) 
-                VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_USERPME_USERPMESSAGEID FROM RDB$DATABASE),:I_TOUSERID,:ici_PMessageID,2);
+        INSERT INTO {objectQualifier}USERPMESSAGE(USERPMESSAGEID,USERID,PMESSAGEID,FLAGS) 
+                VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}USERPME_USERPMESSAGEID FROM RDB$DATABASE),:I_TOUSERID,:ici_PMessageID,2);
     
 END;
 --GO
 
-CREATE PROCEDURE  objQual_POLL_REMOVE(
+CREATE PROCEDURE  {objectQualifier}POLL_REMOVE(
     I_POLLGROUPID INTEGER, 
     I_POLLID INTEGER, 
     I_BOARDID INTEGER, 
@@ -5977,30 +6079,30 @@ CREATE PROCEDURE  objQual_POLL_REMOVE(
     if (:I_REMOVECOMPLETELY = 1) THEN
     begin
     -- delete vote records first
-    DELETE FROM objQual_POLLVOTE where POLLID = :I_POLLID;
+    DELETE FROM {objectQualifier}POLLVOTE where POLLID = :I_POLLID;
     -- delete choices 
-    DELETE FROM objQual_CHOICE where POLLID = :I_POLLID;
+    DELETE FROM {objectQualifier}CHOICE where POLLID = :I_POLLID;
     -- delete poll
-    UPDATE objQual_POLL set POLLGROUPID = NULL where POLLID = :I_POLLID;
-    DELETE FROM objQual_POLL where POLLID = :I_POLLID; 	
-    if  (NOT EXISTS (SELECT first 1 1 FROM objQual_POLL where POLLGROUPID = :I_POLLGROUPID)) THEN
+    UPDATE {objectQualifier}POLL set POLLGROUPID = NULL where POLLID = :I_POLLID;
+    DELETE FROM {objectQualifier}POLL where POLLID = :I_POLLID; 	
+    if  (NOT EXISTS (SELECT first 1 1 FROM {objectQualifier}POLL where POLLGROUPID = :I_POLLGROUPID)) THEN
         begin
-                   Update objQual_TOPIC set POLLID = NULL where POLLID = :I_POLLGROUPID ;  
-                   Update objQual_FORUM set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID;
-                   Update objQual_CATEGORY set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID ;     
+                   Update {objectQualifier}TOPIC set POLLID = NULL where POLLID = :I_POLLGROUPID ;  
+                   Update {objectQualifier}FORUM set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID;
+                   Update {objectQualifier}CATEGORY set POLLGROUPID = NULL where POLLGROUPID = :I_POLLGROUPID ;     
          
-        DELETE FROM objQual_POLLGROUPCLUSTER WHERE POLLGROUPID = :I_POLLGROUPID;	
+        DELETE FROM {objectQualifier}POLLGROUPCLUSTER WHERE POLLGROUPID = :I_POLLGROUPID;	
         end  	
     end
     else
     begin    
-    Update objQual_POLL set POLLGROUPID = NULL where POLLID = :I_POLLID;                         
+    Update {objectQualifier}POLL set POLLGROUPID = NULL where POLLID = :I_POLLID;                         
     end 
  END;
 --GO
 
 
-CREATE PROCEDURE  objQual_POLL_STATS(
+CREATE PROCEDURE  {objectQualifier}POLL_STATS(
 I_POLLID INTEGER)
 RETURNS
 (
@@ -6030,7 +6132,7 @@ DECLARE VARIABLE iciStats INTEGER;
 BEGIN
 
 SELECT SUM(x.VOTES)
-FROM   objQual_CHOICE x
+FROM   {objectQualifier}CHOICE x
 WHERE  x.POLLID = :I_POLLID
 INTO :iciCase;
 
@@ -6058,12 +6160,12 @@ b.ISCLOSEDBOUND,
 b.ALLOWMULTIPLECHOICES,
 b.SHOWVOTERS,
 b.ALLOWSKIPVOTE
-FROM   objQual_CHOICE a
+FROM   {objectQualifier}CHOICE a
 INNER JOIN
-objQual_POLL b 
+{objectQualifier}POLL b 
 ON a.POLLID = b.POLLID
 INNER JOIN  
-objQual_POLLGROUPCLUSTER pg 
+{objectQualifier}POLLGROUPCLUSTER pg 
 ON pg.POLLGROUPID = b.POLLGROUPID	
 WHERE  b.POLLID = a.POLLID
 AND b.POLLID = :I_POLLID
@@ -6090,7 +6192,7 @@ DO SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_POLL_UPDATE(
+CREATE PROCEDURE  {objectQualifier}POLL_UPDATE(
     I_POLLID		INTEGER,
     I_QUESTION	VARCHAR(128),
     I_CLOSES 	TIMESTAMP,	
@@ -6108,10 +6210,10 @@ DECLARE VARIABLE ICI_FLAGS INTEGER;
 BEGIN
 
 
-        update objQual_POLL
+        update {objectQualifier}POLL
         set FLAGS	= 0 where POLLID = :I_POLLID AND FLAGS IS NULL;
 
-        SELECT FLAGS FROM objQual_POLL		
+        SELECT FLAGS FROM {objectQualifier}POLL		
         where POLLID = :I_POLLID
         INTO :ICI_FLAGS; 
 
@@ -6139,7 +6241,7 @@ BEGIN
         WHEN (:I_SHOWVOTERS <= 0 AND BIN_AND(:ICI_FLAGS, 32) = 32)  THEN BIN_XOR(:ICI_FLAGS,32)
         ELSE :ICI_FLAGS END);		
 
-      update objQual_POLL
+      update {objectQualifier}POLL
         set QUESTION	=	:I_QUESTION,
             CLOSES		=	:I_CLOSES,
             OBJECTPATH = :I_QUESTIONOBJECTPATH,
@@ -6147,11 +6249,11 @@ BEGIN
             FLAGS	= :ICI_FLAGS
         where POLLID = :I_POLLID;
 
-      SELECT  POLLGROUPID FROM objQual_POLL
+      SELECT  POLLGROUPID FROM {objectQualifier}POLL
       where POLLID = :I_POLLID
       into :ICI_PGID;
    
-    update objQual_POLLGROUPCLUSTER
+    update {objectQualifier}POLLGROUPCLUSTER
         set FLAGS	= (CASE 
         WHEN (:I_ISBOUNDED > 0 AND BIN_AND(FLAGS,2) <> 2) THEN BIN_OR(Flags,2) 		
         WHEN (:I_ISBOUNDED <= 0 AND BIN_AND(FLAGS,2) = 2) THEN BIN_XOR(Flags,2) 		
@@ -6160,7 +6262,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_POLLGROUP_ATTACH(
+CREATE PROCEDURE  {objectQualifier}POLLGROUP_ATTACH(
                  I_POLLGROUPID INTEGER, 
                  I_TOPICID INTEGER, 
                  I_FORUMID INTEGER,				 
@@ -6174,14 +6276,14 @@ BEGIN
                    -- this deletes possible polls without choices it should not normally happen
                  
                   for
-                   SELECT POLLID FROM objQual_POLL 
+                   SELECT POLLID FROM {objectQualifier}POLL 
                    WHERE POLLGROUPID IS NULL
                    INTO :CURPOL 
                   DO
                   BEGIN
-                   DELETE FROM objQual_POLLVOTE WHERE POLLID = :CURPOL;
-                   DELETE FROM objQual_CHOICE WHERE POLLID = :CURPOL;
-                   DELETE FROM objQual_POLL WHERE POLLID = :CURPOL;
+                   DELETE FROM {objectQualifier}POLLVOTE WHERE POLLID = :CURPOL;
+                   DELETE FROM {objectQualifier}CHOICE WHERE POLLID = :CURPOL;
+                   DELETE FROM {objectQualifier}POLL WHERE POLLID = :CURPOL;
                    SUSPEND;				   
                   END	
                   
@@ -6190,14 +6292,14 @@ BEGIN
                     BEGIN
                        IF (:I_TOPICID > 0) THEN
                          BEGIN
-                          IF (EXISTS (SELECT FIRST 1 1 FROM objQual_TOPIC 
+                          IF (EXISTS (SELECT FIRST 1 1 FROM {objectQualifier}TOPIC 
                                         where TOPICID = :I_TOPICID  and POLLID is not null)) then
                                          begin
                                             SELECT FIRST 1 SIGN(1) FROM RDB$DATABASE INTO :"Exists";
                                          end
                             else
                               begin
-                               UPDATE objQual_TOPIC set POLLID = :I_POLLGROUPID 
+                               UPDATE {objectQualifier}TOPIC set POLLID = :I_POLLGROUPID 
                                 where TOPICID = :I_TOPICID; 
                               SELECT 0 FROM RDB$DATABASE INTO "Exists";
                               end
@@ -6205,14 +6307,14 @@ BEGIN
                   
                    if (:I_FORUMID > 0) THEN
                    begin
-                   if (exists (select FIRST 1 1 from objQual_FORUM 
+                   if (exists (select FIRST 1 1 from {objectQualifier}FORUM 
                    where FORUMID = :I_FORUMID and POLLGROUPID is not null)) then
                    begin
                    SELECT 1 FROM RDB$DATABASE INTO "Exists";
                    end
                    else
                    begin
-                   Update objQual_FORUM set POLLGROUPID = :I_POLLGROUPID 
+                   Update {objectQualifier}FORUM set POLLGROUPID = :I_POLLGROUPID 
                    where FORUMID = :I_FORUMID;
                    SELECT 0 FROM RDB$DATABASE INTO "Exists";
                    end
@@ -6220,14 +6322,14 @@ BEGIN
 
                    if (:I_CATEGORYID > 0) THEN
                    begin
-                   if (exists (select FIRST 1 1 from objQual_CATEGORY 
+                   if (exists (select FIRST 1 1 from {objectQualifier}CATEGORY 
                    where CATEGORYID = :I_CATEGORYID and POLLGROUPID is null)) then
                    begin
                    SELECT FIRST 1 SIGN(1) FROM RDB$DATABASE INTO "Exists";
                    end
                    else
                    begin
-                   Update objQual_CATEGORY set POLLGROUPID = :I_POLLGROUPID 
+                   Update {objectQualifier}CATEGORY set POLLGROUPID = :I_POLLGROUPID 
                    where CATEGORYID = :I_CATEGORYID;
                    SELECT 0 FROM RDB$DATABASE INTO "Exists";
                    end
@@ -6241,7 +6343,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_POLLGROUP_LIST(I_USERID INTEGER, I_FORUMID INTEGER, I_BOARDID INTEGER)
+CREATE PROCEDURE  {objectQualifier}POLLGROUP_LIST(I_USERID INTEGER, I_FORUMID INTEGER, I_BOARDID INTEGER)
 RETURNS
 (
 "Question" varchar(255),
@@ -6249,8 +6351,8 @@ RETURNS
 )
 AS
 begin
-    FOR select distinct(p.QUESTION), p.POLLGROUPID from objQual_POLL p
-    LEFT JOIN 	objQual_POLLGROUPCLUSTER pgc ON pgc.POLLGROUPID = p.POLLGROUPID
+    FOR select distinct(p.QUESTION), p.POLLGROUPID from {objectQualifier}POLL p
+    LEFT JOIN 	{objectQualifier}POLLGROUPCLUSTER pgc ON pgc.POLLGROUPID = p.POLLGROUPID
     WHERE p.POLLGROUPID is not null
     -- WHERE p.Closes IS NULL OR p.Closes > GETUTCDATE()
     order by p.QUESTION asc
@@ -6261,7 +6363,7 @@ begin
 end;
 --GO
 
-CREATE PROCEDURE  objQual_POLLVOTE_CHECK(I_POLLID INTEGER, I_USERID INTEGER,I_REMOTEIP VARCHAR(39))
+CREATE PROCEDURE  {objectQualifier}POLLVOTE_CHECK(I_POLLID INTEGER, I_USERID INTEGER,I_REMOTEIP VARCHAR(39))
 RETURNS (O_POLLVOTEID INTEGER)
 AS
 BEGIN
@@ -6269,14 +6371,14 @@ BEGIN
        BEGIN
         /*check by remote IP*/
         IF (I_REMOTEIP IS NOT NULL) THEN  			
-            SELECT POLLVOTEID FROM objQual_POLLVOTE
+            SELECT POLLVOTEID FROM {objectQualifier}POLLVOTE
        WHERE POLLID = :I_POLLID AND REMOTEIP = :I_REMOTEIP
        INTO :O_POLLVOTEID;
         END
         
     ELSE
         /*check by userid or remote IP*/
-          SELECT POLLVOTEID FROM objQual_POLLVOTE
+          SELECT POLLVOTEID FROM {objectQualifier}POLLVOTE
        WHERE POLLID = :I_POLLID 
        AND (USERID = :I_USERID OR REMOTEIP = :I_REMOTEIP)
        INTO :O_POLLVOTEID;
@@ -6285,7 +6387,7 @@ BEGIN
 END;
 --GO
 
-CREATE  PROCEDURE objQual_POST_ALLUSER(
+CREATE  PROCEDURE {objectQualifier}POST_ALLUSER(
                 I_BOARDID    INTEGER,
                 I_USERID     INTEGER,
                 I_PAGEUSERID INTEGER,
@@ -6302,7 +6404,8 @@ CREATE  PROCEDURE objQual_POST_ALLUSER(
 "UserName" varchar(128),
 "UserDisplayName" varchar(128),
 "Signature" BLOB SUB_TYPE 1,
-"TopicID" integer
+"TopicID" integer,
+"ReadAccess" bool
 )
  AS               
 BEGIN
@@ -6318,17 +6421,18 @@ BEGIN
                 COALESCE(a.USERNAME,b.NAME) AS "UserName",
                 COALESCE(a.USERDISPLAYNAME,b.DISPLAYNAME) AS "UserDisplayName",
                         b.SIGNATURE,
-                        c.TOPICID
-        FROM     objQual_MESSAGE a
-                 JOIN objQual_USER b
+                        c.TOPICID,
+						x.READACCESS
+        FROM     {objectQualifier}MESSAGE a
+                 JOIN {objectQualifier}USER b
                    ON b.USERID = a.USERID
-                 JOIN objQual_TOPIC c
+                 JOIN {objectQualifier}TOPIC c
                    ON c.TOPICID = a.TOPICID
-                 JOIN objQual_FORUM d
+                 JOIN {objectQualifier}FORUM d
                    ON d.FORUMID = c.FORUMID
-                 JOIN objQual_CATEGORY e
+                 JOIN {objectQualifier}CATEGORY e
                    ON e.CATEGORYID = d.CATEGORYID
-                 JOIN objQual_ACTIVEACCESS x
+                 JOIN {objectQualifier}ACTIVEACCESS x
                    ON x.FORUMID = d.FORUMID
         WHERE    a.USERID = :I_USERID
         AND x.USERID = :I_PAGEUSERID
@@ -6348,13 +6452,14 @@ BEGIN
         :"UserName",
         :"UserDisplayName",
         :"Signature",
-        :"TopicID"
+        :"TopicID",
+		:"ReadAccess"
 DO SUSPEND;
 END;
 --GO
 
 
-CREATE PROCEDURE  objQual_POST_LIST
+CREATE PROCEDURE  {objectQualifier}POST_LIST
 (
 I_TOPICID INTEGER,
 I_PAGEUSERID INTEGER,
@@ -6463,7 +6568,7 @@ ici_pageindex = :I_PAGEINDEX;
     SELECT
         COUNT(m.MESSAGEID) 
     FROM
-        objQual_MESSAGE m
+        {objectQualifier}MESSAGE m
     WHERE
         m.TOPICID = :I_TOPICID
         -- is approved      
@@ -6523,7 +6628,7 @@ ici_pageindex = :I_PAGEINDEX;
         m.POSTED,
         m.EDITED	
     FROM	
-        objQual_MESSAGE m 		
+        {objectQualifier}MESSAGE m 		
     where
         m.TOPICID = :I_TOPICID
         -- is approved
@@ -6587,7 +6692,7 @@ ici_pageindex = :I_PAGEINDEX;
         b.SIGNATURE,
         b.NUMPOSTS AS "Posts",
         b.POINTS,
-        (case when (:I_SHOWREPUTATION  = 1) THEN CAST(COALESCE((select VoteDate from objQual_ReputationVote repVote 
+        (case when (:I_SHOWREPUTATION  = 1) THEN CAST(COALESCE((select VoteDate from {objectQualifier}ReputationVote repVote 
                        where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID=:I_PAGEUSERID), CAST('1902-01-01' as timestamp)) 
                        as TIMESTAMP) ELSE CAST('1902-01-01' as timestamp) END),		
         d.VIEWS,
@@ -6599,24 +6704,24 @@ ici_pageindex = :I_PAGEINDEX;
             then b.USERSTYLE
             else ''	 end), 
         COALESCE(m.EDITED,m.POSTED) AS "Edited",
-        COALESCE((SELECT 1 FROM RDB$DATABASE WHERE EXISTS (SELECT FIRST 1 * FROM objQual_ATTACHMENT x 
+        COALESCE((SELECT 1 FROM RDB$DATABASE WHERE EXISTS (SELECT FIRST 1 * FROM {objectQualifier}ATTACHMENT x 
         WHERE x.MESSAGEID=m.MESSAGEID)),0) AS "HasAttachments",
-        COALESCE((SELECT 1 FROM RDB$DATABASE WHERE EXISTS (SELECT FIRST 1 * FROM objQual_USER x 
+        COALESCE((SELECT 1 FROM RDB$DATABASE WHERE EXISTS (SELECT FIRST 1 * FROM {objectQualifier}USER x 
         WHERE x.USERID=b.USERID AND AVATARIMAGE IS NOT NULL)),0) AS "HasAvatarImage",
         (select :ici_post_totalrowsnumber FROM RDB$DATABASE) AS TotalRows,
         (select :ici_pageindex FROM RDB$DATABASE) AS PageIndex		
         /* 
-        (SELECT COUNT(x.ATTACHMENTID) FROM objQual_ATTACHMENT x 
+        (SELECT COUNT(x.ATTACHMENTID) FROM {objectQualifier}ATTACHMENT x 
         WHERE x.MESSAGEID=a.MESSAGEID) AS "HasAttachments",
-        (SELECT COUNT(x.USERID) FROM objQual_USER x 
+        (SELECT COUNT(x.USERID) FROM {objectQualifier}USER x 
         WHERE x.USERID=b.USERID AND AVATARIMAGE IS NOT NULL) AS "HasAvatarImage" */
         FROM
-        objQual_MESSAGE m
-        JOIN objQual_USER b ON b.USERID=m.USERID
-        JOIN objQual_TOPIC d ON d.TOPICID=m.TOPICID
-        JOIN objQual_FORUM g ON g.FORUMID=d.FORUMID
-        JOIN objQual_CATEGORY h ON h.CATEGORYID=g.CATEGORYID
-        JOIN objQual_RANK c ON c.RANKID=b.RANKID
+        {objectQualifier}MESSAGE m
+        JOIN {objectQualifier}USER b ON b.USERID=m.USERID
+        JOIN {objectQualifier}TOPIC d ON d.TOPICID=m.TOPICID
+        JOIN {objectQualifier}FORUM g ON g.FORUMID=d.FORUMID
+        JOIN {objectQualifier}CATEGORY h ON h.CATEGORYID=g.CATEGORYID
+        JOIN {objectQualifier}RANK c ON c.RANKID=b.RANKID
     WHERE
       m.TOPICID = :I_TOPICID
         -- is approved
@@ -6710,14 +6815,14 @@ LEAVE;
              END	
  IF (:I_UPDATEVIEWCOUNT>0) THEN
        BEGIN
-       UPDATE objQual_TOPIC 
+       UPDATE {objectQualifier}TOPIC 
         SET VIEWS = VIEWS + 1 WHERE TOPICID = :I_TOPICID;
        END				 		
 END;
 --GO
 
 
-CREATE PROCEDURE  objQual_POLLGROUP_STATS(
+CREATE PROCEDURE  {objectQualifier}POLLGROUP_STATS(
 I_POLLGROUPID INTEGER)
 RETURNS
 (
@@ -6762,7 +6867,7 @@ a.CHOICEID,
 a.CHOICE,
 a.VOTES,
 (SELECT SUM(x.VOTES)
-FROM   objQual_CHOICE x
+FROM   {objectQualifier}CHOICE x
 WHERE  x.POLLID = a.POLLID) AS "Total",
 0 AS "Stats",
 pg.USERID,
@@ -6771,12 +6876,12 @@ b.ISCLOSEDBOUND,
 b.ALLOWMULTIPLECHOICES,
 b.SHOWVOTERS,
 b.ALLOWSKIPVOTE
-FROM   objQual_CHOICE a
+FROM   {objectQualifier}CHOICE a
 INNER JOIN
-objQual_POLL b 
+{objectQualifier}POLL b 
 ON a.POLLID = b.POLLID
 INNER JOIN  
-objQual_POLLGROUPCLUSTER pg 
+{objectQualifier}POLLGROUPCLUSTER pg 
 ON pg.POLLGROUPID = b.POLLGROUPID	
 WHERE pg.POLLGROUPID = :I_POLLGROUPID
         ORDER BY pg.POLLGROUPID, a.CHOICEID
@@ -6813,7 +6918,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_POLLGROUP_VOTECHECK(I_POLLGROUPID INTEGER, I_USERID INTEGER, I_REMOTEIP VARCHAR(39)) 
+CREATE PROCEDURE  {objectQualifier}POLLGROUP_VOTECHECK(I_POLLGROUPID INTEGER, I_USERID INTEGER, I_REMOTEIP VARCHAR(39)) 
 RETURNS
 (
 "PollID" INTEGER,
@@ -6828,9 +6933,9 @@ BEGIN
         BEGIN
             -- check by remote IP
             FOR SELECT pv.POLLID, pv.CHOICEID, usr.Name as UserName
-             FROM objQual_POLLVOTE pv 
-             JOIN objQual_USER usr ON usr.USERID = pv.USERID
-             WHERE pv.POLLID IN ( SELECT POLLID FROM objQual_POLL WHERE POLLGROUPID = :I_POLLGROUPID) AND pv.REMOTEIP = :I_REMOTEIP 
+             FROM {objectQualifier}POLLVOTE pv 
+             JOIN {objectQualifier}USER usr ON usr.USERID = pv.USERID
+             WHERE pv.POLLID IN ( SELECT POLLID FROM {objectQualifier}POLL WHERE POLLGROUPID = :I_POLLGROUPID) AND pv.REMOTEIP = :I_REMOTEIP 
              INTO :"PollID", :"ChoiceID", :"UserName"
             DO SUSPEND;		
         END
@@ -6838,9 +6943,9 @@ BEGIN
         BEGIN
         -- to get structure		
            FOR SELECT pv.POLLID, pv.CHOICEID, usr.Name as UserName 
-           FROM objQual_POLLVOTE pv 
-           JOIN objQual_USER usr ON usr.USERID = pv.USERID
-           WHERE pv.POLLID IN ( SELECT POLLID FROM objQual_POLL WHERE POLLGROUPID = :I_POLLGROUPID)
+           FROM {objectQualifier}POLLVOTE pv 
+           JOIN {objectQualifier}USER usr ON usr.USERID = pv.USERID
+           WHERE pv.POLLID IN ( SELECT POLLID FROM {objectQualifier}POLL WHERE POLLGROUPID = :I_POLLGROUPID)
            INTO :"PollID", :"ChoiceID", :"UserName"
            DO SUSPEND;	
         END
@@ -6849,9 +6954,9 @@ BEGIN
       BEGIN
         -- check by userid or remote IP
         FOR SELECT pv.POLLID, pv.CHOICEID, usr.Name as UserName  
-        FROM objQual_POLLVOTE pv
-        JOIN objQual_USER usr ON usr.USERID = pv.USERID
-        WHERE pv.POLLID IN ( SELECT POLLID FROM objQual_POLL WHERE POLLGROUPID = :I_POLLGROUPID) AND (pv.USERID = :I_USERID OR pv.REMOTEIP = :I_REMOTEIP) 
+        FROM {objectQualifier}POLLVOTE pv
+        JOIN {objectQualifier}USER usr ON usr.USERID = pv.USERID
+        WHERE pv.POLLID IN ( SELECT POLLID FROM {objectQualifier}POLL WHERE POLLGROUPID = :I_POLLGROUPID) AND (pv.USERID = :I_USERID OR pv.REMOTEIP = :I_REMOTEIP) 
         INTO :"PollID", :"ChoiceID", :"UserName"
         DO SUSPEND;	
       END
@@ -6859,7 +6964,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_POST_LIST_REVERSE10(I_TOPICID INTEGER)
+CREATE PROCEDURE  {objectQualifier}POST_LIST_REVERSE10(I_TOPICID INTEGER)
 RETURNS
 (
 "Posted" timestamp,
@@ -6885,9 +6990,9 @@ BEGIN
         COALESCE(a.USERDISPLAYNAME,b.DISPLAYNAME) AS "DisplayName",
         b.SIGNATURE
     FROM
-        objQual_MESSAGE a 
-        inner join objQual_USER b on b.USERID = a.USERID
-        inner join objQual_TOPIC d on d.TOPICID = a.TOPICID
+        {objectQualifier}MESSAGE a 
+        inner join {objectQualifier}USER b on b.USERID = a.USERID
+        inner join {objectQualifier}TOPIC d on d.TOPICID = a.TOPICID
     WHERE
         BIN_AND(a.FLAGS, 24)=16 AND
         a.TOPICID = :I_TOPICID
@@ -6906,14 +7011,14 @@ DO SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_RANK_DELETE(I_RANKID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}RANK_DELETE(I_RANKID INTEGER) 
 AS
 BEGIN
-    DELETE from objQual_RANK where RANKID = :I_RANKID;
+    DELETE from {objectQualifier}RANK where RANKID = :I_RANKID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_RANK_LIST(I_BOARDID INTEGER,I_RANKID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}RANK_LIST(I_BOARDID INTEGER,I_RANKID INTEGER) 
 RETURNS
 (
   "RankID" integer,
@@ -6938,7 +7043,7 @@ BEGIN
     FOR	SELECT
             a.*
         FROM
-            objQual_RANK a
+            {objectQualifier}RANK a
         WHERE
             a.BOARDID=:I_BOARDID
         ORDER BY
@@ -6965,7 +7070,7 @@ BEGIN
     FOR	SELECT
             a.*
         FROM
-            objQual_RANK a
+            {objectQualifier}RANK a
         WHERE
             a.RANKID = :I_RANKID
             INTO
@@ -6988,7 +7093,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_RANK_SAVE(
+CREATE PROCEDURE  {objectQualifier}RANK_SAVE(
     I_RANKID		INTEGER,
     I_BOARDID	INTEGER,
     I_NAME		VARCHAR(128),
@@ -7026,7 +7131,7 @@ BEGIN
     
     IF (I_RANKID>0) THEN
     BEGIN
-        UPDATE objQual_RANK 
+        UPDATE {objectQualifier}RANK 
           SET
             NAME = :I_NAME,
             FLAGS = :ICI_FLAGS,
@@ -7045,8 +7150,8 @@ BEGIN
    END	
     ELSE 
     BEGIN
-    SELECT NEXT VALUE FOR SEQ_objQual_RANK_RANKID FROM RDB$DATABASE INTO :ICI_RANKID;
-    INSERT INTO objQual_RANK(RANKID,BOARDID,NAME,FLAGS,MINPOSTS,RANKIMAGE, PMLIMIT, STYLE, SORTORDER,
+    SELECT NEXT VALUE FOR SEQ_{objectQualifier}RANK_RANKID FROM RDB$DATABASE INTO :ICI_RANKID;
+    INSERT INTO {objectQualifier}RANK(RANKID,BOARDID,NAME,FLAGS,MINPOSTS,RANKIMAGE, PMLIMIT, STYLE, SORTORDER,
                         DESCRIPTION,
                         USRSIGCHARS,
                         USRSIGBBCODES,
@@ -7070,21 +7175,21 @@ BEGIN
                         :I_USRALBUMIMAGES);
                         END  
     IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE) > 2) THEN					  
-    EXECUTE PROCEDURE objQual_USER_SAVESTYLE NULL, :ICI_RANKID ;					        
+    EXECUTE PROCEDURE {objectQualifier}USER_SAVESTYLE NULL, :ICI_RANKID ;					        
           
 END;
 --GO
 
-CREATE PROCEDURE  objQual_REPLACE_WORDS_DELETE(I_ID INTEGER)
+CREATE PROCEDURE  {objectQualifier}REPLACE_WORDS_DELETE(I_ID INTEGER)
 AS
  BEGIN
-    DELETE FROM objQual_REPLACE_WORDS WHERE ID = :I_ID;
+    DELETE FROM {objectQualifier}REPLACE_WORDS WHERE ID = :I_ID;
  END;
 --GO
 
 
 
-CREATE PROCEDURE  objQual_REPLACE_WORDS_LIST
+CREATE PROCEDURE  {objectQualifier}REPLACE_WORDS_LIST
  (
     I_BOARDID INTEGER,
     I_ID INTEGER
@@ -7099,7 +7204,7 @@ CREATE PROCEDURE  objQual_REPLACE_WORDS_LIST
  AS
  BEGIN
     IF (I_ID IS NOT NULL AND I_ID <> 0) THEN
-        FOR SELECT * FROM objQual_REPLACE_WORDS 
+        FOR SELECT * FROM {objectQualifier}REPLACE_WORDS 
         WHERE BOARDID = :I_BOARDID AND ID = :I_ID
         INTO
         :"ID",
@@ -7108,7 +7213,7 @@ CREATE PROCEDURE  objQual_REPLACE_WORDS_LIST
         :"GoodWord"
         DO SUSPEND;
     ELSE
-        FOR SELECT * FROM objQual_REPLACE_WORDS 
+        FOR SELECT * FROM {objectQualifier}REPLACE_WORDS 
         WHERE BOARDID = :I_BOARDID
         INTO
         :"ID",
@@ -7121,7 +7226,7 @@ CREATE PROCEDURE  objQual_REPLACE_WORDS_LIST
 --GO
 
 
-CREATE PROCEDURE  objQual_REPLACE_WORDS_SAVE
+CREATE PROCEDURE  {objectQualifier}REPLACE_WORDS_SAVE
  (
     I_BOARDID INTEGER,
     I_ID INTEGER,
@@ -7131,20 +7236,20 @@ CREATE PROCEDURE  objQual_REPLACE_WORDS_SAVE
  AS
  BEGIN
     IF (I_ID IS NOT NULL AND I_ID <> 0) THEN 	
-        UPDATE objQual_REPLACE_WORDS 
+        UPDATE {objectQualifier}REPLACE_WORDS 
         SET BADWORD = :i_BADWORD, 
         GOODWORD = :i_GOODWORD 
         WHERE "ID" = :I_ID;		
         ELSE 	 	
-        INSERT INTO objQual_REPLACE_WORDS
+        INSERT INTO {objectQualifier}REPLACE_WORDS
             (ID,BOARDID,BADWORD,GOODWORD)
         VALUES
-            ((SELECT NEXT VALUE FOR SEQ_objQual_REPLACE_WORDS_ID FROM RDB$DATABASE),
+            ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}REPLACE_WORDS_ID FROM RDB$DATABASE),
             :I_BOARDID,:i_BADWORD,:i_GOODWORD); 
  END;
 --GO
 
-CREATE PROCEDURE  objQual_RSSTOPIC_LIST(
+CREATE PROCEDURE  {objectQualifier}RSSTOPIC_LIST(
                  I_FORUMID integer,
                  I_START integer,
                  I_LIMIT integer)
@@ -7167,16 +7272,16 @@ CREATE PROCEDURE  objQual_RSSTOPIC_LIST(
            COALESCE(a.LASTPOSTED,a.POSTED),
            COALESCE(a.LastUserID, a.UserID),
            COALESCE(a.LASTMESSAGEID,
-           (SELECT FIRST 1 m.MESSAGEID FROM objQual_MESSAGE m 
+           (SELECT FIRST 1 m.MESSAGEID FROM {objectQualifier}MESSAGE m 
            WHERE m.TOPICID = a.TOPICID 
            ORDER BY m.POSTED DESC)),
            COALESCE(a.LASTMESSAGEFLAGS,22),
            (SELECT FIRST 1 SUBSTRING("MESSAGE" FROM 1 FOR 8000) 
-           FROM objQual_MESSAGE mes2 
+           FROM {objectQualifier}MESSAGE mes2 
            WHERE mes2.TopicID = COALESCE(a.TopicMovedID,a.TopicID) AND mes2.IsApproved = 1 AND mes2.IsDeleted = 0 
            ORDER BY mes2.Posted DESC)
-           FROM objQual_TOPIC a
-           JOIN objQual_FORUM b
+           FROM {objectQualifier}TOPIC a
+           JOIN {objectQualifier}FORUM b
            ON b.FORUMID = a.FORUMID
            WHERE a.FORUMID = :I_FORUMID
            AND a.ISDELETED = 0 AND a.TOPICMOVEDID IS NULL 
@@ -7194,18 +7299,18 @@ CREATE PROCEDURE  objQual_RSSTOPIC_LIST(
 END;
 --GO 
 
-CREATE PROCEDURE  objQual_SMILEY_DELETE(I_SMILEYID INTEGER)
+CREATE PROCEDURE  {objectQualifier}SMILEY_DELETE(I_SMILEYID INTEGER)
 AS
 BEGIN
     IF (I_SMILEYID IS NOT NULL) THEN
-        DELETE FROM objQual_SMILEY WHERE SMILEYID=:I_SMILEYID;
+        DELETE FROM {objectQualifier}SMILEY WHERE SMILEYID=:I_SMILEYID;
     ELSE
-        DELETE FROM objQual_SMILEY;
+        DELETE FROM {objectQualifier}SMILEY;
        
 END;
 --GO
 
-CREATE PROCEDURE  objQual_SMILEY_LIST(I_BOARDID INTEGER,I_SMILEYID INTEGER)
+CREATE PROCEDURE  {objectQualifier}SMILEY_LIST(I_BOARDID INTEGER,I_SMILEYID INTEGER)
 RETURNS
 (
     "SmileyID" integer,
@@ -7226,7 +7331,7 @@ IF (I_SMILEYID IS NULL) THEN
     ICON,
     EMOTICON,
     CAST(SORTORDER AS INTEGER) AS SORTORDER
-     FROM objQual_SMILEY 
+     FROM {objectQualifier}SMILEY 
         WHERE BOARDID = :I_BOARDID 
         ORDER BY SORTORDER, 
         CHAR_LENGTH("CODE") DESC
@@ -7246,7 +7351,7 @@ IF (I_SMILEYID IS NULL) THEN
     ICON,
     EMOTICON,
     CAST(SORTORDER AS INTEGER) AS SORTORDER
-    FROM objQual_SMILEY 
+    FROM {objectQualifier}SMILEY 
         WHERE SMILEYID = :I_SMILEYID 
         ORDER BY SORTORDER
         INTO
@@ -7260,7 +7365,7 @@ IF (I_SMILEYID IS NULL) THEN
        
 END;
 --GO
-CREATE PROCEDURE  objQual_SMILEY_LISTUNIQUE(I_BOARDID INTEGER)
+CREATE PROCEDURE  {objectQualifier}SMILEY_LISTUNIQUE(I_BOARDID INTEGER)
 RETURNS
 (
 "Icon" VARCHAR(128), 
@@ -7272,12 +7377,12 @@ BEGIN
  FOR SELECT 
         ICON, 
         EMOTICON,
-        (SELECT FIRST 1 "CODE" from objQual_SMILEY x 
-        where x.ICON=objQual_SMILEY.ICON ORDER BY "CODE" ) AS "CODE",
-        (SELECT FIRST 1 SORTORDER from objQual_SMILEY x 
-        where x.ICON=objQual_SMILEY.ICON ORDER BY x.SORTORDER ASC) AS SORTORDER
+        (SELECT FIRST 1 "CODE" from {objectQualifier}SMILEY x 
+        where x.ICON={objectQualifier}SMILEY.ICON ORDER BY "CODE" ) AS "CODE",
+        (SELECT FIRST 1 SORTORDER from {objectQualifier}SMILEY x 
+        where x.ICON={objectQualifier}SMILEY.ICON ORDER BY x.SORTORDER ASC) AS SORTORDER
     FROM 
-        objQual_SMILEY
+        {objectQualifier}SMILEY
     WHERE
         BOARDID = :I_BOARDID
     GROUP BY
@@ -7295,14 +7400,14 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_SMILEY_RESORT(I_BOARDID INTEGER,I_SMILEYID INTEGER,I_MOVE INTEGER)
+CREATE PROCEDURE  {objectQualifier}SMILEY_RESORT(I_BOARDID INTEGER,I_SMILEYID INTEGER,I_MOVE INTEGER)
 AS
 DECLARE ici_Position INTEGER;
 DECLARE VARIABLE ici_TotalPosition INTEGER;
 BEGIN
     
     
-    SELECT SORTORDER FROM objQual_SMILEY 
+    SELECT SORTORDER FROM {objectQualifier}SMILEY 
     WHERE BOARDID=:I_BOARDID AND SMILEYID=:I_SMILEYID
     INTO :ici_Position;
     
@@ -7311,14 +7416,14 @@ BEGIN
     IF (ici_Position IS NOT NULL) THEN
      BEGIN
     IF (I_MOVE > 0) THEN 	
-        UPDATE objQual_SMILEY
+        UPDATE {objectQualifier}SMILEY
             SET SORTORDER=SORTORDER-1
             WHERE BOARDID=:I_BOARDID and 
                 (SORTORDER BETWEEN :ici_Position AND :ici_TotalPosition) AND
                 (SORTORDER BETWEEN 1 and 255);
     
     ELSE IF (I_MOVE < 0) THEN
-        update objQual_SMILEY
+        update {objectQualifier}SMILEY
             set SORTORDER=SORTORDER+1
             where BOARDID=:I_BOARDID and 
                 (SORTORDER between :ici_TotalPosition and :ici_Position) and
@@ -7330,7 +7435,7 @@ BEGIN
     IF (ici_Position>255) THEN  ici_Position = 255;
     IF (ici_Position<0) THEN  ici_Position = 0; 
 
-    UPDATE objQual_SMILEY
+    UPDATE {objectQualifier}SMILEY
         SET SORTORDER=:ici_Position
         WHERE BOARDID=:I_BOARDID AND 
             SMILEYID=:I_SMILEYID;
@@ -7338,13 +7443,13 @@ END
 END;
 --GO
 
-CREATE PROCEDURE  objQual_SMILEY_SAVE
+CREATE PROCEDURE  {objectQualifier}SMILEY_SAVE
 (I_SMILEYID INTEGER,I_BOARDID INTEGER,I_CODE VARCHAR(10),
 I_ICON VARCHAR(128),I_EMOTICON VARCHAR(128),I_SORTORDER SMALLINT,I_REPLACE SMALLINT) 
 AS
 BEGIN
     IF (I_SMILEYID IS NOT NULL) THEN
-        UPDATE objQual_SMILEY 
+        UPDATE {objectQualifier}SMILEY 
         SET "CODE" = :I_CODE, 
         ICON = :I_ICON, 
         EMOTICON = :I_EMOTICON, 
@@ -7354,20 +7459,20 @@ BEGIN
     ELSE
     BEGIN
         IF (I_REPLACE>0) THEN
-            DELETE FROM objQual_SMILEY WHERE "CODE"=:I_CODE; 
+            DELETE FROM {objectQualifier}SMILEY WHERE "CODE"=:I_CODE; 
                 
  
-        IF (NOT EXISTS(SELECT 1 from objQual_SMILEY 
+        IF (NOT EXISTS(SELECT 1 from {objectQualifier}SMILEY 
                                WHERE BOARDID=:I_BOARDID AND "CODE"=:I_CODE)) THEN
-            INSERT INTO objQual_SMILEY(SMILEYID,BOARDID,"CODE",ICON,EMOTICON,SORTORDER) 
-            VALUES((SELECT NEXT VALUE FOR SEQ_objQual_SMILEY_SMILEYID FROM RDB$DATABASE),
+            INSERT INTO {objectQualifier}SMILEY(SMILEYID,BOARDID,"CODE",ICON,EMOTICON,SORTORDER) 
+            VALUES((SELECT NEXT VALUE FOR SEQ_{objectQualifier}SMILEY_SMILEYID FROM RDB$DATABASE),
             :I_BOARDID,:I_CODE,:I_ICON,:I_EMOTICON,:I_SORTORDER); 
                 
     END
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_ANNOUNCEMENTS
+CREATE PROCEDURE  {objectQualifier}TOPIC_ANNOUNCEMENTS
  (
     I_BOARDID INTEGER,
     I_NUMPOSTS INTEGER,
@@ -7387,12 +7492,12 @@ DECLARE ici_SQL VARCHAR(1000);
     
   FOR EXECUTE STATEMENT 'SELECT FIRST (' || CAST(:I_NUMPOSTS AS VARCHAR(16))|| ') DISTINCT 
    t.TOPIC, t.LASTPOSTED, t.TOPICID,t.LASTMESSAGEID FROM' ||
-   ' objQual_TOPIC t 
-                          INNER JOIN objQual_CATEGORY c
-                          INNER JOIN objQual_FORUM f 
+   ' {objectQualifier}TOPIC t 
+                          INNER JOIN {objectQualifier}CATEGORY c
+                          INNER JOIN {objectQualifier}FORUM f 
                           ON c.CATEGORYID = f.CATEGORYID 
                           ON t.FORUMID = f.FORUMID' ||
-                          ' JOIN objQual_ACTIVEACCESS v on v.FORUMID=f.FORUMID' ||
+                          ' JOIN {objectQualifier}ACTIVEACCESS v on v.FORUMID=f.FORUMID' ||
                        ' WHERE c.BOARDID = ' || CAST(:I_BOARDID AS VARCHAR(16))
                        || ' AND v.USERID='
                        || CAST(:I_PAGEUSERID AS VARCHAR(16)) ||
@@ -7411,7 +7516,7 @@ DECLARE ici_SQL VARCHAR(1000);
  END;  
  --GO
  
- CREATE PROCEDURE  objQual_TOPIC_CREATE_BY_MESSAGE (
+ CREATE PROCEDURE  {objectQualifier}TOPIC_CREATE_BY_MESSAGE (
     I_MESSAGEID      INTEGER,
     I_FORUMID	INTEGER,
     I_SUBJECT	varchar(128), 
@@ -7429,16 +7534,16 @@ DECLARE ici_SQL VARCHAR(1000);
     BEGIN    
 
    SELECT USERID,POSTED 
-   from objQual_MESSAGE 
+   from {objectQualifier}MESSAGE 
    WHERE MESSAGEID =  :I_MESSAGEID
    INTO :ICI_USERID,:ici_Posted;   
 
     IF (ici_Posted IS NULL) THEN ici_Posted = :I_UTCTIMESTAMP;
-    SELECT NEXT VALUE FOR SEQ_objQual_TOPIC_TOPICID FROM RDB$DATABASE INTO :I_TOPICID;
-    INSERT INTO objQual_TOPIC(TOPICID, FORUMID,TOPIC,USERID,POSTED,VIEWS,"PRIORITY",POLLID,USERNAME,NUMPOSTS)
+    SELECT NEXT VALUE FOR SEQ_{objectQualifier}TOPIC_TOPICID FROM RDB$DATABASE INTO :I_TOPICID;
+    INSERT INTO {objectQualifier}TOPIC(TOPICID, FORUMID,TOPIC,USERID,POSTED,VIEWS,"PRIORITY",POLLID,USERNAME,NUMPOSTS)
     VALUES(:I_TOPICID,:I_FORUMID,:I_SUBJECT,:ICI_USERID,:ici_Posted,0,0,null,null,0);
   
-  /*EXECUTE PROCEDURE objQual_MESSAGE_SAVE (I_TOPICID,ICI_USERID,I_MESSAGE,I_USERNAME,I_IP,ici_Posted,null,null,I_FLAGS, I_MESSAGEID);*/
+  /*EXECUTE PROCEDURE {objectQualifier}MESSAGE_SAVE (I_TOPICID,ICI_USERID,I_MESSAGE,I_USERNAME,I_IP,ici_Posted,null,null,I_FLAGS, I_MESSAGEID);*/
     SELECT :I_TOPICID ,:I_MESSAGEID FROM RDB$DATABASE 
     INTO :"TopicID",:"MessageID" ;
     SUSPEND;
@@ -7447,7 +7552,7 @@ DECLARE ici_SQL VARCHAR(1000);
 
 
 
-CREATE PROCEDURE  objQual_TOPIC_FINDNEXT(I_TOPICID INTEGER)
+CREATE PROCEDURE  {objectQualifier}TOPIC_FINDNEXT(I_TOPICID INTEGER)
 RETURNS
 ("TopicID" INTEGER)
 AS
@@ -7455,10 +7560,10 @@ AS
  DECLARE ici_ForumID INTEGER;
 BEGIN
     
-    SELECT LASTPOSTED,FORUMID  FROM objQual_TOPIC 
+    SELECT LASTPOSTED,FORUMID  FROM {objectQualifier}TOPIC 
     WHERE TOPICID = :I_TOPICID AND TOPICMOVEDID IS NULL
     INTO :ici_LastPosted, :ici_ForumID;
-    SELECT FIRST 1 TOPICID FROM objQual_TOPIC  
+    SELECT FIRST 1 TOPICID FROM {objectQualifier}TOPIC  
     WHERE LASTPOSTED >:ici_LastPosted 
     AND FORUMID = :ici_ForumID 
     AND BIN_AND(FLAGS, 8) = 0 
@@ -7468,17 +7573,17 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_FINDPREV(I_TOPICID INTEGER)
+CREATE PROCEDURE  {objectQualifier}TOPIC_FINDPREV(I_TOPICID INTEGER)
 RETURNS
 ("TopicID" INTEGER)
 AS
  DECLARE ici_LastPosted TIMESTAMP;
  DECLARE ici_ForumID INTEGER;
 BEGIN	
-    SELECT LASTPOSTED,FORUMID  FROM objQual_TOPIC 
+    SELECT LASTPOSTED,FORUMID  FROM {objectQualifier}TOPIC 
     WHERE TOPICID = :I_TOPICID AND TOPICMOVEDID IS NULL
     INTO :ici_LastPosted, :ici_ForumID;
-    SELECT FIRST 1 TOPICID FROM objQual_TOPIC  
+    SELECT FIRST 1 TOPICID FROM {objectQualifier}TOPIC  
     WHERE LASTPOSTED < :ici_LastPosted 
     AND FORUMID = :ici_ForumID 
     AND BIN_AND(FLAGS, 8) = 0 
@@ -7489,7 +7594,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_INFO
+CREATE PROCEDURE  {objectQualifier}TOPIC_INFO
  (
     I_TOPICID INTEGER,
     I_SHOWDELETED BOOL,
@@ -7557,10 +7662,10 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
                    t.TOPICIMAGE,
                    t.TOPICIMAGETYPE,
                    t.TOPICIMAGEBIN,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM {objectQualifier}TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+                   (SELECT FIRST 1 mes2.MESSAGE FROM {objectQualifier}MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
-                   FROM objQual_TOPIC t
+                   FROM {objectQualifier}TOPIC t
             INTO
                :"TopicID",
                :"ForumID",
@@ -7616,10 +7721,10 @@ FOR	SELECT t.TOPICID,
                    t.TOPICIMAGE,
                    t.TOPICIMAGETYPE,
                    t.TOPICIMAGEBIN,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM {objectQualifier}TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+                   (SELECT FIRST 1 mes2.MESSAGE FROM {objectQualifier}MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
-                   FROM objQual_TOPIC t WHERE BIN_AND(FLAGS,8) = 0
+                   FROM {objectQualifier}TOPIC t WHERE BIN_AND(FLAGS,8) = 0
             INTO
                :"TopicID",
                :"ForumID",
@@ -7678,10 +7783,10 @@ FOR	SELECT         t.TOPICID,
                    t.TOPICIMAGE,
                    t.TOPICIMAGETYPE,
                    t.TOPICIMAGEBIN,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM {objectQualifier}TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+                   (SELECT FIRST 1 mes2.MESSAGE FROM {objectQualifier}MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
-                   FROM objQual_TOPIC t 
+                   FROM {objectQualifier}TOPIC t 
             WHERE TOPICID = :I_TOPICID
             INTO
                :"TopicID",
@@ -7738,10 +7843,10 @@ FOR	SELECT t.TOPICID,
                    t.TOPICIMAGE,
                    t.TOPICIMAGETYPE,
                    t.TOPICIMAGEBIN,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM {objectQualifier}TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+                   (SELECT FIRST 1 mes2.MESSAGE FROM {objectQualifier}MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
-                   FROM objQual_TOPIC t
+                   FROM {objectQualifier}TOPIC t
             WHERE TOPICID = :I_TOPICID AND BIN_AND(FLAGS, 8) = 0
             INTO
                :"TopicID",
@@ -7777,7 +7882,7 @@ FOR	SELECT t.TOPICID,
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_LISTMESSAGES(I_TOPICID INTEGER)
+CREATE PROCEDURE  {objectQualifier}TOPIC_LISTMESSAGES(I_TOPICID INTEGER)
 RETURNS
 (
   "MessageID" integer,
@@ -7831,10 +7936,10 @@ BEGIN
               a.EDITEDBY,
               a.ISDELETED,
               a.ISAPPROVED	  	
-     FROM objQual_MESSAGE a
-     inner join objQual_User b on b.UserID = a.UserID
-     inner join objQual_Topic c on a.TopicID = c.TopicID
-     inner join objQual_Forum d on c.ForumID = d.ForumID
+     FROM {objectQualifier}MESSAGE a
+     inner join {objectQualifier}User b on b.UserID = a.UserID
+     inner join {objectQualifier}Topic c on a.TopicID = c.TopicID
+     inner join {objectQualifier}Forum d on c.ForumID = d.ForumID
     WHERE a.TOPICID = :I_TOPICID
     INTO
     :"MessageID",
@@ -7865,21 +7970,21 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_LOCK(I_TOPICID INTEGER,I_LOCKED BOOL)
+CREATE PROCEDURE  {objectQualifier}TOPIC_LOCK(I_TOPICID INTEGER,I_LOCKED BOOL)
 AS 
 DECLARE tmpTopic INTEGER;
 DECLARE tmpFlags INTEGER DEFAULT 0;
 DECLARE negFlags INTEGER  DEFAULT 0;
 BEGIN
     IF (I_LOCKED<>0) THEN
-        UPDATE objQual_TOPIC 
+        UPDATE {objectQualifier}TOPIC 
         SET FLAGS = BIN_OR(FLAGS, 1)
         WHERE TOPICID = :I_TOPICID;
     ELSE
     BEGIN
     SELECT  	
     a.FLAGS
-    FROM objQual_TOPIC a
+    FROM {objectQualifier}TOPIC a
     WHERE a.TOPICID = :I_TOPICID 
     INTO 
     :tmpFlags; 
@@ -7887,7 +7992,7 @@ BEGIN
     negFlags=BIN_XOR(1,-1);
     tmpFlags=BIN_AND(:tmpFlags,:negFlags); 
             
-    UPDATE objQual_TOPIC
+    UPDATE {objectQualifier}TOPIC
         SET FLAGS = :tmpFlags
         WHERE TOPICID = :I_TOPICID;
         
@@ -7899,7 +8004,7 @@ END;
 
 
 
-CREATE  PROCEDURE objQual_TOPIC_PRUNE(
+CREATE  PROCEDURE {objectQualifier}TOPIC_PRUNE(
                 I_BOARDID INTEGER,
                 I_FORUMID INTEGER,
                 I_DAYS    INTEGER,
@@ -7920,13 +8025,13 @@ BEGIN
      IF (ici_ForumID = 0) THEN   ici_ForumID = NULL;
 
 IF (ici_ForumID IS NOT NULL) THEN
-     FOR SELECT yt.TOPICID FROM  objQual_TOPIC yt
+     FOR SELECT yt.TOPICID FROM  {objectQualifier}TOPIC yt
      INNER JOIN
-        objQual_FORUM yf
+        {objectQualifier}FORUM yf
         ON
         yt.FORUMID = yf.FORUMID
         INNER JOIN
-        objQual_CATEGORY yc
+        {objectQualifier}CATEGORY yc
         ON		
         yf.CATEGORYID = yc.CATEGORYID
         WHERE 
@@ -7940,12 +8045,12 @@ IF (ici_ForumID IS NOT NULL) THEN
      
      DO
      BEGIN        
-     EXECUTE PROCEDURE objQual_TOPIC_DELETE(:iciTopicID , 0, :I_PERMDELETE);
+     EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:iciTopicID , 0, :I_PERMDELETE);
      iciCount = iciCount + 1;
      END
 ELSE    
      FOR SELECT TOPICID
-        FROM   objQual_TOPIC
+        FROM   {objectQualifier}TOPIC
         WHERE  "PRIORITY" = 0
         AND BIN_AND(FLAGS, 512) = 0
      AND  current_date-CAST(LASTPOSTED AS DATE) > :I_DAYS
@@ -7954,7 +8059,7 @@ ELSE
       BEGIN
      -- introduced to not forget ms sql changes. It's an attempt to make prune in background
      --  WAITFOR analogue can be implemented as udf only Don't implement, as it stops all connections?          
-     EXECUTE PROCEDURE objQual_TOPIC_DELETE(:iciTopicID , 0, :I_PERMDELETE);
+     EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:iciTopicID , 0, :I_PERMDELETE);
      iciCount = iciCount + 1;
      END
      "COUNT" = iciCount;
@@ -7962,7 +8067,7 @@ ELSE
      END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_SAVE(
+CREATE PROCEDURE  {objectQualifier}TOPIC_SAVE(
      I_FORUMID	INTEGER,
      I_SUBJECT	VARCHAR(255),
      I_STATUS	VARCHAR(255),
@@ -7994,11 +8099,11 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      
       IF (I_POSTED IS NULL) THEN
       I_POSTED = :I_UTCTIMESTAMP; 
-      SELECT SIGN(COUNT(Name)) FROM objQual_User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
+      SELECT SIGN(COUNT(Name)) FROM {objectQualifier}User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
     
-     SELECT NEXT VALUE FOR SEQ_objQual_TOPIC_TOPICID 
+     SELECT NEXT VALUE FOR SEQ_{objectQualifier}TOPIC_TOPICID 
      FROM RDB$DATABASE INTO :ici_TopicID;
-     INSERT INTO objQual_TOPIC(
+     INSERT INTO {objectQualifier}TOPIC(
      TOPICID,
      FORUMID,
      TOPIC,
@@ -8020,13 +8125,13 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      :I_POSTED,
      0,
      :I_PRIORITY,
-     (CASE WHEN :ici_OverrideDisplayName = 1 THEN :I_USERNAME ELSE (SELECT NAME FROM objQual_USER WHERE USERID = :I_USERID) END),
-     (CASE WHEN :ici_OverrideDisplayName = 1 THEN :I_USERNAME ELSE (SELECT DISPLAYNAME FROM objQual_USER WHERE USERID = :I_USERID) END),
+     (CASE WHEN :ici_OverrideDisplayName = 1 THEN :I_USERNAME ELSE (SELECT NAME FROM {objectQualifier}USER WHERE USERID = :I_USERID) END),
+     (CASE WHEN :ici_OverrideDisplayName = 1 THEN :I_USERNAME ELSE (SELECT DISPLAYNAME FROM {objectQualifier}USER WHERE USERID = :I_USERID) END),
      0, 
      :I_DESCRIPTION,
      :I_STATUS,
      :I_STYLES);	 
-     EXECUTE PROCEDURE objQual_MESSAGE_SAVE 
+     EXECUTE PROCEDURE {objectQualifier}MESSAGE_SAVE 
      :ici_TopicID,
      :I_USERID,
      :I_MESSAGE,	
@@ -8037,12 +8142,12 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      :I_BLOGPOSTID, 
      NULL,
      NULL, 
-     :I_FLAGS, 
 	 :I_MESSAGEDESCRIPTION,
+     :I_FLAGS,	
      :I_UTCTIMESTAMP
      RETURNING_VALUES :ici_MessageID;
      -- add tags
-     EXECUTE PROCEDURE objQual_TOPIC_TAGSAVE(:ici_TopicID, :I_TAGS);
+     EXECUTE PROCEDURE {objectQualifier}TOPIC_TAGSAVE(:ici_TopicID, :I_TAGS);
 
      SELECT   :ici_TopicID , :ici_MessageID FROM RDB$DATABASE 
      INTO :"TopicID",:"MessageID";
@@ -8050,7 +8155,7 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_IMAGESAVE(
+CREATE PROCEDURE  {objectQualifier}TOPIC_IMAGESAVE(
      I_TOPICID	INTEGER,
      I_IMAGEURL	VARCHAR(255),
      I_STREAM	BLOB SUB_TYPE 0,
@@ -8058,7 +8163,7 @@ CREATE PROCEDURE  objQual_TOPIC_IMAGESAVE(
      )    
      AS    
      BEGIN 
-     UPDATE objQual_TOPIC 
+     UPDATE {objectQualifier}TOPIC 
      SET TOPICIMAGE = :I_IMAGEURL, 
      TOPICIMAGETYPE = :I_TOPICIMAGETYPE, 
      TOPICIMAGEBIN = :I_STREAM 
@@ -8066,7 +8171,7 @@ CREATE PROCEDURE  objQual_TOPIC_IMAGESAVE(
      END;
 --GO
 
- CREATE PROCEDURE  objQual_TOPIC_SIMPLELIST(
+ CREATE PROCEDURE  {objectQualifier}TOPIC_SIMPLELIST(
     I_STARTID INTEGER,
     I_LIMIT   INTEGER)
     RETURNS
@@ -8079,7 +8184,7 @@ AS
     BEGIN   
     FOR SELECT FIRST  (:I_LIMIT) t.TOPICID,
     t.TOPIC
-    FROM     objQual_TOPIC t
+    FROM     {objectQualifier}TOPIC t
     WHERE    t.TOPICID >= :I_STARTID
     AND t.TOPICID < (:I_STARTID + :I_LIMIT)
          ORDER BY t.TOPICID
@@ -8092,7 +8197,7 @@ AS
  --GO
 
 
-/* CREATE PROCEDURE  objQual_TOPIC_ACTIVE
+/* CREATE PROCEDURE  {objectQualifier}TOPIC_ACTIVE
 (I_BOARDID INTEGER,I_PAGEUSERID INTEGER,I_SINCE TIMESTAMP,I_CATEGORYID INTEGER, I_STYLEDNICKS BOOL, I_FINDLASTUNREAD BOOL)
 RETURNS
  (
@@ -8141,53 +8246,53 @@ BEGIN
         c.USERID,
         COALESCE(c.USERNAME,b.NAME) AS "Starter",
         (SELECT COUNT(1) 
-                      FROM objQual_MESSAGE mes 
+                      FROM {objectQualifier}MESSAGE mes 
                       WHERE mes.TOPICID = c.TOPICID 
                         AND mes.ISDELETED = 1 
                         AND mes.ISAPPROVED = 1 
                         AND ((:I_PAGEUSERID IS NOT NULL AND mes.USERID = :I_PAGEUSERID) 
                         OR (:I_PAGEUSERID IS NULL)) ) AS "NumPostsDeleted",
-        ((SELECT COUNT(1) FROM objQual_MESSAGE x 
+        ((SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
         WHERE x.TOPICID=c.TOPICID and BIN_AND(x.FLAGS, 8)=0) - 1)
                  AS "Replies",
         c.VIEWS AS "Views",
         c.LASTPOSTED AS LASTPOSTED ,
         c.LASTUSERID AS LASTUSERID,
-        COALESCE(c.LASTUSERNAME,(SELECT NAME FROM objQual_USER x 
+        COALESCE(c.LASTUSERNAME,(SELECT NAME FROM {objectQualifier}USER x 
         where x.USERID=c.LASTUSERID)) AS LASTUSERNAME,
         c.LASTMESSAGEID AS LASTMESSAGEID,
         c.TOPICID AS "LastTopicID",
         c.FLAGS AS "TopicFlags",
-        (SELECT COUNT(ID) as FavoriteCount FROM objQual_FAVORITETOPIC WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)) AS FavoriteCount,		
+        (SELECT COUNT(ID) as FavoriteCount FROM {objectQualifier}FAVORITETOPIC WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)) AS FavoriteCount,		
         c."PRIORITY",
         c.POLLID,
         d.NAME AS "ForumName",
         c.TOPICMOVEDID,
         d.FLAGS AS "ForumFlags", 
         (SELECT CAST(MESSAGE AS VARCHAR(128)) 
-        FROM objQual_MESSAGE mes2 
+        FROM {objectQualifier}MESSAGE mes2 
         where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
         AND mes2."POSITION" = 0) AS "FirstMessage",
             case(:I_STYLEDNICKS)
-            when 1 then (SELECT * FROM objQual_GET_USERSTYLE(c.USERID))  
+            when 1 then (SELECT * FROM {objectQualifier}GET_USERSTYLE(c.USERID))  
             else (SELECT '' FROM RDB$DATABASE)	 end,	
         case(:I_STYLEDNICKS)
-        when 1 then  (SELECT * FROM objQual_GET_USERSTYLE(c.LASTUSERID))  
+        when 1 then  (SELECT * FROM {objectQualifier}GET_USERSTYLE(c.LASTUSERID))  
         else (SELECT '' FROM RDB$DATABASE)	 end,
         (case(:I_FINDLASTUNREAD)
              when 1 then
-               (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+               (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
         (case(:I_FINDLASTUNREAD)
              when 1 then
-               (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+               (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess"  
     FROM
-        objQual_TOPIC c
-        JOIN objQual_USER b ON b.USERID=c.USERID
-        JOIN objQual_FORUM d ON d.FORUMID=c.FORUMID
-        JOIN objQual_ACTIVEACCESS x ON x.FORUMID=d.FORUMID
-        JOIN objQual_CATEGORY cat ON cat.CATEGORYID=d.CATEGORYID		
+        {objectQualifier}TOPIC c
+        JOIN {objectQualifier}USER b ON b.USERID=c.USERID
+        JOIN {objectQualifier}FORUM d ON d.FORUMID=c.FORUMID
+        JOIN {objectQualifier}ACTIVEACCESS x ON x.FORUMID=d.FORUMID
+        JOIN {objectQualifier}CATEGORY cat ON cat.CATEGORYID=d.CATEGORYID		
     WHERE
         c.LASTPOSTED > :I_SINCE AND
         x.USERID = :I_PAGEUSERID AND
@@ -8237,7 +8342,7 @@ BEGIN
 */
 
 
-CREATE PROCEDURE  objQual_PMESSAGE_PRUNE(I_DAYSREAD INTEGER,I_DAYSUNREAD INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}PMESSAGE_PRUNE(I_DAYSREAD INTEGER,I_DAYSUNREAD INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
 AS
 DECLARE VARIABLE ici_PMessageID integer;
 DECLARE VARIABLE ici_FromUserID integer;
@@ -8258,13 +8363,13 @@ DECLARE VARIABLE ici_tmpDaysUnread integer DEFAULT 0;
 
 
 BEGIN
-FOR SELECT FLAGS,USERPMESSAGEID FROM objQual_USERPMESSAGE
+FOR SELECT FLAGS,USERPMESSAGEID FROM {objectQualifier}USERPMESSAGE
 INTO
 :ICI_FLAGS,
 :ici_UserPMessageID
 DO 
 BEGIN
-    SELECT CREATED FROM objQual_PMESSAGE x 
+    SELECT CREATED FROM {objectQualifier}PMESSAGE x 
     WHERE x.PMESSAGEID=:ici_PMessageID
     INTO :ici_tmpCreated;
     ici_tmpCreated=:I_UTCTIMESTAMP-ici_tmpCreated; 	
@@ -8275,52 +8380,52 @@ BEGIN
     ici_tmpDaysUnread=ici_tmpDays-COALESCE(:I_DAYSUNREAD,0);
     ici_tmpDaysRead=ici_tmpDays-COALESCE(:I_DAYSREAD,0);
     IF ( :ici_tmpDaysUnread > 0 AND :ici_tmpFlags<>0) THEN    	
-    DELETE FROM objQual_USERPMESSAGE 
+    DELETE FROM {objectQualifier}USERPMESSAGE 
     WHERE USERPMESSAGEID=:ici_UserPMessageID;
     IF ( :ici_tmpDaysRead = 0 AND :ici_tmpFlags=0) THEN	
-    DELETE FROM objQual_USERPMESSAGE 
+    DELETE FROM {objectQualifier}USERPMESSAGE 
     WHERE USERPMESSAGEID=:ici_UserPMessageID;
 
 END  
-    DELETE FROM objQual_PMESSAGE
-    WHERE (NOT EXISTS(SELECT 1 FROM objQual_USERPMESSAGE x 
-    WHERE x.PMESSAGEID=objQual_PMESSAGE.PMESSAGEID));
+    DELETE FROM {objectQualifier}PMESSAGE
+    WHERE (NOT EXISTS(SELECT 1 FROM {objectQualifier}USERPMESSAGE x 
+    WHERE x.PMESSAGEID={objectQualifier}PMESSAGE.PMESSAGEID));
 END;
 --GO
 
 
  
-CREATE PROCEDURE  objQual_USER_ADDIGNOREDUSER
+CREATE PROCEDURE  {objectQualifier}USER_ADDIGNOREDUSER
     (I_USERID INTEGER,
     I_IGNOREDUSERID INTEGER)
     AS
 BEGIN
-    IF (NOT EXISTS (SELECT * FROM objQual_IGNOREUSER 
+    IF (NOT EXISTS (SELECT * FROM {objectQualifier}IGNOREUSER 
     WHERE USERID = :I_USERID AND IGNOREDUSERID = :I_IGNOREDUSERID))
     THEN
-        INSERT INTO objQual_IGNOREUSER(USERID, IGNOREDUSERID) 
+        INSERT INTO {objectQualifier}IGNOREUSER(USERID, IGNOREDUSERID) 
         VALUES (:I_USERID, :I_IGNOREDUSERID);	
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_REMOVEIGNOREDUSER
+CREATE PROCEDURE  {objectQualifier}USER_REMOVEIGNOREDUSER
     (I_USERID INTEGER,
     I_IGNOREDUSERID INTEGER)
     AS
  BEGIN
-    DELETE FROM objQual_IGNOREUSER 
+    DELETE FROM {objectQualifier}IGNOREUSER 
     WHERE USERID = :I_USERID 
     AND IGNOREDUSERID = :I_IGNOREDUSERID;	
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_ISUSERIGNORED
+CREATE PROCEDURE  {objectQualifier}USER_ISUSERIGNORED
     (I_USERID INTEGER,
     I_IGNOREDUSERID INTEGER)
     RETURNS (OUT_IGNORED BOOL)
     AS
 BEGIN
-    IF (EXISTS(SELECT * FROM objQual_IGNOREUSER 
+    IF (EXISTS(SELECT * FROM {objectQualifier}IGNOREUSER 
     WHERE USERID = :I_USERID 
     AND IGNOREDUSERID = :I_IGNOREDUSERID))
     THEN
@@ -8331,11 +8436,11 @@ BEGIN
 END;	
 --GO
 
-CREATE PROCEDURE  objQual_USER_ACTIVITY_RANK
+CREATE PROCEDURE  {objectQualifier}USER_ACTIVITY_RANK
  (
     I_BOARDID INTEGER,
-    I_STARTDATE  TIMESTAMP,
-    I_DISPLAYNUMBER INTEGER	
+	I_DISPLAYNUMBER INTEGER,	
+    I_STARTDATE  TIMESTAMP    
  )
  RETURNS
   (
@@ -8357,15 +8462,15 @@ CREATE PROCEDURE  objQual_USER_ACTIVITY_RANK
     SELECT FIRST 1
         a.USERID
     FROM
-        objQual_USER a
-        INNER JOIN objQual_USERGROUP b on b.USERID = a.USERID
-        INNER JOIN objQual_GROUP c on b.GROUPID = c.GROUPID
+        {objectQualifier}USER a
+        INNER JOIN {objectQualifier}USERGROUP b on b.USERID = a.USERID
+        INNER JOIN {objectQualifier}GROUP c on b.GROUPID = c.GROUPID
     WHERE
         a.BOARDID = :I_BOARDID and
         BIN_AND(c.FLAGS, 2)<>0 ORDER BY a.USERID 
         INTO :ici_GuestUserID;
 
-    SELECT  COUNT(m.USERID) FROM objQual_MESSAGE m
+    SELECT  COUNT(m.USERID) FROM {objectQualifier}MESSAGE m
             WHERE m.POSTED >= :I_STARTDATE INTO :ici_AllIntervalPostCount; 
 
     FOR SELECT FIRST (:I_DISPLAYNUMBER)
@@ -8378,10 +8483,10 @@ CREATE PROCEDURE  objQual_USER_ACTIVITY_RANK
     counter."NumOfPosts",
     (SELECT :ici_AllIntervalPostCount FROM RDB$DATABASE)
     FROM
-    objQual_USER u inner join
+    {objectQualifier}USER u inner join
     (
     SELECT m.USERID as "ID", Count(m.USERID) as "NumOfPosts" 
-    FROM objQual_MESSAGE m
+    FROM {objectQualifier}MESSAGE m
     WHERE m.POSTED >= :I_STARTDATE
     GROUP BY m.USERID
     ) AS counter ON u.USERID = counter."ID"
@@ -8405,7 +8510,7 @@ CREATE PROCEDURE  objQual_USER_ACTIVITY_RANK
 --GO
   
 
-CREATE  PROCEDURE objQual_USER_ADDPOINTS(
+CREATE  PROCEDURE {objectQualifier}USER_ADDPOINTS(
      I_USERID INTEGER,
      I_FROMUSERID INTEGER,
      I_UTCTIMESTAMP TIMESTAMP,
@@ -8413,23 +8518,23 @@ CREATE  PROCEDURE objQual_USER_ADDPOINTS(
      AS
      declare ICI_VOTEDATE TIMESTAMP;
      BEGIN
-     UPDATE objQual_USER
+     UPDATE {objectQualifier}USER
      SET    POINTS = POINTS + :I_POINTS
      WHERE  USERID = :I_USERID;
      IF (:I_FROMUSERID IS NOT NULL) THEN
     BEGIN		
-    select  VOTEDATE from objQual_REPUTATIONVOTE 
+    select  VOTEDATE from {objectQualifier}REPUTATIONVOTE 
     where REPUTATIONFROMUSERID=:I_FROMUSERID AND REPUTATIONTOUSERID=:I_USERID ROWS 1
     INTO :ICI_VOTEDATE;
 
     IF (:ICI_VOTEDATE is not null) THEN
     begin	     
-          update objQual_REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
+          update {objectQualifier}REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
           where VOTEDATE = :ICI_VoteDate AND REPUTATIONFROMUSERID=:I_FROMUSERID AND REPUTATIONTOUSERID=:I_USERID;
     END
     ELSE
       begin
-          insert into objQual_REPUTATIONVOTE(REPUTATIONFROMUSERID,REPUTATIONTOUSERID,VOTEDATE)
+          insert into {objectQualifier}REPUTATIONVOTE(REPUTATIONFROMUSERID,REPUTATIONTOUSERID,VOTEDATE)
           values (:I_FROMUSERID, :I_USERID, :I_UTCTIMESTAMP);
       END
     END
@@ -8438,7 +8543,7 @@ CREATE  PROCEDURE objQual_USER_ADDPOINTS(
      
 --GO
 
-CREATE  PROCEDURE objQual_USER_REMOVEPOINTS(
+CREATE  PROCEDURE {objectQualifier}USER_REMOVEPOINTS(
      I_USERID INTEGER,
      I_FROMUSERID INTEGER,
      I_UTCTIMESTAMP TIMESTAMP,
@@ -8446,23 +8551,23 @@ CREATE  PROCEDURE objQual_USER_REMOVEPOINTS(
      AS
      declare ICI_VOTEDATE TIMESTAMP;
      BEGIN
-     UPDATE objQual_USER
+     UPDATE {objectQualifier}USER
      SET    POINTS = POINTS - :I_POINTS
      WHERE  USERID = :I_USERID;
      IF (:I_FROMUSERID IS NOT NULL) THEN
     BEGIN		
-    select  VOTEDATE from objQual_REPUTATIONVOTE 
+    select  VOTEDATE from {objectQualifier}REPUTATIONVOTE 
     where REPUTATIONFROMUSERID=:I_FROMUSERID AND REPUTATIONTOUSERID=:I_USERID ROWS 1
     INTO :ICI_VOTEDATE;
 
     IF (:ICI_VOTEDATE is not null) THEN
     begin	     
-          update objQual_REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
+          update {objectQualifier}REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
           where VOTEDATE = :ICI_VoteDate AND REPUTATIONFROMUSERID=:I_FROMUSERID AND REPUTATIONTOUSERID=:I_USERID;
     END
     ELSE
       begin
-          insert into objQual_REPUTATIONVOTE(REPUTATIONFROMUSERID,REPUTATIONTOUSERID,VOTEDATE)
+          insert into {objectQualifier}REPUTATIONVOTE(REPUTATIONFROMUSERID,REPUTATIONTOUSERID,VOTEDATE)
           values (:I_FROMUSERID, :I_USERID, :I_UTCTIMESTAMP);
       END
     END
@@ -8471,7 +8576,7 @@ CREATE  PROCEDURE objQual_USER_REMOVEPOINTS(
      
 --GO
 
-CREATE PROCEDURE  objQual_USER_ADMINSAVE
+CREATE PROCEDURE  {objectQualifier}USER_ADMINSAVE
      (I_BOARDID INTEGER,
      I_USERID INTEGER,
      I_NAME VARCHAR(128),
@@ -8482,7 +8587,7 @@ CREATE PROCEDURE  objQual_USER_ADMINSAVE
      (o_UserID INTEGER)
      AS
      BEGIN
-     UPDATE objQual_USER
+     UPDATE {objectQualifier}USER
      SET
      NAME = :I_NAME,
      "EMAIL" = :I_EMAIL,
@@ -8494,7 +8599,7 @@ CREATE PROCEDURE  objQual_USER_ADMINSAVE
      END;
 --GO
 
- CREATE PROCEDURE  objQual_USER_APPROVE(I_USERID INTEGER)
+ CREATE PROCEDURE  {objectQualifier}USER_APPROVE(I_USERID INTEGER)
  RETURNS (O_BIT BOOL)
  AS
      DECLARE ici_CheckEmailID INTEGER;
@@ -8506,38 +8611,38 @@ CREATE PROCEDURE  objQual_USER_ADMINSAVE
      SELECT
      CHECKEMAILID,"EMAIL"    
      FROM
-     objQual_CHECKEMAIL
+     {objectQualifier}CHECKEMAIL
      WHERE
      USERID = :I_USERID
      INTO :ici_CheckEmailID,:ici_Email;
 
      /*Update new user email*/
-     UPDATE objQual_USER 
+     UPDATE {objectQualifier}USER 
      SET "EMAIL" = :ici_Email, 
      FLAGS = BIN_OR(FLAGS, 2) 
      WHERE USERID = :I_USERID;
      
-     DELETE FROM objQual_CHECKEMAIL 
+     DELETE FROM {objectQualifier}CHECKEMAIL 
      WHERE CHECKEMAILID = :ici_CheckEmailID;
      O_BIT =ici_bit;
      SUSPEND;
      END;
 --GO
 
- CREATE PROCEDURE  objQual_USER_APPROVEALL(I_BOARDID INTEGER)
+ CREATE PROCEDURE  {objectQualifier}USER_APPROVEALL(I_BOARDID INTEGER)
  AS
      DECLARE VARIABLE ICI_USERID INTEGER;
      DECLARE VARIABLE ici_Bool INTEGER;   
      begin
           
      FOR
-     SELECT USERID FROM objQual_USER 
+     SELECT USERID FROM {objectQualifier}USER 
      WHERE BOARDID=:I_BOARDID 
      AND BIN_AND(FLAGS, 2)=0     
      INTO :ICI_USERID
      DO
      BEGIN
-     EXECUTE PROCEDURE objQual_USER_APPROVE :ICI_USERID
+     EXECUTE PROCEDURE {objectQualifier}USER_APPROVE :ICI_USERID
      RETURNING_VALUES :ici_Bool;
      END
  
@@ -8546,7 +8651,7 @@ END;
 
            
                 
-                  CREATE PROCEDURE  objQual_USER_AVATARIMAGE(I_USERID INTEGER)
+                  CREATE PROCEDURE  {objectQualifier}USER_AVATARIMAGE(I_USERID INTEGER)
                   RETURNS
                   (
                      "UserID" integer,
@@ -8559,7 +8664,7 @@ END;
                   USERID,
                   AVATARIMAGE,
                   AVATARIMAGETYPE
-                  FROM objQual_USER WHERE USERID=:I_USERID
+                  FROM {objectQualifier}USER WHERE USERID=:I_USERID
                   INTO
                   :"UserID",
                   :"AvatarImage",
@@ -8570,7 +8675,7 @@ END;
 --GO
 
 
-  CREATE PROCEDURE  objQual_USER_CHANGEPASSWORD
+  CREATE PROCEDURE  {objectQualifier}USER_CHANGEPASSWORD
                   (I_USERID INTEGER,I_OLDPASSWORD VARCHAR(32),I_NEWPASSWORD VARCHAR(32))
                   RETURNS ("Success" BOOL)
                   AS
@@ -8579,14 +8684,14 @@ END;
                   BEGIN
                 
                   SELECT  "PASSWORD"  
-                  FROM objQual_USER 
+                  FROM {objectQualifier}USER 
                   WHERE USERID = :I_USERID
                   INTO :ici_CurrentOld;
                   
                   IF (ici_CurrentOld<>I_OLDPASSWORD) THEN
                   ici_Success=0;
                   ELSE 
-    UPDATE objQual_USER 
+    UPDATE {objectQualifier}USER 
     SET "PASSWORD" = :I_NEWPASSWORD 
     WHERE USERID = :I_USERID;
     
@@ -8596,7 +8701,7 @@ END;
 END;
 --GO
 
-  CREATE PROCEDURE  objQual_USER_DELETE(I_USERID INTEGER)
+  CREATE PROCEDURE  {objectQualifier}USER_DELETE(I_USERID INTEGER)
 AS
 DECLARE ici_GuestUserID	INTEGER;
     DECLARE ici_UserName	varchar(128);
@@ -8605,16 +8710,16 @@ DECLARE ici_GuestUserID	INTEGER;
 BEGIN
     
  
-    SELECT NAME, DISPLAYNAME FROM objQual_USER 
+    SELECT NAME, DISPLAYNAME FROM {objectQualifier}USER 
     WHERE USERID=:I_USERID
     INTO :ici_UserName,:ici_UserDisplayName;
  
     SELECT  FIRST 1
          a.USERID 
     FROM
-        objQual_USER a
-        inner join objQual_USERGROUP b on b.USERID = a.USERID
-        inner join objQual_GROUP c on b.GROUPID = c.GROUPID
+        {objectQualifier}USER a
+        inner join {objectQualifier}USERGROUP b on b.USERID = a.USERID
+        inner join {objectQualifier}GROUP c on b.GROUPID = c.GROUPID
     WHERE
         BIN_AND(c.FLAGS, 2)<>0 
         GROUP BY a.USERID
@@ -8623,8 +8728,8 @@ BEGIN
     SELECT 
           COUNT(1) 
     FROM 
-        objQual_USERGROUP a
-        join objQual_GROUP b on b.GROUPID=a.GROUPID
+        {objectQualifier}USERGROUP a
+        join {objectQualifier}GROUP b on b.GROUPID=a.GROUPID
     WHERE
         BIN_AND(b.FLAGS, 2)<>0
         INTO  :ici_GuestCount;
@@ -8632,75 +8737,75 @@ BEGIN
     IF (NOT (ici_GuestUserID=I_USERID AND ici_GuestCount=1)) THEN
        BEGIN
 
-    UPDATE objQual_MESSAGE 
+    UPDATE {objectQualifier}MESSAGE 
     SET USERNAME=:ici_UserName,
         USERDISPLAYNAME=:ici_UserDisplayName,
         USERID=:ici_GuestUserID 
     WHERE USERID=:I_USERID;
     
-    UPDATE objQual_TOPIC 
+    UPDATE {objectQualifier}TOPIC 
     SET USERNAME=:ici_UserName,
     USERDISPLAYNAME=:ici_UserName,
     USERID=:ici_GuestUserID 
     WHERE USERID=:I_USERID;
     
-    UPDATE objQual_TOPIC 
+    UPDATE {objectQualifier}TOPIC 
     SET LASTUSERNAME=:ici_UserName,
     LASTUSERDISPLAYNAME=:ici_UserName,
     LASTUSERID=:ici_GuestUserID 
     WHERE LASTUSERID=:I_USERID;
     
-    UPDATE objQual_FORUM 
+    UPDATE {objectQualifier}FORUM 
     SET LASTUSERNAME=:ici_UserName,
     LASTUSERDISPLAYNAME=:ici_UserName,
     LASTUSERID=:ici_GuestUserID 
     WHERE LASTUSERID=:I_USERID;
 
-    DELETE FROM objQual_ACTIVE WHERE USERID=:I_USERID;
-    DELETE FROM objQual_EVENTLOG WHERE USERID=:I_USERID;
-    DELETE FROM objQual_USERPMESSAGE WHERE USERID=:I_USERID;
+    DELETE FROM {objectQualifier}ACTIVE WHERE USERID=:I_USERID;
+    DELETE FROM {objectQualifier}EVENTLOG WHERE USERID=:I_USERID;
+    DELETE FROM {objectQualifier}USERPMESSAGE WHERE USERID=:I_USERID;
   
-    IF (NOT EXISTS(SELECT 1 FROM objQual_PMESSAGE WHERE FROMUSERID=:I_USERID)) THEN
-    DELETE FROM objQual_PMESSAGE
+    IF (NOT EXISTS(SELECT 1 FROM {objectQualifier}PMESSAGE WHERE FROMUSERID=:I_USERID)) THEN
+    DELETE FROM {objectQualifier}PMESSAGE
     WHERE FROMUSERID=:I_USERID;
    
    -- set messages as from guest so the User can be deleted
-    UPDATE objQual_PMESSAGE 
+    UPDATE {objectQualifier}PMESSAGE 
     SET FROMUSERID = :ici_GuestUserID WHERE FROMUSERID = :I_USERID;
-    DELETE FROM objQual_CHECKEMAIL WHERE USERID = :I_USERID;
-    DELETE FROM objQual_WATCHTOPIC WHERE USERID = :I_USERID;
-    DELETE FROM objQual_WATCHFORUM WHERE USERID = :I_USERID;
-    DELETE FROM objQual_TOPICREADTRACKING where USERID = :I_USERID;
-    DELETE FROM objQual_FORUMREADTRACKING where USERID = :I_USERID;
-    DELETE FROM objQual_REPUTATIONVOTE where REPUTATIONFROMUSERID = :I_USERID;
+    DELETE FROM {objectQualifier}CHECKEMAIL WHERE USERID = :I_USERID;
+    DELETE FROM {objectQualifier}WATCHTOPIC WHERE USERID = :I_USERID;
+    DELETE FROM {objectQualifier}WATCHFORUM WHERE USERID = :I_USERID;
+    DELETE FROM {objectQualifier}TOPICREADTRACKING where USERID = :I_USERID;
+    DELETE FROM {objectQualifier}FORUMREADTRACKING where USERID = :I_USERID;
+    DELETE FROM {objectQualifier}REPUTATIONVOTE where REPUTATIONFROMUSERID = :I_USERID;
     
-    DELETE FROM objQual_USERGROUP WHERE USERID = :I_USERID;
+    DELETE FROM {objectQualifier}USERGROUP WHERE USERID = :I_USERID;
    
     -- Delete UserForums entries Too
     
-    DELETE FROM  objQual_USERFORUM WHERE USERID = :I_USERID;
-    DELETE FROM objQual_IGNOREUSER WHERE USERID = :I_USERID 
+    DELETE FROM  {objectQualifier}USERFORUM WHERE USERID = :I_USERID;
+    DELETE FROM {objectQualifier}IGNOREUSER WHERE USERID = :I_USERID 
     OR IGNOREDUSERID = :I_USERID;
     
     -- Delete all the thanks entries associated with this UserID.
-    DELETE FROM  objQual_THANKS where THANKSFROMUSERID= :I_USERID;
-    DELETE FROM  objQual_THANKS where THANKSTOUSERID= :I_USERID;
+    DELETE FROM  {objectQualifier}THANKS where THANKSFROMUSERID= :I_USERID;
+    DELETE FROM  {objectQualifier}THANKS where THANKSTOUSERID= :I_USERID;
     -- Delete all the Buddy relations between this user and other users.
-    DELETE FROM  objQual_BUDDY where FROMUSERID=:I_USERID;
-    DELETE FROM  objQual_BUDDY where TOUSERID=:I_USERID;
+    DELETE FROM  {objectQualifier}BUDDY where FROMUSERID=:I_USERID;
+    DELETE FROM  {objectQualifier}BUDDY where TOUSERID=:I_USERID;
     -- Delete all the FavoriteTopic entries associated with this UserID.
-    DELETE FROM objQual_FAVORITETOPIC where USERID=:I_USERID;
-    DELETE FROM objQual_ADMINPAGEUSERACCESS where USERID=:I_USERID;
+    DELETE FROM {objectQualifier}FAVORITETOPIC where USERID=:I_USERID;
+    DELETE FROM {objectQualifier}ADMINPAGEUSERACCESS where USERID=:I_USERID;
     
-    DELETE FROM  objQual_USER WHERE USERID = :I_USERID;
+    DELETE FROM  {objectQualifier}USER WHERE USERID = :I_USERID;
     END
     END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_DELETEAVATAR(I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USER_DELETEAVATAR(I_USERID INTEGER)
     AS
     BEGIN
-    UPDATE objQual_USER
+    UPDATE {objectQualifier}USER
     SET AVATARIMAGE = null,
     AVATAR = null,
     AVATARIMAGETYPE = null
@@ -8708,42 +8813,42 @@ CREATE PROCEDURE  objQual_USER_DELETEAVATAR(I_USERID INTEGER)
     END;
  --GO
  
- CREATE PROCEDURE  objQual_USER_DELETEOLD(I_BOARDID INTEGER, I_DAYS INTEGER, I_UTCTIMESTAMP TIMESTAMP)
+ CREATE PROCEDURE  {objectQualifier}USER_DELETEOLD(I_BOARDID INTEGER, I_DAYS INTEGER, I_UTCTIMESTAMP TIMESTAMP)
 AS
 DECLARE ici_Since TIMESTAMP; 
 DECLARE ICI_USERID INTEGER;
     BEGIN   
     ici_Since = :I_UTCTIMESTAMP;
-    FOR SELECT USERID from objQual_USER 
+    FOR SELECT USERID from {objectQualifier}USER 
     WHERE BOARDID=:I_BOARDID and ISAPPROVED = 0 
     and DATEDIFF(day,:ici_Since,JOINED) > :I_DAYS
     INTO :ICI_USERID
     DO   
-    DELETE FROM objQual_EVENTLOG  WHERE USERID=:ICI_USERID;     
+    DELETE FROM {objectQualifier}EVENTLOG  WHERE USERID=:ICI_USERID;     
     
-    FOR SELECT USERID from objQual_USER 
+    FOR SELECT USERID from {objectQualifier}USER 
     WHERE BOARDID=:I_BOARDID and ISAPPROVED = 0  
     and DATEDIFF(day,:ici_Since,JOINED) > :I_DAYS    
     INTO :ICI_USERID
     DO 
-    DELETE FROM objQual_CHECKEMAIL WHERE USERID=:ICI_USERID;   
+    DELETE FROM {objectQualifier}CHECKEMAIL WHERE USERID=:ICI_USERID;   
     
-    FOR SELECT USERID from objQual_USER 
+    FOR SELECT USERID from {objectQualifier}USER 
     WHERE BOARDID=:I_BOARDID and ISAPPROVED = 0 
     and DATEDIFF(day,:ici_Since,JOINED) > :I_DAYS
     INTO :ICI_USERID
     DO   
-    DELETE FROM objQual_USERGROUP WHERE USERID=:ICI_USERID; 
+    DELETE FROM {objectQualifier}USERGROUP WHERE USERID=:ICI_USERID; 
     
     
-    DELETE FROM objQual_USER where BOARDID=:I_BOARDID 
+    DELETE FROM {objectQualifier}USER where BOARDID=:I_BOARDID 
     and ISAPPROVED = 0
     AND DATEDIFF(day,:ici_Since,JOINED) > :I_DAYS;
     
     END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_EMAILS(I_BOARDID INTEGER,I_GROUPID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USER_EMAILS(I_BOARDID INTEGER,I_GROUPID INTEGER)
 RETURNS ("Email" VARCHAR(128))
     AS
     BEGIN
@@ -8752,7 +8857,7 @@ RETURNS ("Email" VARCHAR(128))
     FOR SELECT
     a."EMAIL"
     FROM
-    objQual_USER a
+    {objectQualifier}USER a
     WHERE
     a."EMAIL" IS NOT NULL AND
     a.BOARDID = :I_BOARDID and
@@ -8764,9 +8869,9 @@ RETURNS ("Email" VARCHAR(128))
     FOR	SELECT 
             a."EMAIL" 
         FROM
-            objQual_USER a 
-            JOIN objQual_USERGROUP b ON b.USERID=a.USERID
-            JOIN objQual_GROUP c 
+            {objectQualifier}USER a 
+            JOIN {objectQualifier}USERGROUP b ON b.USERID=a.USERID
+            JOIN {objectQualifier}GROUP c 
             ON c.GROUPID=b.GROUPID	
         WHERE 
             b.GROUPID = :I_GROUPID AND 
@@ -8781,7 +8886,7 @@ END;
 
 
 
-CREATE PROCEDURE  objQual_USER_GET
+CREATE PROCEDURE  {objectQualifier}USER_GET
 (
     I_BOARDID		INTEGER,
         I_PROVIDERUSERKEY       VARCHAR(64) 
@@ -8790,7 +8895,7 @@ RETURNS ( "UserID" INTEGER)
 AS
 BEGIN
 
-    SELECT USERID FROM objQual_USER 
+    SELECT USERID FROM {objectQualifier}USER 
         WHERE BOARDID=:I_BOARDID 
         AND PROVIDERUSERKEY=CHAR_TO_UUID(:I_PROVIDERUSERKEY)
         INTO
@@ -8799,27 +8904,27 @@ BEGIN
         SUSPEND;
 END;
  --GO 
- CREATE PROCEDURE  objQual_USER_GETPOINTS (I_USERID INTEGER)
+ CREATE PROCEDURE  {objectQualifier}USER_GETPOINTS (I_USERID INTEGER)
  RETURNS ("Points" INTEGER)
  AS 
 BEGIN
-    SELECT POINTS FROM objQual_USER WHERE USERID = :I_USERID
+    SELECT POINTS FROM {objectQualifier}USER WHERE USERID = :I_USERID
     INTO :"Points";
     SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_GETSIGNATURE(I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USER_GETSIGNATURE(I_USERID INTEGER)
 RETURNS ("Signature" BLOB SUB_TYPE 1)
 AS 
 BEGIN
-    SELECT SIGNATURE FROM objQual_USER WHERE USERID = :I_USERID
+    SELECT SIGNATURE FROM {objectQualifier}USER WHERE USERID = :I_USERID
     INTO :"Signature";
     SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_LIST
+CREATE PROCEDURE  {objectQualifier}USER_LIST
 (I_BOARDID INTEGER,
 I_USERID INTEGER,
 I_APPROVED SMALLINT,
@@ -8927,9 +9032,9 @@ b.NAME AS "RankName",
             else ''	 end)  AS "Style",
 DATEDIFF(DAY,:I_UTCTIMESTAMP,COALESCE(a.JOINED,:I_UTCTIMESTAMP)) + 1 AS "NumDays",
 --(SELECT :ici_NumDays FROM RDB$DATABASE) AS "NumDays",
-(SELECT COUNT(x.MESSAGEID) FROM objQual_MESSAGE x
+(SELECT COUNT(x.MESSAGEID) FROM {objectQualifier}MESSAGE x
 WHERE x.ISDELETED = 0 AND x.ISAPPROVED = 1) AS "NumPostsForum",
-COALESCE((SELECT FIRST 1 1 FROM objQual_USER x
+COALESCE((SELECT FIRST 1 1 FROM {objectQualifier}USER x
                          WHERE x.USERID=a.USERID
                            AND AVATARIMAGE IS NOT NULL),0) AS "HasAvatarImage",
 (SELECT :ici_IsAdmin FROM RDB$DATABASE),
@@ -8940,8 +9045,8 @@ COALESCE(BIN_AND(a.FLAGS, 1),0) AS "IsHostAdmin",
 a.TOPICSPERPAGE,
 a.POSTSPERPAGE
 FROM
-objQual_USER a
-JOIN objQual_RANK b ON b.RANKID=a.RANKID
+{objectQualifier}USER a
+JOIN {objectQualifier}RANK b ON b.RANKID=a.RANKID
 WHERE
 a.USERID = :I_USERID AND
 a.BOARDID = :I_BOARDID AND
@@ -8998,7 +9103,7 @@ INTO
            :"PostsPerPage"
  DO
  BEGIN
- EXECUTE PROCEDURE objQual_vaccess_ul(:"UserID", 0) 
+ EXECUTE PROCEDURE {objectQualifier}vaccess_ul(:"UserID", 0) 
  RETURNING_VALUES  :ici_IsAdmin,:ici_IsForumModerator,:ici_IsModerator; 
 SUSPEND;
  END
@@ -9043,11 +9148,11 @@ b.NAME AS "RankName",
             else ''	 end)  AS "Style",
 (SELECT :ici_NumDays FROM RDB$DATABASE) AS "NumDays",
 a.NUMPOSTS AS "NumPostsForum",
-(SELECT COUNT(1) FROM objQual_USER x
+(SELECT COUNT(1) FROM {objectQualifier}USER x
                          WHERE x.USERID=a.USERID
                            AND AVATARIMAGE IS NOT NULL) AS "HasAvatarImage",
-(SELECT CAST(SIGN(COUNT(1)) AS INTEGER) from objQual_USERGROUP x
-                          JOIN objQual_GROUP y
+(SELECT CAST(SIGN(COUNT(1)) AS INTEGER) from {objectQualifier}USERGROUP x
+                          JOIN {objectQualifier}GROUP y
                             ON y.GROUPID=x.GROUPID
                               WHERE x.USERID=a.USERID
                                 AND BIN_AND(y.FLAGS,1)<>0) AS ISADMIN,
@@ -9058,8 +9163,8 @@ COALESCE(SIGN(BIN_AND(a.FLAGS, 1)),0) AS "IsHostAdmin",
 a.TOPICSPERPAGE,
 a.POSTSPERPAGE
 FROM
-objQual_USER a
-JOIN objQual_RANK b ON b.RANKID=a.RANKID
+{objectQualifier}USER a
+JOIN {objectQualifier}RANK b ON b.RANKID=a.RANKID
 WHERE
 a.BOARDID = :I_BOARDID
                          AND (:I_APPROVED IS NULL
@@ -9114,9 +9219,9 @@ INTO
            :"PostsPerPage"
 DO BEGIN
  "NumDays"=COALESCE(current_date-CAST("Joined" AS DATE),0)+1;
- /*  EXECUTE PROCEDURE objQual_vaccess_ul :"UserID", 0 
+ /*  EXECUTE PROCEDURE {objectQualifier}vaccess_ul :"UserID", 0 
  RETURNING_VALUES  :"IsAdmin",:"IsForumModerator",:"IsModerator";*/
- EXECUTE PROCEDURE objQual_vaccess_ul(:"UserID", 0) 
+ EXECUTE PROCEDURE {objectQualifier}vaccess_ul(:"UserID", 0) 
  RETURNING_VALUES  :ici_IsAdmin,:ici_IsForumModerator,:ici_IsModerator;
  SUSPEND;
  END
@@ -9162,11 +9267,11 @@ b.NAME AS "RankName",
             else ''	 end)  AS "Style",
 (SELECT :ici_NumDays FROM RDB$DATABASE) AS "NumDays",
 a.NUMPOSTS AS "NumPostsForum",
-(SELECT COUNT(1) FROM objQual_USER x
+(SELECT COUNT(1) FROM {objectQualifier}USER x
                          WHERE x.USERID=a.USERID
                            AND AVATARIMAGE IS NOT NULL) AS "HasAvatarImage",
-(SELECT CAST(SIGN(COUNT(1)) AS INTEGER) from objQual_USERGROUP x
-                       JOIN objQual_GROUP y ON y.GROUPID=x.GROUPID
+(SELECT CAST(SIGN(COUNT(1)) AS INTEGER) from {objectQualifier}USERGROUP x
+                       JOIN {objectQualifier}GROUP y ON y.GROUPID=x.GROUPID
                        WHERE x.USERID=a.USERID
                        AND BIN_AND(y.FLAGS, 1)<>0) AS "IsAdmin",
 COALESCE(SIGN(BIN_AND(a.FLAGS, 4)),0) AS ISGUEST,
@@ -9176,15 +9281,15 @@ COALESCE(BIN_AND(a.FLAGS, 1),0) AS "IsHostAdmin",
 a.TOPICSPERPAGE,
 a.POSTSPERPAGE
 FROM
-objQual_USER a
-JOIN objQual_RANK b ON b.RANKID=a.RANKID
+{objectQualifier}USER a
+JOIN {objectQualifier}RANK b ON b.RANKID=a.RANKID
 WHERE
 a.BOARDID = :I_BOARDID and
 (:I_APPROVED IS NULL
                          OR (:I_APPROVED=0 AND BIN_AND(a.FLAGS,2)=0)
                          OR (:I_APPROVED=1 AND BIN_AND(a.FLAGS, 2)=2))
                          AND (:I_GROUPID IS NULL OR (EXISTS
-                             (SELECT 1 FROM objQual_USERGROUP x
+                             (SELECT 1 FROM {objectQualifier}USERGROUP x
                                 WHERE x.USERID=a.USERID AND x.GROUPID=:I_GROUPID))
                                  AND (:I_RANKID IS NULL OR a.RANKID=:I_RANKID))
 ORDER BY
@@ -9236,9 +9341,9 @@ INTO
            :"PostsPerPage"
 DO BEGIN
  "NumDays"=COALESCE(current_date-CAST("Joined" AS DATE),0)+1;
-/*  EXECUTE PROCEDURE objQual_vaccess_ul :"UserID", 0 
+/*  EXECUTE PROCEDURE {objectQualifier}vaccess_ul :"UserID", 0 
  RETURNING_VALUES  :"IsAdmin",:"IsForumModerator",:"IsModerator";*/
- EXECUTE PROCEDURE objQual_vaccess_ul(:"UserID", 0) 
+ EXECUTE PROCEDURE {objectQualifier}vaccess_ul(:"UserID", 0) 
  RETURNING_VALUES  :ici_IsAdmin,:ici_IsForumModerator,:ici_IsModerator; 
  SUSPEND;
  END
@@ -9246,7 +9351,7 @@ DO BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_ADMIN_LIST(I_BOARDID INTEGER, I_STYLEDNICKS BOOL, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}ADMIN_LIST(I_BOARDID INTEGER, I_STYLEDNICKS BOOL, I_UTCTIMESTAMP TIMESTAMP) 
 RETURNS
 (
  "UserID" integer,
@@ -9288,19 +9393,19 @@ begin
             when 1 then a.USERSTYLE
             else ''	 end) as Style, 
             (DATEDIFF(DAY, :I_UTCTIMESTAMP, a.Joined) + 1) AS NumDays,		
-            (SELECT COUNT(x.MESSAGEID) FROM objQual_MESSAGE x
+            (SELECT COUNT(x.MESSAGEID) FROM {objectQualifier}MESSAGE x
 WHERE x.ISDELETED = 0 AND x.ISAPPROVED = 1) AS "NumPostsForum",
-            (select count(1) from objQual_USER x where x.USERID=a.USERID and a.AVATARIMAGE is not null) AS HasAvatarImage,
+            (select count(1) from {objectQualifier}USER x where x.USERID=a.USERID and a.AVATARIMAGE is not null) AS HasAvatarImage,
             COALESCE(c.ISADMIN,0) as IsAdmin,			
             COALESCE(BIN_AND(a.FLAGS, 1),0) AS IsHostAdmin
         from 
-            objQual_USER a
-            JOIN objQual_BOARD b	
+            {objectQualifier}USER a
+            JOIN {objectQualifier}BOARD b	
             ON b.BOARDID = a.BOARDID		
             JOIN
-            objQual_RANK r	
+            {objectQualifier}RANK r	
             ON r.RANKID = a.RANKID		
-            left join objQual_VACCESS c on c.USERID=a.USERID
+            left join {objectQualifier}VACCESS c on c.USERID=a.USERID
         where		
             (:I_BOARDID IS NULL OR a.BOARDID = :I_BOARDID) and
             -- is not guest 
@@ -9334,7 +9439,7 @@ WHERE x.ISDELETED = 0 AND x.ISAPPROVED = 1) AS "NumPostsForum",
 end;
 --GO
 
-CREATE PROCEDURE  objQual_ADMIN_PAGEACCESSLIST(I_BOARDID INTEGER, I_STYLEDNICKS BOOL, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}ADMIN_PAGEACCESSLIST(I_BOARDID INTEGER, I_STYLEDNICKS BOOL, I_UTCTIMESTAMP TIMESTAMP) 
 RETURNS
 (
  "UserID" integer,
@@ -9360,10 +9465,10 @@ begin
             when 1 then a.USERSTYLE
             else ''	 end) as Style
         from 
-            objQual_USER a
-            JOIN objQual_BOARD b	
+            {objectQualifier}USER a
+            JOIN {objectQualifier}BOARD b	
             ON b.BOARDID = a.BOARDID				
-            left join objQual_VACCESS c on c.USERID=a.USERID
+            left join {objectQualifier}VACCESS c on c.USERID=a.USERID
         where		
             ((:I_BOARDID IS NULL OR a.BOARDID = :I_BOARDID) and
             -- is not guest 
@@ -9388,7 +9493,7 @@ begin
 end;
 --GO
 
-CREATE PROCEDURE   objQual_USER_LISTMEMBERS(
+CREATE PROCEDURE   {objectQualifier}USER_LISTMEMBERS(
                 I_BOARDID INTEGER,
                 I_USERID INTEGER,
                 I_APPROVED BOOL,
@@ -9467,8 +9572,8 @@ ici_pagelowerbound = i_pagesize*i_pageindex;
 ici_pageupperbound = i_pagesize -1 + ici_pagelowerbound;
    -- get total number of users in the db
    select COUNT(a.USERID) 
-    from objQual_USER a 
-      join objQual_RANK b 
+    from {objectQualifier}USER a 
+      join {objectQualifier}RANK b 
       on b.RANKID=a.RANKID
       where
        a.BOARDID = :I_BOARDID	   
@@ -9476,7 +9581,7 @@ ici_pageupperbound = i_pagesize -1 + ici_pagelowerbound;
         (:I_APPROVED is null or (:I_APPROVED = 0 
          and (BIN_AND(a.FLAGS,2)=2)) or 
          (:I_APPROVED = 1 and (BIN_AND(a.FLAGS,2)=2))) and
-        (:I_GROUPID is null or exists(SELECT FIRST 1 1 FROM objQual_USERGROUP x where x.USERID=a.USERID and x.GROUPID=:I_GROUPID )) and
+        (:I_GROUPID is null or exists(SELECT FIRST 1 1 FROM {objectQualifier}USERGROUP x where x.USERID=a.USERID and x.GROUPID=:I_GROUPID )) and
         (:I_RANKID is null or a.RANKID=:I_RANKID) AND
         COALESCE(BIN_AND(a.FLAGS, 4),0) <> 4
             AND
@@ -9543,13 +9648,13 @@ ici_pageupperbound = i_pagesize -1 + ici_pagelowerbound;
             when 1 then a.USERSTYLE
             else ''	 end) AS "Style",
             (SELECT :ici_user_totalrowsnumber FROM RDB$DATABASE)
-            from objQual_USER a 
-            join objQual_RANK b on b.RANKID=a.RANKID	
+            from {objectQualifier}USER a 
+            join {objectQualifier}RANK b on b.RANKID=a.RANKID	
        where
        a.BOARDID = :I_BOARDID	   
        and
         (:I_APPROVED is null or (:I_APPROVED = 0 and BIN_AND(a.FLAGS, 2)<>2) or (:I_APPROVED = 1 and BIN_AND(a.FLAGS, 2)=2)) and
-        (:I_GROUPID is null or exists(select first 1 1 from objQual_USERGROUP x where x.USERID=a.USERID and x.GROUPID=:I_GROUPID)) and
+        (:I_GROUPID is null or exists(select first 1 1 from {objectQualifier}USERGROUP x where x.USERID=a.USERID and x.GROUPID=:I_GROUPID)) and
         (:I_RANKID is null or a.RANKID=:I_RANKID) AND
         COALESCE(BIN_AND(a.FLAGS,4),0) <> 4
             AND
@@ -9650,7 +9755,7 @@ ici_pageupperbound = i_pagesize -1 + ici_pagelowerbound;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_LIST_OLD
+CREATE PROCEDURE  {objectQualifier}USER_LIST_OLD
 (I_BOARDID INTEGER,
 I_USERID INTEGER,
 I_APPROVED SMALLINT,
@@ -9727,9 +9832,9 @@ a.ISACTIVEEXCLUDED,
 b.RANKID,
 b.NAME AS "RankName",
 (SELECT :ici_NumDays FROM RDB$DATABASE) AS "NumDays",
-(SELECT COUNT(1) FROM objQual_MESSAGE x
+(SELECT COUNT(1) FROM {objectQualifier}MESSAGE x
 WHERE BIN_AND(x.FLAGS, 24)=16) AS "NumPostsForum",
-(SELECT COUNT(1) FROM objQual_USER x
+(SELECT COUNT(1) FROM {objectQualifier}USER x
                          WHERE x.USERID=a.USERID
                            AND AVATARIMAGE IS NOT NULL) AS "HasAvatarImage",
 COALESCE(BIN_AND(a.FLAGS, 4),0) AS ISGUEST,
@@ -9738,9 +9843,9 @@ COALESCE(c.ISADMIN,0) AS "IsAdmin",
 COALESCE(c.ISFORUMMODERATOR,0) AS "IsForumModerator",
 COALESCE(c.ISMODERATOR,0) AS "IsModerator"
 FROM
-objQual_USER a
-JOIN objQual_RANK b ON b.RANKID=a.RANKID
-LEFT JOIN objQual_vaccess c ON c.USERID=a.USERID
+{objectQualifier}USER a
+JOIN {objectQualifier}RANK b ON b.RANKID=a.RANKID
+LEFT JOIN {objectQualifier}vaccess c ON c.USERID=a.USERID
 WHERE
 a.USERID = :I_USERID AND
 a.BOARDID = :I_BOARDID AND
@@ -9821,13 +9926,13 @@ a.ISACTIVEEXCLUDED,
 b.RANKID,
 b.NAME AS "RankName",
 (SELECT :ici_NumDays FROM RDB$DATABASE) AS "NumDays",
-(SELECT COUNT(1) FROM objQual_MESSAGE x
+(SELECT COUNT(1) FROM {objectQualifier}MESSAGE x
 WHERE BIN_AND(x.FLAGS, 24)=16) AS "NumPostsForum",
-(SELECT COUNT(1) FROM objQual_USER x
+(SELECT COUNT(1) FROM {objectQualifier}USER x
                          WHERE x.USERID=a.USERID
                            AND AVATARIMAGE IS NOT NULL) AS "HasAvatarImage",
-(SELECT COUNT(1) from objQual_USERGROUP x
-                          JOIN objQual_GROUP y
+(SELECT COUNT(1) from {objectQualifier}USERGROUP x
+                          JOIN {objectQualifier}GROUP y
                             ON y.GROUPID=x.GROUPID
                               WHERE x.USERID=a.USERID
                                 AND BIN_AND(y.FLAGS,1)<>0) AS "IsAdmin",
@@ -9836,9 +9941,9 @@ COALESCE(BIN_AND(a.FLAGS, 1),0) AS "IsHostAdmin",
 COALESCE(c.ISFORUMMODERATOR,0) AS "IsForumModerator",
 COALESCE(c.ISMODERATOR,0) AS "IsModerator"
 FROM
-objQual_USER a
-JOIN objQual_RANK b ON b.RANKID=a.RANKID
-LEFT JOIN objQual_vaccess c ON c.USERID=a.USERID
+{objectQualifier}USER a
+JOIN {objectQualifier}RANK b ON b.RANKID=a.RANKID
+LEFT JOIN {objectQualifier}vaccess c ON c.USERID=a.USERID
 WHERE
 a.BOARDID = :I_BOARDID
                          AND (:I_APPROVED IS NULL
@@ -9918,13 +10023,13 @@ a.ISACTIVEEXCLUDED,
 b.RANKID,
 b.NAME AS "RankName",
 (SELECT :ici_NumDays FROM RDB$DATABASE) AS "NumDays",
-(SELECT COUNT(1) FROM objQual_MESSAGE x
+(SELECT COUNT(1) FROM {objectQualifier}MESSAGE x
 WHERE BIN_AND(x.FLAGS, 24)=16) AS "NumPostsForum",
-(SELECT COUNT(1) FROM objQual_USER x
+(SELECT COUNT(1) FROM {objectQualifier}USER x
                          WHERE x.USERID=a.USERID
                            AND AVATARIMAGE IS NOT NULL) AS "HasAvatarImage",
-(SELECT COUNT(1) from objQual_USERGROUP x
-                       JOIN objQual_GROUP y ON y.GROUPID=x.GROUPID
+(SELECT COUNT(1) from {objectQualifier}USERGROUP x
+                       JOIN {objectQualifier}GROUP y ON y.GROUPID=x.GROUPID
                        WHERE x.USERID=a.USERID
                        AND BIN_AND(y.FLAGS, 1)<>0) AS "IsAdmin",
 COALESCE(BIN_AND(a.FLAGS, 4),0) AS ISGUEST,
@@ -9932,16 +10037,16 @@ COALESCE(BIN_AND(a.FLAGS, 1),0) AS "IsHostAdmin",
 COALESCE(c.ISFORUMMODERATOR,0) AS "IsForumModerator",
 COALESCE(c.ISMODERATOR,0) AS "IsModerator"
 FROM
-objQual_USER a
-JOIN objQual_RANK b ON b.RANKID=a.RANKID
-LEFT JOIN objQual_vaccess c ON c.USERID=a.USERID
+{objectQualifier}USER a
+JOIN {objectQualifier}RANK b ON b.RANKID=a.RANKID
+LEFT JOIN {objectQualifier}vaccess c ON c.USERID=a.USERID
 WHERE
 a.BOARDID = :I_BOARDID and
 (:I_APPROVED IS NULL
                          OR (:I_APPROVED=0 AND BIN_AND(a.FLAGS,2)=0)
                          OR (:I_APPROVED=1 AND BIN_AND(a.FLAGS, 2)=2))
                          AND (:I_GROUPID IS NULL OR (EXISTS
-                             (SELECT 1 FROM objQual_USERGROUP x
+                             (SELECT 1 FROM {objectQualifier}USERGROUP x
                                 WHERE x.USERID=a.USERID AND x.GROUPID=:I_GROUPID))
                                  AND (:I_RANKID IS NULL OR a.RANKID=:I_RANKID))
 ORDER BY
@@ -9990,20 +10095,20 @@ DO BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_MEDAL_DELETE
+CREATE PROCEDURE  {objectQualifier}USER_MEDAL_DELETE
     (I_USERID INTEGER,
     I_MEDALID INTEGER)
     AS
 BEGIN 
  
-    DELETE FROM objQual_USERMEDAL 
+    DELETE FROM {objectQualifier}USERMEDAL 
     WHERE USERID=:I_USERID AND MEDALID=:I_MEDALID;
  
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_MEDAL_LIST(I_USERID INTEGER,
-    I_MEDALID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USER_MEDAL_LIST(I_USERID INTEGER,
+    I_MEDALID INTEGER, I_UTCTIMESTAMP timestamp)
     RETURNS
     (
 "MedalID" integer,
@@ -10053,9 +10158,9 @@ BEGIN
         b.SORTORDER as "CurrentSortOrder",
         b.DATEAWARDED
     FROM
-        objQual_MEDAL a
-        INNER JOIN objQual_USERMEDAL b ON b.MEDALID = a.MEDALID
-        INNER JOIN objQual_USER c ON c.USERID = b.USERID
+        {objectQualifier}MEDAL a
+        INNER JOIN {objectQualifier}USERMEDAL b ON b.MEDALID = a.MEDALID
+        INNER JOIN {objectQualifier}USER c ON c.USERID = b.USERID
     WHERE
         (:I_USERID IS NULL OR b.USERID = :I_USERID) AND
         (:I_MEDALID IS NULL OR b.MEDALID = :I_MEDALID)		
@@ -10089,7 +10194,7 @@ DO SUSPEND;
 END;
 --GO
            
-CREATE PROCEDURE  objQual_USER_MEDAL_SAVE(I_USERID INTEGER,
+CREATE PROCEDURE  {objectQualifier}USER_MEDAL_SAVE(I_USERID INTEGER,
     I_MEDALID INTEGER,
     I_MESSAGE varchar(128),
     I_HIDE BOOL,
@@ -10100,9 +10205,9 @@ CREATE PROCEDURE  objQual_USER_MEDAL_SAVE(I_USERID INTEGER,
     AS
 BEGIN
  
-    IF (EXISTS(SELECT 1 from objQual_USERMEDAL 
+    IF (EXISTS(SELECT 1 from {objectQualifier}USERMEDAL 
     WHERE USERID=:I_USERID AND MEDALID=:I_MEDALID)) THEN
-        UPDATE objQual_USERMEDAL
+        UPDATE {objectQualifier}USERMEDAL
         SET
             MESSAGE = :I_MESSAGE,
             HIDE = :I_HIDE,
@@ -10116,7 +10221,7 @@ BEGIN
  BEGIN
         IF (I_DATEAWARDED IS NULL) THEN  I_DATEAWARDED = :I_UTCTIMESTAMP;
  
-        INSERT INTO objQual_USERMEDAL(USERID,MEDALID,MESSAGE,HIDE,ONLYRIBBON,
+        INSERT INTO {objectQualifier}USERMEDAL(USERID,MEDALID,MESSAGE,HIDE,ONLYRIBBON,
         SORTORDER,DATEAWARDED)
         VALUES
             (:I_USERID,:I_MEDALID,:I_MESSAGE,:I_HIDE,:I_ONLYRIBBON,:I_SORTORDER,:I_DATEAWARDED);
@@ -10125,7 +10230,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_MIGRATE
+CREATE PROCEDURE  {objectQualifier}USER_MIGRATE
  (
     I_USERID INTEGER,
     I_PROVIDERUSERKEY VARCHAR(64),
@@ -10142,7 +10247,7 @@ CREATE PROCEDURE  objQual_USER_MIGRATE
     
 
 
-    UPDATE objQual_USER SET PROVIDERUSERKEY = CHAR_TO_UUID(:I_PROVIDERUSERKEY)
+    UPDATE {objectQualifier}USER SET PROVIDERUSERKEY = CHAR_TO_UUID(:I_PROVIDERUSERKEY)
      WHERE USERID = :I_USERID;
  
     IF (I_UPDATEPROVIDER = 1) THEN 	
@@ -10150,7 +10255,7 @@ CREATE PROCEDURE  objQual_USER_MIGRATE
        SELECT		
             BIN_AND(FLAGS, 2)                
           FROM
-            objQual_USER
+            {objectQualifier}USER
           WHERE
             USERID = :I_USERID INTO :ici_case;
             
@@ -10163,13 +10268,13 @@ CREATE PROCEDURE  objQual_USER_MIGRATE
               LASTVISIT,
               JOINED                
         FROM
-            objQual_USER
+            {objectQualifier}USER
         WHERE
             USERID = :I_USERID
             INTO :ici_Password, :ici_IsApproved, :ici_LastActivity, :ici_Joined;
         
         UPDATE
-            objQual_P_Membership
+            {objectQualifier}P_Membership
         SET
             "PASSWORD" = :ici_Password,
             PASSWORDFORMAT = '1',
@@ -10181,7 +10286,7 @@ CREATE PROCEDURE  objQual_USER_MIGRATE
     END
  END;
 --GO
-CREATE PROCEDURE  objQual_USER_SAVE(
+CREATE PROCEDURE  {objectQualifier}USER_SAVE(
                  I_USERID               INTEGER,
                  I_BOARDID		        INTEGER,
                  I_USERNAME		        VARCHAR(128),
@@ -10223,23 +10328,23 @@ BEGIN
         ICI_FLAGS = 0; 
         IF (:I_APPROVED<>0) THEN  ICI_FLAGS = BIN_OR(:ICI_FLAGS, 2); 
         IF (:I_EMAIL = '') THEN  I_EMAIL = null;  		
-        SELECT RANKID  FROM objQual_RANK 
+        SELECT RANKID  FROM {objectQualifier}RANK 
         WHERE BIN_AND(FLAGS, 1)<>0 AND BOARDID=:I_BOARDID
         INTO :ici_RankID;
-     SELECT NEXT VALUE FOR SEQ_objQual_USER_USERID  
+     SELECT NEXT VALUE FOR SEQ_{objectQualifier}USER_USERID  
      FROM RDB$DATABASE INTO :I_USERID;
-        INSERT INTO objQual_USER(USERID,BOARDID,RANKID,"NAME",DISPLAYNAME,"PASSWORD","EMAIL",JOINED,LASTVISIT,NUMPOSTS,TIMEZONE,FLAGS,PMNOTIFICATION,PROVIDERUSERKEY, AUTOWATCHTOPICS, CULTURE,TOPICSPERPAGE,POSTSPERPAGE) 
+        INSERT INTO {objectQualifier}USER(USERID,BOARDID,RANKID,"NAME",DISPLAYNAME,"PASSWORD","EMAIL",JOINED,LASTVISIT,NUMPOSTS,TIMEZONE,FLAGS,PMNOTIFICATION,PROVIDERUSERKEY, AUTOWATCHTOPICS, CULTURE,TOPICSPERPAGE,POSTSPERPAGE) 
         VALUES(:I_USERID,:I_BOARDID,:ici_RankID,:I_USERNAME,:I_DISPLAYNAME,'-',:I_EMAIL, :I_UTCTIMESTAMP,:I_UTCTIMESTAMP,0,:I_TIMEZONE,:ICI_FLAGS,:I_PMNOTIFICATION,CHAR_TO_UUID(:I_PROVIDERUSERKEY),:I_AUTOWATCHTOPICS, :I_CULTURE,:I_TOPICSPERPAGE,:I_POSTSPERPAGE); 		
  
-        INSERT INTO objQual_USERGROUP(USERID,GROUPID)
+        INSERT INTO {objectQualifier}USERGROUP(USERID,GROUPID)
         SELECT 
         (SELECT :I_USERID FROM RDB$DATABASE) AS USERID,
-        GROUPID FROM objQual_GROUP 
+        GROUPID FROM {objectQualifier}GROUP 
         where BOARDID=:I_BOARDID and BIN_AND(FLAGS, 4)<>0;
      END
     ELSE
     BEGIN
-        SELECT FLAGS,DISPLAYNAME FROM objQual_USER where USERID = :I_USERID INTO :ICI_FLAGS,:ICI_OLDDISPLAYNAME;
+        SELECT FLAGS,DISPLAYNAME FROM {objectQualifier}USER where USERID = :I_USERID INTO :ICI_FLAGS,:ICI_OLDDISPLAYNAME;
 
         -- set user data unapproved or dirty
         IF ((BIN_AND(:ICI_FLAGS, 64) <> 64)) THEN		
@@ -10255,7 +10360,7 @@ BEGIN
         ELSE IF ((:I_HIDEUSER=0) AND (BIN_AND(:ICI_FLAGS,16) = 16)) THEN  
         ICI_FLAGS = BIN_XOR(:ICI_FLAGS, 16);
         
-    UPDATE objQual_USER SET
+    UPDATE {objectQualifier}USER SET
     TIMEZONE = :I_TIMEZONE,
     LANGUAGEFILE = :I_LANGUAGEFILE,
     THEMEFILE = :I_THEMEFILE,
@@ -10275,11 +10380,11 @@ BEGIN
    if (:I_DISPLAYNAME IS NOT NULL AND COALESCE(:ICI_OLDDISPLAYNAME,'') != COALESCE(:I_DISPLAYNAME,'')) THEN
         begin
         -- sync display names everywhere - can run a long time on large forums
-        update objQual_Forum set LastUserDisplayName = :I_DISPLAYNAME where LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);  
-        update objQual_Topic set LastUserDisplayName = :I_DISPLAYNAME where LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
-        update objQual_Topic set UserDisplayName = :I_DISPLAYNAME where USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
-        update objQual_Message set UserDisplayName = :I_DISPLAYNAME where USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
-        update objQual_ShoutboxMessage set UserDisplayName = :I_DISPLAYNAME where USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        update {objectQualifier}Forum set LastUserDisplayName = :I_DISPLAYNAME where LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);  
+        update {objectQualifier}Topic set LastUserDisplayName = :I_DISPLAYNAME where LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        update {objectQualifier}Topic set UserDisplayName = :I_DISPLAYNAME where USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        update {objectQualifier}Message set UserDisplayName = :I_DISPLAYNAME where USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        update {objectQualifier}ShoutboxMessage set UserDisplayName = :I_DISPLAYNAME where USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
         end
 
     END
@@ -10288,22 +10393,22 @@ BEGIN
 --GO
 
 
- CREATE PROCEDURE  objQual_USER_SETNOTDIRTY(I_USERID INTEGER)
+ CREATE PROCEDURE  {objectQualifier}USER_SETNOTDIRTY(I_USERID INTEGER)
     AS
     BEGIN
-    UPDATE objQual_USER SET FLAGS = BIN_XOR(FLAGS,64) WHERE USERID = :I_USERID AND FLAGS = BIN_AND(FLAGS,64);
+    UPDATE {objectQualifier}USER SET FLAGS = BIN_XOR(FLAGS,64) WHERE USERID = :I_USERID AND FLAGS = BIN_AND(FLAGS,64);
     END;
 --GO
 
 
- CREATE PROCEDURE  objQual_USER_SETPOINTS(I_USERID INTEGER,I_POINTS INTEGER)
+ CREATE PROCEDURE  {objectQualifier}USER_SETPOINTS(I_USERID INTEGER,I_POINTS INTEGER)
     AS
     BEGIN
-    UPDATE objQual_USER SET POINTS = :I_POINTS WHERE USERID = :I_USERID;
+    UPDATE {objectQualifier}USER SET POINTS = :I_POINTS WHERE USERID = :I_USERID;
     END;
 --GO
 
- CREATE PROCEDURE  objQual_USER_SETROLE
+ CREATE PROCEDURE  {objectQualifier}USER_SETROLE
     (I_BOARDID INTEGER,
     I_PROVIDERUSERKEY VARCHAR(64),
     I_ROLE VARCHAR(128))
@@ -10313,28 +10418,28 @@ BEGIN
     BEGIN    
 
     SELECT USERID 
-    FROM objQual_USER
+    FROM {objectQualifier}USER
     WHERE BOARDID=:I_BOARDID AND PROVIDERUSERKEY=CHAR_TO_UUID(:I_PROVIDERUSERKEY)
     INTO :ICI_USERID;
 
   IF (:I_ROLE IS NULL OR :I_ROLE = '' ) THEN     
-    DELETE FROM objQual_USERGROUP WHERE USERID=:ICI_USERID;
+    DELETE FROM {objectQualifier}USERGROUP WHERE USERID=:ICI_USERID;
   ELSE
   BEGIN
-    IF (NOT EXISTS(SELECT 1 from objQual_GROUP WHERE BOARDID=:I_BOARDID AND NAME=:I_ROLE)) THEN
+    IF (NOT EXISTS(SELECT 1 from {objectQualifier}GROUP WHERE BOARDID=:I_BOARDID AND NAME=:I_ROLE)) THEN
   BEGIN
-    SELECT NEXT VALUE FOR SEQ_objQual_GROUP_GROUPID FROM RDB$DATABASE INTO :ici_GroupID;
-    INSERT INTO objQual_GROUP(GROUPID,NAME,BOARDID,FLAGS)
+    SELECT NEXT VALUE FOR SEQ_{objectQualifier}GROUP_GROUPID FROM RDB$DATABASE INTO :ici_GroupID;
+    INSERT INTO {objectQualifier}GROUP(GROUPID,NAME,BOARDID,FLAGS)
     VALUES (:ici_GroupID,:I_ROLE,:I_BOARDID,0);    
 
-    insert into objQual_FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID)
+    insert into {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID)
     SELECT
     (SELECT :ici_GroupID FROM RDB$DATABASE) AS GROUPID,
     a.FORUMID,
     MIN(a.ACCESSMASKID) AS "AccessMaskID"
     FROM
-    objQual_FORUMACCESS a
-    JOIN objQual_GROUP b ON b.GROUPID=a.GROUPID
+    {objectQualifier}FORUMACCESS a
+    JOIN {objectQualifier}GROUP b ON b.GROUPID=a.GROUPID
     WHERE
     b.BOARDID=:I_BOARDID AND
     BIN_AND(b.FLAGS, 4)=4
@@ -10344,23 +10449,24 @@ BEGIN
     ELSE
     BEGIN
     SELECT  GROUPID 
-    FROM objQual_GROUP WHERE BOARDID=:I_BOARDID AND NAME=:I_ROLE
+    FROM {objectQualifier}GROUP WHERE BOARDID=:I_BOARDID AND NAME=:I_ROLE
     INTO :ici_GroupID; 
     END
-    IF (NOT EXISTS ( SELECT 1 FROM objQual_USERGROUP WHERE USERID = :ICI_USERID AND :ici_GroupID = :ici_GroupID)) THEN
-    INSERT INTO objQual_USERGROUP(USERID,GROUPID) 
+    IF (NOT EXISTS ( SELECT 1 FROM {objectQualifier}USERGROUP WHERE USERID = :ICI_USERID AND :ici_GroupID = :ici_GroupID)) THEN
+    INSERT INTO {objectQualifier}USERGROUP(USERID,GROUPID) 
     VALUES (:ICI_USERID,:ici_GroupID);
  END
     END;
 --GO    
 
- CREATE PROCEDURE  objQual_USER_SIMPLELIST(
+ CREATE PROCEDURE  {objectQualifier}USER_SIMPLELIST(
     I_STARTID INTEGER,
     I_LIMIT   INTEGER)
     RETURNS
     (
 "UserID" integer,
-"Name"  varchar(128)
+"Name"  varchar(128),
+"DisplayName"  varchar(128)
 )
     AS
     DECLARE l_Limit INTEGER DEFAULT 500;
@@ -10372,34 +10478,36 @@ BEGIN
         IF (I_LIMIT IS NOT NULL) THEN  l_Limit=I_LIMIT;
 
     FOR SELECT FIRST (:l_Limit) a.USERID,
-    a.NAME
-    FROM     objQual_USER a
+    a.NAME,
+	a.DISPLAYNAME
+    FROM     {objectQualifier}USER a
     WHERE    a.USERID >= :l_StartID
     AND a.USERID < (:l_StartID + :l_Limit)
          ORDER BY a.USERID
          INTO
          :"UserID",
-         :"Name"
+         :"Name",
+		 :"DisplayName"
          DO SUSPEND;          
        
      END;
    --GO  
    
-  CREATE PROCEDURE  objQual_USER_SUSPEND(I_USERID INTEGER,I_SUSPEND TIMESTAMP)
+  CREATE PROCEDURE  {objectQualifier}USER_SUSPEND(I_USERID INTEGER,I_SUSPEND TIMESTAMP)
     AS
     BEGIN
-    UPDATE objQual_USER SET SUSPENDED = :I_SUSPEND WHERE USERID=:I_USERID;
+    UPDATE {objectQualifier}USER SET SUSPENDED = :I_SUSPEND WHERE USERID=:I_USERID;
     END;
 --GO
 
-CREATE PROCEDURE  objQual_USERFORUM_DELETE(I_USERID INTEGER,I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USERFORUM_DELETE(I_USERID INTEGER,I_FORUMID INTEGER)
 AS
 BEGIN
-    DELETE FROM objQual_USERFORUM WHERE USERID=:I_USERID AND FORUMID=:I_FORUMID;
+    DELETE FROM {objectQualifier}USERFORUM WHERE USERID=:I_USERID AND FORUMID=:I_FORUMID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USERFORUM_LIST(I_USERID INTEGER,I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USERFORUM_LIST(I_USERID INTEGER,I_FORUMID INTEGER)
 RETURNS
 (
   "UserID" INTEGER,
@@ -10485,9 +10593,9 @@ BEGIN
         b.ACCEPTED,
         c.NAME AS "Access" 
     FROM
-        objQual_USER a
-        JOIN objQual_USERFORUM b ON b.USERID=a.USERID
-        JOIN objQual_ACCESSMASK c ON c.ACCESSMASKID=b.ACCESSMASKID
+        {objectQualifier}USER a
+        JOIN {objectQualifier}USERFORUM b ON b.USERID=a.USERID
+        JOIN {objectQualifier}ACCESSMASK c ON c.ACCESSMASKID=b.ACCESSMASKID
     WHERE
         (:I_USERID IS NULL OR a.USERID=:I_USERID) AND
         (:I_FORUMID IS NULL OR b.FORUMID=:I_FORUMID)
@@ -10537,21 +10645,21 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USERFORUM_SAVE(I_USERID INTEGER,I_FORUMID INTEGER,I_ACCESSMASKID INTEGER, I_UTCTIMESTAMP Timestamp)
+CREATE PROCEDURE  {objectQualifier}USERFORUM_SAVE(I_USERID INTEGER,I_FORUMID INTEGER,I_ACCESSMASKID INTEGER, I_UTCTIMESTAMP Timestamp)
 AS
 BEGIN
-    IF (EXISTS(SELECT 1 FROM objQual_USERFORUM 
+    IF (EXISTS(SELECT 1 FROM {objectQualifier}USERFORUM 
     WHERE USERID=:I_USERID AND FORUMID=:I_FORUMID)) THEN
-        UPDATE objQual_USERFORUM SET ACCESSMASKID=:I_ACCESSMASKID 
+        UPDATE {objectQualifier}USERFORUM SET ACCESSMASKID=:I_ACCESSMASKID 
         WHERE USERID=:I_USERID AND FORUMID=:I_FORUMID;
     ELSE
-        INSERT INTO objQual_USERFORUM(USERID,FORUMID,ACCESSMASKID,INVITED,ACCEPTED) 
+        INSERT INTO {objectQualifier}USERFORUM(USERID,FORUMID,ACCESSMASKID,INVITED,ACCEPTED) 
         VALUES(:I_USERID,:I_FORUMID,:I_ACCESSMASKID,:I_UTCTIMESTAMP,1);
       
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_FINDDUPLICATE
+CREATE PROCEDURE  {objectQualifier}TOPIC_FINDDUPLICATE
 (
     I_TOPICNAME varchar(255)
 )
@@ -10563,7 +10671,7 @@ AS
 BEGIN
     IF (I_TOPICNAME IS NOT NULL) THEN
     BEGIN	
-        IF (EXISTS (SELECT FIRST 1 1 FROM objQual_TOPIC WHERE TOPIC LIKE  :I_TOPICNAME AND TOPICMOVEDID IS NULL)) THEN
+        IF (EXISTS (SELECT FIRST 1 1 FROM {objectQualifier}TOPIC WHERE TOPIC LIKE  :I_TOPICNAME AND TOPICMOVEDID IS NULL)) THEN
         SELECT 1 FROM RDB$DATABASE INTO :OUT_RESULT;
         ELSE
         SELECT 0 FROM RDB$DATABASE INTO :OUT_RESULT;
@@ -10576,7 +10684,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USERGROUP_LIST(I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USERGROUP_LIST(I_USERID INTEGER)
 RETURNS
  (
 "GroupID" integer,
@@ -10590,8 +10698,8 @@ BEGIN
         b.NAME,
         b.STYLE
     FROM
-        objQual_USERGROUP a
-        JOIN objQual_GROUP b ON b.GROUPID=a.GROUPID
+        {objectQualifier}USERGROUP a
+        JOIN {objectQualifier}GROUP b ON b.GROUPID=a.GROUPID
     WHERE
         a.USERID = :I_USERID
     ORDER BY
@@ -10604,34 +10712,34 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USERGROUP_SAVE(I_USERID INTEGER,I_GROUPID INTEGER,I_MEMBER BOOL)
+CREATE PROCEDURE  {objectQualifier}USERGROUP_SAVE(I_USERID INTEGER,I_GROUPID INTEGER,I_MEMBER BOOL)
 AS
 BEGIN
     IF (I_MEMBER=0) THEN
-        DELETE FROM objQual_USERGROUP WHERE USERID=:I_USERID AND GROUPID=:I_GROUPID;
+        DELETE FROM {objectQualifier}USERGROUP WHERE USERID=:I_USERID AND GROUPID=:I_GROUPID;
     ELSE
     BEGIN
-    IF (NOT EXISTS(SELECT 1 FROM objQual_USERGROUP 
+    IF (NOT EXISTS(SELECT 1 FROM {objectQualifier}USERGROUP 
     WHERE USERID=:I_USERID AND GROUPID=:I_GROUPID)) THEN
-        INSERT INTO objQual_USERGROUP(USERID,GROUPID)
+        INSERT INTO {objectQualifier}USERGROUP(USERID,GROUPID)
         VALUES (:I_USERID,:I_GROUPID); 
         -- save new user style
-        UPDATE objQual_USER SET UserStyle= COALESCE(( SELECT FIRST 1 f.Style FROM objQual_USERGROUP e 
-        join objQual_GROUP f on f.GroupID=e.GroupID WHERE e.UserID=:I_USERID AND CHAR_LENGTH(f.Style) > 2 ORDER BY f.SortOrder), (SELECT FIRST 1 r.Style FROM objQual_RANK r where r.RANKID = objQual_USER.RANKID)) 
+        UPDATE {objectQualifier}USER SET UserStyle= COALESCE(( SELECT FIRST 1 f.Style FROM {objectQualifier}USERGROUP e 
+        join {objectQualifier}GROUP f on f.GroupID=e.GroupID WHERE e.UserID=:I_USERID AND CHAR_LENGTH(f.Style) > 2 ORDER BY f.SortOrder), (SELECT FIRST 1 r.Style FROM {objectQualifier}RANK r where r.RANKID = {objectQualifier}USER.RANKID)) 
         WHERE UserID = :I_USERID;                
      END 
     
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USERPMESSAGE_DELETE(I_USERPMESSAGEID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USERPMESSAGE_DELETE(I_USERPMESSAGEID INTEGER)
 AS
 BEGIN
-    DELETE FROM objQual_USERPMESSAGE WHERE USERPMESSAGEID=:I_USERPMESSAGEID;
+    DELETE FROM {objectQualifier}USERPMESSAGE WHERE USERPMESSAGEID=:I_USERPMESSAGEID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USERPMESSAGE_LIST(I_USERPMESSAGEID INTEGER)
+CREATE PROCEDURE  {objectQualifier}USERPMESSAGE_LIST(I_USERPMESSAGEID INTEGER)
 RETURNS
 (
 "PMessageID" integer,
@@ -10667,10 +10775,10 @@ BEGIN
         d.ISREPLY,
         d.USERPMESSAGEID
     FROM
-        objQual_PMESSAGE a
-        inner join objQual_USERPMESSAGE d on d.PMESSAGEID = a.PMESSAGEID
-        inner join objQual_USER b on b.USERID = a.FROMUSERID
-        inner join objQual_USER c on c.USERID = d.USERID
+        {objectQualifier}PMESSAGE a
+        inner join {objectQualifier}USERPMESSAGE d on d.PMESSAGEID = a.PMESSAGEID
+        inner join {objectQualifier}USER b on b.USERID = a.FROMUSERID
+        inner join {objectQualifier}USER c on c.USERID = d.USERID
     WHERE
         d.USERPMESSAGEID = :I_USERPMESSAGEID AND
         d.ISDELETED=0
@@ -10693,31 +10801,31 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_WATCHFORUM_ADD(I_USERID INTEGER,I_FORUMID INTEGER, I_UTCTIMESTAMP TIMESTAMP)
+CREATE PROCEDURE  {objectQualifier}WATCHFORUM_ADD(I_USERID INTEGER,I_FORUMID INTEGER, I_UTCTIMESTAMP TIMESTAMP)
 AS
 BEGIN
                           
-                            IF (NOT EXISTS (SELECT 1 FROM objQual_WATCHFORUM a
+                            IF (NOT EXISTS (SELECT 1 FROM {objectQualifier}WATCHFORUM a
                             WHERE a.FORUMID=:I_FORUMID
                             AND a.USERID = :I_USERID)) THEN
-                            INSERT INTO objQual_WATCHFORUM
+                            INSERT INTO {objectQualifier}WATCHFORUM
                             (WATCHFORUMID,FORUMID,
                             USERID,
                             CREATED)
-                            VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_WATCHFORUM_WATCHFORUMID FROM RDB$DATABASE),:I_FORUMID,
+                            VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}WATCHFORUM_WATCHFORUMID FROM RDB$DATABASE),:I_FORUMID,
                             :I_USERID,
                             :I_UTCTIMESTAMP);
                             
  END;                           
 --GO
 
-CREATE PROCEDURE  objQual_WATCHFORUM_CHECK(I_USERID INTEGER,I_FORUMID INTEGER)
+CREATE PROCEDURE  {objectQualifier}WATCHFORUM_CHECK(I_USERID INTEGER,I_FORUMID INTEGER)
 RETURNS
 ("WatchForumID" INTEGER)
 AS
 BEGIN 
     FOR SELECT WATCHFORUMID
-     FROM objQual_WATCHFORUM
+     FROM {objectQualifier}WATCHFORUM
          WHERE USERID = :I_USERID AND FORUMID = :I_FORUMID
          INTO :"WatchForumID"
          DO
@@ -10725,14 +10833,14 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_WATCHFORUM_DELETE(I_WATCHFORUMID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}WATCHFORUM_DELETE(I_WATCHFORUMID INTEGER) 
 AS
 BEGIN
-    DELETE FROM objQual_WATCHFORUM WHERE WATCHFORUMID = :I_WATCHFORUMID;
+    DELETE FROM {objectQualifier}WATCHFORUM WHERE WATCHFORUMID = :I_WATCHFORUMID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_WATCHFORUM_LIST(I_USERID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}WATCHFORUM_LIST(I_USERID INTEGER) 
 RETURNS
 (
 "WatchForumID" integer,
@@ -10755,22 +10863,22 @@ BEGIN
     FOR SELECT
         a.*,
         b.NAME AS "ForumName",
-        (SELECT COUNT(1) FROM objQual_TOPIC x JOIN objQual_MESSAGE y 
+        (SELECT COUNT(1) FROM {objectQualifier}TOPIC x JOIN {objectQualifier}MESSAGE y 
         ON y.TOPICID=x.TOPICID WHERE x.FORUMID=a.FORUMID) AS "Messages",
-        (SELECT COUNT(1) FROM objQual_TOPIC x 
+        (SELECT COUNT(1) FROM {objectQualifier}TOPIC x 
         WHERE x.FORUMID=a.FORUMID AND x.TOPICMOVEDID IS NULL) AS "Topics",
         b.LASTPOSTED,
         b.LASTMESSAGEID,
-        (SELECT TOPICID FROM objQual_MESSAGE x 
+        (SELECT TOPICID FROM {objectQualifier}MESSAGE x 
         WHERE x.MESSAGEID=b.LASTMESSAGEID) AS "LastTopicID",
         b.LASTUSERID,
         COALESCE(b.LASTUSERNAME,
-        (select NAME from objQual_USER x where x.USERID=b.LASTUSERID)) AS LASTUSERNAME,
+        (select NAME from {objectQualifier}USER x where x.USERID=b.LASTUSERID)) AS LASTUSERNAME,
         COALESCE(b.LASTUSERDISPLAYNAME,
-        (select DISPLAYNAME from objQual_USER x where x.USERID=b.LASTUSERID)) AS LASTUSERDISPLAYNAME
+        (select DISPLAYNAME from {objectQualifier}USER x where x.USERID=b.LASTUSERID)) AS LASTUSERDISPLAYNAME
     FROM
-        objQual_WATCHFORUM a
-        INNER JOIN objQual_FORUM b ON b.FORUMID = a.FORUMID
+        {objectQualifier}WATCHFORUM a
+        INNER JOIN {objectQualifier}FORUM b ON b.FORUMID = a.FORUMID
     WHERE
         a.USERID = :I_USERID
         INTO
@@ -10792,23 +10900,23 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_WATCHTOPIC_ADD(I_USERID INTEGER,I_TOPICID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}WATCHTOPIC_ADD(I_USERID INTEGER,I_TOPICID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
 AS
 BEGIN
-     IF (NOT EXISTS(SELECT 1 FROM objQual_WATCHTOPIC 
+     IF (NOT EXISTS(SELECT 1 FROM {objectQualifier}WATCHTOPIC 
      WHERE TOPICID=:I_TOPICID AND USERID=:I_USERID)) THEN
-     INSERT INTO objQual_WATCHTOPIC(WATCHTOPICID,TOPICID,USERID,CREATED)
-     VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_WATCHTOPIC_WATCHTOPICID FROM RDB$DATABASE),:I_TOPICID, :I_USERID, :I_UTCTIMESTAMP); 	
+     INSERT INTO {objectQualifier}WATCHTOPIC(WATCHTOPICID,TOPICID,USERID,CREATED)
+     VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}WATCHTOPIC_WATCHTOPICID FROM RDB$DATABASE),:I_TOPICID, :I_USERID, :I_UTCTIMESTAMP); 	
        
 END;
 --GO
 
-CREATE PROCEDURE  objQual_WATCHTOPIC_CHECK(I_USERID INTEGER,I_TOPICID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}WATCHTOPIC_CHECK(I_USERID INTEGER,I_TOPICID INTEGER) 
 RETURNS ("WatchTopicID" INTEGER)
 AS
 BEGIN
 FOR
-    SELECT WATCHTOPICID FROM objQual_WATCHTOPIC 
+    SELECT WATCHTOPICID FROM {objectQualifier}WATCHTOPIC 
     WHERE USERID = :I_USERID AND TOPICID = :I_TOPICID
     INTO :"WatchTopicID"
     DO
@@ -10817,14 +10925,14 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_WATCHTOPIC_DELETE(I_WATCHTOPICID INTEGER)
+CREATE PROCEDURE  {objectQualifier}WATCHTOPIC_DELETE(I_WATCHTOPICID INTEGER)
 AS
 BEGIN
-    DELETE FROM objQual_WATCHTOPIC WHERE WATCHTOPICID = :I_WATCHTOPICID;
+    DELETE FROM {objectQualifier}WATCHTOPIC WHERE WATCHTOPICID = :I_WATCHTOPICID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_WATCHTOPIC_LIST(I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}WATCHTOPIC_LIST(I_USERID INTEGER)
 RETURNS
 (
 "WatchTopicID" integer,
@@ -10846,19 +10954,19 @@ BEGIN
     FOR SELECT
         a.*,
         b.TOPIC AS "TopicName",
-        (SELECT (COUNT(1) - 1) from objQual_MESSAGE x 
+        (SELECT (COUNT(1) - 1) from {objectQualifier}MESSAGE x 
         where x.TOPICID=b.TOPICID) AS "Replies",
         b.VIEWS,
         b.LASTPOSTED,
         b.LASTMESSAGEID,
         b.LASTUSERID,
         COALESCE(b.LASTUSERNAME,(SELECT NAME 
-        FROM objQual_USER x WHERE x.USERID=b.LASTUSERID)) AS "LastUserName",
+        FROM {objectQualifier}USER x WHERE x.USERID=b.LASTUSERID)) AS "LastUserName",
         COALESCE(b.LASTUSERDISPLAYNAME,(SELECT DISPLAYNAME 
-        FROM objQual_USER x WHERE x.USERID=b.LASTUSERID)) AS "LastUserDisplayName"
+        FROM {objectQualifier}USER x WHERE x.USERID=b.LASTUSERID)) AS "LastUserDisplayName"
     FROM
-        objQual_WATCHTOPIC a
-        INNER JOIN objQual_TOPIC b ON b.TOPICID = a.TOPICID
+        {objectQualifier}WATCHTOPIC a
+        INNER JOIN {objectQualifier}TOPIC b ON b.TOPICID = a.TOPICID
     WHERE
         a.USERID = :I_USERID
         INTO
@@ -10879,7 +10987,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_LOGIN(I_BOARDID INTEGER,I_NAME VARCHAR(128),I_PASSWORD VARCHAR(32))
+CREATE PROCEDURE  {objectQualifier}USER_LOGIN(I_BOARDID INTEGER,I_NAME VARCHAR(128),I_PASSWORD VARCHAR(32))
 RETURNS ("UserID" INTEGER)
 AS
 DECLARE ICI_USERID INTEGER;
@@ -10888,16 +10996,16 @@ BEGIN
  
     -- Try correct board first
     
-    IF (EXISTS(SELECT USERID FROM objQual_USER 
+    IF (EXISTS(SELECT USERID FROM {objectQualifier}USER 
     WHERE NAME=:I_NAME AND "PASSWORD"=:I_PASSWORD AND BOARDID=:I_BOARDID and BIN_AND(FLAGS, 2)=2)) THEN
     
-        SELECT USERID  FROM objQual_USER WHERE NAME=:I_NAME 
+        SELECT USERID  FROM {objectQualifier}USER WHERE NAME=:I_NAME 
         and "PASSWORD"=:I_PASSWORD AND BOARDID=:I_BOARDID and BIN_AND(FLAGS, 2)=2
         INTO :"UserID";
         
     ELSE
     BEGIN
-    IF (NOT EXISTS(select USERID FROM objQual_USER WHERE NAME=:I_NAME 
+    IF (NOT EXISTS(select USERID FROM {objectQualifier}USER WHERE NAME=:I_NAME 
     AND "PASSWORD"=:I_PASSWORD AND (BOARDID=:I_BOARDID OR BIN_AND(FLAGS, 3)=3))) THEN
         SELECT NULL FROM RDB$DATABASE INTO :"UserID";                 
     ELSE
@@ -10905,7 +11013,7 @@ BEGIN
         SELECT 
               USERID 
         FROM 
-            objQual_USER
+            {objectQualifier}USER
         WHERE 
             NAME=:I_NAME AND
             "PASSWORD"=:I_PASSWORD AND 
@@ -10918,7 +11026,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_user_ignoredlist
+CREATE PROCEDURE  {objectQualifier}user_ignoredlist
    (I_USERID INTEGER)
    RETURNS
    (
@@ -10927,7 +11035,7 @@ CREATE PROCEDURE  objQual_user_ignoredlist
    )
 AS
 BEGIN
-FOR	SELECT * FROM objQual_IGNOREUSER WHERE USERID = :I_USERID
+FOR	SELECT * FROM {objectQualifier}IGNOREUSER WHERE USERID = :I_USERID
     INTO
     :"UserID",
     :"IgnoredUserID"
@@ -10935,7 +11043,7 @@ FOR	SELECT * FROM objQual_IGNOREUSER WHERE USERID = :I_USERID
 END;	
 --GO
 
-CREATE PROCEDURE  objQual_shoutbox_getmessages
+CREATE PROCEDURE  {objectQualifier}shoutbox_getmessages
 (
   I_BOARDID INTEGER, 
   I_NUMBEROFMESSAGES INTEGER, 
@@ -10969,8 +11077,8 @@ FOR SELECT FIRST (:I_NUMBEROFMESSAGES)
             when 1 then  u.USERSTYLE 
             else (SELECT '' FROM RDB$DATABASE)	 end)
     FROM
-        objQual_SHOUTBOXMESSAGE sh
-        JOIN  objQual_USER u ON u.USERID =sh.USERID WHERE sh.BOARDID = :I_BOARDID
+        {objectQualifier}SHOUTBOXMESSAGE sh
+        JOIN  {objectQualifier}USER u ON u.USERID =sh.USERID WHERE sh.BOARDID = :I_BOARDID
     ORDER BY sh."DATE" DESC
     INTO
     :"ShoutBoxMessageID",
@@ -10987,10 +11095,10 @@ FOR SELECT FIRST (:I_NUMBEROFMESSAGES)
 END;
 --GO
 
-CREATE PROCEDURE  objQual_SHOUTBOX_SAVEMESSAGE(
+CREATE PROCEDURE  {objectQualifier}SHOUTBOX_SAVEMESSAGE(
     I_BOARDID INTEGER,
-    I_USERNAME		varchar(128),
-    I_USERID		integer,
+	I_USERID		integer,
+    I_USERNAME		varchar(128),    
     I_MESSAGE		BLOB SUB_TYPE 1 SEGMENT SIZE 80,
     I_DATE			timestamp,
     I_IP			VARCHAR(39),
@@ -11002,25 +11110,28 @@ BEGIN
     
     IF (I_DATE IS NULL) then
         I_DATE = :I_UTCTIMESTAMP;
-SELECT SIGN(COUNT(Name)) FROM objQual_User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
+SELECT SIGN(COUNT(Name)) FROM {objectQualifier}User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
 
-    INSERT INTO objQual_SHOUTBOXMESSAGE (SHOUTBOXMESSAGEID, BOARDID, USERNAME,USERDISPLAYNAME, USERID, MESSAGE, "DATE", IP)
-    VALUES ((SELECT NEXT VALUE FOR SEQ_objQual_SBOXMESG_SBOXMESGID FROM RDB$DATABASE),:I_BOARDID,:I_USERNAME,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DISPLAYNAME FROM objQual_USER WHERE USERID = :I_USERID) END), :I_USERID, :I_MESSAGE, :I_DATE, :I_IP);
+    INSERT INTO {objectQualifier}SHOUTBOXMESSAGE (SHOUTBOXMESSAGEID, BOARDID, USERNAME,USERDISPLAYNAME, USERID, MESSAGE, "DATE", IP)
+    VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}SBOXMESG_SBOXMESGID FROM RDB$DATABASE),:I_BOARDID,:I_USERNAME,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DISPLAYNAME FROM {objectQualifier}USER WHERE USERID = :I_USERID) END), :I_USERID, :I_MESSAGE, :I_DATE, :I_IP);
 
 END;
 --GO
 
-CREATE PROCEDURE  objQual_SHOUTBOX_CLEARMESSAGES(I_BOARDID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
+CREATE PROCEDURE  {objectQualifier}SHOUTBOX_CLEARMESSAGES(I_BOARDID INTEGER, I_UTCTIMESTAMP TIMESTAMP) 
 AS
 BEGIN
-    DELETE FROM objQual_SHOUTBOXMESSAGE WHERE BOARDID = :I_BOARDID AND  DATEDIFF(DAY FROM  "DATE" TO  :I_UTCTIMESTAMP) > 1;
+    DELETE FROM {objectQualifier}SHOUTBOXMESSAGE WHERE BOARDID = :I_BOARDID AND  DATEDIFF(DAY FROM  "DATE" TO  :I_UTCTIMESTAMP) > 1;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_DB_SIZE(I_DBNAME varchar(128))
+CREATE PROCEDURE  {objectQualifier}DB_SIZE(I_DBSCHEME varchar(128), I_DBNAME varchar(128))
 RETURNS (DBSIZE integer)
 AS
 BEGIN
+SELECT RIGHT(a.MON$DATABASE_NAME, 50)
+FROM MON$DATABASE a INTO :I_DBNAME;
+-- SELECT * FROM MON$DATABASE
 I_DBNAME = '%' ||  :I_DBNAME || '%';
 SELECT  (a.MON$PAGE_SIZE * a.MON$PAGES)/1024/1024  
 FROM  MON$DATABASE a WHERE UPPER(a.MON$DATABASE_NAME) LIKE :I_DBNAME
@@ -11030,18 +11141,18 @@ END;
 --GO
 
 /* Procedures for "Thanks" Mod */
-CREATE PROCEDURE  objQual_MESSAGE_ADDTHANKS(I_FROMUSERID integer, I_MESSAGEID integer, I_UTCTIMESTAMP timestamp, I_USEDISPAYNAME BOOL)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_ADDTHANKS(I_FROMUSERID integer, I_MESSAGEID integer, I_UTCTIMESTAMP timestamp, I_USEDISPAYNAME BOOL)
 RETURNS (O_PARAMOUTPUT varchar(128))
 AS
 DECLARE VARIABLE ICI_TOUSERID INTEGER;
 BEGIN
-IF ( not exists (SELECT 1 FROM objQual_THANKS WHERE MESSAGEID = :I_MESSAGEID  AND THANKSFROMUSERID = :I_FROMUSERID)) THEN
+IF ( not exists (SELECT 1 FROM {objectQualifier}THANKS WHERE MESSAGEID = :I_MESSAGEID  AND THANKSFROMUSERID = :I_FROMUSERID)) THEN
 BEGIN
-    SELECT USERID FROM objQual_MESSAGE WHERE MESSAGEID = :I_MESSAGEID INTO :ICI_TOUSERID ;
+    SELECT USERID FROM {objectQualifier}MESSAGE WHERE MESSAGEID = :I_MESSAGEID INTO :ICI_TOUSERID ;
 
-    INSERT INTO objQual_THANKS (THANKSID,THANKSFROMUSERID, THANKSTOUSERID, MESSAGEID, THANKSDATE) 
-        values ((SELECT NEXT VALUE FOR SEQ_objQual_THANKS_THANKSID FROM RDB$DATABASE),:I_FROMUSERID, :ICI_TOUSERID, :I_MESSAGEID , :I_UTCTIMESTAMP);
-    SELECT (CASE WHEN :I_USEDISPAYNAME = 1 THEN DISPLAYNAME ELSE NAME END) FROM objQual_USER WHERE (USERID=:ICI_TOUSERID) 
+    INSERT INTO {objectQualifier}THANKS (THANKSID,THANKSFROMUSERID, THANKSTOUSERID, MESSAGEID, THANKSDATE) 
+        values ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}THANKS_THANKSID FROM RDB$DATABASE),:I_FROMUSERID, :ICI_TOUSERID, :I_MESSAGEID , :I_UTCTIMESTAMP);
+    SELECT (CASE WHEN :I_USEDISPAYNAME = 1 THEN DISPLAYNAME ELSE NAME END) FROM {objectQualifier}USER WHERE (USERID=:ICI_TOUSERID) 
         INTO :O_PARAMOUTPUT;
 END
 ELSE
@@ -11050,13 +11161,13 @@ SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_GETTHANKS(I_MESSAGEID integer)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_GETTHANKS(I_MESSAGEID integer)
 RETURNS ("UserID" integer, "ThanksDate" timestamp,"Name" varchar(128),"DisplayName" varchar(128) )
 AS
 BEGIN
 FOR	SELECT a.THANKSFROMUSERID, a.THANKSDATE, b.NAME, b.DISPLAYNAME
-    FROM objQual_THANKS a 
-    Inner Join objQual_USER b
+    FROM {objectQualifier}THANKS a 
+    Inner Join {objectQualifier}USER b
     ON (a.THANKSFROMUSERID = b.USERID) WHERE (MESSAGEID=:I_MESSAGEID)
     ORDER BY a.THANKSDATE DESC
         INTO
@@ -11065,7 +11176,7 @@ FOR	SELECT a.THANKSFROMUSERID, a.THANKSDATE, b.NAME, b.DISPLAYNAME
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_GETALLTHANKS(I_MESSAGEIDS BLOB SUB_TYPE 1)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_GETALLTHANKS(I_MESSAGEIDS BLOB SUB_TYPE 1)
 RETURNS 
 ("FromUserID" integer, 
 "ThanksDate" timestamp, 
@@ -11090,8 +11201,8 @@ BEGIN
     ICI_MESSAGEIDSCHUNK  = SUBSTRING( :I_MESSAGEIDS FROM 1 FOR 4000 );
     
     
-    WHILE (CHAR_LENGTH(:ICI_MESSAGEIDSCHUNK) > 0) DO	
-    BEGIN 
+   -- WHILE (CHAR_LENGTH(:ICI_MESSAGEIDSCHUNK) > 0) DO	
+   -- BEGIN 
 
 
     IF (CHAR_LENGTH(:ICI_MESSAGEIDSCHUNK) > 3989) THEN
@@ -11127,11 +11238,11 @@ BEGIN
     b.THANKSDATE, 
     (SELECT 0 FROM RDB$DATABASE), 
     b.THANKSTOUSERID AS ToUserID,
-    (SELECT COUNT(b.THANKSID) FROM objQual_THANKS b WHERE b.THANKSFROMUSERID=d.USERID) AS ThanksFromUserNumber,
-    (SELECT COUNT(b.THANKSID) FROM objQual_THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserNumber,
-    (SELECT COUNT(DISTINCT(b.MESSAGEID)) FROM objQual_THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserPostsNumber	
-    FROM objQual_MESSAGE d 
-    LEFT JOIN objQual_THANKS b ON (b.MESSAGEID = d.MESSAGEID)
+    (SELECT COUNT(b.THANKSID) FROM {objectQualifier}THANKS b WHERE b.THANKSFROMUSERID=d.USERID) AS ThanksFromUserNumber,
+    (SELECT COUNT(b.THANKSID) FROM {objectQualifier}THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserNumber,
+    (SELECT COUNT(DISTINCT(b.MESSAGEID)) FROM {objectQualifier}THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserPostsNumber	
+    FROM {objectQualifier}MESSAGE d 
+    LEFT JOIN {objectQualifier}THANKS b ON (b.MESSAGEID = d.MESSAGEID)
     WHERE d.MESSAGEID=(CAST(:ICI_MESSAGEID AS integer))	
     INTO
     :"FromUserID", 
@@ -11156,11 +11267,11 @@ BEGIN
     b.THANKSDATE, 
     0, 
     b.THANKSTOUSERID AS ToUserID,
-    (SELECT COUNT(THANKSID) FROM objQual_THANKS b WHERE b.THANKSFROMUSERID=d.USERID) AS ThanksFromUserNumber,
-    (SELECT COUNT(THANKSID) FROM objQual_THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserNumber,
-    (SELECT COUNT(DISTINCT(MESSAGEID)) FROM objQual_THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserPostsNumber	
-    FROM objQual_MESSAGE d 
-    LEFT JOIN objQual_THANKS b ON (b.MESSAGEID = d.MESSAGEID)
+    (SELECT COUNT(THANKSID) FROM {objectQualifier}THANKS b WHERE b.THANKSFROMUSERID=d.USERID) AS ThanksFromUserNumber,
+    (SELECT COUNT(THANKSID) FROM {objectQualifier}THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserNumber,
+    (SELECT COUNT(DISTINCT(MESSAGEID)) FROM {objectQualifier}THANKS b WHERE b.THANKSTOUSERID=d.USERID) AS ThanksToUserPostsNumber	
+    FROM {objectQualifier}MESSAGE d 
+    LEFT JOIN {objectQualifier}THANKS b ON (b.MESSAGEID = d.MESSAGEID)
     WHERE d.MESSAGEID=(CAST(:ICI_MESSAGEIDSCHUNK AS integer))	
     INTO
     :"FromUserID", 
@@ -11175,7 +11286,7 @@ BEGIN
      END */
         
     END	
-    END    
+  --  END    
           ICI_ITR = :ICI_ITR + :ICI_MESSAGEIDSCHUNKCURRENT;            
           ICI_MESSAGEIDSCHUNK  = SUBSTRING( :I_MESSAGEIDS FROM :ICI_ITR FOR ( :ICI_ITR + 4000 ) ); 
             
@@ -11186,73 +11297,74 @@ END
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_REMOVETHANKS(I_FROMUSERID integer, I_MESSAGEID integer, I_USEDISPLAYNAME bool)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_REMOVETHANKS(I_FROMUSERID integer, I_MESSAGEID integer, I_USEDISPLAYNAME bool)
 RETURNS (OUT_RESULT varchar(255))
 AS
 DECLARE VARIABLE ICI_TOUSERID integer;
 BEGIN
-    DELETE FROM objQual_THANKS 
+    DELETE FROM {objectQualifier}THANKS 
         WHERE THANKSFROMUSERID=:I_FROMUSERID 
         AND MESSAGEID=:I_MESSAGEID;	
-    SELECT USERID FROM objQual_MESSAGE WHERE MESSAGEID = :I_MESSAGEID INTO :ICI_TOUSERID;
-    SELECT ( CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END) FROM objQual_USER WHERE (USERID=:ICI_TOUSERID) INTO :OUT_RESULT;
+    SELECT USERID FROM {objectQualifier}MESSAGE WHERE MESSAGEID = :I_MESSAGEID INTO :ICI_TOUSERID;
+    SELECT ( CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END) FROM {objectQualifier}USER WHERE (USERID=:ICI_TOUSERID) INTO :OUT_RESULT;
 SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_MESSAGE_THANKSNUMBER(I_MESSAGEID integer)
+CREATE PROCEDURE  {objectQualifier}MESSAGE_THANKSNUMBER(I_MESSAGEID integer)
 RETURNS (OUT_NUMBER integer)
 AS
 BEGIN
-SELECT Count(*) from objQual_THANKS WHERE MESSAGEID = :I_MESSAGEID
+SELECT Count(*) from {objectQualifier}THANKS WHERE MESSAGEID = :I_MESSAGEID
 INTO :OUT_NUMBER;
 SUSPEND; 
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_GETTHANKS_FROM(I_USERID integer, I_PAGEUSERID integer)
+CREATE PROCEDURE  {objectQualifier}USER_GETTHANKS_FROM(I_USERID integer, I_PAGEUSERID integer)
 RETURNS (OUT_NUMBER integer)
 AS
 BEGIN
-SELECT Count(1) FROM objQual_THANKS 
+SELECT Count(1) FROM {objectQualifier}THANKS 
 WHERE THANKSFROMUSERID=:I_USERID  INTO :OUT_NUMBER;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_GETTHANKS_TO(I_USERID integer, I_PAGEUSERID integer)
-RETURNS ("ThanksToNumber" integer,"ThanksToPostsNumber" integer)
+CREATE PROCEDURE  {objectQualifier}USER_GETTHANKS_TO(I_USERID integer, I_PAGEUSERID integer)
+RETURNS ("I_ThanksToNumber" integer,"I_ThanksToPostsNumber" integer)
 AS
 BEGIN
 SELECT 
 Count(*),	
-Count(DISTINCT MESSAGEID) FROM objQual_THANKS WHERE THANKSTOUSERID=:I_USERID
-INTO :"ThanksToNumber",:"ThanksToPostsNumber";
+Count(DISTINCT MESSAGEID) FROM {objectQualifier}THANKS WHERE THANKSTOUSERID=:I_USERID
+INTO :"I_ThanksToNumber",:"I_ThanksToPostsNumber";
 SUSPEND;	
 END;
 --GO
 
 /* Stored procedures for Buddy feature */
 
-CREATE PROCEDURE  objQual_BUDDY_ADDREQUEST(
+CREATE PROCEDURE  {objectQualifier}BUDDY_ADDREQUEST(
     I_FROMUSERID INTEGER,
     I_TOUSERID INT,
+	I_USEDISPLAYNAME BOOL,
     I_UTCTIMESTAMP TIMESTAMP)
-    RETURNS ( I_APPROVED SMALLINT, I_PARAMOUTPUT VARCHAR(128))
+    RETURNS ( I_APPROVED SMALLINT, I_PARAMOUTPUT VARCHAR(255))
 AS 
     BEGIN
         IF (NOT EXISTS ( SELECT  ID
-                        FROM    objQual_BUDDY
+                        FROM    {objectQualifier}BUDDY
                         WHERE    FROMUSERID = :I_FROMUSERID
                                   AND TOUSERID = :I_TOUSERID ))  THEN
             BEGIN
                 IF ( NOT EXISTS ( SELECT    ID
-                                  FROM      objQual_BUDDY
+                                  FROM      {objectQualifier}BUDDY
                                   WHERE     FROMUSERID = :I_TOUSERID
                                               AND TOUSERID = :I_FROMUSERID
                                             ) 
                    ) THEN
                     BEGIN
-                        INSERT  INTO objQual_BUDDY
+                        INSERT  INTO {objectQualifier}BUDDY
                                 (
                                   ID,
                                   FROMUSERID,
@@ -11261,7 +11373,7 @@ AS
                                   REQUESTED
                                 )
                         VALUES  (
-                                 (SELECT NEXT VALUE FOR SEQ_objQual_BUDDY_ID FROM RDB$DATABASE),                              
+                                 (SELECT NEXT VALUE FOR SEQ_{objectQualifier}BUDDY_ID FROM RDB$DATABASE),                              
                                   :I_FROMUSERID,
                                   :I_TOUSERID,
                                   0,
@@ -11269,14 +11381,14 @@ AS
                                 );
                                 SELECT 
                                  (SELECT 0 FROM RDB$DATABASE) AS APPROVED,
-                                  NAME
-                                             FROM   objQual_USER
+                                 (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
+                                             FROM   {objectQualifier}USER
                                              WHERE  ( USERID = :I_TOUSERID ) INTO :I_APPROVED,:I_PARAMOUTPUT;
                      
                     END
                 ELSE 
                     BEGIN
-                        INSERT  INTO objQual_BUDDY
+                        INSERT  INTO {objectQualifier}BUDDY
                                 (
                                   ID,
                                   FROMUSERID,
@@ -11285,21 +11397,21 @@ AS
                                   REQUESTED
                                 )
                         VALUES  (
-                                 (SELECT NEXT VALUE FOR SEQ_objQual_BUDDY_ID FROM RDB$DATABASE),                              
+                                 (SELECT NEXT VALUE FOR SEQ_{objectQualifier}BUDDY_ID FROM RDB$DATABASE),                              
                                   :I_FROMUSERID,
                                   :I_TOUSERID,
                                   1,
                                   :I_UTCTIMESTAMP
                                 );
-                        UPDATE  objQual_BUDDY
+                        UPDATE  {objectQualifier}BUDDY
                         SET     APPROVED = 1
                         WHERE   ( FROMUSERID = :I_FROMUSERID
                                   AND TOUSERID = :I_FROMUSERID
                                 );
                          SELECT 
                                  (SELECT 1 FROM RDB$DATABASE) AS APPROVED,
-                                  NAME
-                                             FROM   objQual_USER
+                                 (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
+                                             FROM   {objectQualifier}USER
                                              WHERE  ( USERID = :I_TOUSERID ) INTO :I_APPROVED,:I_PARAMOUTPUT;
                     END
             END	
@@ -11311,37 +11423,38 @@ SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_BUDDY_APPROVEREQUEST(
+CREATE PROCEDURE  {objectQualifier}BUDDY_APPROVEREQUEST(
     I_FROMUSERID INTEGER,
     I_TOUSERID INTEGER,
     I_MUTUAL BOOL,
+	I_USEDISPLAYNAME BOOL,
     I_UTCTIMESTAMP TIMESTAMP)
     RETURNS
-    (I_PARAMOUTPUT VARCHAR(128))
+    (I_PARAMOUTPUT VARCHAR(255))
 AS 
     BEGIN
         IF (EXISTS ( SELECT  ID
-                    FROM    objQual_BUDDY
+                    FROM    {objectQualifier}BUDDY
                     WHERE    FROMUSERID = :I_FROMUSERID
                               AND TOUSERID = :I_TOUSERID
                              )) THEN
             BEGIN
-                UPDATE  objQual_BUDDY
+                UPDATE  {objectQualifier}BUDDY
                 SET     APPROVED = 1
                 WHERE   ( FROMUSERID = :I_FROMUSERID
                           AND TOUSERID = :I_TOUSERID
                         );
-                 SELECT NAME
-                                     FROM   objQual_USER
+                 SELECT (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
+                                     FROM   {objectQualifier}USER
                                      WHERE  ( USERID = :I_FROMUSERID ) INTO :I_PARAMOUTPUT;
                                   
                 IF (( :I_MUTUAL = 1 )
                     AND ( NOT EXISTS ( SELECT   ID
-                                       FROM     objQual_BUDDY
+                                       FROM     {objectQualifier}BUDDY
                                        WHERE    FROMUSERID = :I_TOUSERID
                                                 AND TOUSERID = :I_FROMUSERID ) 
                         ))  THEN
-                    INSERT  INTO objQual_BUDDY
+                    INSERT  INTO {objectQualifier}BUDDY
                             (
                               ID,
                               FROMUSERID,
@@ -11350,7 +11463,7 @@ AS
                               REQUESTED
                             )
                     VALUES  (
-                             (SELECT NEXT VALUE FOR SEQ_objQual_BUDDY_ID FROM RDB$DATABASE),                              
+                             (SELECT NEXT VALUE FOR SEQ_{objectQualifier}BUDDY_ID FROM RDB$DATABASE),                              
                               :I_TOUSERID,
                               :I_FROMUSERID,
                               1,
@@ -11361,11 +11474,12 @@ SUSPEND;
 END;
 --GO
 
-    CREATE PROCEDURE  objQual_BUDDY_LIST( I_FROMUSERID INTEGER)
+    CREATE PROCEDURE  {objectQualifier}BUDDY_LIST( I_FROMUSERID INTEGER)
     RETURNS (
     "UserID" INTEGER,
     "BoardID" INTEGER,
-    "Name" VARCHAR(128),
+    "Name" VARCHAR(255),
+	"DisplayName" VARCHAR(255),
     "Joined" TIMESTAMP,
     "NumPosts" INTEGER,
     "RankName" VARCHAR(128),
@@ -11377,36 +11491,39 @@ AS
     FOR  SELECT a.USERID,
                 a.BOARDID,
                 a.NAME,
+				a.DISPLAYNAME,
                 a.JOINED,
                 a.NUMPOSTS,
                 b.NAME AS RankName,
                 c.APPROVED,
                 c.FROMUSERID,
                 c.REQUESTED
-        FROM   objQual_USER a
-                JOIN objQual_RANK b ON b.RANKID = a.RANKID
-                JOIN objQual_BUDDY c ON c.TOUSERID = a.USERID
+        FROM   {objectQualifier}USER a
+                JOIN {objectQualifier}RANK b ON b.RANKID = a.RANKID
+                JOIN {objectQualifier}BUDDY c ON c.TOUSERID = a.USERID
                 WHERE c.FROMUSERID = :I_FROMUSERID
-                GROUP BY a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
+                GROUP BY a.DISPLAYNAME, a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
         UNION ALL
         SELECT  (SELECT :I_FROMUSERID FROM RDB$DATABASE) AS UserID,
                 a.BOARDID,
                 a.NAME,
+				a.DISPLAYNAME,
                 a.JOINED,
                 a.NUMPOSTS,
                 b.NAME AS RankName,
                 c.APPROVED,
                 c.FROMUSERID,
                 c.REQUESTED
-        FROM    objQual_USER a
-                JOIN objQual_RANK b ON b.RANKID = a.RANKID
-                JOIN objQual_BUDDY c ON a.USERID = c.FROMUSERID
+        FROM    {objectQualifier}USER a
+                JOIN {objectQualifier}RANK b ON b.RANKID = a.RANKID
+                JOIN {objectQualifier}BUDDY c ON a.USERID = c.FROMUSERID
                 WHERE c.APPROVED = 0 AND  c.TOUSERID = :I_FROMUSERID 
-                GROUP BY a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
+                GROUP BY a.DISPLAYNAME, a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
                 INTO
     :"UserID",
     :"BoardID",
     :"Name",
+	:"DisplayName",
     :"Joined",
     :"NumPosts",
     :"RankName",
@@ -11418,37 +11535,39 @@ SUSPEND;
 END;
 --GO
 
-    CREATE PROCEDURE  objQual_BUDDY_REMOVE(
+    CREATE PROCEDURE  {objectQualifier}BUDDY_REMOVE(
     I_FROMUSERID INTEGER,
-    I_TOUSERID INTEGER)
+    I_TOUSERID INTEGER,
+	I_USEDISPLAYNAME BOOL)
     RETURNS
     ( I_PARAMOUTPUT VARCHAR(128) )
 AS 
     BEGIN
-        DELETE  FROM objQual_BUDDY
+        DELETE  FROM {objectQualifier}BUDDY
         WHERE   FROMUSERID = :I_FROMUSERID
                   AND TOUSERID = :I_TOUSERID;
-         SELECT NAME
-         FROM   objQual_USER
+         SELECT  (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
+         FROM   {objectQualifier}USER
          WHERE  USERID = :I_TOUSERID
          INTO :I_PARAMOUTPUT;
    SUSPEND;                        
    END;    
     --GO
     
-CREATE PROCEDURE  objQual_BUDDY_DENYREQUEST
+CREATE PROCEDURE  {objectQualifier}BUDDY_DENYREQUEST
     (I_FROMUSERID INTEGER,
-    I_TOUSERID INTEGER)
+    I_TOUSERID INTEGER,
+	I_USEDISPLAYNAME BOOL)
     RETURNS
     (
     I_PARAMOUTPUT VARCHAR(128)
     )
 AS 
     BEGIN
-        DELETE  FROM objQual_BUDDY
+        DELETE  FROM {objectQualifier}BUDDY
         WHERE   FROMUSERID = :I_FROMUSERID
                 AND TOUSERID = :I_TOUSERID;
-        SELECT NAME FROM   objQual_USER
+        SELECT  (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END) FROM   {objectQualifier}USER
                     WHERE   USERID = :I_FROMUSERID 
                     INTO :I_PARAMOUTPUT;
                     SUSPEND;
@@ -11457,40 +11576,40 @@ AS
 --GO    
 /* End of stored procedures for Buddy feature */
 
-CREATE PROCEDURE  objQual_TOPIC_FAVORITE_ADD
+CREATE PROCEDURE  {objectQualifier}TOPIC_FAVORITE_ADD
     (I_USERID integer,
     I_TOPICID integer)
 AS
 BEGIN
-    IF (NOT EXISTS (SELECT ID FROM objQual_FAVORITETOPIC WHERE USERID = :I_USERID AND TOPICID=:I_TOPICID)) THEN
+    IF (NOT EXISTS (SELECT ID FROM {objectQualifier}FAVORITETOPIC WHERE USERID = :I_USERID AND TOPICID=:I_TOPICID)) THEN
     BEGIN
-        INSERT INTO objQual_FAVORITETOPIC(ID, USERID, TOPICID) VALUES 
-                                ((SELECT NEXT VALUE FOR SEQ_objQual_FAVORITETOPIC_ID FROM RDB$DATABASE), :I_USERID, :I_TOPICID);
+        INSERT INTO {objectQualifier}FAVORITETOPIC(ID, USERID, TOPICID) VALUES 
+                                ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}FAVORITETOPIC_ID FROM RDB$DATABASE), :I_USERID, :I_TOPICID);
     END
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_FAVORITE_REMOVE 
+CREATE PROCEDURE  {objectQualifier}TOPIC_FAVORITE_REMOVE 
     (I_USERID INTEGER,
     I_TOPICID INTEGER)
 AS
 BEGIN
-    DELETE FROM objQual_FAVORITETOPIC WHERE USERID=:I_USERID AND TOPICID=:I_TOPICID;
+    DELETE FROM {objectQualifier}FAVORITETOPIC WHERE USERID=:I_USERID AND TOPICID=:I_TOPICID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_FAVORITE_LIST(I_USERID INTEGER)
+CREATE PROCEDURE  {objectQualifier}TOPIC_FAVORITE_LIST(I_USERID INTEGER)
 RETURNS
 ("TopicID" integer) 
 AS
 BEGIN
-FOR SELECT TOPICID FROM objQual_FAVORITETOPIC WHERE USERID=:I_USERID
+FOR SELECT TOPICID FROM {objectQualifier}FAVORITETOPIC WHERE USERID=:I_USERID
 INTO :"TopicID"
 DO SUSPEND;
 END;
 --GO
 
-/* CREATE PROCEDURE  objQual_TOPIC_FAVORITE_DETAILS(
+/* CREATE PROCEDURE  {objectQualifier}TOPIC_FAVORITE_DETAILS(
                  I_BOARDID integer,
                  I_PAGEUSERID integer,
                  I_SINCE timestamp,
@@ -11540,35 +11659,35 @@ begin
         c.DESCRIPTION,
         c.USERID,
         COALESCE(c.USERNAME,b.NAME) as Starter,
-        (SELECT COUNT(1) FROM objQual_MESSAGE mes WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED = 1 AND mes.ISAPPROVED = 1 AND ((:I_PAGEUSERID IS NOT NULL AND mes.USERID = :I_PAGEUSERID) OR (:I_PAGEUSERID IS NULL)) ) as NumPostsDeleted,
-        (SELECT COUNT(1) FROM objQual_MESSAGE x WHERE x.TOPICID=c.TOPICID AND BIN_AND(x.FLAGS,8)=0) - 1 AS Replies,
+        (SELECT COUNT(1) FROM {objectQualifier}MESSAGE mes WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED = 1 AND mes.ISAPPROVED = 1 AND ((:I_PAGEUSERID IS NOT NULL AND mes.USERID = :I_PAGEUSERID) OR (:I_PAGEUSERID IS NULL)) ) as NumPostsDeleted,
+        (SELECT COUNT(1) FROM {objectQualifier}MESSAGE x WHERE x.TOPICID=c.TOPICID AND BIN_AND(x.FLAGS,8)=0) - 1 AS Replies,
         c.VIEWS AS Views,
         c.LASTPOSTED as LastPosted ,
         c.LASTUSERID as LastUserID,
-        COALESCE(c.LASTUSERNAME,(select NAME from objQual_USER x where x.USERID=c.LASTUSERID)) as LastUserName,
+        COALESCE(c.LASTUSERNAME,(select NAME from {objectQualifier}USER x where x.USERID=c.LASTUSERID)) as LastUserName,
         c.LASTMESSAGEID AS LastMessageID,
         c.TOPICID AS LastTopicID,
         c.FLAGS as TopicFlags,
-        (SELECT COUNT(ID) FROM  objQual_FAVORITETOPIC WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)) AS FAVORITECOUNT,
+        (SELECT COUNT(ID) FROM  {objectQualifier}FAVORITETOPIC WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)) AS FAVORITECOUNT,
         c.PRIORITY,
         c.POLLID,
         d.NAME AS ForumName,
         c.TOPICMOVEDID,
         d.FLAGS AS ForumFlags,
-        (SELECT FIRST 1 CAST(MESSAGE as varchar(1000)) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0) AS FirstMessage,
+        (SELECT FIRST 1 CAST(MESSAGE as varchar(1000)) FROM {objectQualifier}MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0) AS FirstMessage,
         (case(:I_STYLEDNICKS)
-            when 1 then  (SELECT * FROM objQual_GET_USERSTYLE(c.USERID))  
+            when 1 then  (SELECT * FROM {objectQualifier}GET_USERSTYLE(c.USERID))  
             else ''	 end) AS StarterStyle,
         (case(:I_STYLEDNICKS)
-            when 1 then  (SELECT * FROM objQual_GET_USERSTYLE(c.LASTUSERID))  
+            when 1 then  (SELECT * FROM {objectQualifier}GET_USERSTYLE(c.LASTUSERID))  
             else ''	 end) AS LastUserStyle
     from
-        objQual_TOPIC c
-        join objQual_USER b on b.USERID=c.USERID
-        join objQual_FORUM d on d.FORUMID=c.FORUMID
-        join objQual_VACCESS x on x.FORUMID=d.FORUMID
-        join objQual_CATEGORY e on e.CATEGORYID=d.CATEGORYID
-        JOIN objQual_FAVORITETOPIC z ON z.TOPICID=c.TOPICID AND z.USERID=:I_PAGEUSERID
+        {objectQualifier}TOPIC c
+        join {objectQualifier}USER b on b.USERID=c.USERID
+        join {objectQualifier}FORUM d on d.FORUMID=c.FORUMID
+        join {objectQualifier}VACCESS x on x.FORUMID=d.FORUMID
+        join {objectQualifier}CATEGORY e on e.CATEGORYID=d.CATEGORYID
+        JOIN {objectQualifier}FAVORITETOPIC z ON z.TOPICID=c.TOPICID AND z.USERID=:I_PAGEUSERID
     where
         :I_SINCE < c.LASTPOSTED and
         x.USERID = :I_PAGEUSERID and
@@ -11616,7 +11735,7 @@ END;
 
  Albums */
 
-CREATE PROCEDURE  objQual_ALBUM_SAVE
+CREATE PROCEDURE  {objectQualifier}ALBUM_SAVE
     (
       I_ALBUMID integer,
       I_USERID integer,
@@ -11636,7 +11755,7 @@ CREATE PROCEDURE  objQual_ALBUM_SAVE
              AND :I_COVERIMAGEID <> 0
            ) THEN
             BEGIN
-            UPDATE  objQual_USERALBUM
+            UPDATE  {objectQualifier}USERALBUM
             SET     COVERIMAGEID = :I_COVERIMAGEID
             WHERE   ALBUMID = :I_ALBUMID;
             END
@@ -11645,7 +11764,7 @@ CREATE PROCEDURE  objQual_ALBUM_SAVE
             -- Remove Cover?
             IF ( :I_COVERIMAGEID = 0 )  THEN
                 BEGIN
-                UPDATE  objQual_USERALBUM
+                UPDATE  {objectQualifier}USERALBUM
                 SET     COVERIMAGEID = NULL
                 WHERE   ALBUMID = :I_ALBUMID;
                 END            
@@ -11654,15 +11773,15 @@ CREATE PROCEDURE  objQual_ALBUM_SAVE
             -- Update Title?
                 IF (:I_ALBUMID is not null) THEN
                     BEGIN
-                    UPDATE  objQual_USERALBUM
+                    UPDATE  {objectQualifier}USERALBUM
                     SET     TITLE = :I_TITLE
                     WHERE   ALBUMID = :I_ALBUMID;
                     END
                 ELSE  
                 BEGIN                  
                     -- New album. insert into table.
-                   SELECT NEXT VALUE FOR SEQ_objQual_USERALBUM_ALBUMID FROM RDB$DATABASE  INTO :OUT_ALBUMID;
-                        INSERT  INTO objQual_USERALBUM
+                   SELECT NEXT VALUE FOR SEQ_{objectQualifier}USERALBUM_ALBUMID FROM RDB$DATABASE  INTO :OUT_ALBUMID;
+                        INSERT  INTO {objectQualifier}USERALBUM
                                 (
                                   ALBUMID,
                                   USERID,
@@ -11686,7 +11805,7 @@ CREATE PROCEDURE  objQual_ALBUM_SAVE
 end;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_LIST
+CREATE PROCEDURE  {objectQualifier}ALBUM_LIST
     (
       I_USERID INTEGER,
       I_ALBUMID INTEGER
@@ -11703,7 +11822,7 @@ CREATE PROCEDURE  objQual_ALBUM_LIST
     BEGIN
         IF (:I_USERID IS NOT NULL) THEN
             FOR select  *
-            FROM    objQual_USERALBUM
+            FROM    {objectQualifier}USERALBUM
             WHERE   USERID = :I_USERID
             ORDER BY UPDATED DESC
             INTO 
@@ -11714,7 +11833,7 @@ CREATE PROCEDURE  objQual_ALBUM_LIST
             :"Updated" DO SUSPEND;	        
         ELSE 
             FOR SELECT  *
-            FROM    objQual_USERALBUM
+            FROM    {objectQualifier}USERALBUM
             WHERE   ALBUMID = :I_ALBUMID
             INTO 
             :"AlbumID",
@@ -11727,17 +11846,17 @@ CREATE PROCEDURE  objQual_ALBUM_LIST
  end;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_DELETE ( I_ALBUMID integer )
+CREATE PROCEDURE  {objectQualifier}ALBUM_DELETE ( I_ALBUMID integer )
 AS
 BEGIN
-        DELETE  FROM objQual_USERALBUMIMAGE
+        DELETE  FROM {objectQualifier}USERALBUMIMAGE
         WHERE   ALBUMID = :I_ALBUMID;
-        DELETE  FROM objQual_USERALBUM
+        DELETE  FROM {objectQualifier}USERALBUM
         WHERE   ALBUMID = :I_ALBUMID;        
 END;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_GETTITLE
+CREATE PROCEDURE  {objectQualifier}ALBUM_GETTITLE
     (
       I_ALBUMID INTEGER 
     )
@@ -11748,52 +11867,47 @@ CREATE PROCEDURE  objQual_ALBUM_GETTITLE
     AS
     BEGIN
          SELECT TITLE
-          FROM   objQual_USERALBUM
+          FROM   {objectQualifier}USERALBUM
             WHERE  ALBUMID = :I_ALBUMID INTO :"Title";
             SUSPEND;
                            
     END;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_GETSTATS
+CREATE PROCEDURE  {objectQualifier}ALBUM_GETSTATS
     ( I_USERID INTEGER,
     I_ALBUMID INTEGER )
 RETURNS
 (
-I_ALBUMNUMBER INTEGER,
-I_IMAGENUMBER INTEGER 
+"AlbumNumber" INTEGER,
+"ImageNumber" INTEGER 
 )    
 AS
- BEGIN
-I_ALBUMNUMBER = 0;
-I_IMAGENUMBER = 0;
--- DECLARE VARIABLE   I_ALBUMNUMBER INTEGER DEFAULT 0;
--- DECLARE VARIABLE   I_IMAGENUMBER INTEGER DEFAULT 0; 
-      
+ BEGIN      
         IF ( :I_ALBUMID IS NOT NULL ) THEN
         SELECT COUNT(IMAGEID) 
-             FROM   objQual_USERALBUMIMAGE
+             FROM   {objectQualifier}USERALBUMIMAGE
              WHERE  ALBUMID = :I_ALBUMID
-        INTO  :I_IMAGENUMBER;
+        INTO  :"ImageNumber";
         ELSE  
         BEGIN          
          SELECT COUNT(ALBUMID)
-                FROM   objQual_USERALBUM
+                FROM   {objectQualifier}USERALBUM
                 WHERE  USERID = :I_USERID
-                INTO :I_ALBUMNUMBER ;
+                INTO :"AlbumNumber" ;
          SELECT COUNT(IMAGEID)
-                FROM   objQual_USERALBUMIMAGE
+                FROM   {objectQualifier}USERALBUMIMAGE
                 WHERE  ALBUMID in (
                                     SELECT  ALBUMID
-                                    FROM    objQual_USERALBUM
+                                    FROM    {objectQualifier}USERALBUM
                                     WHERE   USERID = :I_USERID) 
-                INTO  :I_IMAGENUMBER;
+                INTO  :"ImageNumber";
          END
             SUSPEND;
  end;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_IMAGE_SAVE
+CREATE PROCEDURE  {objectQualifier}ALBUM_IMAGE_SAVE
     (
       I_IMAGEID integer,
       I_ALBUMID integer,
@@ -11806,11 +11920,11 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGE_SAVE
     AS
     BEGIN
         IF (:I_IMAGEID is not null)  THEN
-            UPDATE  objQual_USERALBUMIMAGE
+            UPDATE  {objectQualifier}USERALBUMIMAGE
             SET     CAPTION = :I_CAPTION
             WHERE   IMAGEID = :I_IMAGEID;
         ELSE
-            INSERT  INTO objQual_USERALBUMIMAGE
+            INSERT  INTO {objectQualifier}USERALBUMIMAGE
                     (
                       IMAGEID, 
                       ALBUMID,
@@ -11822,7 +11936,7 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGE_SAVE
                       DOWNLOADS
                     )
             VALUES  (
-                     (SELECT NEXT VALUE FOR SEQ_objQual_USRALBIMG_IMAGEID FROM RDB$DATABASE),
+                     (SELECT NEXT VALUE FOR SEQ_{objectQualifier}USRALBIMG_IMAGEID FROM RDB$DATABASE),
                       :I_ALBUMID,
                       :I_CAPTION,
                       :I_FILENAME,
@@ -11835,7 +11949,7 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGE_SAVE
 end;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_IMAGE_LIST
+CREATE PROCEDURE  {objectQualifier}ALBUM_IMAGE_LIST
     (
       I_ALBIMID INTEGER,
       I_IMAGEID INTEGER
@@ -11856,7 +11970,7 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGE_LIST
     BEGIN
         IF (:I_ALBIMID IS NOT NULL) THEN        
          FOR   SELECT  a.*, (SELECT 0 FROM RDB$DATABASE)
-            FROM    objQual_USERALBUMIMAGE a
+            FROM    {objectQualifier}USERALBUMIMAGE a
             WHERE   a.ALBUMID = :I_ALBIMID
             ORDER BY a.UPLOADED DESC
             INTO
@@ -11873,8 +11987,8 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGE_LIST
         ELSE 
           FOR  SELECT  a.*,
                     b.USERID
-            FROM    objQual_USERALBUMIMAGE a
-                    INNER JOIN objQual_USERALBUM b ON b.ALBUMID = a.ALBUMID
+            FROM    {objectQualifier}USERALBUMIMAGE a
+                    INNER JOIN {objectQualifier}USERALBUM b ON b.ALBUMID = a.ALBUMID
             WHERE   IMAGEID = :I_IMAGEID
             INTO
             :"ImageID",
@@ -11890,7 +12004,7 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGE_LIST
 end;
 --GO
 
-CREATE PROCEDURE  objQual_ALBUM_IMAGES_BYUSER
+CREATE PROCEDURE  {objectQualifier}ALBUM_IMAGES_BYUSER
     (
       I_USERID INTEGER
     )
@@ -11909,8 +12023,8 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGES_BYUSER
     AS
     BEGIN		  
          FOR   SELECT  a.*, ua.USERID
-            FROM    objQual_USERALBUMIMAGE a
-            INNER JOIN objQual_USERALBUM ua
+            FROM    {objectQualifier}USERALBUMIMAGE a
+            INNER JOIN {objectQualifier}USERALBUM ua
             ON a.ALBUMID = ua.ALBUMID
             WHERE   ua.USERID = :I_USERID
             ORDER BY a.UPLOADED DESC
@@ -11929,30 +12043,30 @@ CREATE PROCEDURE  objQual_ALBUM_IMAGES_BYUSER
 end;
 --GO
 
-CREATE PROCEDURE  objQual_ALBUM_IMAGE_DELETE( I_IMAGEID integer )
+CREATE PROCEDURE  {objectQualifier}ALBUM_IMAGE_DELETE( I_IMAGEID integer )
 AS
     BEGIN
     
-       UPDATE  objQual_USERALBUM
+       UPDATE  {objectQualifier}USERALBUM
         SET     COVERIMAGEID = NULL
         WHERE   COVERIMAGEID = :I_IMAGEID;   
         
-        DELETE  FROM objQual_USERALBUMIMAGE
+        DELETE  FROM {objectQualifier}USERALBUMIMAGE
         WHERE   IMAGEID = :I_IMAGEID;                  
              
 end;
 --GO
     
-CREATE PROCEDURE  objQual_ALBUM_IMAGE_DOWNLOAD( I_IMAGEID integer )
+CREATE PROCEDURE  {objectQualifier}ALBUM_IMAGE_DOWNLOAD( I_IMAGEID integer )
 AS
     BEGIN
-        UPDATE  objQual_USERALBUMIMAGE
+        UPDATE  {objectQualifier}USERALBUMIMAGE
         SET     DOWNLOADS = DOWNLOADS + 1
         WHERE   IMAGEID = :I_IMAGEID;
  end;
 --GO
 
-CREATE PROCEDURE  objQual_USER_GETSIGNATUREDATA(I_BOARDID integer, I_USERID integer)
+CREATE PROCEDURE  {objectQualifier}USER_GETSIGNATUREDATA(I_BOARDID integer, I_USERID integer)
 RETURNS 
 (
 "UsrSigChars" INTEGER,
@@ -11974,9 +12088,9 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
     (CASE WHEN c.USRSIGCHARS IS NULL THEN 0 ELSE  c.USRSIGCHARS END),
     (CASE WHEN c.USRSIGBBCODES IS NULL THEN '' ELSE c.USRSIGBBCODES END), 
     (CASE WHEN c.USRSIGHTMLTAGS IS NULL THEN '' ELSE c.USRSIGHTMLTAGS END)
-    FROM objQual_USER a JOIN objQual_USERGROUP b
+    FROM {objectQualifier}USER a JOIN {objectQualifier}USERGROUP b
                           ON a.USERID = b.USERID
-                            JOIN objQual_GROUP c                         
+                            JOIN {objectQualifier}GROUP c                         
                               ON b.GROUPID = c.GROUPID 
                               WHERE a.USERID = :I_USERID 
                                AND c.BOARDID = :I_BOARDID 
@@ -11987,8 +12101,8 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
     (CASE WHEN c.USRSIGCHARS IS NULL THEN 0 ELSE  c.USRSIGCHARS END),
     (CASE WHEN c.USRSIGBBCODES IS NULL THEN '' ELSE c.USRSIGBBCODES END), 
     (CASE WHEN c.USRSIGHTMLTAGS IS NULL THEN '' ELSE c.USRSIGHTMLTAGS END)   
-    FROM objQual_RANK c 
-                                JOIN objQual_USER d
+    FROM {objectQualifier}RANK c 
+                                JOIN {objectQualifier}USER d
                                   ON c.RANKID = d.RANKID 
                                    WHERE d.USERID = :I_USERID 
                                      AND c.BOARDID = :I_BOARDID 
@@ -12009,7 +12123,7 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
  end;
 --GO
 
- CREATE PROCEDURE  objQual_USER_GETALBUMSDATA(I_BOARDID integer, I_USERID integer)
+ CREATE PROCEDURE  {objectQualifier}USER_GETALBUMSDATA(I_BOARDID integer, I_USERID integer)
  RETURNS 
  (
  "NumAlbums" INTEGER,
@@ -12028,10 +12142,10 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
     SELECT 
     COALESCE(MAX(c.USRALBUMS),0), 
     COALESCE(MAX( c.USRALBUMIMAGES),0) 
-    FROM objQual_USER a 
-       JOIN objQual_USERGROUP b
+    FROM {objectQualifier}USER a 
+       JOIN {objectQualifier}USERGROUP b
           ON a.USERID = b.USERID
-            JOIN objQual_GROUP c                         
+            JOIN {objectQualifier}GROUP c                         
               ON b.GROUPID = c.GROUPID 
                 WHERE a.USERID = :I_USERID 
                   AND c.BOARDID = :I_BOARDID
@@ -12043,8 +12157,8 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
      SELECT FIRST 1 
      (CASE WHEN c.USRALBUMS IS NULL THEN 0 ELSE c.USRALBUMS END), 
      (CASE WHEN c.USRALBUMIMAGES IS NULL THEN 0 ELSE  c.USRALBUMIMAGES END)  
-     FROM objQual_RANK c 
-        JOIN objQual_USER d
+     FROM {objectQualifier}RANK c 
+        JOIN {objectQualifier}USER d
             ON c.RANKID = d.RANKID 
                WHERE d.USERID = :I_USERID 
                   AND c.BOARDID = :I_BOARDID 
@@ -12055,10 +12169,10 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
       if (:OR_UsrAlbumImages IS NULL) THEN OR_UsrAlbumImages = 0;
       
       SELECT
-       (SELECT COUNT(ua.ALBUMID) FROM objQual_USERALBUM ua
+       (SELECT COUNT(ua.ALBUMID) FROM {objectQualifier}USERALBUM ua
        WHERE ua.USERID = :I_USERID),
-       (SELECT COUNT(uai.IMAGEID) FROM  objQual_USERALBUMIMAGE uai
-       INNER JOIN objQual_USERALBUM ua
+       (SELECT COUNT(uai.IMAGEID) FROM  {objectQualifier}USERALBUMIMAGE uai
+       INNER JOIN {objectQualifier}USERALBUM ua
        ON ua.ALBUMID = uai.ALBUMID
        WHERE ua.USERID = :I_USERID), 
        (CASE WHEN (:OR_UsrAlbums < :OG_UsrAlbums) 
@@ -12075,7 +12189,7 @@ DECLARE VARIABLE  G_UsrSigHTMLTags VARCHAR(1000);
     END;
    --GO  
    
-   CREATE PROCEDURE  objQual_MESSAGE_SECDATA(I_MESSAGEID integer, I_PAGEUSERID integer) 
+   CREATE PROCEDURE  {objectQualifier}MESSAGE_SECDATA(I_MESSAGEID integer, I_PAGEUSERID integer) 
    RETURNS
    (
     "MessageID" INTEGER,
@@ -12105,7 +12219,7 @@ BEGIN
 
 if (:I_PAGEUSERID is null) THEN
 select first 1 USERID 
-from objQual_USER
+from {objectQualifier}USER
 where  BIN_AND(FLAGS,4)<>0 ORDER BY JOINED DESC
 INTO :I_PAGEUSERID;
 
@@ -12132,10 +12246,10 @@ INTO :I_PAGEUSERID;
         t.POLLID,
         m."IP"
     FROM
-        objQual_TOPIC t 		
-        inner join  objQual_MESSAGE m on m.TOPICID = t.TOPICID
-        inner join objQual_USER u on u.USERID = m.USERID		
-        left join objQual_ACTIVEACCESS x on x.FORUMID=coalesce(t.FORUMID,0)
+        {objectQualifier}TOPIC t 		
+        inner join  {objectQualifier}MESSAGE m on m.TOPICID = t.TOPICID
+        inner join {objectQualifier}USER u on u.USERID = m.USERID		
+        left join {objectQualifier}ACTIVEACCESS x on x.FORUMID=coalesce(t.FORUMID,0)
     WHERE
         m.MESSAGEID = :I_MESSAGEID 
         AND x.USERID = :I_PAGEUSERID 
@@ -12167,7 +12281,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE  objQual_MESSAGEHISTORY_LIST (
+CREATE PROCEDURE  {objectQualifier}MESSAGEHISTORY_LIST (
 I_MESSAGEID INTEGER, 
 I_DAYSTOCLEAN INT, I_UTCTIMESTAMP timestamp )
 RETURNS
@@ -12193,7 +12307,7 @@ AS
     BEGIN    
     -- delete all message variants older then DaysToClean days Flags reserved for possible pms
    
-    DELETE FROM objQual_MESSAGEHISTORY
+    DELETE FROM {objectQualifier}MESSAGEHISTORY
     where DATEDIFF(DAY FROM EDITED TO :I_UTCTIMESTAMP) > :I_DAYSTOCLEAN;
     
     -- we don't return Message text and ip if it's simply a user
@@ -12201,10 +12315,10 @@ AS
            
      FOR SELECT mh.*, m.USERID, m.USERNAME, m.USERDISPLAYNAME, t.FORUMID, t.TOPICID, t.TOPIC, 
      COALESCE(t.USERNAME, u.NAME) as Name, m.POSTED
-     FROM objQual_MESSAGEHISTORY mh
-     LEFT JOIN objQual_MESSAGE m ON m.MESSAGEID = mh.MESSAGEID
-     LEFT JOIN objQual_TOPIC t ON t.TOPICID = m.TOPICID
-     LEFT JOIN objQual_USER u ON u.USERID = t.USERID
+     FROM {objectQualifier}MESSAGEHISTORY mh
+     LEFT JOIN {objectQualifier}MESSAGE m ON m.MESSAGEID = mh.MESSAGEID
+     LEFT JOIN {objectQualifier}TOPIC t ON t.TOPICID = m.TOPICID
+     LEFT JOIN {objectQualifier}USER u ON u.USERID = t.USERID
      WHERE mh.MESSAGEID = :I_MESSAGEID  order by mh.EDITED, mh.MESSAGEID
         INTO		
         :"MessageID",
@@ -12228,7 +12342,7 @@ AS
 END;
 --GO
 
-CREATE PROCEDURE  objQual_ACTIVE_LIST_USER(
+CREATE PROCEDURE  {objectQualifier}ACTIVE_LIST_USER(
                  I_BOARDID INTEGER, 
                  I_USERID INTEGER, 
                  I_GUESTS BOOL,
@@ -12273,11 +12387,11 @@ begin
             c.SESSIONID,
             c.FORUMID,
             c.TOPICID,
-            /* (SELECT f.READACCESS FROM objQual_vaccess_ULF(:I_USERID,b.FORUMID) f), */
+            /* (SELECT f.READACCESS FROM {objectQualifier}vaccess_ULF(:I_USERID,b.FORUMID) f), */
             x.READACCESS as HasForumAccess,
-            (select x.NAME from objQual_FORUM x where x.FORUMID=c.FORUMID) AS "ForumName" ,
-            (select TOPIC from objQual_TOPIC x where x.TOPICID=c.TOPICID) AS "TopicName",
-            COALESCE((select 1 from objQual_USERGROUP x inner join objQual_GROUP y 
+            (select x.NAME from {objectQualifier}FORUM x where x.FORUMID=c.FORUMID) AS "ForumName" ,
+            (select TOPIC from {objectQualifier}TOPIC x where x.TOPICID=c.TOPICID) AS "TopicName",
+            COALESCE((select 1 from {objectQualifier}USERGROUP x inner join {objectQualifier}GROUP y 
             on y.GROUPID=x.GROUPID where x.USERID=a.USERID 
             and BIN_AND(y.FLAGS,2)<>0), 0) AS ISGUEST,
             c.ISCRAWLER AS IsCrawler,
@@ -12295,9 +12409,9 @@ begin
             c.PLATFORM,			
             c.FORUMPAGE
             from
-            objQual_USER a			
-            inner join objQual_ACTIVE c ON c.USERID = a.USERID
-                inner join objQual_ACTIVEACCESS x
+            {objectQualifier}USER a			
+            inner join {objectQualifier}ACTIVE c ON c.USERID = a.USERID
+                inner join {objectQualifier}ACTIVEACCESS x
             ON (x.FORUMID = COALESCE(c.FORUMID,0))						
         where		
             c.BOARDID = :I_BOARDID AND x.USERID = :I_USERID
@@ -12336,11 +12450,11 @@ begin
             c.SESSIONID,
             c.FORUMID,
             c.TOPICID,
-            /* (SELECT f.READACCESS FROM objQual_vaccess_ULF(:I_USERID,b.FORUMID) f),*/
+            /* (SELECT f.READACCESS FROM {objectQualifier}vaccess_ULF(:I_USERID,b.FORUMID) f),*/
             x.READACCESS as HasForumAccess,			
-            (select x.NAME from objQual_FORUM x where x.FORUMID=c.FORUMID) AS "ForumName" ,
-            (select TOPIC from objQual_TOPIC x where x.TOPICID=c.TOPICID) AS "TopicName",		
-            COALESCE((select 1 from objQual_USERGROUP x inner join objQual_GROUP y 
+            (select x.NAME from {objectQualifier}FORUM x where x.FORUMID=c.FORUMID) AS "ForumName" ,
+            (select TOPIC from {objectQualifier}TOPIC x where x.TOPICID=c.TOPICID) AS "TopicName",		
+            COALESCE((select 1 from {objectQualifier}USERGROUP x inner join {objectQualifier}GROUP y 
             on y.GROUPID=x.GROUPID where x.USERID=a.USERID 
             and BIN_AND(y.FLAGS,2)<>0), 0) AS ISGUEST,
             c.ISCRAWLER AS IsCrawler, 
@@ -12358,10 +12472,10 @@ begin
             c.PLATFORM,
             c.FORUMPAGE
         from
-            objQual_USER a			
-            inner join objQual_ACTIVE c 
+            {objectQualifier}USER a			
+            inner join {objectQualifier}ACTIVE c 
             ON c.USERID = a.USERID
-            inner join objQual_ACTIVEACCESS x
+            inner join {objectQualifier}ACTIVEACCESS x
             ON (x.FORUMID = COALESCE(c.FORUMID,0))						
         where		
             c.BOARDID = :I_BOARDID AND x.USERID = :I_USERID   
@@ -12403,9 +12517,9 @@ begin
             c.FORUMID,
             c.TOPICID,
             x.READACCESS as HasForumAccess,
-            (select x.NAME from objQual_FORUM x where x.FORUMID=c.FORUMID) AS "ForumName",
-            (select TOPIC from objQual_TOPIC x where x.TOPICID=c.TOPICID) AS "TopicName",
-            COALESCE((select 1 from objQual_USERGROUP x inner join objQual_GROUP y on y.GROUPID=x.GROUPID where x.USERID=a.USERID and BIN_AND(y.FLAGS, 2)<>0), 0) AS ISGUEST,
+            (select x.NAME from {objectQualifier}FORUM x where x.FORUMID=c.FORUMID) AS "ForumName",
+            (select TOPIC from {objectQualifier}TOPIC x where x.TOPICID=c.TOPICID) AS "TopicName",
+            COALESCE((select 1 from {objectQualifier}USERGROUP x inner join {objectQualifier}GROUP y on y.GROUPID=x.GROUPID where x.USERID=a.USERID and BIN_AND(y.FLAGS, 2)<>0), 0) AS ISGUEST,
             c.ISCRAWLER AS IsCrawler,
              a.ISACTIVEEXCLUDED AS "IsHidden" ,
              CASE :I_STYLEDNICKS
@@ -12421,16 +12535,16 @@ begin
             c.PLATFORM,
             c.FORUMPAGE
     from
-            objQual_USER a			
-            inner join objQual_ACTIVE c ON c.USERID = a.USERID
-                    inner join objQual_ACTIVEACCESS x
+            {objectQualifier}USER a			
+            inner join {objectQualifier}ACTIVE c ON c.USERID = a.USERID
+                    inner join {objectQualifier}ACTIVEACCESS x
             ON (x.ForumID = COALESCE(c.FORUMID,0))						
         where		
             c.BOARDID = :I_BOARDID  AND x.USERID = :I_USERID and
             not (exists(
                 select FIRST 1 1 
-                    from objQual_USERGROUP x
-                        inner join objQual_GROUP y ON y.GROUPID=x.GROUPID 
+                    from {objectQualifier}USERGROUP x
+                        inner join {objectQualifier}GROUP y ON y.GROUPID=x.GROUPID 
                     where x.USERID=a.USERID and BIN_AND(y.FLAGS, 2) <> 0
                 ))
         order by
@@ -12463,7 +12577,7 @@ begin
 end;
 --GO
 
-CREATE PROCEDURE  objQual_USER_VIEWTHANKSTO (I_USERID INTEGER, I_PAGEUSERID INTEGER,
+CREATE PROCEDURE  {objectQualifier}USER_VIEWTHANKSTO (I_USERID INTEGER, I_PAGEUSERID INTEGER,
 I_PAGEINDEX INTEGER,
 I_PAGESIZE INTEGER)
 RETURNS
@@ -12491,11 +12605,11 @@ BEGIN
 I_PAGEINDEX = :I_PAGEINDEX + 1;	 
 
 select count(1)  			 
-        from    objQual_MESSAGE c
-                left join objQual_TOPIC a on a.TOPICID = c.TOPICID
-                left join objQual_USER b on c.USERID = b.USERID
-                join objQual_ACTIVEACCESS x on x.FORUMID = a.FORUMID
-                join objQual_THANKS t on c.MESSAGEID = t.MESSAGEID
+        from    {objectQualifier}MESSAGE c
+                left join {objectQualifier}TOPIC a on a.TOPICID = c.TOPICID
+                left join {objectQualifier}USER b on c.USERID = b.USERID
+                join {objectQualifier}ACTIVEACCESS x on x.FORUMID = a.FORUMID
+                join {objectQualifier}THANKS t on c.MESSAGEID = t.MESSAGEID
         where   x.READACCESS <> 0
                 AND x.USERID = :I_PAGEUSERID
                 AND c.ISAPPROVED = 1
@@ -12520,11 +12634,11 @@ select count(1)
                 c.MESSAGE,
                 c.FLAGS,
                 (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) 
-        from    objQual_MESSAGE c
-                left join objQual_TOPIC a on a.TOPICID = c.TOPICID
-                left join objQual_USER b on c.USERID = b.USERID
-                join objQual_ACTIVEACCESS x on x.FORUMID = a.FORUMID
-                join objQual_THANKS t on c.MESSAGEID = t.MESSAGEID
+        from    {objectQualifier}MESSAGE c
+                left join {objectQualifier}TOPIC a on a.TOPICID = c.TOPICID
+                left join {objectQualifier}USER b on c.USERID = b.USERID
+                join {objectQualifier}ACTIVEACCESS x on x.FORUMID = a.FORUMID
+                join {objectQualifier}THANKS t on c.MESSAGEID = t.MESSAGEID
         where   x.READACCESS <> 0
                 AND x.USERID = :I_PAGEUSERID
                 AND c.ISAPPROVED = 1
@@ -12551,7 +12665,7 @@ select count(1)
     END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_VIEWTHANKSFROM (I_USERID INTEGER, I_PAGEUSERID INTEGER,
+CREATE PROCEDURE  {objectQualifier}USER_VIEWTHANKSFROM (I_USERID INTEGER, I_PAGEUSERID INTEGER,
 I_PAGEINDEX INTEGER,
 I_PAGESIZE INTEGER)
 RETURNS
@@ -12579,11 +12693,11 @@ BEGIN
 I_PAGEINDEX = :I_PAGEINDEX + 1;	 
 
 select count(1)  
-        from    objQual_MESSAGE c
-                left join objQual_TOPIC a on a.TOPICID = c.TOPICID
-                left join objQual_USER b on c.USERID = b.USERID
-                join objQual_ACTIVEACCESS x on x.FORUMID = a.FORUMID
-                join objQual_THANKS t on c.MESSAGEID = t.MESSAGEID
+        from    {objectQualifier}MESSAGE c
+                left join {objectQualifier}TOPIC a on a.TOPICID = c.TOPICID
+                left join {objectQualifier}USER b on c.USERID = b.USERID
+                join {objectQualifier}ACTIVEACCESS x on x.FORUMID = a.FORUMID
+                join {objectQualifier}THANKS t on c.MESSAGEID = t.MESSAGEID
         where   x.READACCESS <> 0
                 AND x.USERID = :I_PAGEUSERID
                 AND c.ISAPPROVED = 1
@@ -12608,11 +12722,11 @@ select count(1)
                 c.MESSAGE,
                 c.FLAGS,
                 (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) 
-        from    objQual_MESSAGE c
-                left join objQual_TOPIC a on a.TOPICID = c.TOPICID
-                left join objQual_USER b on c.USERID = b.USERID
-                join objQual_ACTIVEACCESS x on x.FORUMID = a.FORUMID
-                join objQual_THANKS t on c.MESSAGEID = t.MESSAGEID
+        from    {objectQualifier}MESSAGE c
+                left join {objectQualifier}TOPIC a on a.TOPICID = c.TOPICID
+                left join {objectQualifier}USER b on c.USERID = b.USERID
+                join {objectQualifier}ACTIVEACCESS x on x.FORUMID = a.FORUMID
+                join {objectQualifier}THANKS t on c.MESSAGEID = t.MESSAGEID
         where   x.READACCESS <> 0
                 AND x.USERID = :I_PAGEUSERID
                 AND c.ISAPPROVED = 1
@@ -12639,19 +12753,19 @@ select count(1)
     END;
 --GO
 
-CREATE PROCEDURE  objQual_USER_THANKEDMESSAGE
+CREATE PROCEDURE  {objectQualifier}USER_THANKEDMESSAGE
 (I_MESSAGEID INTEGER, I_USERID INTEGER) 
 RETURNS ("COUNT" INTEGER)
 as
 begin
         SELECT COUNT(TH.THANKSID)
-        FROM objQual_THANKS AS TH WHERE (TH.MESSAGEID=:I_MESSAGEID) AND (TH.THANKSFROMUSERID = :I_USERID)
+        FROM {objectQualifier}THANKS AS TH WHERE (TH.MESSAGEID=:I_MESSAGEID) AND (TH.THANKSFROMUSERID = :I_USERID)
         into :"COUNT";
         SUSPEND;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_RECENT_USERS(
+CREATE PROCEDURE  {objectQualifier}RECENT_USERS(
                  I_BOARDID INTEGER,
                  I_TIMESINCELASTLOGIN INTEGER,
                  I_STYLEDNICKS BOOL,
@@ -12682,7 +12796,7 @@ CREATE PROCEDURE  objQual_RECENT_USERS(
                        U.USERSTYLE 
                 ELSE ''
             END) as Style
-    FROM objQual_USER AS U               
+    FROM {objectQualifier}USER AS U               
     WHERE (U.ISAPPROVED = 1) AND
      U.BOARDID = :I_BOARDID AND
      DATEADD(-:I_TIMESINCELASTLOGIN MINUTE TO :I_UTCTIMESTAMP) < U.LASTVISIT
@@ -12690,8 +12804,8 @@ CREATE PROCEDURE  objQual_RECENT_USERS(
                 --Excluding guests
                 NOT EXISTS(             
                     SELECT 1 
-                        FROM objQual_USERGROUP x
-                            inner join objQual_GROUP y ON y.GROUPID=x.GROUPID 
+                        FROM {objectQualifier}USERGROUP x
+                            inner join {objectQualifier}GROUP y ON y.GROUPID=x.GROUPID 
                         WHERE x.USERID=U.USERID and BIN_AND(y.FLAGS,2)=2
                     )
     ORDER BY U.LASTVISIT
@@ -12708,95 +12822,95 @@ CREATE PROCEDURE  objQual_RECENT_USERS(
 end;
 --GO
 
- CREATE PROCEDURE  objQual_READTOPIC_ADDORUPDATE(I_USERID integer, I_TOPICID integer, I_UTCTIMESTAMP TIMESTAMP)
+ CREATE PROCEDURE  {objectQualifier}READTOPIC_ADDORUPDATE(I_USERID integer, I_TOPICID integer, I_UTCTIMESTAMP TIMESTAMP)
  AS
  DECLARE VARIABLE  ICI_LASTACCESSDATE TIMESTAMP; 
   BEGIN
-   select FIRST 1 LASTACCESSDATE from objQual_TOPICREADTRACKING where USERID=:I_USERID AND TOPICID=:I_TOPICID  INTO :ICI_LASTACCESSDATE;
+   select FIRST 1 LASTACCESSDATE from {objectQualifier}TOPICREADTRACKING where USERID=:I_USERID AND TOPICID=:I_TOPICID  INTO :ICI_LASTACCESSDATE;
     IF (ICI_LASTACCESSDATE IS NOT NULL) THEN
     begin
-          update objQual_TOPICREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP where LASTACCESSDATE = :ICI_LASTACCESSDATE;
+          update {objectQualifier}TOPICREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP where LASTACCESSDATE = :ICI_LASTACCESSDATE;
     end
     ELSE
       begin
-          insert into objQual_TOPICREADTRACKING(USERID,TOPICID,LASTACCESSDATE)
+          insert into {objectQualifier}TOPICREADTRACKING(USERID,TOPICID,LASTACCESSDATE)
           values (:I_USERID, :I_TOPICID, :I_UTCTIMESTAMP);
       end
 end;
 --GO
 
- CREATE PROCEDURE  objQual_READTOPIC_DELETE(I_USERID integer)
+ CREATE PROCEDURE  {objectQualifier}READTOPIC_DELETE(I_USERID integer)
  AS
   BEGIN
-        delete from objQual_TOPICREADTRACKING where USERID = :I_USERID;
+        delete from {objectQualifier}TOPICREADTRACKING where USERID = :I_USERID;
   end;
 --GO
 
- CREATE PROCEDURE  objQual_READTOPIC_LASTREAD(I_USERID integer, I_TOPICID integer)
+ CREATE PROCEDURE  {objectQualifier}READTOPIC_LASTREAD(I_USERID integer, I_TOPICID integer)
  RETURNS ("LastAccessDate" TIMESTAMP)
  AS
   BEGIN
-        FOR SELECT FIRST 1 LastAccessDate FROM  objQual_TOPICREADTRACKING WHERE USERID = :I_USERID AND TOPICID = :I_TOPICID
+        FOR SELECT FIRST 1 LastAccessDate FROM  {objectQualifier}TOPICREADTRACKING WHERE USERID = :I_USERID AND TOPICID = :I_TOPICID
         INTO :"LastAccessDate"
         DO SUSPEND;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_READFORUM_ADDORUPDATE(I_USERID integer, I_FORUMID integer, I_UTCTIMESTAMP TIMESTAMP)
+CREATE PROCEDURE  {objectQualifier}READFORUM_ADDORUPDATE(I_USERID integer, I_FORUMID integer, I_UTCTIMESTAMP TIMESTAMP)
  AS
   DECLARE VARIABLE  ICI_LASTACCESSDATE TIMESTAMP;
   BEGIN
   
-    IF ( EXISTS (select FIRST 1 LASTACCESSDATE from objQual_FORUMREADTRACKING where USERID=:I_USERID AND FORUMID=:I_FORUMID)) THEN
+    IF ( EXISTS (select FIRST 1 LASTACCESSDATE from {objectQualifier}FORUMREADTRACKING where USERID=:I_USERID AND FORUMID=:I_FORUMID)) THEN
     begin
-      select FIRST 1 LASTACCESSDATE from objQual_FORUMREADTRACKING where USERID=:I_USERID AND FORUMID=:I_FORUMID  INTO :ICI_LASTACCESSDATE;
-          update objQual_FORUMREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP where LASTACCESSDATE = :ICI_LASTACCESSDATE;
+      select FIRST 1 LASTACCESSDATE from {objectQualifier}FORUMREADTRACKING where USERID=:I_USERID AND FORUMID=:I_FORUMID  INTO :ICI_LASTACCESSDATE;
+          update {objectQualifier}FORUMREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP where LASTACCESSDATE = :ICI_LASTACCESSDATE;
     end
     ELSE
       begin
-          insert into objQual_FORUMREADTRACKING(USERID,FORUMID,LASTACCESSDATE)
+          insert into {objectQualifier}FORUMREADTRACKING(USERID,FORUMID,LASTACCESSDATE)
           values (:I_USERID, :I_FORUMID, :I_UTCTIMESTAMP);
       end
 
       -- Delete TopicReadTracking for forum...
     DELETE
-    FROM objQual_TOPICREADTRACKING
+    FROM {objectQualifier}TOPICREADTRACKING
     WHERE  USERID=:I_USERID
         AND TOPICID IN (
             SELECT TOPICID
-            FROM objQual_TOPIC
+            FROM {objectQualifier}TOPIC
             WHERE  FORUMID=:I_FORUMID
             );
 end;
 --GO
 
- CREATE PROCEDURE  objQual_READFORUM_DELETE(I_USERID integer)
+ CREATE PROCEDURE  {objectQualifier}READFORUM_DELETE(I_USERID integer)
  AS
   BEGIN
-        delete from objQual_FORUMREADTRACKING where USERID = :I_USERID;
+        delete from {objectQualifier}FORUMREADTRACKING where USERID = :I_USERID;
   end;
 --GO
 
- CREATE PROCEDURE  objQual_READFORUM_LASTREAD(I_USERID integer, I_FORUMID integer)
+ CREATE PROCEDURE  {objectQualifier}READFORUM_LASTREAD(I_USERID integer, I_FORUMID integer)
  RETURNS ("LastAccessDate" TIMESTAMP)
  AS
   BEGIN
-        FOR SELECT FIRST 1 LastAccessDate FROM  objQual_FORUMREADTRACKING WHERE USERID = :I_USERID AND FORUMID = :I_FORUMID
+        FOR SELECT FIRST 1 LastAccessDate FROM  {objectQualifier}FORUMREADTRACKING WHERE USERID = :I_USERID AND FORUMID = :I_FORUMID
         INTO :"LastAccessDate"
         DO SUSPEND;
 end;
 --GO
 
- CREATE PROCEDURE  objQual_USER_LASTREAD(I_USERID integer)
+ CREATE PROCEDURE  {objectQualifier}USER_LASTREAD(I_USERID integer)
  RETURNS ("LastAccessDate" TIMESTAMP)
  AS
         DECLARE ICI_LastForumRead TIMESTAMP;
         DECLARE ICI_LastTopicRead TIMESTAMP;
   BEGIN	
         
-        SELECT MAX(LastAccessDate) FROM  objQual_FORUMREADTRACKING WHERE UserID = :I_USERID
+        SELECT MAX(LastAccessDate) FROM  {objectQualifier}FORUMREADTRACKING WHERE UserID = :I_USERID
         INTO :ICI_LastForumRead;
-        SELECT MAX(LastAccessDate) FROM  objQual_TOPICREADTRACKING WHERE UserID = :I_USERID
+        SELECT MAX(LastAccessDate) FROM  {objectQualifier}TOPICREADTRACKING WHERE UserID = :I_USERID
         INTO :ICI_LastTopicRead;
 
         IF (:ICI_LastForumRead is not null AND :ICI_LastTopicRead is not null) THEN
@@ -12825,14 +12939,14 @@ end;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_TOPICSTATUS_DELETE (I_TOPICSTATUSID INTEGER) as
+CREATE PROCEDURE  {objectQualifier}TOPICSTATUS_DELETE (I_TOPICSTATUSID INTEGER) as
 BEGIN
-   DELETE FROM objQual_TOPICSTATUS 
+   DELETE FROM {objectQualifier}TOPICSTATUS 
     WHERE TOPICSTATUSID = :I_TOPICSTATUSID;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPICSTATUS_EDIT (I_TOPICSTATUSID INTEGER)
+CREATE PROCEDURE  {objectQualifier}TOPICSTATUS_EDIT (I_TOPICSTATUSID INTEGER)
 RETURNS 
        ("TopicStatusID" INTEGER,
         "TopicStatusName" varchar(128),
@@ -12845,7 +12959,7 @@ BEGIN
         TopicStatusName,
         BoardID,
         DefaultDescription 
-    FROM objQual_TOPICSTATUS 
+    FROM {objectQualifier}TOPICSTATUS 
     WHERE 
         TOPICSTATUSID = :I_TOPICSTATUSID
         INTO
@@ -12857,7 +12971,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPICSTATUS_LIST (I_BOARDID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}TOPICSTATUS_LIST (I_BOARDID INTEGER) 
 RETURNS 
        ("TopicStatusID" INTEGER,
         "TopicStatusName" varchar(128),
@@ -12869,7 +12983,7 @@ BEGIN
         TopicStatusName,
         BoardID,
         DefaultDescription
-    FROM objQual_TOPICSTATUS
+    FROM {objectQualifier}TOPICSTATUS
     WHERE BOARDID= :I_BOARDID 
     ORDER BY TOPICSTATUSID
         INTO
@@ -12881,7 +12995,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_TOPICSTATUS_SAVE (
+CREATE PROCEDURE  {objectQualifier}TOPICSTATUS_SAVE (
                  I_TOPICSTATUSID INTEGER,
                  I_BOARDID INTEGER, 
                  I_TOPICSTATUSNAME varchar(128),
@@ -12889,11 +13003,11 @@ CREATE PROCEDURE  objQual_TOPICSTATUS_SAVE (
 begin
         if (I_TOPICSTATUSID is null or I_TOPICSTATUSID = 0) THEN
         begin
-        insert into objQual_TOPICSTATUS(BoardID,TopicStatusName,DefaultDescription) 
+        insert into {objectQualifier}TOPICSTATUS(BoardID,TopicStatusName,DefaultDescription) 
         values(:I_BOARDID,:I_TOPICSTATUSNAME,:I_DEFAULTDESCRIPTION);
         end
     else begin
-        update objQual_TOPICSTATUS
+        update {objectQualifier}TOPICSTATUS
         set TOPICSTATUSNAME = :I_TOPICSTATUSNAME, 
             DEFAULTDESCRIPTION = :I_DEFAULTDESCRIPTION
         where TOPICSTATUSID = :I_TOPICSTATUSID;
@@ -12901,16 +13015,16 @@ begin
 end;
 --GO
 
-CREATE PROCEDURE  objQual_USER_UPDATE_SSN_STATUS(I_USERID INTEGER, I_ISFACEBOOKUSER BOOL, I_ISTWITTERUSER BOOL) as
+CREATE PROCEDURE  {objectQualifier}USER_UPDATE_SSN_STATUS(I_USERID INTEGER, I_ISFACEBOOKUSER BOOL, I_ISTWITTERUSER BOOL) as
 begin
-        update objQual_USER
+        update {objectQualifier}USER
         set ISFACEBOOKUSER = :I_ISFACEBOOKUSER,
             ISTWITTERUSER = :I_ISTWITTERUSER 		  
         where USERID = :I_USERID;
 end;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_TAGS(I_BOARDID INTEGER, I_PAGEUSERID INTEGER, I_TOPICID INTEGER) 
+CREATE PROCEDURE  {objectQualifier}TOPIC_TAGS(I_BOARDID INTEGER, I_PAGEUSERID INTEGER, I_TOPICID INTEGER) 
 RETURNS
 ( "TagID" INTEGER,
   "Tag" VARCHAR(255),
@@ -12921,20 +13035,20 @@ DECLARE ICI_ALLCOUNT INTEGER;
 begin
 SELECT 
            MAX(tg.TAGCOUNT)  
-           FROM objQual_TAGS tg 
-           JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
-           JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
-           JOIN objQual_ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
+           FROM {objectQualifier}TAGS tg 
+           JOIN {objectQualifier}TOPICTAGS tt ON tt.TAGID = tg.TAGID 
+           JOIN {objectQualifier}TOPIC t ON tt.TOPICID = t.TOPICID
+           JOIN {objectQualifier}ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
            WHERE aa.BoardID=:I_BOARDID and t.TopicID=:I_TOPICID INTO :ICI_ALLCOUNT;
 FOR	SELECT 
            tg.TAGID,
            tg.Tag,
            tg.TAGCOUNT,
            (SELECT :ICI_ALLCOUNT FROM RDB$DATABASE) 
-           FROM objQual_TAGS tg 
-           JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
-           JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
-           JOIN objQual_ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
+           FROM {objectQualifier}TAGS tg 
+           JOIN {objectQualifier}TOPICTAGS tt ON tt.TAGID = tg.TAGID 
+           JOIN {objectQualifier}TOPIC t ON tt.TOPICID = t.TOPICID
+           JOIN {objectQualifier}ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
            WHERE aa.BoardID=:I_BOARDID and t.TopicID=:I_TOPICID		  
            ORDER BY tg.Tag
            INTO
@@ -12946,7 +13060,7 @@ FOR	SELECT
 end;
 --GO
 
-CREATE PROCEDURE  objQual_TOPIC_BYTAGS(I_BOARDID INTEGER, I_FORIMID INTEGER, I_PAGEUSERID INTEGER,I_TAGS VARCHAR(1024), I_SINCEDATE TIMESTAMP, I_PAGEINDEX INTEGER, I_PAGESIZE INTEGER) 
+CREATE PROCEDURE  {objectQualifier}TOPIC_BYTAGS(I_BOARDID INTEGER, I_FORIMID INTEGER, I_PAGEUSERID INTEGER,I_TAGS VARCHAR(1024), I_SINCEDATE TIMESTAMP, I_PAGEINDEX INTEGER, I_PAGESIZE INTEGER) 
 RETURNS
  ("ForumID" integer,
     "TopicID" integer,
@@ -12996,9 +13110,9 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
 begin
 I_PAGEINDEX = :I_PAGEINDEX + 1;	 
 select count(1)  
-        FROM   objQual_TOPIC t 
-        JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = t.TOPICID	
-        JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
+        FROM   {objectQualifier}TOPIC t 
+        JOIN  {objectQualifier}TOPICTAGS tt ON tt.TOPICID = t.TOPICID	
+        JOIN  {objectQualifier}ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
         WHERE aa.BOARDID = :I_BOARDID AND t.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID AND (:I_FORIMID <= 0 OR t.FORUMID = :I_FORIMID) AND tt.TAGID = CAST(:I_TAGS AS INTEGER) AND t.POSTED > :I_SINCEDATE 
         into :ICI_TOTALROWS ;
             
@@ -13007,9 +13121,9 @@ select count(1)
 
    SELECT FIRST 1
         t.LASTPOSTED
-        FROM   objQual_TOPIC t 
-        JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = t.TOPICID 
-        JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
+        FROM   {objectQualifier}TOPIC t 
+        JOIN  {objectQualifier}TOPICTAGS tt ON tt.TOPICID = t.TOPICID 
+        JOIN  {objectQualifier}ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
         WHERE  BOARDID = :I_BOARDID AND t.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID AND (:I_FORIMID <= 0 OR t.FORUMID = :I_FORIMID)  AND tt.TAGID = CAST(:I_TAGS AS INTEGER) AND t.POSTED > :I_SINCEDATE 
         ORDER BY t.LASTPOSTED DESC 
         into :ici_firstselectposted;
@@ -13019,7 +13133,7 @@ FOR SELECT		c.FORUMID,
         c.POSTED,
         COALESCE(c.TOPICMOVEDID,c.TOPICID) AS "LinkTopicID",
         c.TOPICMOVEDID,
-        (SELECT COUNT(1) FROM objQual_FAVORITETOPIC 
+        (SELECT COUNT(1) FROM {objectQualifier}FAVORITETOPIC 
         WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)),
         COALESCE(c.TOPIC,NULL) AS "Subject",
         c.STATUS,
@@ -13029,7 +13143,7 @@ FOR SELECT		c.FORUMID,
         COALESCE(c.USERNAME,b.NAME) AS "Starter",
         COALESCE(c.USERDISPLAYNAME,b.DISPLAYNAME) AS "StarterDisplay",
         (c.NUMPOSTS - 1) AS "Replies",
-        (SELECT COUNT(1) FROM objQual_MESSAGE mes 
+        (SELECT COUNT(1) FROM {objectQualifier}MESSAGE mes 
                  WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED <> 0
                  AND mes.ISAPPROVED <> 0 
                  AND ((:I_PAGEUSERID IS NOT NULL AND mes.USERID = :I_PAGEUSERID) 
@@ -13038,10 +13152,10 @@ FOR SELECT		c.FORUMID,
         c.LASTPOSTED AS LASTPOSTED,
         c.LASTUSERID AS LASTUSERID,
         COALESCE(c.LASTUSERNAME,
-        (select NAME from objQual_USER x 
+        (select NAME from {objectQualifier}USER x 
         where x.USERID=c.LASTUSERID)) AS "LastUserName",
         COALESCE(c.LASTUSERDISPLAYNAME,
-        (select DISPLAYNAME from objQual_USER x 
+        (select DISPLAYNAME from {objectQualifier}USER x 
         where x.USERID=c.LASTUSERID)) AS "LastUserDisplayName",
         c.LASTMESSAGEID AS LASTMESSAGEID,
         c.TOPICID AS LASTTOPICID,
@@ -13051,37 +13165,37 @@ FOR SELECT		c.FORUMID,
         c.POLLID,
         d.FLAGS AS "ForumFlags",
         (SELECT FIRST 1 mes2.MESSAGE 
-                 FROM objQual_MESSAGE mes2 
+                 FROM {objectQualifier}MESSAGE mes2 
                  WHERE mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
                  AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage",
         (case(0)
             when 1 then b.USERSTYLE  
             else (SELECT '' FROM RDB$DATABASE)	 end),
         (case(0)
-            when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID) 
+            when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM {objectQualifier}USER usr WHERE usr.USERID = c.LASTUSERID) 
             else (SELECT '' FROM RDB$DATABASE)	 end),
         (case(0)
              when 1 then
-               (SELECT FIRST 1 x.LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+               (SELECT FIRST 1 x.LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
         (case(0)
              when 1 then
-               (SELECT FIRST 1 y.LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+               (SELECT FIRST 1 y.LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
-        (SELECT FIRST 1 TAG FROM objQual_TAGS where TagID = CAST(:I_TAGS AS INTEGER)),
+        (SELECT FIRST 1 TAG FROM {objectQualifier}TAGS where TagID = CAST(:I_TAGS AS INTEGER)),
         c.TOPICIMAGE,
         c.TOPICIMAGETYPE,
         c.TOPICIMAGEBIN,
         (SELECT 0 FROM RDB$DATABASE),		
         (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex"
-FROM   objQual_TOPIC c 
-        JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = c.TOPICID
-        JOIN  objQual_TAGS tg ON tg.TAGID = tt.TAGID 
-        JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = c.FORUMID	
-        JOIN  objQual_MESSAGE m ON (m.TOPICID = c.TOPICID AND m."POSITION" = 0)	
-        JOIN  objQual_USER b ON b.UserID=c.UserID
-        JOIN  objQual_FORUM d on d.ForumID=c.ForumID
+FROM   {objectQualifier}TOPIC c 
+        JOIN  {objectQualifier}TOPICTAGS tt ON tt.TOPICID = c.TOPICID
+        JOIN  {objectQualifier}TAGS tg ON tg.TAGID = tt.TAGID 
+        JOIN  {objectQualifier}ACTIVEACCESS aa ON aa.FORUMID = c.FORUMID	
+        JOIN  {objectQualifier}MESSAGE m ON (m.TOPICID = c.TOPICID AND m."POSITION" = 0)	
+        JOIN  {objectQualifier}USER b ON b.UserID=c.UserID
+        JOIN  {objectQualifier}FORUM d on d.ForumID=c.ForumID
         WHERE  aa.BOARDID = :I_BOARDID AND c.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID  AND (:I_FORIMID <= 0 OR c.FORUMID = :I_FORIMID) AND c.LASTPOSTED <= :ici_firstselectposted
         AND tt.TAGID IN (SELECT CAST(:I_TAGS AS INTEGER) FROM RDB$DATABASE) AND c.POSTED > :I_SINCEDATE
         ORDER BY c.LASTPOSTED DESC ROWS :ICI_FIRSTSELECTROWNUMBER TO :ICI_TOROW
@@ -13126,5 +13240,59 @@ INTO
     :"TotalRows",
     :"PageIndex"
 DO SUSPEND;
+end;
+--GO
+
+CREATE PROCEDURE  {objectQualifier}USER_LISTTODAYSBIRTHDAYS(
+I_BOARDID INTEGER, 
+I_STYLEDNICKS BOOL, 
+I_CURRENTYEAR INTEGER,
+I_CURRENTUTC TIMESTAMP,
+I_CURRENTUTC1 TIMESTAMP,
+I_CURRENTUTC2 TIMESTAMP)
+RETURNS 
+(    "Birthday" TIMESTAMP,
+	 "UserID" INTEGER,
+	 "TimeZone" INTEGER,
+	 "LastVisit" TIMESTAMP,
+	 "UserName" VARCHAR(255),
+	 "UserDisplayName" VARCHAR(255),
+	 "Style" VARCHAR(255)
+)
+ as
+begin
+
+ FOR SELECT up.Birthday, 
+  u.USERID , 
+  u.TimeZone ,
+   u.LastVisit , 
+   u.Name,
+   u.DisplayName,
+   (case(:I_STYLEDNICKS) when 1 then u.USERSTYLE  else '' end) as Style
+    FROM {objectQualifier}USERPROFILE up 
+	JOIN {objectQualifier}USER u ON u.USERID = up.USERID 
+	where u.BOARDID = :I_BOARDID  
+	AND DATEADD( (:I_CURRENTYEAR - EXTRACT(YEAR FROM up.Birthday)) year to up.Birthday) BETWEEN (:I_CURRENTUTC1) AND  (:I_CURRENTUTC2) 
+	 INTO 
+	 :"Birthday",
+	 :"UserID",
+	 :"TimeZone",
+	 :"LastVisit",
+	 :"UserName",
+	 :"UserDisplayName",
+	 :"Style"
+	 DO SUSPEND;      
+end;
+--GO
+
+CREATE OR ALTER PROCEDURE   {objectQualifier}FORUM_SAVE_PRNTCHCK(I_FORUMID INTEGER, I_PARENTID INTEGER)
+RETURNS (O_DEPENDENCY INTEGER) 
+as
+begin
+O_DEPENDENCY = 0;
+
+SELECT p.O_DEPENDENCY
+FROM {objectQualifier}FORUM_SAVE_PARENTSCHECKER(:I_FORUMID, :I_PARENTID) p into :O_DEPENDENCY;
+ SUSPEND;
 end;
 --GO

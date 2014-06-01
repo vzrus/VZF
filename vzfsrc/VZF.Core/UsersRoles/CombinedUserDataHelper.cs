@@ -22,20 +22,18 @@ namespace YAF.Core
 
     using System;
     using System.Data;
-    using System.Web;
     using System.Web.Security;
 
     using VZF.Data.Common;
     using VZF.Data.Utils;
+    using VZF.Utils;
 
     using YAF.Classes;
-    
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Helps get a complete user profile from various locations

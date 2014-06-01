@@ -474,13 +474,17 @@ namespace YAF.Pages
             }
             else
             {
+                int? pollGroupId = null;
+
                 // User wishes to create a poll  
                 // The value was selected, we attach an existing poll
                 if (this.PollGroupListDropDown.SelectedIndex.ToType<int>() > 0)
                 {
+                    pollGroupId = this.PollGroupListDropDown.SelectedValue.ToType<int?>();
+
                     int result = CommonDb.pollgroup_attach(
                         PageContext.PageModuleID,
-                        this.PollGroupListDropDown.SelectedValue.ToType<int>(),
+                        pollGroupId,
                         this._topicId,
                         this._forumId,
                         this._categoryId,
@@ -573,9 +577,11 @@ namespace YAF.Pages
                 {
                     this._datePollExpire = DateTime.UtcNow.AddDays(this.PollExpire.Text.Trim().ToType<int>());
                 }
-
-                var pollGroup = new PollGroup
+               
+                CommonDb.poll_save(new PollGroup
                                     {
+                                        mid = PageContext.PageModuleID,
+                                        PollGroupID = pollGroupId,
                                         CategoryId = this._categoryId,
                                         ForumId = this._forumId,
                                         TopicId = realTopic,
@@ -616,10 +622,8 @@ namespace YAF.Pages
                                                                     }
                                                         }
                                                 }
-                                    };
-
-
-                CommonDb.poll_save(PageContext.PageModuleID, pollGroup);
+                                    });   
+            
                 return true;
             }
         }

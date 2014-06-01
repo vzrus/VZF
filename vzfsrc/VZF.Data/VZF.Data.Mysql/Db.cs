@@ -729,6 +729,11 @@ namespace VZF.Data.Mysql
             return "SHOW VARIABLES LIKE 'character_set_database'";
         }
 
+        public static string GetProfileStructure()
+        {
+            return "select * from {0} limit 1;";
+        }
+
         #endregion 
     }
 }

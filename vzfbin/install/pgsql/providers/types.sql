@@ -3,9 +3,9 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_findusersbyemail_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_findusersbyemail_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_findusersbyemail_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_findusersbyemail_return_type AS
 (
 "UserId" uuid,
 "ApplicationId" uuid,
@@ -34,9 +34,9 @@ CREATE TYPE databaseSchema.objectQualifier_prov_findusersbyemail_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_findusersbyname_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_findusersbyname_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_findusersbyname_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_findusersbyname_return_type AS
 (
 "UserId" uuid,
 "ApplicationId" uuid,
@@ -65,9 +65,9 @@ CREATE TYPE databaseSchema.objectQualifier_prov_findusersbyname_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_getallusers_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_getallusers_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_getallusers_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_getallusers_return_type AS
 (
 "UserId" uuid,
 "ApplicationId" uuid,
@@ -96,9 +96,9 @@ CREATE TYPE databaseSchema.objectQualifier_prov_getallusers_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_getuser_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_getuser_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_getuser_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_getuser_return_type AS
 (
 "UserId" uuid,
 "ApplicationId" uuid,
@@ -127,17 +127,17 @@ CREATE TYPE databaseSchema.objectQualifier_prov_getuser_return_type AS
 --GO
 
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_getusernamebyemail_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_getusernamebyemail_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_getusernamebyemail_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_getusernamebyemail_return_type AS
 (
 "Username" varchar(256)
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_role_getroles_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_role_getroles_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_role_getroles_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_role_getroles_return_type AS
 (
 "RoleId" uuid,
 "ApplicationId" uuid,
@@ -146,9 +146,9 @@ CREATE TYPE databaseSchema.objectQualifier_prov_role_getroles_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_role_findusersinrole_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_role_findusersinrole_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_role_findusersinrole_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_role_findusersinrole_return_type AS
 (
 "UserId" uuid,
 "ApplicationId" uuid,
@@ -176,18 +176,18 @@ CREATE TYPE databaseSchema.objectQualifier_prov_role_findusersinrole_return_type
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_role_isuserinrole_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_role_isuserinrole_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_role_isuserinrole_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_role_isuserinrole_return_type AS
 (
 "RoleId" uuid,
 "UserId" uuid
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_prov_profile_getprofiles_return_type');
+SELECT {databaseSchema}.{objectQualifier}drop_type('{databaseSchema}','{objectQualifier}prov_profile_getprofiles_return_type');
 --GO
-CREATE TYPE databaseSchema.objectQualifier_prov_profile_getprofiles_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}prov_profile_getprofiles_return_type AS
 (
 "TotalRecords" integer,
 "UserID" uuid,

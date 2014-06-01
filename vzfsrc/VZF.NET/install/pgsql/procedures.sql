@@ -2032,7 +2032,7 @@ END;$BODY$
 
 -- Function: objectQualifier_board_save(integer, varchar, boolean)
 -- drop an old function with differing parameters
-DROP FUNCTION IF EXISTS objectQualifier_board_save(
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}board_save(
                         integer, 
                         varchar, 
                         char, 
@@ -2040,7 +2040,7 @@ DROP FUNCTION IF EXISTS objectQualifier_board_save(
                         boolean);
 
 --GO
-DROP FUNCTION IF EXISTS objectQualifier_board_save(
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}board_save(
                         integer, 
                         varchar, 
                         varchar, 
@@ -2862,9 +2862,9 @@ END;$BODY$
     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;  
 --GO
 
--- Function: objectQualifier_extension_save(integer, integer, varchar)
+-- Function: {databaseSchema}.{objectQualifier}extension_save(integer, integer, varchar)
 
--- DROP FUNCTION objectQualifier_extension_save(integer, integer, varchar);
+-- DROP FUNCTION {databaseSchema}.{objectQualifier}extension_save(integer, integer, varchar);
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}extension_save(
                            i_extensionid integer, 
@@ -3404,7 +3404,7 @@ BEGIN
         )) AS x
         JOIN {databaseSchema}.{objectQualifier}forum a ON a.forumid=x.forumid
         JOIN {databaseSchema}.{objectQualifier}category b ON b.categoryid=a.categoryid
-        JOIN databaseSchema."objectQualifier_vaccess" c ON c.forumid=a.forumid
+        JOIN {databaseSchema}.{objectQualifier}vaccess c ON c.forumid=a.forumid
     WHERE
         c.userid=i_userid AND
         b.boardid=i_boardid AND
@@ -4118,7 +4118,7 @@ BEGIN
         FROM         {databaseSchema}.{objectQualifier}message
                 INNER JOIN  {databaseSchema}.{objectQualifier}topic 
                 ON {databaseSchema}.{objectQualifier}message.topicid =  {databaseSchema}.{objectQualifier}topic.topicid
-        WHERE ((objectQualifier_message.flags & 16)=0) and ((objectQualifier_Message.flags & 8)=0) 
+        WHERE (({databaseSchema}.{objectQualifier}message.flags & 16)=0) and (({databaseSchema}.{objectQualifier}Message.flags & 8)=0) 
                         AND (({databaseSchema}.{objectQualifier}topic.flags & 8) = 0) 
                         AND ({databaseSchema}.{objectQualifier}topic.forumid=b.forumid))   AS MessageCount,
         (SELECT     count({databaseSchema}.{objectQualifier}message.messageid)
@@ -6574,7 +6574,7 @@ END LOOP;
   COST 100 ROWS 1000;    
 --GO
 
--- Function: databaseSchema."objectQualifier_message_getReplies"(integer)
+-- Function: {databaseSchema}.{objectQualifier}message_getReplies"(integer)
 
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}message_getReplies(integer);
 
@@ -6597,7 +6597,7 @@ END LOOP;
   COST 100 ROWS 1000; 
 --GO
 
--- Function: databaseSchema."objectQualifier_message_getReplies"(integer)
+-- Function: {databaseSchema}.{objectQualifier}message_getReplies"(integer)
 
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}message_getReplies(integer);
 
@@ -7030,7 +7030,7 @@ FROM {databaseSchema}.{objectQualifier}messagereported mr
     WHERE mr.messageid = i_messageid;
     
     UPDATE {databaseSchema}.{objectQualifier}messagereported
-    SET objectQualifier_messagereported.message = ici_Message
+    SET {databaseSchema}.{objectQualifier}messagereported.message = ici_Message
     WHERE mr.messageid = i_messageid;
     RETURN;
 END;$BODY$
@@ -7529,9 +7529,9 @@ BEGIN
         AND x.isapproved IS TRUE AND x.isdeleted IS NOT TRUE)
     WHERE forumid=ici_ForumID;
  
-    -- exec `databaseSchema`.`objectQualifier_user_upgrade` i_UserID 
+    -- exec {databaseSchema}.{objectQualifier}user_upgrade` i_UserID 
     PERFORM {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
-    -- exec `databaseSchema`.`objectQualifier_topic_updatelastpost` ici_ForumID,null
+    -- exec {databaseSchema}.{objectQualifier}topic_updatelastpost` ici_ForumID,null
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER

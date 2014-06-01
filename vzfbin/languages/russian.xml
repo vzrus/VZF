@@ -332,6 +332,10 @@
     <Resource tag="COPYRIGHT_REMOVAL_KEY">Ключ удаления копирайта:</Resource>
     <Resource tag="COPYRIGHT_REMOVAL_KEY_HELP">Удалить информацию о копирайте и ссылку на VZF из подвала вашего форума. Доступно на &lt;a href="http://VZF/purchase.aspx"&gt;сайта VZF.NET &lt;/a&gt;. </Resource>
     <Resource tag="HEADER">Текущие настройки конференции</Resource>
+    <Resource tag="PERSONALFORUMSASSUBFORUMS">Персональные форумы как подфорумы:</Resource>
+    <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Пользователи могут создавать персональные форумы(блоги) как подфорумы. Разрешение должно быть установлено администратором для форума.</Resource>
+    <Resource tag="PERSONALFORUMSINCATEGORIES">Персональные форумы в категориях:</Resource>
+    <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Пользователи могут создавать персональные форумы(блоги) прямо в категориях.</Resource>
     <Resource tag="TITLE">Настройки конференции</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -945,8 +949,8 @@
     <Resource tag="ALLOW_GUESTS_VIEWPOLL_HELP">Гости могут видеть опции опросов.</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS">Разрешить пользователям скрывать результаты опросов:</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS_HELP">Создатель может скрыть результаты до конца голосования или если это связанное голосование.</Resource>
-    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
-    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Разрешить описание тем.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Пользователь может оставить короткое описание темы.</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP">Разрешить модераторам просматривать IP:</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP_HELP">Разрешить модераторам просматривать IP адреса.</Resource>
     <Resource tag="ALLOW_MODIFY_DISPLAYNAME">Разрешить изменение отображаемого имени:</Resource>
@@ -965,8 +969,8 @@
     <Resource tag="ALLOW_POSTBLOG_HELP">Если включено, то функция дублирования поста в блог задействована.</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER">Разрешить быстрый ответ:</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER_HELP">Разрешить отображение формы быстрого ответа в низу страницы с сообщениями</Resource>
-    <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow remote topic images:</Resource>
-    <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">You can use remote topic images.</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES">Разрешить удалённые иконки тем:</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">Вы можете использовать изображения на другом сервере.</Resource>
     <Resource tag="ALLOW_SENDMAIL">Разрешить отправлять Email:</Resource>
     <Resource tag="ALLOW_SENDMAIL_HELP">Разрешить пользователям отправлять сообщения друг другу по электронной почте.</Resource>
     <Resource tag="ALLOW_SHARE_TOPIC">Включить меню расшаривания:</Resource>
@@ -991,14 +995,14 @@
     <Resource tag="ALLOW_USERS_POLLIMAGES_HELP">Пользователи могут добавлять изображения как опции опроса или как вопрос.</Resource>
     <Resource tag="ALLOW_USERTEXTEDITOR">Разрешить выбор текстового редактора</Resource>
     <Resource tag="ALLOW_USERTEXTEDITOR_HELP">Пользователи смогут выбирать текстовой редактор в своих профилях.</Resource>
-    <Resource tag="APP_CORES">Processor Cores:</Resource>
-    <Resource tag="APP_CORES_HELP">Number of Processor cores.</Resource>
-    <Resource tag="APP_MEMORY">Application memory:</Resource>
-    <Resource tag="APP_MEMORY_HELP">Application memory used.</Resource>
-    <Resource tag="APP_OS_NAME">Operating System:</Resource>
-    <Resource tag="APP_OS_NAME_HELP">What version of operating system is running.</Resource>
-    <Resource tag="APP_RUNTIME">.NET Runtime Version:</Resource>
-    <Resource tag="APP_RUNTIME_HELP">What .NET Runtime is running.</Resource>
+    <Resource tag="APP_CORES">Число ядер процессора:</Resource>
+    <Resource tag="APP_CORES_HELP">Число ядер процессора.</Resource>
+    <Resource tag="APP_MEMORY">Память приложения:</Resource>
+    <Resource tag="APP_MEMORY_HELP">Используемая и резервированная память приложения.</Resource>
+    <Resource tag="APP_OS_NAME">Операционная система:</Resource>
+    <Resource tag="APP_OS_NAME_HELP">Версия операционной системы.</Resource>
+    <Resource tag="APP_RUNTIME">Версия .NET Runtime:</Resource>
+    <Resource tag="APP_RUNTIME_HELP">Какая .NET Runtime исполняется.</Resource>
     <Resource tag="AVATAR_GALLERY">Разрешить галерею аваторов:</Resource>
     <Resource tag="AVATAR_GALLERY_HELP">Пользователи могут выбирать аватар из локальной галереи на сервере.</Resource>
     <Resource tag="AVATAR_HEIGHT">Высота аватара:</Resource>
@@ -1022,6 +1026,7 @@
     <Resource tag="CHECK_FOR_SPAM">Служба анти-СПАМА.</Resource>
     <Resource tag="CHECK_FOR_SPAM_HELP">Включает/отключает автоматичсекую проверку спама при помощи &lt;a href="http://blogspam.net/"&gt;BlogSpam.net API&lt;/a&gt; или Akismet.com. Если включено, то спам автоматически отвергается.</Resource>
     <Resource tag="CLEAR_CACHE">Очистить кэш</Resource>
+    <Resource tag="COLLAPSED">Закрыт</Resource>
     <Resource tag="COUNTRYIMAGE_TEMPLATE">Шаблон иконки страны:</Resource>
     <Resource tag="COUNTRYIMAGE_TEMPLATE_HELP">Шаблон для отображения иконки страны.</Resource>
     <Resource tag="CREATE_NNTPNAMES">Создавать имена пользователей NNTP:</Resource>
@@ -1070,6 +1075,7 @@
     <Resource tag="EVENTLOG_MAX_DAYS_HELP">Максимальное число дней для хранения записей, устаревшие удаляются.</Resource>
     <Resource tag="EVENTLOG_MAX_MESSAGES">Максимальное число записей журнала</Resource>
     <Resource tag="EVENTLOG_MAX_MESSAGES_HELP">Максимальное число записей журнала, устаревшие удаляются.</Resource>
+    <Resource tag="EXPANDED">Открыт</Resource>
     <Resource tag="EXTERN_NEWWINDOW">Показывать результаты внешнего поиска в новом окне:</Resource>
     <Resource tag="EXTERN_NEWWINDOW_HELP">Показывать результаты внешнего поиска в новом окне.</Resource>
     <Resource tag="EXTERN_SEARCH_PERMISS">Разрешения для внешнего поиска:</Resource>
@@ -1134,8 +1140,8 @@
     <Resource tag="HOST_PERMISSION">Разрешения</Resource>
     <Resource tag="HOST_SEARCH">Поиск</Resource>
     <Resource tag="HOST_TEMPLATES">Шаблоны</Resource>
-    <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
-    <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
+    <Resource tag="HOVERCARD_DELAY">Интервал открытия Hover Card(миллисекунды):</Resource>
+    <Resource tag="HOVERCARD_DELAY_HELP">Задержка перед открытием визитной карточки при наведении на ник пользователя.</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE">Разрешить изменение размеров вложенного изображение:</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE_HELP">Вложенные изображения будут уменьшены до thumbnails если они слишком большие.</Resource>
     <Resource tag="IMAGE_RESIZE_HEIGHT">Максимальная высота вложенного изменённого изображения:</Resource>
@@ -1234,10 +1240,6 @@
     <Resource tag="NOTIFICATION_MOBILE_HELP">Использовать собственные диалоги для мобильных устройств.</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT">Таймаут кэша пользователя онлайн:</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT_HELP">Вы можете уставливать это значение в зависимости от активности на сайте(в миллисекундах)</Resource>
-    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
-    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
-    <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
-    <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE">Размер файла изображения в опросах:</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE_HELP">Максимальный размер файла в опросах в КБ.</Resource>
     <Resource tag="POLLVOTING_PERIP">Голосование зависит от IP:</Resource>
@@ -1297,8 +1299,8 @@
     <Resource tag="REPUTATION_TEMPLATE_HELP">Шаблон для отображения репутации пользователя.</Resource>
     <Resource tag="REQUIRE_LOGIN">Требовать входа на сайт:</Resource>
     <Resource tag="REQUIRE_LOGIN_HELP">Требовать входа на сайт, чтобы увидеть контент. Пользователи будут перенаправляться прямо к странице логина.</Resource>
-    <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
-    <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
+    <Resource tag="RESTART_APP_LIMIT">Перезапустить приложение если использование памяти превышает, Мб:</Resource>
+    <Resource tag="RESTART_APP_LIMIT_HELP">Если ваша система использует Full Trust приложение перезапускается автоматически при превышениии этоого значения. Установите 0 для отключения.</Resource>
     <Resource tag="RULES_ONREGISTER">Показывать правила форума перед регистрацией:</Resource>
     <Resource tag="RULES_ONREGISTER_HELP">Пользователи должны будут принять правила перед регистрацией.</Resource>
     <Resource tag="SAVE_SETTINGS">Сохранить настройки</Resource>
@@ -1326,6 +1328,8 @@
     <Resource tag="SERVERTIME_CORRECT_HELP">Введите целое число (минуты) между -720 и 720, только если это время UTC неверно: </Resource>
     <Resource tag="SHOUTBOX_COUNT">Число сообщений в чате:</Resource>
     <Resource tag="SHOUTBOX_COUNT_HELP">Число сообщений, которые будут отображаться в окне чата.</Resource>
+    <Resource tag="SHOUTBOX_DEFAULTSTATE">Состсояние чата по умолчанию (Shout Box):</Resource>
+    <Resource tag="SHOUTBOX_DEFAULTSTATE_HELP">Чат может быть открыт или закрыт, для текущего изменения пользователям необходимо удалить куки.</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION">Показывать активные обсуждения:</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION_HELP">Включить или отключить отображение активных обсуждений.</Resource>
     <Resource tag="SHOW_ATOM_LINKS">Отображать ссылки на ленты Atom:</Resource>
@@ -1458,6 +1462,8 @@
     <Resource tag="VIEWMEMBERLIST_PERMISSION_HELP">Разрешить просмотр списка пользователей:</Resource>
     <Resource tag="VIEWPROFILE_PERMISSION">Разрешения просмотра профиля:</Resource>
     <Resource tag="VIEWPROFILE_PERMISSION_HELP">Разрешить просмотр профилей других пользователей:</Resource>
+    <Resource tag="VIEWSHOUTBOX_PERMISSION">Разрешения на просмотр чата (Shout Box):</Resource>
+    <Resource tag="VIEWSHOUTBOX_PERMISSION_HELP">Разрешения на просмотр чата (Shout Box) для всех пользователей или только для зарегистрированных.</Resource>
     <Resource tag="WSERVICE_TOKEN">Токен веб-службы:</Resource>
     <Resource tag="WSERVICE_TOKEN_HELP">Токен для безопасного вызова веб-служб. Чтобы зафиксировать его вы должны сохранить настроийки хоста хотя бы раз.</Resource>
   </page>
@@ -2375,7 +2381,6 @@
     <Resource tag="AVATARUPLOAD">Загрузите аватар с вашего компьютера:</Resource>
     <Resource tag="INVALID_FILE">Загруженный тип файла не является допустимым форматом для изображения.</Resource>
     <Resource tag="NOAVATAR">[ Нет аватара  ]</Resource>
-    <Resource tag="NOTE_IMG_REMOTE">Примечание: Если размер изображения более чем {0}x{1} пикс., оно будет автоматически изменено до допустимого размера.</Resource>
     <Resource tag="NOTE_LOCAL">Примечание: Если размер изображения более чем {0}x{1} пикс., оно будет автоматически изменено до допустимого размера. Предельный размер файла изображения {2} КБ.</Resource>
     <Resource tag="NOTE_REMOTE">Примечание: Если размер изоражения больше {0}x{1} пикс., его размер будет автоматически изменён.</Resource>
     <Resource tag="OURAVATAR">Выберите аватар из нашей коллекции:</Resource>
@@ -4315,13 +4320,16 @@ Spoiler Content
     <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">Новый форум</Resource>
     <Resource tag="OK">OK</Resource>
-    <Resource tag="PERSONALBLOGS">Мои личные форумы (Блоги)</Resource>
-    <Resource tag="PERSONALGROUPS">Мои группы</Resource>
-    <Resource tag="PERSONALMASKS">Мои маски доступа</Resource>
     <Resource tag="TITLE">Личные форумы</Resource>
   </page>
   <page name="PERSONALFORUM_EDIT">
     <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="CATEGORYALLOWED">Select a category:</Resource>
+    <Resource tag="CATEGORYALLOWED_HELP">You can create it directly in the categories from the list.</Resource>
+    <Resource tag="FORUMALLOWED">Select a forum:</Resource>
+    <Resource tag="FORUMALLOWED_HELP">You can create it as subforum? just select a category and then a forum.</Resource>
+    <Resource tag="FORUMCATEGORYALLOWED">Select a category to filter forums:</Resource>
+    <Resource tag="NOTSELECTED">You didn't pick a place to create your personal forum in.</Resource>
     <Resource tag="SAVE">Сохранить</Resource>
     <Resource tag="TITLE_CREATE">Создание личного форума</Resource>
     <Resource tag="TITLE_EDIT">Редактирование личного форума</Resource>

@@ -316,5 +316,16 @@ namespace YAF.Types.Constants
             /// </summary>
             public static readonly string[] BlockingTaskNames = new[] { "BoardDeleteTask", "BoardCreateTask", "ForumDeleteTask", "ForumSaveTask", "CategoryDeleteTask", "CategorySaveTask" };
         }
+
+        /// <summary>
+        /// The special object names.
+        /// </summary>
+        public struct SpecialObjectNames
+        {
+            /// <summary>
+            /// The user profile table.
+            /// </summary>
+            public const string UserProfileMirrorTable = "UserProfile";
+        }
     }
 }

@@ -2,6 +2,8 @@
 {
     using VZF.Data.DAL;
 
+    using YAF.Classes;
+
     /// <summary>
     /// The data type mappers.
     /// </summary>
@@ -67,16 +69,16 @@
                 type += "(" + size + ")";
             }
 
-            if (!type.ToLowerInvariant().Contains("varchar") || ObjectName.DatabaseEncoding == null)
+            if (!type.ToLowerInvariant().Contains("varchar") || Config.DatabaseEncoding == null)
             {
                 return type;
             }
 
-            type += " CHARACTER SET " + ObjectName.DatabaseEncoding;
+            type += " CHARACTER SET " + Config.DatabaseEncoding;
 
-            if (ObjectName.DatabaseCollation != null)
+            if (Config.DatabaseCollation != null)
             {
-                type += " COLLATE " + ObjectName.DatabaseCollation;
+                type += " COLLATE " + Config.DatabaseCollation;
             }
 
             return type;

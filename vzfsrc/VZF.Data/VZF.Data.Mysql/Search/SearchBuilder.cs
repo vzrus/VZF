@@ -131,10 +131,10 @@ namespace VZF.Data.MySql.Search
 
             searchSql +=
                 " a.ForumID, a.TopicID, a.Topic, b.UserID, IFNULL(c.Username, b.Name) as Name, c.MessageID, c.Posted, '' AS Message, c.Flags";
-            searchSql += " from " + ObjectName.GetVzfObjectName("Topic", mid) + " a left join "
-                         + ObjectName.GetVzfObjectName("Message", mid) + " c on a.TopicID = c.TopicID left join "
-                         + ObjectName.GetVzfObjectName("User", mid) + " b on c.UserID = b.UserID join "
-                         + ObjectName.GetVzfObjectName("vaccess", mid) + " x ON x.ForumID=a.ForumID ";
+            searchSql += " from " + SqlDbAccess.GetVzfObjectName("Topic", mid) + " a left join "
+                         + SqlDbAccess.GetVzfObjectName("Message", mid) + " c on a.TopicID = c.TopicID left join "
+                         + SqlDbAccess.GetVzfObjectName("User", mid) + " b on c.UserID = b.UserID join "
+                         + SqlDbAccess.GetVzfObjectName("vaccess", mid) + " x ON x.ForumID=a.ForumID ";
             searchSql += string.Format(@"WHERE x.ReadAccess<>0 AND x.UserID={0} ", pageUserId);
 
             searchSql +=

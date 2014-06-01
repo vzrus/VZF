@@ -22,7 +22,7 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace VZF.Data.Common
+namespace VZF.Data.Utils
 {
     using System.Configuration;
     using System.Data;

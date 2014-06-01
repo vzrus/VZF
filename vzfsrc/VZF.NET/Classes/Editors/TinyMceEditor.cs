@@ -78,7 +78,7 @@ namespace YAF.Editors
     protected override void Editor_PreRender([NotNull] object sender, [NotNull] EventArgs e)
     {
       ScriptManager.RegisterClientScriptInclude(
-        this.Page, this.Page.GetType(), "tinymce", this.ResolveUrl("tiny_mce/tiny_mce.js"));
+        this.Page, this.Page.GetType(), "tinymce", this.ResolveUrl("tinymce/tinymce.min.js"));
       this.RegisterTinyMceCustomJS();
       this.RegisterSmilieyScript();
     }

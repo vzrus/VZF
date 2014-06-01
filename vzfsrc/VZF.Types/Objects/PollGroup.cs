@@ -39,6 +39,8 @@ namespace VZF.Types.Objects
         {
         }
 
+        public int? mid { get; set; }
+
         /// <summary>
         /// Gets or sets the poll group id.
         /// </summary>

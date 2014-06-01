@@ -218,7 +218,7 @@ namespace YAF.Pages.Admin
             {
                 using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID, null, false))
                 {
-                    var dd = ds.Tables[ObjectName.GetVzfObjectName("Category", PageContext.PageModuleID)];
+                    var dd = ds.Tables[SqlDbAccess.GetVzfObjectName("Category", PageContext.PageModuleID)];
                     this.CategoryList.DataSource = dd;
                 }
             }

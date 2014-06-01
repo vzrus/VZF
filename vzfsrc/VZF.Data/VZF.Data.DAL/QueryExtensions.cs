@@ -48,7 +48,7 @@ namespace VZF.Data.DAL
         /// </returns>
         public static StringBuilder AppendObjectQuery(this StringBuilder sb, string command, int? mid)
         {
-            return sb.Append(ObjectName.GetVzfObjectName(command, mid));
+            return sb.Append(SqlDbAccess.GetVzfObjectName(command, mid));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace VZF.Data.DAL
         /// </returns>
         public static StringBuilder AppendObjectQuery(this StringBuilder sb, string command, string connectionStringName)
         {
-            return sb.Append(ObjectName.GetVzfObjectNameFromConnectionString(command, connectionStringName));
+            return sb.Append(SqlDbAccess.GetVzfObjectNameFromConnectionString(command, connectionStringName));
         }
 
         /// <summary>

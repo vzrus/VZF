@@ -56,20 +56,6 @@
         }
 
         /// <summary>
-        /// The get profile structure.
-        /// </summary>
-        /// <value>
-        ///   The <see cref="string"/>.
-        /// </value>
-        public static string ProfileStructure
-        {
-            get
-            {
-                return "SELECT TOP 1 * FROM {0}";
-            }
-        }
-
-        /// <summary>
         /// The add profile column.
         /// </summary>
         /// <param name="name">
@@ -105,6 +91,16 @@
             chunk[1] = paramName;      
 
             return chunk;
+        }
+
+        /// <summary>
+        /// The get profile structure.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public static string GetProfileStructure()
+        {
+            return @"SELECT TOP 1 1 * FROM {0}";
         }
 
         /// <summary>

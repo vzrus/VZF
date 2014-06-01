@@ -535,14 +535,6 @@
                     </tr>
                     <tr>
                         <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel114" runat="server" LocalizedTag="ENABLE_CALENDER" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>
-                        <td class="post">
-                            <asp:CheckBox ID="EnableDNACalendar" runat="server"></asp:CheckBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
                             <VZF:HelpLabel ID="HelpLabel105" runat="server" LocalizedTag="ALLOW_SHARE_TOPIC" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">
@@ -972,7 +964,7 @@
                             <VZF:HelpLabel ID="HelpLabel195" runat="server" LocalizedTag="IP_INFOSERVICE_DATAMAPPING" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">
-                            <asp:TextBox Style="width:350px" ID="IPLocatorResultsMapping" runat="server"></asp:TextBox>
+                            <asp:TextBox Style="width:350px" ID="IPLocatorResultsMap" runat="server"></asp:TextBox>
                         </td>
                     </tr>       
                     <tr>
@@ -1414,6 +1406,24 @@
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="ShowShoutbox" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel114" runat="server" LocalizedTag="VIEWSHOUTBOX_PERMISSION" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:DropDownList Style="width:350px" ID="ShoutboxViewPermissions" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel236" runat="server" LocalizedTag="SHOUTBOX_DEFAULTSTATE" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:DropDownList Style="width:350px" ID="ShoutboxDefaultState" runat="server">
+                            </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
@@ -2171,4 +2181,5 @@
     </table>
 </VZF:AdminMenu>
 <asp:HiddenField runat="server" ID="hidLastTab" Value="0" />
+<asp:HiddenField runat="server" ID="hidLastTabId" Value="0" />
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

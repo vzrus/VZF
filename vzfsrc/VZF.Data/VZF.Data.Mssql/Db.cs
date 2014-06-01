@@ -480,20 +480,16 @@ namespace VZF.Data.MsSql
         {
             charsetColumn = collationColumn = string.Empty;
             return string.Empty;
-        }    
+        }
 
         /// <summary>
         /// Gets qualified object name
         /// </summary>
-        /// <param name="name">
-        /// Base name of an object
-        /// </param>
-        /// <returns>
-        /// Returns qualified object name of format {databaseOwner}.{objectQualifier}name
-        /// </returns>
-        public static string GetObjectName([NotNull] string name)
+        /// <param name="name">Base name of an object</param>
+        /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
+        public static string GetProfileStructure()
         {
-            return "[{0}].[{1}{2}]".FormatWith(Config.DatabaseOwner, Config.DatabaseObjectQualifier, name);
+            return "select top 1 * from {0};";
         }
       
         #endregion

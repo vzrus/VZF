@@ -1,6 +1,5 @@
-﻿namespace VZF.Data.Common
-{
-    using System.Data;
+﻿namespace VZF.Data.Common{
+   
     using System.Text;
 
     using VZF.Data.Firebird.Mappers;
@@ -66,18 +65,6 @@
             return sqlCommand.ToString();                          
         }
 
-        /// <summary>
-        /// The get profile structure.
-        /// </summary>
-        /// <value>
-        /// </value>
-        public static string ProfileStructure
-        {
-            get
-            {
-                return @"SELECT FIRST 1 * FROM {0}";
-            }
-        }
 
         /// <summary>
         /// The add profile column.

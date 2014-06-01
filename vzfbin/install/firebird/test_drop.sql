@@ -1,5 +1,5 @@
 ﻿/* Yet Another Forum.NET Firebird data layer by vzrus
- * Copyright (C) 2006-2013 Vladimir Zakharov
+ * Copyright (C) 2006-2014 Vladimir Zakharov
  * https://github.com/vzrus
  * http://sourceforge.net/projects/yaf-datalayers/
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS(SELECT 1 
-FROM RDB$PROCEDURES a WHERE a.RDB$PROCEDURE_NAME='objQual_P_CREATEAPPLICATION')) THEN
-EXECUTE STATEMENT 'DROP PROCEDURE objQual_P_CREATEAPPLICATION';
+FROM RDB$PROCEDURES a WHERE a.RDB$PROCEDURE_NAME='{objectQualifier}P_CREATEAPPLICATION')) THEN
+EXECUTE STATEMENT 'DROP PROCEDURE {objectQualifier}P_CREATEAPPLICATION';
 END
 --GO

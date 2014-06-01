@@ -70,7 +70,7 @@ CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
     ON messages FOR EACH ROW EXECUTE PROCEDURE messages_trigger();
 Keep in mind that it is important to specify the configuration name explicitly when creating tsvector values inside triggers, so that the column's contents will not be affected by changes to default_text_search_config. Failure to do this is likely to lead to problems such as search results changing after a dump and reload.
 
-UPDATE databaseSchema.objectQualifier_message SET ts_message =
+UPDATE {databaseSchema}.{objectQualifier}message SET ts_message =
 setweight( coalesce( to_tsvector(message),''),'A');
 
 

@@ -1,6 +1,6 @@
 
 /* Yet Another Forum.NET Firebird data layer by vzrus
- * Copyright (C) 2006-2013 Vladimir Zakharov
+ * Copyright (C) 2006-2014 Vladimir Zakharov
  * https://github.com/vzrus
  * http://sourceforge.net/projects/yaf-datalayers/
  * This program is free software; you can redistribute it and/or
@@ -28,12 +28,12 @@
 EXECUTE BLOCK
 AS
 BEGIN
--- Source table: objQual_ACCESSMASK
+-- Source table: {objectQualifier}ACCESSMASK
 IF (NOT EXISTS(SELECT 1 
                FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ACCESSMASK' 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ACCESSMASK' 
                ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ACCESSMASK
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ACCESSMASK
                        (
                        ACCESSMASKID         INTEGER DEFAULT 0 NOT NULL,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -53,12 +53,12 @@ END
 EXECUTE BLOCK
 AS
 BEGIN
--- Source table: objQual_ACCESSMASKHISTORY
+-- Source table: {objectQualifier}ACCESSMASKHISTORY
 IF (NOT EXISTS(SELECT 1 
                FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ACCESSMASKHISTORY' 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ACCESSMASKHISTORY' 
                ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ACCESSMASKHISTORY
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ACCESSMASKHISTORY
                        (
                        ACCESSMASKID         INTEGER DEFAULT 0 NOT NULL,
                        CHANGEDUSERID		    INTEGER,	
@@ -72,10 +72,10 @@ END
 /* EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_WARNING 
+-- Source table: {objectQualifier}WARNING 
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_WARNING' ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_WARNING 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}WARNING' ROWS 1)) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}WARNING 
                        (
                        WARNINGID            INTEGER DEFAULT 0 NOT NULL,
 					   FROMUSERID           INTEGER DEFAULT 0 NOT NULL,
@@ -90,10 +90,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_ACTIVE
+-- Source table: {objectQualifier}ACTIVE
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ACTIVE' ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ACTIVE 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ACTIVE' ROWS 1)) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ACTIVE 
                        (
                        SESSIONID            VARCHAR(36) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -119,11 +119,11 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_ACTIVEACCESS
+-- Source table: {objectQualifier}ACTIVEACCESS
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ACTIVEACCESS' 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ACTIVEACCESS' 
                ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ACTIVEACCESS
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ACTIVEACCESS
                        (
                        USERID			    INTEGER NOT NULL ,
                        BOARDID			    INTEGER NOT NULL ,			
@@ -152,10 +152,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_ADMINPAGEUSERACCESS
+-- Source table: {objectQualifier}ADMINPAGEUSERACCESS
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ADMINPAGEUSERACCESS' ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ADMINPAGEUSERACCESS 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ADMINPAGEUSERACCESS' ROWS 1)) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ADMINPAGEUSERACCESS 
                        (
                        USERID               INTEGER DEFAULT 0 NOT NULL,
                        PAGENAME             VARCHAR(128) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE
@@ -166,10 +166,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_EVENTLOGGROUPACCESS
+-- Source table: {objectQualifier}EVENTLOGGROUPACCESS
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_EVENTLOGGROUPACCESS' ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_EVENTLOGGROUPACCESS 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}EVENTLOGGROUPACCESS' ROWS 1)) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}EVENTLOGGROUPACCESS 
                        (
                        GROUPID              INTEGER DEFAULT 0 NOT NULL,
                        EVENTTYPEID          INTEGER DEFAULT 0 NOT NULL,
@@ -182,10 +182,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_ATTACHMENT
+-- Source table: {objectQualifier}ATTACHMENT
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ATTACHMENT' ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ATTACHMENT 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ATTACHMENT' ROWS 1)) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ATTACHMENT 
                        (
                        ATTACHMENTID         INTEGER DEFAULT 0 NOT NULL,
                        MESSAGEID            INTEGER DEFAULT 0 NOT NULL,
@@ -202,10 +202,10 @@ END
 /* EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_ANNOUNCEMENTPOSITION
+-- Source table: {objectQualifier}ANNOUNCEMENTPOSITION
 IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_ANNOUNCEMENTPOSITION' ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_ANNOUNCEMENTPOSITION 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}ANNOUNCEMENTPOSITION' ROWS 1)) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}ANNOUNCEMENTPOSITION 
                        (
                        ANNOUNCEMENTID       INTEGER DEFAULT 0 NOT NULL,
 					   MESSAGEID            INTEGER DEFAULT 0 NOT NULL,
@@ -234,10 +234,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_BANNEDIP
+-- Source table: {objectQualifier}BANNEDIP
 IF (NOT EXISTS(SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_BANNEDIP')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_BANNEDIP
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}BANNEDIP')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}BANNEDIP
                        (
                        ID                   INTEGER DEFAULT 0,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -252,10 +252,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_BBCODE
+-- Source table: {objectQualifier}BBCODE
 IF (NOT EXISTS(SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_BBCODE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_BBCODE
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}BBCODE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}BBCODE
                        (
                        BBCODEID             INTEGER DEFAULT 0 NOT NULL,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -278,10 +278,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_BOARD
+-- Source table: {objectQualifier}BOARD
 IF (NOT EXISTS(SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_BOARD')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_BOARD
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}BOARD')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}BOARD
                        (
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
                        NAME                 VARCHAR(255) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
@@ -295,10 +295,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_CATEGORY
+-- Source table: {objectQualifier}CATEGORY
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_CATEGORY')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_CATEGORY 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}CATEGORY')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}CATEGORY 
                        (
                        CATEGORYID           INTEGER DEFAULT 0,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -314,10 +314,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_CHECKEMAIL
+-- Source table: {objectQualifier}CHECKEMAIL
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_CHECKEMAIL')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_CHECKEMAIL 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}CHECKEMAIL')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}CHECKEMAIL 
                        (
                        CHECKEMAILID         INTEGER DEFAULT 0,
                        USERID               INTEGER DEFAULT 0 NOT NULL,
@@ -331,10 +331,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_CHOICE
+-- Source table: {objectQualifier}CHOICE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_CHOICE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_CHOICE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}CHOICE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}CHOICE
                        (
                        CHOICEID             INTEGER DEFAULT 0 NOT NULL,
                        POLLID               INTEGER DEFAULT 0 NOT NULL,
@@ -349,10 +349,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_EVENTLOG
+-- Source table: {objectQualifier}EVENTLOG
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_EVENTLOG')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_EVENTLOG 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}EVENTLOG')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}EVENTLOG 
                        (
                        EVENTLOGID           INTEGER DEFAULT 0 NOT NULL,
                        EVENTTIME            TIMESTAMP DEFAULT current_timestamp,
@@ -367,10 +367,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_EXTENSION
+-- Source table: {objectQualifier}EXTENSION
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_EXTENSION')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_EXTENSION 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}EXTENSION')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}EXTENSION 
                        (
                        EXTENSIONID          INTEGER DEFAULT 0 NOT NULL,
                        BOARDID              INTEGER DEFAULT 1 NOT NULL,
@@ -382,10 +382,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_FORUM
+-- Source table: {objectQualifier}FORUM
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_FORUM')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_FORUM
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}FORUM')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}FORUM
                        (
                        FORUMID              INTEGER DEFAULT 0,
                        CATEGORYID           INTEGER DEFAULT 0 NOT NULL,
@@ -425,12 +425,12 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_FORUMHISTORY
+-- Source table: {objectQualifier}FORUMHISTORY
 IF (NOT EXISTS(SELECT 1 
                FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_FORUMHISTORY' 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}FORUMHISTORY' 
                ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_FORUMHISTORY
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}FORUMHISTORY
                        (
                        FORUMID         INTEGER DEFAULT 0 NOT NULL,
                        CHANGEDUSERID		    INTEGER,	
@@ -444,10 +444,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_FORUMACCESS
+-- Source table: {objectQualifier}FORUMACCESS
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_FORUMACCESS')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_FORUMACCESS 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}FORUMACCESS')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}FORUMACCESS 
                        (
                        GROUPID              INTEGER DEFAULT 0 NOT NULL,
                        FORUMID              INTEGER DEFAULT 0 NOT NULL,
@@ -459,10 +459,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_GROUP
+-- Source table: {objectQualifier}GROUP
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_GROUP')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_GROUP 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}GROUP')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}GROUP 
                        (
                        GROUPID              INTEGER DEFAULT 0 NOT NULL,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -493,12 +493,12 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_GROUPHISTORY
+-- Source table: {objectQualifier}GROUPHISTORY
 IF (NOT EXISTS(SELECT 1 
                FROM RDB$RELATIONS a 
-               WHERE a.RDB$RELATION_NAME='objQual_GROUPHISTORY' 
+               WHERE a.RDB$RELATION_NAME='{objectQualifier}GROUPHISTORY' 
                ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_GROUPHISTORY
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}GROUPHISTORY
                        (
                        GROUPID              INTEGER DEFAULT 0 NOT NULL,
                        CHANGEDUSERID		    INTEGER,	
@@ -512,10 +512,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_GROUPMEDAL
+-- Source table: {objectQualifier}GROUPMEDAL
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_GROUPMEDAL')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_GROUPMEDAL 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}GROUPMEDAL')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}GROUPMEDAL 
                        (
                        GROUPID              INTEGER DEFAULT 0 NOT NULL,
                        MEDALID              INTEGER DEFAULT 0 NOT NULL,
@@ -530,10 +530,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_MAIL
+-- Source table: {objectQualifier}MAIL
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_MAIL')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_MAIL
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}MAIL')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}MAIL
                        (
                        MAILID               INTEGER DEFAULT 0 NOT NULL,
                        FROMUSER             VARCHAR(255) CHARACTER SET  UTF8 NOT NULL COLLATE UNICODE,
@@ -554,10 +554,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_MEDAL
+-- Source table: {objectQualifier}MEDAL
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_MEDAL')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_MEDAL
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}MEDAL')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}MEDAL
                        (
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
                        MEDALID              INTEGER DEFAULT 0 NOT NULL,
@@ -582,10 +582,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_MESSAGE
+-- Source table: {objectQualifier}MESSAGE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_MESSAGE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_MESSAGE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}MESSAGE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}MESSAGE
                        (
                        MESSAGEID            INTEGER DEFAULT 0 NOT NULL,
                        TOPICID              INTEGER DEFAULT 0 NOT NULL,
@@ -617,10 +617,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_MESSAGEREPORTED
+-- Source table: {objectQualifier}MESSAGEREPORTED
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_MESSAGEREPORTED')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_MESSAGEREPORTED
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}MESSAGEREPORTED')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}MESSAGEREPORTED
                        (
                        MESSAGEID INTEGER DEFAULT 0 NOT NULL,
                        MESSAGE BLOB SUB_TYPE 1 SEGMENT SIZE 80,
@@ -634,10 +634,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_MESSAGEREPORTEDAUDIT
+-- Source table: {objectQualifier}MESSAGEREPORTEDAUDIT
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_MESSAGEREPORTEDAUDIT')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_MESSAGEREPORTEDAUDIT
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}MESSAGEREPORTEDAUDIT')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}MESSAGEREPORTEDAUDIT
                        (
                        LOGID                INTEGER DEFAULT 0 NOT NULL,
                        USERID               INTEGER NOT NULL,
@@ -652,10 +652,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_NNTPFORUM
+-- Source table: {objectQualifier}NNTPFORUM
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_NNTPFORUM')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_NNTPFORUM
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}NNTPFORUM')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}NNTPFORUM
                        (
                        NNTPFORUMID          INTEGER DEFAULT 0 NOT NULL,
                        NNTPSERVERID         INTEGER DEFAULT 0 NOT NULL,
@@ -672,10 +672,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_NNTPSERVER
+-- Source table: {objectQualifier}NNTPSERVER
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_NNTPSERVER')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_NNTPSERVER
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}NNTPSERVER')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}NNTPSERVER
                        (
                        NNTPSERVERID         INTEGER DEFAULT 0 NOT NULL,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -691,10 +691,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_NNTPTOPIC
+-- Source table: {objectQualifier}NNTPTOPIC
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_NNTPTOPIC')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_NNTPTOPIC
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}NNTPTOPIC')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}NNTPTOPIC
                        (
                        NNTPTOPICID          INTEGER DEFAULT 0 NOT NULL,
                        NNTPFORUMID          INTEGER DEFAULT 0 NOT NULL,
@@ -707,10 +707,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_PMESSAGE
+-- Source table: {objectQualifier}PMESSAGE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_PMESSAGE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_PMESSAGE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}PMESSAGE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}PMESSAGE
                        (
                        PMESSAGEID           INTEGER DEFAULT 0 NOT NULL,
                        FROMUSERID           INTEGER DEFAULT 0 NOT NULL,
@@ -726,10 +726,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_PMESSAGE
+-- Source table: {objectQualifier}PMESSAGE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_POLLGROUPCLUSTER')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_POLLGROUPCLUSTER
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}POLLGROUPCLUSTER')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}POLLGROUPCLUSTER
                        (
                        POLLGROUPID          INTEGER NOT NULL,
                        USERID               INTEGER NOT NULL,
@@ -742,10 +742,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_POLL
+-- Source table: {objectQualifier}POLL
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_POLL')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_POLL
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}POLL')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}POLL
                        (
                        POLLID               INTEGER DEFAULT 0 NOT NULL,
                        QUESTION             VARCHAR(128) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
@@ -767,8 +767,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_POLLVOTEREFUSE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_POLLVOTEREFUSE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}POLLVOTEREFUSE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}POLLVOTEREFUSE
                        (
                        REFUSEID             INTEGER NOT NULL,
                        POLLID               INTEGER,
@@ -781,10 +781,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_POLLVOTE
+-- Source table: {objectQualifier}POLLVOTE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_POLLVOTE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_POLLVOTE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}POLLVOTE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}POLLVOTE
                        (
                        POLLVOTEID           INTEGER DEFAULT 0 NOT NULL,
                        POLLID               INTEGER DEFAULT 0 NOT NULL,
@@ -798,10 +798,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_RANK
+-- Source table: {objectQualifier}RANK
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-    WHERE a.RDB$RELATION_NAME='objQual_RANK')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_RANK
+    WHERE a.RDB$RELATION_NAME='{objectQualifier}RANK')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}RANK
                        (
                        RANKID               INTEGER DEFAULT 0,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -825,10 +825,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_REGISTRY
+-- Source table: {objectQualifier}REGISTRY
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_REGISTRY')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_REGISTRY
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}REGISTRY')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}REGISTRY
                        (
                        REGISTRYID           INTEGER DEFAULT 0 NOT NULL,
                        NAME                 VARCHAR(128) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
@@ -841,10 +841,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_REPLACE_WORDS
+-- Source table: {objectQualifier}REPLACE_WORDS
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_REPLACE_WORDS')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_REPLACE_WORDS
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}REPLACE_WORDS')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}REPLACE_WORDS
                        (
                        ID                   INTEGER DEFAULT 0 NOT NULL,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -857,10 +857,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_SHOUTBOXMESSAGE
+-- Source table: {objectQualifier}SHOUTBOXMESSAGE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_SHOUTBOXMESSAGE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_SHOUTBOXMESSAGE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}SHOUTBOXMESSAGE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}SHOUTBOXMESSAGE
                        (
                        SHOUTBOXMESSAGEID    INTEGER NOT NULL,
                        BOARDID              INTEGER,
@@ -878,10 +878,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_SMILEY
+-- Source table: {objectQualifier}SMILEY
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_SMILEY')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_SMILEY
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}SMILEY')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}SMILEY
                        (
                        SMILEYID             INTEGER DEFAULT 0,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -896,10 +896,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_TOPIC
+-- Source table: {objectQualifier}TOPIC
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TOPIC')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_TOPIC 
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TOPIC')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}TOPIC 
                        (
                        TOPICID             INTEGER DEFAULT 0 NOT NULL,
                        FORUMID             INTEGER DEFAULT 0 NOT NULL,
@@ -936,10 +936,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_USER
+-- Source table: {objectQualifier}USER
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USER')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USER
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USER')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USER
                        (
                        USERID               INTEGER DEFAULT 0,
                        BOARDID              INTEGER DEFAULT 0 NOT NULL,
@@ -994,10 +994,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_USERFORUM
+-- Source table: {objectQualifier}USERFORUM
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERFORUM')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERFORUM
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERFORUM')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERFORUM
                        (
                        USERID               INTEGER DEFAULT 0 NOT NULL,
                        FORUMID              INTEGER DEFAULT 0 NOT NULL,
@@ -1011,10 +1011,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_USERGROUP
+-- Source table: {objectQualifier}USERGROUP
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERGROUP')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERGROUP
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERGROUP')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERGROUP
                        (
                        USERID               INTEGER DEFAULT 0 NOT NULL,
                        GROUPID              INTEGER DEFAULT 0 NOT NULL
@@ -1025,10 +1025,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_USERMEDAL
+-- Source table: {objectQualifier}USERMEDAL
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERMEDAL')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERMEDAL
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERMEDAL')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERMEDAL
                        (
                        USERID               INTEGER DEFAULT 0 NOT NULL,
                        MEDALID              INTEGER DEFAULT 0 NOT NULL,
@@ -1044,10 +1044,10 @@ IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a
 EXECUTE BLOCK
 AS
 BEGIN  
--- Source table: objQual_IGNOREUSER
+-- Source table: {objectQualifier}IGNOREUSER
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_IGNOREUSER')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_IGNOREUSER
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}IGNOREUSER')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}IGNOREUSER
                        (
                        USERID               INTEGER NOT NULL,
                        IGNOREDUSERID        INTEGER NOT NULL
@@ -1058,10 +1058,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 	
--- Source table: objQual_USERPMESSAGE
+-- Source table: {objectQualifier}USERPMESSAGE
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERPMESSAGE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERPMESSAGE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERPMESSAGE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERPMESSAGE
                        (
                        USERPMESSAGEID       INTEGER DEFAULT 0 NOT NULL,
                        USERID               INTEGER DEFAULT 0 NOT NULL,
@@ -1079,10 +1079,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_WATCHFORUM
+-- Source table: {objectQualifier}WATCHFORUM
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_WATCHFORUM')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_WATCHFORUM
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}WATCHFORUM')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}WATCHFORUM
                        (
                        WATCHFORUMID         INTEGER DEFAULT 0,
                        FORUMID              INTEGER DEFAULT 0 NOT NULL,
@@ -1096,10 +1096,10 @@ END
 EXECUTE BLOCK
 AS
 BEGIN 
--- Source table: objQual_WATCHTOPIC
+-- Source table: {objectQualifier}WATCHTOPIC
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_WATCHTOPIC')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_WATCHTOPIC
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}WATCHTOPIC')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}WATCHTOPIC
                        (
                        WATCHTOPICID         INTEGER DEFAULT 0,
                        TOPICID              INTEGER DEFAULT 0 NOT NULL,
@@ -1114,8 +1114,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-            WHERE a.RDB$RELATION_NAME='objQual_TMP_FLR')) THEN
-    EXECUTE STATEMENT 'DROP TABLE objQual_TMP_FLR;';
+            WHERE a.RDB$RELATION_NAME='{objectQualifier}TMP_FLR')) THEN
+    EXECUTE STATEMENT 'DROP TABLE {objectQualifier}TMP_FLR;';
   END
 --GO
 
@@ -1123,8 +1123,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TMP_FLR')) THEN
-    EXECUTE STATEMENT 'CREATE GLOBAL TEMPORARY TABLE objQual_TMP_FLR
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TMP_FLR')) THEN
+    EXECUTE STATEMENT 'CREATE GLOBAL TEMPORARY TABLE {objectQualifier}TMP_FLR
                        (
                        CATEGORYID           INTEGER,
                        CATEGORY             VARCHAR(128),
@@ -1151,8 +1151,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_THANKS')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_THANKS
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}THANKS')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}THANKS
                        (
                        THANKSID             INTEGER NOT NULL,
                        THANKSFROMUSERID     INTEGER NOT NULL,
@@ -1167,8 +1167,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_BUDDY')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_BUDDY
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}BUDDY')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}BUDDY
                        (
                        ID                   INTEGER NOT NULL,
                        FROMUSERID           INTEGER NOT NULL,
@@ -1186,8 +1186,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_FAVORITETOPIC')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_FAVORITETOPIC
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}FAVORITETOPIC')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}FAVORITETOPIC
                        (
                        ID                   INTEGER NOT NULL,
                        USERID               INTEGER NOT NULL,
@@ -1201,8 +1201,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERALBUM')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERALBUM
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERALBUM')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERALBUM
                        (
                        ALBUMID              INTEGER NOT NULL,
                        USERID               INTEGER NOT NULL,
@@ -1217,8 +1217,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERALBUMIMAGE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERALBUMIMAGE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERALBUMIMAGE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERALBUMIMAGE
                        (
                        IMAGEID INTEGER NOT NULL,
                        ALBUMID INTEGER NOT NULL,
@@ -1236,8 +1236,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_MESSAGEHISTORY')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_MESSAGEHISTORY
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}MESSAGEHISTORY')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}MESSAGEHISTORY
                        (
                        MESSAGEID            INTEGER DEFAULT 0 NOT NULL,
                        MESSAGE              BLOB SUB_TYPE 1 NOT NULL,
@@ -1256,8 +1256,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TOPICREADTRACKING')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_TOPICREADTRACKING
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TOPICREADTRACKING')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}TOPICREADTRACKING
                        (
                        USERID               INTEGER DEFAULT 0 NOT NULL,
                        TOPICID              INTEGER DEFAULT 0 NOT NULL,
@@ -1270,8 +1270,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_FORUMREADTRACKING')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_FORUMREADTRACKING
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}FORUMREADTRACKING')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}FORUMREADTRACKING
                        (
                        USERID               INTEGER DEFAULT 0 NOT NULL,
                        FORUMID              INTEGER DEFAULT 0 NOT NULL,
@@ -1284,8 +1284,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_USERPROFILE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_USERPROFILE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}USERPROFILE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}USERPROFILE
                        (
                        USERID               INTEGER NOT NULL,
                        LASTUPDATEDDATE      TIMESTAMP NOT NULL,
@@ -1301,8 +1301,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TOPICSTATUS')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_TOPICSTATUS
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TOPICSTATUS')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}TOPICSTATUS
                        (
                        TOPICSTATUSID        INTEGER NOT NULL,
                        TOPICSTATUSNAME      VARCHAR(128) CHARACTER SET  UTF8 NOT NULL COLLATE UNICODE,
@@ -1316,8 +1316,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TAGS')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_TAGS
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TAGS')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}TAGS
                        (
                        TAGID       INTEGER NOT NULL,		  
                        TAG      VARCHAR(1024) CHARACTER SET  UTF8 NOT NULL COLLATE UNICODE,
@@ -1330,8 +1330,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TOPICTAGS')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_TOPICTAGS
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TOPICTAGS')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}TOPICTAGS
                        (			  
                        TAGID      INTEGER NOT NULL,
                        TOPICID              INTEGER NOT NULL
@@ -1343,8 +1343,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_REPUTATIONVOTE')) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_REPUTATIONVOTE
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}REPUTATIONVOTE')) THEN
+    EXECUTE STATEMENT 'CREATE TABLE {objectQualifier}REPUTATIONVOTE
                        (
                        REPUTATIONFROMUSERID INTEGER NOT NULL,
                        REPUTATIONTOUSERID   INTEGER NOT NULL,
@@ -1357,8 +1357,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TBL')) THEN
-    EXECUTE STATEMENT 'CREATE global TEMPORARY TABLE objQual_TBL
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TBL')) THEN
+    EXECUTE STATEMENT 'CREATE global TEMPORARY TABLE {objectQualifier}TBL
                        (
                        FORUMID              INTEGER, 
                        PARENTID             INTEGER
@@ -1371,8 +1371,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TBL1')) THEN
-    EXECUTE STATEMENT 'CREATE global TEMPORARY TABLE objQual_TBL1
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TBL1')) THEN
+    EXECUTE STATEMENT 'CREATE global TEMPORARY TABLE {objectQualifier}TBL1
                        (
                        FORUMID              INTEGER, 
                        PARENTID             INTEGER
@@ -1383,8 +1383,8 @@ EXECUTE BLOCK
 AS
 BEGIN 
 IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a 
-                WHERE a.RDB$RELATION_NAME='objQual_TMPEVLOGIDS')) THEN
-    EXECUTE STATEMENT 'CREATE global TEMPORARY TABLE objQual_TMPEVLOGIDS
+                WHERE a.RDB$RELATION_NAME='{objectQualifier}TMPEVLOGIDS')) THEN
+    EXECUTE STATEMENT 'CREATE global TEMPORARY TABLE {objectQualifier}TMPEVLOGIDS
                        (
                        EVENTTYPEID              INTEGER
                        ) ON COMMIT DELETE ROWS;';
@@ -1396,10 +1396,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('objQual_ACTIVEACCESS')
+            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('{objectQualifier}ACTIVEACCESS')
             AND RDB$NULL_FLAG IS NULL  AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = 'FORUMID' ROWS 1)) THEN
     EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = 1
-                       WHERE RDB$FIELD_NAME = ''FORUMID'' AND RDB$RELATION_NAME = UPPER(''objQual_ACTIVEACCESS'')';
+                       WHERE RDB$FIELD_NAME = ''FORUMID'' AND RDB$RELATION_NAME = UPPER(''{objectQualifier}ACTIVEACCESS'')';
 END
 --GO
 
@@ -1407,10 +1407,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('objQual_MESSAGEREPORTEDAUDIT')
+            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('{objectQualifier}MESSAGEREPORTEDAUDIT')
             AND RDB$NULL_FLAG IS NULL  AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = 'MESSAGEID' ROWS 1)) THEN
     EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = 1
-                       WHERE RDB$FIELD_NAME = ''MESSAGEID'' AND RDB$RELATION_NAME = UPPER(''objQual_MESSAGEREPORTEDAUDIT'')';
+                       WHERE RDB$FIELD_NAME = ''MESSAGEID'' AND RDB$RELATION_NAME = UPPER(''{objectQualifier}MESSAGEREPORTEDAUDIT'')';
 END
 --GO
 
@@ -1418,10 +1418,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('objQual_MESSAGEREPORTEDAUDIT')
+            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('{objectQualifier}MESSAGEREPORTEDAUDIT')
             AND RDB$NULL_FLAG IS NULL  AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = 'USERID' ROWS 1)) THEN
     EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = 1
-                       WHERE RDB$FIELD_NAME = ''USERID'' AND RDB$RELATION_NAME = UPPER(''objQual_MESSAGEREPORTEDAUDIT'')';
+                       WHERE RDB$FIELD_NAME = ''USERID'' AND RDB$RELATION_NAME = UPPER(''{objectQualifier}MESSAGEREPORTEDAUDIT'')';
 END
 --GO
 
@@ -1429,10 +1429,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('objQual_MESSAGEREPORTEDAUDIT')
+            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('{objectQualifier}MESSAGEREPORTEDAUDIT')
             AND RDB$NULL_FLAG IS NULL  AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = 'REPORTED' ROWS 1)) THEN
     EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = 1
-                       WHERE RDB$FIELD_NAME = ''REPORTED'' AND RDB$RELATION_NAME = UPPER(''objQual_MESSAGEREPORTEDAUDIT'')';
+                       WHERE RDB$FIELD_NAME = ''REPORTED'' AND RDB$RELATION_NAME = UPPER(''{objectQualifier}MESSAGEREPORTEDAUDIT'')';
 END
 --GO
 
@@ -1440,10 +1440,22 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('objQual_MESSAGEHISTORY')
+            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('{objectQualifier}MESSAGEHISTORY')
             AND RDB$NULL_FLAG IS NULL  AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = 'EDITED' ROWS 1)) THEN
     EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = 1
-                       WHERE RDB$FIELD_NAME = ''EDITED'' AND RDB$RELATION_NAME = UPPER(''objQual_MESSAGEHISTORY'')';
+                       WHERE RDB$FIELD_NAME = ''EDITED'' AND RDB$RELATION_NAME = UPPER(''{objectQualifier}MESSAGEHISTORY'')';
+END
+--GO
+
+
+EXECUTE BLOCK
+AS
+BEGIN
+IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
+            WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME =UPPER('{objectQualifier}FORUM')
+            AND RDB$NULL_FLAG IS NULL  AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = 'DESCRIPTION' ROWS 1)) THEN
+    EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = 1
+                       WHERE RDB$FIELD_NAME = ''DESCRIPTION'' AND RDB$RELATION_NAME = UPPER(''{objectQualifier}FORUM'')';
 END
 --GO
 
@@ -1451,239 +1463,301 @@ EXECUTE BLOCK
 AS
 BEGIN				
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_TOPIC')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}TOPIC')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('TOPICIMAGETYPE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_TOPIC ADD TOPICIMAGETYPE  VARCHAR(50);';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPIC ADD TOPICIMAGETYPE  VARCHAR(50);';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_TOPIC')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}TOPIC')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('TOPICIMAGEBIN') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_TOPIC ADD TOPICIMAGEBIN  BLOB SUB_TYPE 0;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPIC ADD TOPICIMAGEBIN  BLOB SUB_TYPE 0;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_TOPIC')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}TOPIC')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('LINKDATE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_TOPIC ADD LINKDATE TIMESTAMP;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPIC ADD LINKDATE TIMESTAMP;';
 
 	IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_MESSAGE')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}MESSAGE')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('DESCRIPTION') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_MESSAGE ADD DESCRIPTION  VARCHAR(255) CHARACTER SET UTF8  COLLATE UNICODE;';	
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}MESSAGE ADD DESCRIPTION  VARCHAR(255) CHARACTER SET UTF8  COLLATE UNICODE;';	
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('COMMONVIEWTYPE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD COMMONVIEWTYPE  INTEGER DEFAULT 0 NOT NULL;';	
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD COMMONVIEWTYPE  INTEGER DEFAULT 0 NOT NULL;';	
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('POSTSPERPAGE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD POSTSPERPAGE INTEGER DEFAULT 10 NOT NULL;';					    
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD POSTSPERPAGE INTEGER DEFAULT 10 NOT NULL;';					    
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('TOPICSPERPAGE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD TOPICSPERPAGE INTEGER DEFAULT 20 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD TOPICSPERPAGE INTEGER DEFAULT 20 NOT NULL;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USERSTYLE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD USERSTYLE  VARCHAR(255) CHARACTER SET UTF8  COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD USERSTYLE  VARCHAR(255) CHARACTER SET UTF8  COLLATE UNICODE;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('STYLEFLAGS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD STYLEFLAGS INTEGER DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD STYLEFLAGS INTEGER DEFAULT 0 NOT NULL;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISUSERSTYLE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD ISUSERSTYLE SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 1)));';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD ISUSERSTYLE SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 1)));';
+END
+--GO
 
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISGROUPSTYLE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD ISGROUPSTYLE SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 2)));';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD ISGROUPSTYLE SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 2)));';
+END
+--GO
 
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT  1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USER')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USER')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISRANKSTYLE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USER ADD ISRANKSTYLE SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 4)));';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USER ADD ISRANKSTYLE SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 4)));';
+END
+--GO
 
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('LASTUSERDISPLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD LASTUSERDISPLAYNAME VARCHAR(128) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD LASTUSERDISPLAYNAME VARCHAR(128) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+END
+--GO
 
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_MESSAGE')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}MESSAGE')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USERDISPLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_MESSAGE ADD USERDISPLAYNAME VARCHAR(128) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}MESSAGE ADD USERDISPLAYNAME VARCHAR(128) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+END
+--GO
 
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_TOPIC')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}TOPIC')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USERDISPLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_TOPIC ADD USERDISPLAYNAME VARCHAR(128) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPIC ADD USERDISPLAYNAME VARCHAR(128) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+END
+--GO
 
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_TOPIC')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}TOPIC')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('LASTUSERDISPLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_TOPIC ADD LASTUSERDISPLAYNAME VARCHAR(255) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
-
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPIC ADD LASTUSERDISPLAYNAME VARCHAR(255) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+END
+--GO
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_SHOUTBOXMESSAGE')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}SHOUTBOXMESSAGE')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USERDISPLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_SHOUTBOXMESSAGE ADD USERDISPLAYNAME VARCHAR(255) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
-
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}SHOUTBOXMESSAGE ADD USERDISPLAYNAME VARCHAR(255) CHARACTER SET UTF8  NULL COLLATE UNICODE;';
+END
+--GO
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_PMESSAGE')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}PMESSAGE')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('REPLYTO') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_PMESSAGE ADD REPLYTO INT;';
-
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}PMESSAGE ADD REPLYTO INT;';
+END
+--GO
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_USERPMESSAGE')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USERPMESSAGE')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISREPLY') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_USERPMESSAGE ADD ISREPLY SMALLINT DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USERPMESSAGE ADD ISREPLY SMALLINT DEFAULT 0 NOT NULL;';
+END
+--GO
+EXECUTE BLOCK
+AS
+BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_TOPIC')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}TOPIC')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('LINKDATE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_TOPIC ADD LINKDATE TIMESTAMP;';
-
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPIC ADD LINKDATE TIMESTAMP;';
+END
+--GO
+EXECUTE BLOCK
+AS
+BEGIN
 	IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERID') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD CREATEDBYUSERID INTEGER;';  
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD CREATEDBYUSERID INTEGER;';  
 END
 --GO
+
 EXECUTE BLOCK
 AS
 BEGIN
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD CREATEDBYUSERNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD CREATEDBYUSERNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
 END
 --GO
+
 EXECUTE BLOCK
 AS
 BEGIN
-
-
-
-
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERDISLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD CREATEDBYUSERDISLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD CREATEDBYUSERDISLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDDATE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD CREATEDDATE TIMESTAMP';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD CREATEDDATE TIMESTAMP';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISUSERGROUP') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD ISUSERGROUP SMALLINT DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD ISUSERGROUP SMALLINT DEFAULT 0 NOT NULL;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
+                AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISADMINGROUP') ROWS 1)) THEN
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD ISADMINGROUP SMALLINT DEFAULT 0 NOT NULL;';
+
+IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISHIDDEN') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD ISHIDDEN SMALLINT DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD ISHIDDEN SMALLINT DEFAULT 0 NOT NULL;';
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USRPERSONALFORUMS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD USRPERSONALFORUMS INTEGER DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD USRPERSONALFORUMS INTEGER DEFAULT 0 NOT NULL;';
 	
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USRPERSONALMASKS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD USRPERSONALMASKS INTEGER DEFAULT 0 NOT NULL;';	
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD USRPERSONALMASKS INTEGER DEFAULT 0 NOT NULL;';	
 	
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_GROUP')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}GROUP')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USRPERSONALGROUPS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_GROUP ADD USRPERSONALGROUPS INTEGER DEFAULT 0 NOT NULL;';			
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}GROUP ADD USRPERSONALGROUPS INTEGER DEFAULT 0 NOT NULL;';					
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERID') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD CREATEDBYUSERID INTEGER;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD CREATEDBYUSERID INTEGER;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD CREATEDBYUSERNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD CREATEDBYUSERNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERDISLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD CREATEDBYUSERDISLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD CREATEDBYUSERDISLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDDATE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD CREATEDDATE  TIMESTAMP';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD CREATEDDATE  TIMESTAMP';
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISUSERFORUM') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD ISUSERFORUM SMALLINT DEFAULT 0 NOT NULL;';	 
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD ISUSERFORUM SMALLINT DEFAULT 0 NOT NULL;';	 
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CANHAVEPERSFORUMS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM ADD CANHAVEPERSFORUMS  SMALLINT DEFAULT 0 NOT NULL;';		  
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUM ADD CANHAVEPERSFORUMS  SMALLINT DEFAULT 0 NOT NULL;';		  
 	
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACCESSMASK')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACCESSMASK')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERID') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACCESSMASK ADD CREATEDBYUSERID INTEGER;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACCESSMASK ADD CREATEDBYUSERID INTEGER;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACCESSMASK')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACCESSMASK')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACCESSMASK ADD CREATEDBYUSERNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACCESSMASK ADD CREATEDBYUSERNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACCESSMASK')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACCESSMASK')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDBYUSERDISLAYNAME') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACCESSMASK ADD CREATEDBYUSERDISLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACCESSMASK ADD CREATEDBYUSERDISLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACCESSMASK')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACCESSMASK')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CREATEDDATE') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACCESSMASK ADD CREATEDDATE  TIMESTAMP';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACCESSMASK ADD CREATEDDATE  TIMESTAMP';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACCESSMASK')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACCESSMASK')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISUSERMASK') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACCESSMASK ADD ISUSERMASK SMALLINT DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACCESSMASK ADD ISUSERMASK SMALLINT DEFAULT 0 NOT NULL;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACCESSMASK')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACCESSMASK')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('ISADMINMASK') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACCESSMASK ADD ISADMINMASK SMALLINT DEFAULT 0 NOT NULL;';
-
-
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACCESSMASK ADD ISADMINMASK SMALLINT DEFAULT 0 NOT NULL;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_ACTIVEACCESS')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}ACTIVEACCESS')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('USERFORUMACCESS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_ACTIVEACCESS ADD USERFORUMACCESS INT DEFAULT 0 NOT NULL;';
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}ACTIVEACCESS ADD USERFORUMACCESS INT DEFAULT 0 NOT NULL;';
 
 IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_CATEGORY')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}CATEGORY')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CANHAVEPERSFORUMS') ROWS 1)) THEN
-    EXECUTE STATEMENT 'ALTER TABLE objQual_CATEGORY ADD CANHAVEPERSFORUMS  SMALLINT DEFAULT 0 NOT NULL;';		
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}CATEGORY ADD CANHAVEPERSFORUMS  SMALLINT DEFAULT 0 NOT NULL;';		
+
+IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}USERPROFILE')
+                AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('BIRTHDAY') ROWS 1)) THEN
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}USERPROFILE ADD BIRTHDAY TIMESTAMP;';
+
+IF (NOT EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}CATEGORY')
+                AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('CANHAVEPERSFORUMS') ROWS 1)) THEN
+    EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}CATEGORY ADD CANHAVEPERSFORUMS  SMALLINT DEFAULT 0 NOT NULL;';		
 END
 --GO
 
--- Source unique key: IX_objQual_TOPREADTR
+-- Source unique key: IX_{objectQualifier}TOPREADTR
 EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1
-FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='IX_objQual_TOPREADTR' ROWS 1)) THEN
-EXECUTE STATEMENT 'ALTER TABLE objQual_TOPICREADTRACKING DROP CONSTRAINT IX_objQual_TOPREADTR;';
+FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='IX_{objectQualifier}TOPREADTR' ROWS 1)) THEN
+EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}TOPICREADTRACKING DROP CONSTRAINT IX_{objectQualifier}TOPREADTR;';
 END
 --GO
 
@@ -1693,26 +1767,26 @@ AS
 BEGIN
 IF (EXISTS( SELECT 1
 FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='PRIMARY018' ROWS 1)) THEN
-EXECUTE STATEMENT 'ALTER TABLE objQual_MESSAGEREPORTEDAUDIT DROP CONSTRAINT PRIMARY018;';
+EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}MESSAGEREPORTEDAUDIT DROP CONSTRAINT PRIMARY018;';
 END
 --GO
 
--- Source unique key: IX_objQual_FORREADTR
+-- Source unique key: IX_{objectQualifier}FORREADTR
 EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1
-FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='IX_objQual_FORREADTR' ROWS 1)) THEN
-EXECUTE STATEMENT 'ALTER TABLE objQual_FORUMREADTRACKING DROP CONSTRAINT IX_objQual_FORREADTR;';
+FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='IX_{objectQualifier}FORREADTR' ROWS 1)) THEN
+EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}FORUMREADTRACKING DROP CONSTRAINT IX_{objectQualifier}FORREADTR;';
 END
 --GO
--- Source unique key: IX_objQual_MSGHIST_ED_ID
+-- Source unique key: IX_{objectQualifier}MSGHIST_ED_ID
 EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 
-FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='IX_objQual_MSGHIST_ED_ID' ROWS 1 )) THEN
-EXECUTE STATEMENT 'ALTER TABLE objQual_MESSAGEHISTORY DROP CONSTRAINT IX_objQual_MSGHIST_ED_ID;';
+FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='IX_{objectQualifier}MSGHIST_ED_ID' ROWS 1 )) THEN
+EXECUTE STATEMENT 'ALTER TABLE {objectQualifier}MESSAGEHISTORY DROP CONSTRAINT IX_{objectQualifier}MSGHIST_ED_ID;';
 END
 --GO
 
@@ -1720,10 +1794,10 @@ EXECUTE BLOCK
 AS
 BEGIN
 IF (EXISTS( SELECT 1 FROM RDB$RELATION_FIELDS
-                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('objQual_FORUM')
+                WHERE RDB$RELATION_FIELDS.RDB$RELATION_NAME = UPPER('{objectQualifier}FORUM')
                 AND RDB$RELATION_FIELDS.RDB$FIELD_NAME = UPPER('DESCRIPTION') ROWS 1)) THEN
     EXECUTE STATEMENT 'UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = NULL
-WHERE RDB$FIELD_NAME = UPPER(''objQual_ACCESSMASK'') AND RDB$RELATION_NAME = ''objQual_FORUM'';';
+WHERE RDB$FIELD_NAME = UPPER(''{objectQualifier}ACCESSMASK'') AND RDB$RELATION_NAME = ''{objectQualifier}FORUM'';';
 END
 --GO
 
@@ -1731,9 +1805,9 @@ EXECUTE BLOCK
 AS
 BEGIN
 UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = NULL
-WHERE RDB$FIELD_NAME = 'STYLE' AND RDB$RELATION_NAME = 'objQual_GROUP';
+WHERE RDB$FIELD_NAME = 'STYLE' AND RDB$RELATION_NAME = '{objectQualifier}GROUP';
 UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = NULL
-WHERE RDB$FIELD_NAME = 'STYLE' AND RDB$RELATION_NAME = 'objQual_RANK';
+WHERE RDB$FIELD_NAME = 'STYLE' AND RDB$RELATION_NAME = '{objectQualifier}RANK';
 END
 --GO
 

@@ -27,14 +27,13 @@ namespace YAF.Core
     using System.Linq;
 
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
-    
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using VZF.Utils;
 
     #endregion
 

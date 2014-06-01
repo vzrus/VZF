@@ -1,12 +1,7 @@
 ﻿namespace VZF.Data.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Data;
     using System.Text;
 
-    using VZF.Data.DAL;
     using VZF.Data.Postgre.Mappers;
     using VZF.Utils;
 
@@ -49,7 +44,7 @@
             [NotNull] string columnStr,
             [NotNull] string valueStr,
             [NotNull] bool profileExists)
-        {   
+        {
 
             StringBuilder sqlCommand = new StringBuilder();
 
@@ -61,23 +56,10 @@
             else
             {
                 sqlCommand.Append("INSERT INTO {0}").Append(" (UserID,").Append(columnStr.Trim(','));
-                sqlCommand.Append(") VALUES (@i_UserID,")
-                          .Append(valueStr.Trim(','))
-                          .Append(")");
+                sqlCommand.Append(") VALUES (@i_UserID,").Append(valueStr.Trim(',')).Append(")");
             }
 
-           return sqlCommand.ToString();           
-        }
-
-        /// <summary>
-        /// Gets the profile structure.
-        /// </summary>
-        public static string ProfileStructure
-        {
-            get
-            {
-                return @"SELECT * FROM {0} LIMIT 1";
-            }
+            return sqlCommand.ToString();
         }
 
         /// <summary>
@@ -95,13 +77,11 @@
         /// <param name="tableName">
         /// The table Name.
         /// </param>
-        public static string AddProfileColumn(
-            [NotNull] string name, string type, int size, string tableName)
+        public static string AddProfileColumn([NotNull] string name, string type, int size, string tableName)
         {
             type = DataTypeMappers.typeToDbValueMap(name, type, size);
 
-            return "ALTER TABLE {0} ADD {1} {2}".FormatWith(
-                tableName, name, type);
+            return "ALTER TABLE {0} ADD {1} {2}".FormatWith(tableName, name, type);
         }
 
         /// <summary>
