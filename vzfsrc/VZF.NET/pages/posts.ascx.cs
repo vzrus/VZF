@@ -442,7 +442,7 @@ namespace YAF.Pages
         {
             using (DataTable dt = CommonDb.topic_findnext(PageContext.PageModuleID, this.PageContext.PageTopicID))
             {
-                if (dt.Rows.Count == 0)
+                if (dt == null || dt.Rows.Count == 0)
                 {
                     this.PageContext.AddLoadMessage(this.GetText("INFO_NOMORETOPICS"));
                     return;
@@ -470,8 +470,9 @@ namespace YAF.Pages
             }
 
             // Check if Editor exists, if not fallback to default editorid=1
-            this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy(editorId, false)
-                                ?? this.Get<IModuleManager<ForumEditor>>().GetBy("1");
+            /* this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy(editorId, false)
+                                     ?? this.Get<IModuleManager<ForumEditor>>().GetBy("1");*/
+            this._quickReplyEditor = new TextEditor();
 
             // Override Editor when mobile device with default Yaf BBCode Editor
             if (this.PageContext.IsMobileDevice)

@@ -1424,9 +1424,9 @@ BEGIN
 			 and c.data_type = 'timestamp with time zone'
     LOOP		
 		 notnulll := r.is_nullable;
-         EXECUTE 'ALTER TABLE databaseSchema' || '.' ||  r.table_name || ' ALTER COLUMN ' ||  r.column_name  || ' TYPE timestamp without time zone;';
+         EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}' ||  r.table_name || ' ALTER COLUMN ' ||  r.column_name  || ' TYPE timestamp without time zone;';
 		IF (notnulll NOT LIKE 'YES') THEN	
-		 EXECUTE 'ALTER TABLE databaseSchema' || '.' ||  r.table_name || ' ALTER COLUMN ' ||  r.column_name || ' SET NOT NULL;';
+		 EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}' ||  r.table_name || ' ALTER COLUMN ' ||  r.column_name || ' SET NOT NULL;';
 		END IF;		
     END LOOP;
 END$$;

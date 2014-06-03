@@ -343,7 +343,6 @@ IF NOT EXISTS (SELECT 1 FROM pg_constraint
    ALTER TABLE ONLY {databaseSchema}.{objectQualifier}messagereportedaudit
    ADD CONSTRAINT pk_{databaseSchema}_{objectQualifier}messageid_userid_reported_{objectQualifier}messagereportedaudit PRIMARY KEY (messageid,userid,reported);
 END IF;
-
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT

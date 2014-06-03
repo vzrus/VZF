@@ -3,11 +3,9 @@
 CREATE NS TABLE AND INDEXES FUNCTIONS
 *********************************************************************************************************************************
 ******************************************************************************************************************************** */
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_ns_tables()
-				  RETURNS void AS
+DO 
 $BODY$
 BEGIN
-DROP TABLE IF EXISTS {databaseSchema}.{objectQualifier}forum_ns CASCADE;
 IF NOT EXISTS (select 1 from pg_tables 
 			   where schemaname='{databaseSchema}' 
 				 AND tablename='{objectQualifier}forum_ns' limit 1) THEN
@@ -22,29 +20,56 @@ CREATE TABLE {databaseSchema}.{objectQualifier}forum_ns
   "level" integer NOT NULL DEFAULT 0,
   tree integer NOT NULL DEFAULT 0,
   parentid integer NOT NULL DEFAULT 0,  
-  _trigger_lock_update boolean NOT NULL DEFAULT false,
-  _trigger_for_delete boolean NOT NULL DEFAULT false, 
+  trigger_lock_update boolean NOT NULL DEFAULT false,
+  trigger_for_delete boolean NOT NULL DEFAULT false, 
   sortorder integer NOT NULL DEFAULT 0,
   path_cache character varying(1024),
-  CONSTRAINT databaseSchema_{objectQualifier}_ns_tree_pkey PRIMARY KEY (nid)
+  CONSTRAINT {databaseSchema}_{objectQualifier}_ns_tree_pkey PRIMARY KEY (nid)
 )
 WITH 
   (OIDS={withOIDs}); 
 END IF;
-
- IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='{objectQualifier}forum_ns' AND indexname='databaseSchema_{objectQualifier}_forum_ns_left_key_right_key_level_tree_idx') THEN
-CREATE INDEX databaseSchema_{objectQualifier}_forum_ns_left_key_right_key_level_tree_idx
+END
+$BODY$;
+--GO
+DO$BODY$
+BEGIN
+IF NOT EXISTS (SELECT 1 FROM pg_constraint 
+			   where contype='p' 
+				 and conname ='pk_{databaseSchema}_{objectQualifier}_ns_tree_pkey' LIMIT 1) THEN
+   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}messagereportedaudit
+   ADD CONSTRAINT pk_{databaseSchema}_{objectQualifier}_ns_tree_pkey PRIMARY KEY (nid);
+END IF;
+END
+$BODY$;
+--GO
+DO
+$BODY$
+BEGIN
+ IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='{objectQualifier}forum_ns' AND indexname='{databaseSchema}_{objectQualifier}_forum_ns_left_key_right_key_level_tree_idx') THEN
+CREATE INDEX {databaseSchema}_{objectQualifier}_forum_ns_left_key_right_key_level_tree_idx
   ON {databaseSchema}.{objectQualifier}forum_ns
   USING btree
   (left_key, right_key, level, tree);
 END IF;
 
-IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='{objectQualifier}forum_ns' AND indexname='databaseSchema_{objectQualifier}_forum_ns_parent_id_idx') THEN
-CREATE INDEX databaseSchema_{objectQualifier}_forum_ns_parent_id_idx
+IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='{objectQualifier}forum_ns' AND indexname='{databaseSchema}_{objectQualifier}_forum_ns_parent_id_idx') THEN
+CREATE INDEX {databaseSchema}_{objectQualifier}_forum_ns_parent_id_idx
   ON {databaseSchema}.{objectQualifier}forum_ns
   USING btree
   (parentid);
 END IF;
+END
+$BODY$;
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_ns_tables()
+				  RETURNS void AS
+$BODY$
+BEGIN
+EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns disable trigger user;';
+truncate table {databaseSchema}.{objectQualifier}forum_ns;
+EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns enable trigger user;';
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
@@ -56,51 +81,6 @@ $BODY$
 -- GO
 SELECT {databaseSchema}.{objectQualifier}create_or_check_ns_tables();
 --GO
-/* ******************************************************************************************************************************
-*********************************************************************************************************************************
-BRIDGE FUNCTIONS
-*********************************************************************************************************************************
-******************************************************************************************************************************** */
-
-
-
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_dropbridge_triggers()
-				  RETURNS void AS
-$BODY$
-BEGIN
-
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_forum_update ON {databaseSchema}.{objectQualifier}forum;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_forum_insert ON {databaseSchema}.{objectQualifier}forum;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_forum_delete ON {databaseSchema}.{objectQualifier}forum;
-
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_category_insert ON {databaseSchema}.{objectQualifier}category;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_category_update ON {databaseSchema}.{objectQualifier}category;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_category_delete ON {databaseSchema}.{objectQualifier}category;
-
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_board_insert ON {databaseSchema}.{objectQualifier}board;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_forum_ns_board_delete ON {databaseSchema}.{objectQualifier}board;
-
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
-  COST 100;  
-	--GO
-
-	CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_drop_triggers()
-				  RETURNS void AS
-$BODY$
-BEGIN
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_forum_ns_after_delete_2_tr ON {databaseSchema}.{objectQualifier}forum_ns;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_forum_ns_before_insert_tr ON {databaseSchema}.{objectQualifier}forum_ns;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_forum_ns_after_delete_tr ON {databaseSchema}.{objectQualifier}forum_ns;
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_forum_ns_before_update_tr ON {databaseSchema}.{objectQualifier}forum_ns;
-
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
-  COST 100;  
-	--GO 
-
 
 
 /* ******************************************************************************************************************************
@@ -154,7 +134,7 @@ BEGIN
 							 THEN right_key - 1 
 							 ELSE right_key - 2
 						END,
-			_trigger_lock_update = TRUE
+			trigger_lock_update = TRUE
 		WHERE (right_key > OLD.right_key OR
 			(left_key > OLD.left_key AND right_key < OLD.right_key)) AND
 			tree = OLD.tree;
@@ -177,11 +157,11 @@ DECLARE
 BEGIN
 	PERFORM {databaseSchema}.{objectQualifier}lock_ns_tree(OLD.tree);
 -- Проверяем, стоит ли выполнять триггер:
-	IF OLD._trigger_for_delete = TRUE THEN RETURN OLD; END IF;
+	IF OLD.trigger_for_delete = TRUE THEN RETURN OLD; END IF;
 -- Помечаем на удаление дочерние узлы:
 	UPDATE {databaseSchema}.{objectQualifier}forum_ns
-		SET _trigger_for_delete = TRUE,
-			_trigger_lock_update = TRUE
+		SET trigger_for_delete = TRUE,
+			trigger_lock_update = TRUE
 		WHERE
 			tree = OLD.tree AND
 			left_key > OLD.left_key AND
@@ -200,7 +180,7 @@ BEGIN
 							ELSE left_key
 					   END,
 			right_key = right_key - _skew_tree,
-			_trigger_lock_update = TRUE
+			trigger_lock_update = TRUE
 		WHERE right_key > OLD.right_key AND
 			tree = OLD.tree;
 	RETURN OLD;
@@ -210,7 +190,7 @@ $BODY$
   COST 100;
   
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_forum_ns_after_delete_tr
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_forum_ns_after_delete_tr
   AFTER DELETE
   ON {databaseSchema}.{objectQualifier}forum_ns
   FOR EACH ROW
@@ -232,8 +212,8 @@ DECLARE
 BEGIN
 	PERFORM {databaseSchema}.{objectQualifier}lock_ns_tree(NEW.tree);
 -- Нельзя эти поля ручками ставить:
-	NEW._trigger_for_delete := FALSE;
-	NEW._trigger_lock_update := FALSE;
+	NEW.trigger_for_delete := FALSE;
+	NEW.trigger_lock_update := FALSE;
 	_left_key := 0;
 	_level := 0;
 -- Если мы указали родителя:
@@ -286,7 +266,7 @@ BEGIN
 			  ELSE 0 
 			END,
 			right_key = right_key + 2,
-			_trigger_lock_update = TRUE
+			trigger_lock_update = TRUE
 		WHERE tree = NEW.tree AND right_key >= _left_key;
 	RETURN NEW;
 END;
@@ -312,11 +292,11 @@ DECLARE
 BEGIN
 	PERFORM {databaseSchema}.{objectQualifier}lock_ns_tree(OLD.tree);
 -- А стоит ли нам вообще что либо делать:
-	IF NEW._trigger_lock_update = TRUE THEN
-		NEW._trigger_lock_update := FALSE;
-		IF NEW._trigger_for_delete = TRUE THEN
+	IF NEW.trigger_lock_update = TRUE THEN
+		NEW.trigger_lock_update := FALSE;
+		IF NEW.trigger_for_delete = TRUE THEN
 			NEW = OLD;
-			NEW._trigger_for_delete = TRUE;
+			NEW.trigger_for_delete = TRUE;
 			RETURN NEW;
 		END IF;
 		RETURN NEW;
@@ -412,8 +392,8 @@ BEGIN
 										   THEN right_key - _skew_tree
 										   ELSE right_key
 									  END
-							END,
 				_trigger_lock_update = TRUE
+							END,
 			WHERE tree = OLD.tree AND
 				  right_key > OLD.left_key AND
 				  left_key < _left_key AND
@@ -458,34 +438,32 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
 --GO 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_create_triggers()
-				  RETURNS void AS
-$BODY$
-BEGIN
-CREATE TRIGGER databaseSchema_{objectQualifier}_forum_ns_after_delete_2_tr
+
+
+-- nested sets
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_forum_ns_after_delete_2_tr ON {databaseSchema}.{objectQualifier}forum_ns;
+--GO
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_forum_ns_after_delete_2_tr
   AFTER DELETE
   ON {databaseSchema}.{objectQualifier}forum_ns
   FOR EACH ROW
   EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_after_delete_2_func();
-
-CREATE TRIGGER databaseSchema_{objectQualifier}_forum_ns_before_insert_tr
+--GO
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_forum_ns_before_insert_tr ON {databaseSchema}.{objectQualifier}forum_ns;
+--GO
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_forum_ns_before_insert_tr
   BEFORE INSERT
   ON {databaseSchema}.{objectQualifier}forum_ns
   FOR EACH ROW
   EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_before_insert_func();
-
-CREATE TRIGGER databaseSchema_{objectQualifier}_forum_ns_before_update_tr
+--GO
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_forum_ns_before_update_tr ON {databaseSchema}.{objectQualifier}forum_ns;
+--GO
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_forum_ns_before_update_tr
   BEFORE UPDATE
   ON {databaseSchema}.{objectQualifier}forum_ns
-  FOR EACH ROW
   EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_before_update_func();
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
-  COST 100;  
-	--GO 
-
-
+--GO 
 
 /* ******************************************************************************************************************************
 *********************************************************************************************************************************
@@ -525,7 +503,7 @@ BEGIN
 					   
 
 -- _nidParent this is nid of a parent node if i_parentid is  null it's a category
-CREATE  TEMPORARY TABLE databaseSchema_{objectQualifier}_tmp_ns_sort
+CREATE  TEMPORARY TABLE {databaseSchema}_{objectQualifier}_tmp_ns_sort
 	(nid integer, left_key integer, right_key integer, level integer, parentid integer, forumid integer, sortorder integer) 
 	WITHOUT OIDS 
 	ON COMMIT  DROP;
@@ -543,12 +521,12 @@ AND  n1.left_key BETWEEN n2.left_key + _notincluded::integer AND n2.right_key
 and (TRUE IS FALSE  OR n1.parentid = n2.nid)) ORDER BY n1.left_key
 LOOP
 
-INSERT INTO databaseSchema_{objectQualifier}_tmp_ns_sort(nid,left_key,right_key, level,parentid, forumid,sortorder)
+INSERT INTO {databaseSchema}_{objectQualifier}_tmp_ns_sort(nid,left_key,right_key, level,parentid, forumid,sortorder)
 VALUES  (_rec.nid, _rec.left_key, _rec.right_key, _rec.level, _rec.parentid, _rec.forumid,_rec.sortorder);
 
 END LOOP;
 -- loop through sorted  nodes and return previous value as a parent node
-FOR _recTmp IN SELECT nid,forumid,sortorder FROM databaseSchema_{objectQualifier}_tmp_ns_sort  ORDER by sortorder, forumid
+FOR _recTmp IN SELECT nid,forumid,sortorder FROM {databaseSchema}_{objectQualifier}_tmp_ns_sort  ORDER by sortorder, forumid
 LOOP
 _testOut := COALESCE(_testOut,'') || ',' ||  _recTmp.nid::varchar;
 if (_recTmp.forumid = i_forumid AND _thisforum_sortorder >= _recTmp.sortorder) then
@@ -567,7 +545,7 @@ UPDATE {databaseSchema}.{objectQualifier}forum_ns SET left_key  = _leftNodePrevi
 
 return _leftNodePrevious;
 -- return _nidParent AS II;
--- return (SELECT COUNT(1) FROM databaseSchema_{objectQualifier}_tmp_ns_sort);
+-- return (SELECT COUNT(1) FROM {databaseSchema}_{objectQualifier}_tmp_ns_sort);
 
 END;
 $BODY$

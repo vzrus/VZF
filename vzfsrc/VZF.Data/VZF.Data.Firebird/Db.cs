@@ -240,13 +240,13 @@ namespace VZF.Data.Firebird
         /// </summary>
         private static readonly string[] _scriptList =
             {
+                "firebird/preinstall.sql",
                 "firebird/procedures_drop.sql",
                 "firebird/providers/procedures_drop.sql",
                 "firebird/functions_drop.sql", 
                 "firebird/test_drop.sql",
                 "firebird/views_drop.sql", 
                 "firebird/exceptions_drop.sql",
-                "firebird/preinstall.sql",
                 "firebird/domains.sql", 
                 "firebird/sequences.sql",
                 "firebird/tables.sql", 
@@ -262,12 +262,12 @@ namespace VZF.Data.Firebird
                 "firebird/providers/tables.sql", 
                 "firebird/providers/pkeys.sql",
                 "firebird/providers/indexes.sql",
-                "firebird/providers/procedures.sql",
- 
-                // "firebird/nestedsets.sql",                                     
+                "firebird/providers/procedures.sql",                                                    
                 "firebird/procedures.sql", 
                 "firebird/procedures1.sql",
                 "firebird/procedures2.sql",
+                // "firebird/nestedsets.sql", 
+                // "firebird/nestedsets_sp.sql", 
                 "firebird/postinstall.sql"
             };
 

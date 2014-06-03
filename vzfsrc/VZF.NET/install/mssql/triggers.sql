@@ -56,3 +56,5 @@ if exists(select 1 from sys.objects where object_id = object_id(N'[{databaseSche
 	drop trigger [{databaseSchema}].[{objectQualifier}UserGroup_delete]
 GO
 
+
+

@@ -18,13 +18,14 @@
  */
 namespace YAF.Editors
 {
-  using System.Web.UI;
+    using System.Web.UI;
 
-  using YAF.Classes;
-  using YAF.Core;
-  using YAF.Types;
-  using YAF.Types.Interfaces;
-  using VZF.Utils;
+    using VZF.Utils;
+
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Interfaces;
 
     /// <summary>
   /// The tiny mce bb code editor.

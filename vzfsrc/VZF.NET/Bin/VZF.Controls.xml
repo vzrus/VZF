@@ -3281,6 +3281,11 @@
               The _show attachments.
             </summary>
         </member>
+        <member name="F:VZF.Controls.MessagePostData._showBbCodes">
+            <summary>
+            The _show bb codes.
+            </summary>
+        </member>
         <member name="F:VZF.Controls.MessagePostData._showSignature">
             <summary>
               The _show signature.
@@ -3352,6 +3357,11 @@
         <member name="P:VZF.Controls.MessagePostData.ShowAttachments">
             <summary>
               Gets or sets a value indicating whether ShowAttachments.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePostData.ShowBbCodes">
+            <summary>
+            Gets or sets a value indicating whether show bb codes.
             </summary>
         </member>
         <member name="P:VZF.Controls.MessagePostData.ShowSignature">

@@ -54,7 +54,7 @@
                                     </td>
                                     <td valign="top" class="message">
                                         <VZF:MessagePostData ID="MessagePostPrimary" runat="server" DataRow='<%# Container.DataItem %>'
-                                            ShowAttachments="false">
+                                            ShowAttachments="false" ShowBbCodes="false">
                                         </VZF:MessagePostData>
                                     </td>
                                 </tr>

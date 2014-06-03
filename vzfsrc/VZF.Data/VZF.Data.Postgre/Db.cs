@@ -182,8 +182,7 @@ namespace VZF.Data.Postgre
                 "pgsql/sequences.sql", 
                 "pgsql/pkeys.sql", 
                 "pgsql/indexes.sql",
-                "pgsql/fkeys.sql", 
-                "pgsql/triggers.sql", 
+                "pgsql/fkeys.sql",               
                 "pgsql/rules.sql",
                 "pgsql/views.sql", 
                 "pgsql/types.sql", 
@@ -195,8 +194,9 @@ namespace VZF.Data.Postgre
                 "pgsql/providers/indexes.sql", 
                 "pgsql/providers/types.sql",
                 "pgsql/providers/procedures.sql", 
-                "pgsql/nestedsets.sql", 
-                "pgsql/nestedsets_sp.sql",
+               // "pgsql/nestedsets.sql", 
+              //  "pgsql/nestedsets_sp.sql",
+                "pgsql/triggers.sql", 
                 "pgsql/postinstall.sql",
                 "pgsql/fulltext_ru.sql"
             };

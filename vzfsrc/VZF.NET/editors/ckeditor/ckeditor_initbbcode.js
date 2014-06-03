@@ -56,7 +56,7 @@ CKEDITOR.on( 'dialogDefinition', function( ev )
 			tab = definition.getContents( 'info' );
 			tab.remove( 'txtAlt' );
 			tab.remove( 'basic' );
-		}
+		}		
 	});
    
    if (document.addEventListener) {

@@ -58,6 +58,12 @@ set @fk_d_action = fk_d_action ;
 set @fk_u_action = fk_u_action ;
 set @fk_k_name = fk_k_name;
 
+set @fk_drop_string = concat('ALTER TABLE {databaseSchema}.{objectQualifier}',
+@fk_t_name,'` DROP FOREIGN KEY `',@fk_k_name, ';');
+prepare fk_drop_statement from @fk_drop_string ;
+execute fk_drop_statement ;
+deallocate prepare fk_drop_statement;
+
 set @fk_create_string = concat('ALTER TABLE {databaseSchema}.{objectQualifier}',
 @fk_t_name,' ADD CONSTRAINT `',@fk_k_name, '` FOREIGN KEY `',@fk_k_name, '` (`',@fk_c_name,
 '`) REFERENCES {databaseSchema}.`{objectQualifier}',@fk_rt_name,'`(`',@fk_rc_name,'`) ',
@@ -125,13 +131,13 @@ CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('Message','TopicID','T
 --GO
 CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('Message','UserID','User','UserID','FK_{databaseSchema}_{objectQualifier}Message_{objectQualifier}User','NO ACTION','NO ACTION');
 --GO
-CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpForum','NntpServerID','NntpServer','NntpServerID','FK_{databaseSchema}_{objectQualifier}NntpForum_{objectQualifier}NntpServer','NO ACTION','NO ACTION');
+CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpForum','NntpServerID','NntpServer','NntpServerID','FK_{databaseSchema}_{objectQualifier}NntpForum_{objectQualifier}NntpServer','CASCADE','NO ACTION');
 --GO
-CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpForum','ForumID','Forum','ForumID','FK_{databaseSchema}_{objectQualifier}NntpForum_{objectQualifier}Forum','NO ACTION','NO ACTION');
+CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpForum','ForumID','Forum','ForumID','FK_{databaseSchema}_{objectQualifier}NntpForum_{objectQualifier}Forum','CASCADE','NO ACTION');
 --GO
-CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpServer','BoardID','Board','BoardID','FK_{databaseSchema}_{objectQualifier}NntpServer_{objectQualifier}Board','NO ACTION','NO ACTION');
+CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpServer','BoardID','Board','BoardID','FK_{databaseSchema}_{objectQualifier}NntpServer_{objectQualifier}Board','CASCADE','NO ACTION');
 --GO
-CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpTopic','NntpForumID','NntpForum','NntpForumID','FK_{databaseSchema}_{objectQualifier}NntpTopic_{objectQualifier}NntpForum','NO ACTION','NO ACTION');
+CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpTopic','NntpForumID','NntpForum','NntpForumID','FK_{databaseSchema}_{objectQualifier}NntpTopic_{objectQualifier}NntpForum','CASCADE','NO ACTION');
 --GO
 CALL {databaseSchema}.{objectQualifier}add_or_check_fkeys('NntpTopic','TopicID','Topic','TopicID','FK_{databaseSchema}_{objectQualifier}NntpTopic_{objectQualifier}Topic','NO ACTION','NO ACTION');
 --GO

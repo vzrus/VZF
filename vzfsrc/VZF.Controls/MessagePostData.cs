@@ -25,12 +25,13 @@ namespace VZF.Controls
     using System.Web;
     using System.Web.UI;
 
+    using VZF.Utils;
+
     using YAF.Classes;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
 
     #endregion
 
@@ -50,6 +51,11 @@ namespace VZF.Controls
         ///   The _show attachments.
         /// </summary>
         private bool _showAttachments = true;
+
+        /// <summary>
+        /// The _show bb codes.
+        /// </summary>
+        private bool _showBbCodes = true;
 
         /// <summary>
         ///   The _show signature.
@@ -164,6 +170,22 @@ namespace VZF.Controls
             set
             {
                 this._showAttachments = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether show bb codes.
+        /// </summary>
+        public bool ShowBbCodes
+        {
+            get
+            {
+                return this._showBbCodes;
+            }
+
+            set
+            {
+                this._showBbCodes = value;
             }
         }
 
@@ -320,14 +342,17 @@ namespace VZF.Controls
                 var formattedMessage =
                     this.Get<IFormatMessage>().FormatMessage(
                         this.HighlightMessage(this.Message, true), this.MessageFlags, false, editedMessageDateTime.AddMinutes((double)PageContext.CurrentUserData.TimeZone * 60));
-
-                // tha_watcha : Since html message and bbcode can be mixed now, message should be always replace bbcode
-                this.RenderModulesInBBCode(
-                    writer,
-                    formattedMessage,
-                    this.MessageFlags,
-                    this.DisplayUserID,
-                    this.MessageId);
+              
+              //  if (this.ShowBbCodes)
+              //  {
+                    // tha_watcha : Since html message and bbcode can be mixed now, message should be always replace bbcode
+                    this.RenderModulesInBBCode(
+                        writer,
+                        formattedMessage,
+                        this.MessageFlags,
+                        this.DisplayUserID,
+                        this.MessageId);
+              //  }
 
                 // Render Edit Message
                 if (this.ShowEditMessage && this.Edited > this.Posted.AddSeconds(this.Get<YafBoardSettings>().EditTimeOut))
@@ -341,10 +366,16 @@ namespace VZF.Controls
                 var formattedMessage =
                     this.Get<IFormatMessage>().FormatMessage(
                         this.HighlightMessage(this.Message, true), this.MessageFlags);
-
-                // tha_watcha : Since html message and bbcode can be mixed now, message should be always replace bbcode
-                this.RenderModulesInBBCode(
-                    writer, formattedMessage, this.MessageFlags, this.DisplayUserID, this.MessageID);
+                if (this.ShowBbCodes)
+                {
+                    // tha_watcha : Since html message and bbcode can be mixed now, message should be always replace bbcode
+                    this.RenderModulesInBBCode(
+                        writer,
+                        formattedMessage,
+                        this.MessageFlags,
+                        this.DisplayUserID,
+                        this.MessageID);
+                }
             }
         }
 

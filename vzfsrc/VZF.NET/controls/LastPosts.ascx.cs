@@ -34,6 +34,7 @@ namespace VZF.Controls
     using YAF.Types;
     using YAF.Types.Interfaces;
     using VZF.Utilities;
+    using YAF.Types.Constants;
 
     #endregion
 
@@ -91,8 +92,26 @@ namespace VZF.Controls
         /// </param>
         protected override void OnPreRender([NotNull] EventArgs e)
         {
-            YafContext.Current.PageElements.RegisterJsBlockStartup(
-                this.LastPostUpdatePanel, "DisablePageManagerScrollJs", JavaScriptBlocks.DisablePageManagerScrollJs);
+            this.PageContext.PageElements.RegisterJsBlockStartup(
+                this.LastPostUpdatePanel,
+                "DisablePageManagerScrollJs",
+                JavaScriptBlocks.DisablePageManagerScrollJs);
+
+            if (this.PageContext.ForumPageType == ForumPages.postmessage)
+            {
+                var editorId = this.Get<YafBoardSettings>().AllowUsersTextEditor && this.PageContext.TextEditor.IsSet()
+                                   ? this.PageContext.TextEditor
+                                   : this.Get<YafBoardSettings>().ForumEditor;
+
+                // Check if Editor exists, if not fallback to default editorid=1
+                var forumEditor = this.Get<IModuleManager<ForumEditor>>().GetBy(editorId, false)
+                                  ?? this.Get<IModuleManager<ForumEditor>>().GetBy("1");
+
+                if (forumEditor.Description.Contains("CKEditor") || forumEditor.Description.Contains("DotNetNuke"))
+                {
+                    this.LastPostUpdateTimer.Enabled = false;
+                }
+            }
 
             base.OnPreRender(e);
         }

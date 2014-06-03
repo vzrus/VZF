@@ -4947,7 +4947,7 @@ begin
 
     select @ForumID = ForumID from [{databaseSchema}].[{objectQualifier}NntpForum] where NntpForumID=@NntpForumID
 
-    if exists(select 1 from [{databaseSchema}].[{objectQualifier}Message] where ExternalMessageId = @ReferenceMessageId)
+    if exists(select top 1 1 from [{databaseSchema}].[{objectQualifier}Message] where ExternalMessageId = @ReferenceMessageId)
     begin
         -- referenced message exists
         select @TopicID = TopicID, @ReplyTo = MessageID from [{databaseSchema}].[{objectQualifier}Message] where ExternalMessageId = @ReferenceMessageId

@@ -410,10 +410,10 @@ namespace YAF.Pages
                 this._forumEditor = this.Get<IModuleManager<ForumEditor>>().GetBy("1");
             }
 
-            this.EditorLine.Controls.Add(this._forumEditor);
-
             // setup jQuery and YAF JS...
             YafContext.Current.PageElements.RegisterJQuery();
+
+            this.EditorLine.Controls.Add(this._forumEditor);
 
             // Setup Syntax Highlight JS
             YafContext.Current.PageElements.RegisterJsResourceInclude(

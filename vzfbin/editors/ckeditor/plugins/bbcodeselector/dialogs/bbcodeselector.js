@@ -94,7 +94,7 @@ CKEDITOR.dialog.add('bbcodeselector', function(editor)
 									  ['Vimeo', 'vimeo'],
 									  ['GoogleWidget', 'googlewidget'],
 									  ['Spoiler', 'spoiler'], 
-									  ['Userlink', 'userlink',flash]
+									  ['Userlink', 'userlink']
                               ],
                               setup: function(data) {
                                   if (data.bbcodeName)

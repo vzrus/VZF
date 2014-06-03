@@ -193,6 +193,8 @@ namespace VZF.Data.Mysql
                 "mysql/providers/pkeys.sql",
                 "mysql/providers/indexes.sql", 
                 "mysql/providers/procedures.sql",
+                // "mysql/nestedsets.sql", 
+                // "mysql/nestedsets_sp.sql", 
                 "mysql/postinstall.sql"
             };
 

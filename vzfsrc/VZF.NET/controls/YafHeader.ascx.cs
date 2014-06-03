@@ -82,6 +82,11 @@ namespace VZF.Controls
         /// </param>
         protected void LogOutClick([NotNull] object sender, [NotNull] EventArgs e)
         {
+            if (YafContext.Current.ForumPageType.Equals(ForumPages.search))
+            {
+                YafBuildLink.Redirect(ForumPages.logout);
+            }
+
             var notification = (DialogBox)this.PageContext.CurrentForumPage.Notification;
 
             notification.Show(

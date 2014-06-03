@@ -731,6 +731,8 @@ if not exists (select top 1 1 from  sys.indexes  where object_id = object_id('[{
 	alter table [{databaseSchema}].[{objectQualifier}GroupHistory] with nocheck add constraint  [PK_{objectQualifier}GroupHistory] primary key clustered (GroupID,ChangedDate)   
 go
 
+
+
 /*
 ** Unique constraints
 */

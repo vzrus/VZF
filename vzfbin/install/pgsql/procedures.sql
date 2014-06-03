@@ -9883,7 +9883,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}pollgroup_list(
                            i_boardid integer)
                   RETURNS SETOF {databaseSchema}.{objectQualifier}pollgroup_list_return_type AS
 $BODY$DECLARE
-             _rec {databaseSchema}.{objectQualifier}pollgroup_list_return_type;
+             _rec {databaseSchema}.{objectQualifier}pollgroup_list_return_type%ROWTYPE;
 BEGIN
     
 FOR _rec in SELECT distinct(p.question), p.pollgroupid from {databaseSchema}.{objectQualifier}poll p
@@ -9928,48 +9928,54 @@ END;$BODY$
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_findnext(
                            i_topicid integer)
-                  RETURNS {databaseSchema}.{objectQualifier}topic_findnext_return_type AS
+                  RETURNS SETOF {databaseSchema}.{objectQualifier}topic_findnext_return_type AS
 $BODY$DECLARE 
              ici_lastposted timestamp;
              ici_ForumID integer;
-             _rec {databaseSchema}.{objectQualifier}topic_findnext_return_type;
+             _rec {databaseSchema}.{objectQualifier}topic_findnext_return_type%ROWTYPE;
 BEGIN
-    
+   
     SELECT lastposted,forumid INTO ici_lastposted, ici_ForumID  
     FROM {databaseSchema}.{objectQualifier}topic 
     WHERE topicid = i_topicid AND topicmovedid is null;
-    SELECT topicid INTO _rec FROM {databaseSchema}.{objectQualifier}topic 
+FOR _rec IN 
+    SELECT topicid FROM {databaseSchema}.{objectQualifier}topic 
     WHERE lastposted>ici_lastposted 
     AND forumid = ici_ForumID 
     AND (flags & 8) = 0 
     AND topicmovedid is null
-    ORDER BY lastposted ASC LIMIT 1;
-RETURN  _rec;
+    ORDER BY lastposted ASC 
+	LOOP
+RETURN  NEXT _rec;
+END LOOP;
 END;$BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100;  
+  COST 100 ROWS 1;  
 --GO
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_findprev(
                            i_topicid integer)
-                  RETURNS {databaseSchema}.{objectQualifier}topic_findprevnext_return_type AS
+                  RETURNS SETOF {databaseSchema}.{objectQualifier}topic_findprevnext_return_type AS
 $BODY$DECLARE
              ici_lastposted timestamp;
              ici_ForumID integer;			
-             _rec {databaseSchema}.{objectQualifier}topic_findprevnext_return_type;			
+             _rec {databaseSchema}.{objectQualifier}topic_findprevnext_return_type%ROWTYPE;			
 BEGIN 
-    
+
     SELECT lastposted,forumid INTO ici_lastposted,ici_ForumID 
           FROM {databaseSchema}.{objectQualifier}topic 
             WHERE topicid = i_topicid AND topicmovedid is null;
-    SELECT topicid INTO _rec
+  FOR _rec IN  
+    SELECT topicid 
     FROM {databaseSchema}.{objectQualifier}topic 
     WHERE lastposted<ici_lastposted 
     AND forumid = ici_ForumID 
     AND (flags & 8) = 0 
     AND topicmovedid is null
-    ORDER BY lastposted DESC LIMIT 1;
-RETURN  _rec;
+    ORDER BY lastposted DESC 
+	LOOP
+	RETURN  NEXT _rec;
+	END LOOP;
 END;$BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
   COST 100; 

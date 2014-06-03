@@ -2952,6 +2952,9 @@ DECLARE ici_LastPosted DATETIME;
 DECLARE ici_LastTopicID_Check INT;
 DECLARE ici_LastMessageID_Check INT;
 DECLARE  itmpTopicID INT;
+DECLARE ici_NntpForumID INT;
+DECLARE ici_WatchTopicID INT;
+
        
         DECLARE topic_cursor CURSOR  FOR
         SELECT   TopicID
@@ -2978,24 +2981,21 @@ WHERE ForumID = i_ForumID;
 
         UPDATE {databaseSchema}.{objectQualifier}Active 
         SET ForumID=NULL 
-        WHERE ForumID=i_ForumID;
-
-        
-
+        WHERE ForumID=i_ForumID; 
+		
         DELETE  {databaseSchema}.{objectQualifier}WatchTopic,{databaseSchema}.{objectQualifier}Topic
         FROM {databaseSchema}.{objectQualifier}WatchTopic, {databaseSchema}.{objectQualifier}Topic
         WHERE `ForumID` = i_ForumID
         AND {databaseSchema}.{objectQualifier}WatchTopic.`TopicID` = {databaseSchema}.{objectQualifier}Topic.`TopicID`;
-
-        DELETE {databaseSchema}.{objectQualifier}Active, {databaseSchema}.{objectQualifier}Topic
+        
+	    DELETE {databaseSchema}.{objectQualifier}Active, {databaseSchema}.{objectQualifier}Topic
         FROM  {databaseSchema}.{objectQualifier}Active, {databaseSchema}.{objectQualifier}Topic
         WHERE {databaseSchema}.{objectQualifier}Topic.`ForumID` = i_ForumID
         AND   {databaseSchema}.{objectQualifier}Active.`TopicID` = {databaseSchema}.{objectQualifier}Topic.`TopicID`;
 
-        DELETE  {databaseSchema}.{objectQualifier}NntpTopic, {databaseSchema}.{objectQualifier}NntpForum
-         FROM         {databaseSchema}.{objectQualifier}NntpTopic, {databaseSchema}.{objectQualifier}NntpForum
-         WHERE        {databaseSchema}.{objectQualifier}NntpForum.`ForumID` = i_ForumID
-         AND {databaseSchema}.{objectQualifier}NntpTopic.`NntpForumID` = {databaseSchema}.{objectQualifier}NntpForum.`NntpForumID`;
+		SELECT NntpForumID INTO ici_NntpForumID FROM  {databaseSchema}.{objectQualifier}NntpForum WHERE ForumID = i_ForumID;		
+
+        DELETE FROM  {databaseSchema}.{objectQualifier}NntpTopic WHERE  `NntpForumID` = ici_NntpForumID;      
 
         DELETE FROM {databaseSchema}.{objectQualifier}NntpForum
         WHERE       `ForumID` = i_ForumID;
@@ -6131,33 +6131,33 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}nntptopic_savemessage(
     DECLARE	ici_ParentID	INT;
     DECLARE ici_TopicID	INT;
     DECLARE	ici_MessageID	INT;
+
 DECLARE ici_LastTopicID_Check INT;
 DECLARE ici_LastMessageID_Check INT;
 DECLARE FlagDeleted TINYINT(1) DEFAULT 0;
 DECLARE FlagApproved TINYINT(1) DEFAULT 1;
+
 declare ici_ReplyTo	INT DEFAULT NULL;
 
     SELECT ForumID INTO ici_ForumID 
     FROM {databaseSchema}.{objectQualifier}NntpForum 
-    WHERE NntpForumID=i_NntpForumID;
-
-    
+    WHERE NntpForumID=i_NntpForumID;    
 
  if exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId limit 1) then
- 
 
         /* thread exists */
         -- message exists
         select TopicID,  MessageID into ici_TopicID, ici_ReplyTo
          from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId; 	
      ELSE 
-        if not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId) then
+        if not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId limit 1) then
         /* thread doesn't exists */
-        if (i_ReferenceMessageId IS NULL OR i_ReferenceMessageId = 0)
+        if (i_ReferenceMessageId IS NULL)
         then
         INSERT INTO {databaseSchema}.{objectQualifier}Topic(ForumID,UserID,UserName,UserDisplayName,Posted,Topic,Views,Priority,NumPosts,LastMessageFlags)
         VALUES(ici_ForumID,i_UserID,i_UserName,i_UserName,i_Posted,i_Topic,0,0,0,22);
         SELECT LAST_INSERT_ID() INTO ici_TopicID; 
+
         INSERT INTO {databaseSchema}.{objectQualifier}NntpTopic(NntpForumID,Thread,TopicID)
         VALUES (i_NntpForumID,'',ici_TopicID);
         end if;
@@ -13232,7 +13232,7 @@ END IF;
 END;
 --GO 
 
-CREATE PROCEDURE {databaseSchema}.{objectQualifier}messagehistory_list (i_MessageID INT, i_DaysToClean INT )
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}messagehistory_list (i_MessageID INT, i_DaysToClean INT, i_UTCTIMESTAMP DATETIME)
     MODIFIES SQL DATA
     BEGIN    
     -- delete all message variants older then DaysToClean days Flags reserved for possible pms
@@ -14219,7 +14219,7 @@ begin
     JOIN  {databaseSchema}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
     JOIN  {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseSchema}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.forumid=i_ForumID) AND aa.UserID = i_PageUserID
+    WHERE BoardID=i_BoardID and (i_ForumID IS NULL OR t.forumid=i_ForumID) AND aa.UserID = i_PageUserID
     AND     
          LOWER(tg.Tag) LIKE (CASE 
             WHEN (i_BeginsWith = 0 and i_SearchText != '') THEN PI_Literals0 
@@ -14236,7 +14236,7 @@ begin
     JOIN {databaseSchema}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
     JOIN {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN {databaseSchema}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-         WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
+          WHERE BoardID=', i_BoardID,' and  (',IFNULL(i_ForumID,0),' = 0 OR t.ForumID = ',IFNULL(i_ForumID,0),') AND aa.UserID = ',i_PageUserID,'	
         AND     
          LOWER(tg.Tag) LIKE (CASE 
             WHEN (',COALESCE(i_BeginsWith,0),' = 0  AND ''',i_SearchText,''' != '''') THEN ''',PI_Literals0,'''    

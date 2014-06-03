@@ -7205,6 +7205,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_DaysToClean", daysToClean));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("messagehistory_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);

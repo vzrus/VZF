@@ -12,7 +12,7 @@
     <UseModule>false</UseModule>
     <ModuleClass />
     <ExecOrder>1</ExecOrder>
-  </YafBBCode>
+  </YafBBCode>  
   <YafBBCode>
     <Name>GOOGLEMAPS</Name>
     <Description>[GOOGLEMAPS]Enter Google Maps Url[/GOOGLEMAPS]</Description>

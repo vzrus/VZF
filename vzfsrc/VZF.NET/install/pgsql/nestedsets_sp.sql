@@ -202,10 +202,9 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_recreate()
 				  RETURNS void AS
 $BODY$
 BEGIN
-PERFORM {databaseSchema}.{objectQualifier}forum_ns_drop_triggers();
-PERFORM {databaseSchema}.{objectQualifier}forum_ns_dropbridge_triggers();
+EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns disable trigger user;';
 PERFORM {databaseSchema}.{objectQualifier}create_or_check_ns_tables();
-PERFORM {databaseSchema}.{objectQualifier}forum_ns_create_triggers();
+EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns enable trigger user;';
 PERFORM {databaseSchema}.{objectQualifier}fillin_or_check_ns_tables();
 END;
 $BODY$

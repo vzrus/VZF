@@ -53,11 +53,12 @@ namespace VZF.Data.MsSql
             "mssql/constraints.sql", 
             "mssql/triggers.sql",
             "mssql/functions.sql", 
-            "mssql/procedures.sql",
-            "mssql/forum_ns.sql",
+            "mssql/procedures.sql",       
             "mssql/providers/tables.sql",
             "mssql/providers/indexes.sql",
             "mssql/providers/procedures.sql",
+            // "mssql/nestedsets.sql", 
+            // "mssql/nestedsets_sp.sql", 
             "mssql/postinstall.sql"
         };
 

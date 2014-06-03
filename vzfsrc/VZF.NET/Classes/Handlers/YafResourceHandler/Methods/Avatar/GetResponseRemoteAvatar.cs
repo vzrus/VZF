@@ -78,8 +78,13 @@ namespace YAF
                 // found eTag... no need to download this image...
                 return;
             }
+           
+            var webClient = new WebClient();
 
-            var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+            if (General.GetCurrentTrustLevel() > AspNetHostingPermissionLevel.Medium)
+            {
+                webClient.Credentials = CredentialCache.DefaultCredentials;
+            }
 
             try
             {

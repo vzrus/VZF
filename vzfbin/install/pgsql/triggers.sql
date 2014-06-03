@@ -6,7 +6,7 @@
 
 -- user table triggers
 
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_userflag_update ON {databaseSchema}.{objectQualifier}user;
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_userflag_update ON {databaseSchema}.{objectQualifier}user;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_user_updateflags()
 				  RETURNS trigger AS
@@ -28,14 +28,14 @@ END;$BODY$
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_userflag_update
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_userflag_update
        BEFORE UPDATE ON {databaseSchema}.{objectQualifier}user
 	          FOR EACH ROW
 			  WHEN (OLD.flags IS DISTINCT FROM NEW.flags)
               EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_user_updateflags();
 --GO
 
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_userflag_insert ON {databaseSchema}.{objectQualifier}user;
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_userflag_insert ON {databaseSchema}.{objectQualifier}user;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_user_insertflags()
 				  RETURNS TRIGGER AS
@@ -57,7 +57,7 @@ BEGIN
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_userflag_insert
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_userflag_insert
        BEFORE INSERT ON {databaseSchema}.{objectQualifier}user
        FOR EACH ROW   
        EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_user_insertflags();
@@ -66,7 +66,7 @@ CREATE TRIGGER databaseSchema_{objectQualifier}_tr_userflag_insert
 
 -- user pmessage triggers
 
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_userpmflag_update ON {databaseSchema}.{objectQualifier}userpmessage;
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_userpmflag_update ON {databaseSchema}.{objectQualifier}userpmessage;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_userpm_updateflags()
 				  RETURNS trigger AS
@@ -82,14 +82,14 @@ END;$BODY$
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_userpmflag_update
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_userpmflag_update
        BEFORE UPDATE ON {databaseSchema}.{objectQualifier}userpmessage
 	   FOR EACH ROW
 	   WHEN (OLD.flags IS DISTINCT FROM NEW.flags)
 	   EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_userpm_updateflags();
 	--GO
 
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_userpmflag_insert ON {databaseSchema}.{objectQualifier}userpmessage;
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_userpmflag_insert ON {databaseSchema}.{objectQualifier}userpmessage;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_userpm_insertflags()
 				  RETURNS TRIGGER AS
@@ -105,7 +105,7 @@ BEGIN
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_userpmflag_insert
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_userpmflag_insert
        BEFORE INSERT ON {databaseSchema}.{objectQualifier}userpmessage
        FOR EACH ROW   
        EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_userpm_insertflags();
@@ -113,7 +113,7 @@ CREATE TRIGGER databaseSchema_{objectQualifier}_tr_userpmflag_insert
 
 -- topic table
 
- DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_topic_update ON {databaseSchema}.{objectQualifier}topic;
+ DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_topic_update ON {databaseSchema}.{objectQualifier}topic;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_topic_updateflags()
 				  RETURNS trigger AS
@@ -129,14 +129,14 @@ END;$BODY$
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_topic_update
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_topic_update
        BEFORE UPDATE ON {databaseSchema}.{objectQualifier}topic
        FOR EACH ROW
        WHEN (OLD.flags IS DISTINCT FROM NEW.flags)
        EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_topic_updateflags();
 --GO
 
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_topicflag_beforeinsert ON {databaseSchema}.{objectQualifier}topic;
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_topicflag_beforeinsert ON {databaseSchema}.{objectQualifier}topic;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_topic_insertflags()
 				  RETURNS TRIGGER AS
@@ -152,7 +152,7 @@ BEGIN
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_topicflag_beforeinsert
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_topicflag_beforeinsert
        BEFORE INSERT ON {databaseSchema}.{objectQualifier}topic
 	   FOR EACH ROW
        EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_topic_insertflags();
@@ -161,7 +161,7 @@ CREATE TRIGGER databaseSchema_{objectQualifier}_tr_topicflag_beforeinsert
 	
 -- message table
 
- DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_message_update ON {databaseSchema}.{objectQualifier}message;
+ DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_message_update ON {databaseSchema}.{objectQualifier}message;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_message_updateflags()
 				  RETURNS trigger AS
@@ -175,14 +175,14 @@ END;$BODY$
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_message_update
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_message_update
        BEFORE UPDATE ON {databaseSchema}.{objectQualifier}message
        FOR EACH ROW
        WHEN (OLD.flags IS DISTINCT FROM NEW.flags)
        EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_message_updateflags();
 	--GO
 
-DROP TRIGGER IF EXISTS databaseSchema_{objectQualifier}_tr_message_beforeinsert ON {databaseSchema}.{objectQualifier}message;
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_tr_message_beforeinsert ON {databaseSchema}.{objectQualifier}message;
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}trf_message_insertflags()
 				  RETURNS TRIGGER AS
@@ -197,7 +197,7 @@ BEGIN
   COST 100;  
 --GO
 
-CREATE TRIGGER databaseSchema_{objectQualifier}_tr_message_beforeinsert
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_tr_message_beforeinsert
        BEFORE INSERT ON {databaseSchema}.{objectQualifier}message
 	   FOR EACH ROW
        EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}trf_message_insertflags();
