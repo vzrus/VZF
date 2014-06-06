@@ -1440,7 +1440,7 @@ Spoiler Content
       <Resource tag="MODERATE_UNAPPROVEDPOSTS">Views unapproved posts</Resource>
       <Resource tag="ERROR">Gets error page</Resource>
       <Resource tag="SHOUTBOX">Uses shoutbox</Resource>
-    <Resource tag="TEAM">Views team page</Resource>
+      <Resource tag="TEAM">Views team page</Resource>
       <Resource tag="AVATAR">Views avatar</Resource>
       <Resource tag="IM_YIM">Uses YIM</Resource>
       <Resource tag="IM_AIM">Uses AIM</Resource>
@@ -1514,6 +1514,9 @@ Spoiler Content
       <Resource tag="ADMIN_TOPICSTATUS_EDIT">Edits Topic Status</Resource>
       <Resource tag="ADMIN_TOPICSTATUS_IMPORT">Imports topic status</Resource>
       <Resource tag="ADMIN_USERS_IMPORT">Imports users</Resource>
+      <Resource tag="TOPICBYTAGS_FORUM">Views tag list for forum</Resource>
+      <Resource tag="TOPICBYTAGS_TOPIC">Views tag list for topic</Resource>
+      <Resource tag="TAGS_BOARD">Views tag list for board.</Resource>
    </page>
    <page name="ACTIVEUSERS">
       <Resource tag="ACTIVE">Active</Resource>

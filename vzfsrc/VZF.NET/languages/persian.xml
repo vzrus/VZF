@@ -126,7 +126,10 @@
     <Resource tag="SEARCH">استفاده از جستجو</Resource>
     <Resource tag="SHOUTBOX">استفاده از shoutbox</Resource>
     <Resource tag="SHOWSMILIES">بدون داده</Resource>
+    <Resource tag="TAGS_BOARD">Views tag list for board.</Resource>
     <Resource tag="TEAM">نمایش صفحه گروه</Resource>
+    <Resource tag="TOPICBYTAGS_FORUM">Views tag list for forum</Resource>
+    <Resource tag="TOPICBYTAGS_TOPIC">Views tag list for topic</Resource>
     <Resource tag="TOPICINFORUM"> در انجمن </Resource>
     <Resource tag="TOPICS">نمایش موضوع </Resource>
     <Resource tag="VIEWTHANKS">نمایش اطلاعات قدردانی ها</Resource>

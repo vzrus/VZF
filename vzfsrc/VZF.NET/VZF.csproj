@@ -4697,8 +4697,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="uploads\avatars\" />
-    <Folder Include="uploads\topics\" />
+    <Folder Include="uploads\Albums\" />
+    <Folder Include="uploads\Attachments\" />
+    <Folder Include="uploads\Avatars\" />
+    <Folder Include="uploads\Topics\" />
   </ItemGroup>
   <ItemGroup>
     <WebReferenceUrl Include="http://mamacenter.net/RegisterV2.asmx">

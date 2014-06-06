@@ -2773,7 +2773,7 @@ begin
    WHERE DATEDIFF(i_UTCTIMESTAMP,EventTime) > i_MaxDays;
 
    -- or if there are more then i_MaxRows
-   IF ((SELECT COUNT(1) FROM   {databaseSchema}.{objectQualifier}eventlog) >= (i_MaxRows+50)) THEN
+   IF ((SELECT COUNT(1) FROM   {databaseSchema}.{objectQualifier}EventLog) >= (i_MaxRows+50)) THEN
    SELECT VERSION() INTO Version;
    
    IF LOCATE('5.1',Version)<>0 OR LOCATE('5.4',Version)<>0 OR LOCATE('6.0',Version)<>0 THEN
@@ -6719,13 +6719,13 @@ END;
  BEGIN
  /* Is Read and Is Deleted bits */
 SELECT
-        (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}userpmessage 
+        (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}UserPMessage 
         WHERE IsRead = 1  
         AND IsDeleted = 0 ) AS NumRead, 		
-        (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}userpmessage
+        (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}UserPMessage
         WHERE IsRead = 0   
         AND IsDeleted = 0 ) AS NumUnread,
-        (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}userpmessage
+        (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}UserPMessage
         WHERE IsDeleted = 0 ) AS NumTotal;		
 END;
 --GO
