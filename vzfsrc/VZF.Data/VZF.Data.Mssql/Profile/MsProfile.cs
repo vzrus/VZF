@@ -61,15 +61,15 @@
         /// <param name="name">
         /// The name.
         /// </param>
-        /// <param name="columnType">
+        /// <param name="type">
         /// The column type.
         /// </param>
         /// <param name="size">
         /// The size.
         /// </param>
-        public static string AddProfileColumn([NotNull] string name, string columnType, int size, string tableName)
+        public static string AddProfileColumn([NotNull] string name, string type, int size, string tableName)
         {
-            string type = DataTypeMappers.typeToDbValueMap(name, columnType, size);
+            type = DataTypeMappers.typeToDbValueMap(name, type, size);
 
             return "ALTER TABLE {0} ADD [{1}] {2} NULL".FormatWith(
               tableName, name, type);

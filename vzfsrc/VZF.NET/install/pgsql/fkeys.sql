@@ -505,7 +505,7 @@ END IF; */
 
          END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
      GRANT EXECUTE ON FUNCTION {databaseSchema}.{objectQualifier}create_or_check_fkeys() TO public;
     --GO

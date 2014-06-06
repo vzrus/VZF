@@ -470,9 +470,15 @@ namespace YAF.Pages
             TypedMessageList currentMessage = null;
 
             DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
+            if (topicInfo["TopicID"].ToType<int>() != this.PageContext.PageTopicID)
+            {
+                // new topic
+                topicInfo = null;
+            }
 
             PageContext.PageElements.RegisterJsBlockStartup(
                       this, "GotoAnchorJs", JavaScriptBlocks.LoadGotoAnchor("topprev"));
+
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
             {
@@ -946,6 +952,16 @@ namespace YAF.Pages
             string blogPostID = this.HandlePostToBlog(this._forumEditor.Text, this.TopicSubjectTextBox.Text);
            
             string tags = this.Tags.Text.Trim();
+
+            // remove empty spaces, tags shhould be one word only
+            if (tags.IsSet())
+            {
+                while (tags.Contains(" "))
+                {
+                    tags = tags.Replace(" ", string.Empty);
+                }
+            }
+
             // Save to Db
             topicId = CommonDb.topic_save(
                 PageContext.PageModuleID,

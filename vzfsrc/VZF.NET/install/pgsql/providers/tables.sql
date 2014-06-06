@@ -107,7 +107,7 @@ IF (column_exists('{databaseSchema}.{objectQualifier}prov_profile','birthday') I
 END IF;
 END ;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 	SELECT {databaseSchema}.{objectQualifier}create_or_check_prov_tables();

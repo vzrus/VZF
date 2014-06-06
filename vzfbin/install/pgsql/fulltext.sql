@@ -21,7 +21,7 @@ end if;
 end if;
 end;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 --GO 
 SELECT  {databaseSchema}.{objectQualifier}fts_column_add1('russian', true);
@@ -52,7 +52,7 @@ ON {databaseSchema}.{objectQualifier}message FOR EACH ROW EXECUTE PROCEDURE
 tsvector_update_trigger_' || culture2 || '(message_fts_' || culture2 || ', ' || 'pg_catalog.' || culture2 || ', message);'; 
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 
 SELECT  {databaseSchema}.{objectQualifier}fts_column_add('english', true);

@@ -39,7 +39,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren (integer,integer,integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
@@ -88,7 +88,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren_activeuser(integer,integer,integer, integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
@@ -132,7 +132,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren_anyuser(integer,integer,integer,integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
@@ -161,7 +161,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;  
 --GO
 
@@ -208,7 +208,7 @@ EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns enable trigger u
 PERFORM {databaseSchema}.{objectQualifier}fillin_or_check_ns_tables();
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;  
 	--GO 
 SELECT {databaseSchema}.{objectQualifier}forum_ns_recreate();

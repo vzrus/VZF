@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ActiveAccess
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AdminPageUserAccess
        (
        `UserID` INT NOT NULL,	  
-       `PageName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL	  
+       `PageName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL	  
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Group
        (
        `GroupID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        `PMLimit` INT,
        `Style`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
@@ -897,7 +897,7 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserProfile
        `LastUpdatedDate` DATETIME NOT NULL,
        -- added columns
        `LastActivity` DATETIME,
-       `ApplicationName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
+       `ApplicationName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
        `IsAnonymous` TINYINT(1) NOT NULL,
        `UserName` VARCHAR(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL
        ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};

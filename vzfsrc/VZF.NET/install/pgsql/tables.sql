@@ -1063,7 +1063,7 @@ END IF;
 
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
     -- GRANT EXECUTE ON FUNCTION {databaseSchema}.{objectQualifier}create_or_check_tables() TO public;
     -- GO
@@ -1209,7 +1209,7 @@ BEGIN
 
     END;	
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 --GO
     SELECT {databaseSchema}.{objectQualifier}add_or_change_columns();
@@ -1341,7 +1341,7 @@ BEGIN
      UPDATE {databaseSchema}.{objectQualifier}rank set flags = flags | 4 where name like 'Guest';
     END;	
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 --GO
     SELECT {databaseSchema}.{objectQualifier}add_or_change_columns1();
@@ -1393,7 +1393,7 @@ BEGIN
         END LOOP;
  END;	 	
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 --GO  
 
@@ -1406,7 +1406,7 @@ if exists (select 1 from {databaseSchema}.{objectQualifier}message where userdis
  end if;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 --GO 
     SELECT {databaseSchema}.{objectQualifier}init_dsiplayname_launcher();

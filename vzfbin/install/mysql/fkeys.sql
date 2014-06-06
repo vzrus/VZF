@@ -58,15 +58,15 @@ set @fk_d_action = fk_d_action ;
 set @fk_u_action = fk_u_action ;
 set @fk_k_name = fk_k_name;
 
-set @fk_drop_string = concat('ALTER TABLE {databaseSchema}.{objectQualifier}',
-@fk_t_name,'` DROP FOREIGN KEY `',@fk_k_name, ';');
+/* set @fk_drop_string = concat('ALTER TABLE `{databaseSchema}`.`{objectQualifier}',
+@fk_t_name,'` DROP FOREIGN KEY `',@fk_k_name, '`;');
 prepare fk_drop_statement from @fk_drop_string ;
 execute fk_drop_statement ;
-deallocate prepare fk_drop_statement;
+deallocate prepare fk_drop_statement; */
 
-set @fk_create_string = concat('ALTER TABLE {databaseSchema}.{objectQualifier}',
-@fk_t_name,' ADD CONSTRAINT `',@fk_k_name, '` FOREIGN KEY `',@fk_k_name, '` (`',@fk_c_name,
-'`) REFERENCES {databaseSchema}.`{objectQualifier}',@fk_rt_name,'`(`',@fk_rc_name,'`) ',
+set @fk_create_string = concat('ALTER TABLE `{databaseSchema}`.`{objectQualifier}',
+@fk_t_name,'` ADD CONSTRAINT `',@fk_k_name, '` FOREIGN KEY `',@fk_k_name, '` (`',@fk_c_name,
+'`) REFERENCES `{databaseSchema}`.`{objectQualifier}',@fk_rt_name,'`(`',@fk_rc_name,'`) ',
 ' ON DELETE ',@fk_d_action, ' ON UPDATE ',@fk_u_action,';');
 
 prepare fk_check_statement from @fk_create_string ;

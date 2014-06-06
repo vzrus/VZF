@@ -100,7 +100,7 @@ namespace YAF.Core
 
             bool isMobileDevice = UserAgentHelper.IsMobileDevice(userAgent)
                                   || this.HttpRequestBase.Browser.IsMobileDevice;
-
+            
             // try and get more verbose platform name by ref and other parameters             
             UserAgentHelper.Platform(
                 userAgent,

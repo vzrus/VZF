@@ -281,8 +281,9 @@ INDEX `IX_{databaseSchema}_{objectQualifier}Topic_UserID` (`UserID`);
 END IF;
 
 
-/*User*/
+/* User
 
+-- too long for 5.5
 IF (SELECT COUNT(1) FROM INFORMATION_SCHEMA.STATISTICS S WHERE S.TABLE_SCHEMA='{databaseSchema}' AND S.INDEX_NAME='IX_{databaseSchema}_{objectQualifier}User' AND S.TABLE_NAME='{objectQualifier}user' AND (S.COLUMN_NAME='BoardID' OR  S.COLUMN_NAME='Name')) < 2 THEN
 
 ALTER TABLE {databaseSchema}.{objectQualifier}User 
@@ -290,6 +291,7 @@ ADD
 UNIQUE INDEX `IX_{databaseSchema}_{objectQualifier}User` (`BoardID`, `Name`);
 
 END IF;
+*/
 
 IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS S WHERE S.TABLE_SCHEMA='{databaseSchema}' AND S.INDEX_NAME='IX_{databaseSchema}_{objectQualifier}User_Flags' AND S.TABLE_NAME='{objectQualifier}user' 
 AND S.COLUMN_NAME='Flags') THEN
@@ -300,6 +302,7 @@ INDEX `IX_{databaseSchema}_{objectQualifier}User_Flags` (`Flags`);
 
 END IF;
 
+/* too long for 5.5
 IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS S WHERE S.TABLE_SCHEMA='{databaseSchema}' AND S.INDEX_NAME='IX_{databaseSchema}_{objectQualifier}User_Name' AND S.TABLE_NAME='{objectQualifier}user' 
 AND S.COLUMN_NAME='Name') THEN
 
@@ -307,7 +310,7 @@ ALTER TABLE {databaseSchema}.{objectQualifier}User
 ADD
 INDEX `IX_{databaseSchema}_{objectQualifier}User_Name` (`Name`);
 
-END IF;
+END IF; */
 
 IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS S WHERE S.TABLE_SCHEMA='{databaseSchema}' AND S.TABLE_NAME='{objectQualifier}user' AND S.INDEX_NAME='IX_{databaseSchema}_{objectQualifier}User_ProviderUserKey' AND S.COLUMN_NAME='ProviderUserKey') THEN
 

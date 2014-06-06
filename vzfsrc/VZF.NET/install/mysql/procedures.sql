@@ -3141,8 +3141,7 @@ END;
  CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_byuserlist(i_BoardID INT,i_ForumID INT, i_UserID INT, i_IsUserForum TINYINT(1)) 
 READS SQL DATA
 BEGIN
-        IF i_ForumID = 0 THEN 
-                             SET i_ForumID = NULL; END IF; 
+        
         IF i_ForumID IS NULL THEN
                       SELECT a.* FROM {databaseSchema}.{objectQualifier}Forum a 
                                   JOIN {databaseSchema}.{objectQualifier}Category b 
@@ -3155,7 +3154,8 @@ BEGIN
                    JOIN {databaseSchema}.{objectQualifier}Category b 
                     ON b.CategoryID=a.CategoryID 
                      WHERE b.BoardID=i_BoardID 
-                      AND a.ForumID = i_ForumID;
+                      AND a.ForumID = i_ForumID and a.IsUserForum = i_IsUserForum
+                                        and (i_UserID IS NULL OR a.CreatedByUserID = i_UserID);
         END IF;
 END;
 --GO
@@ -3747,7 +3747,7 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}forum_moderatelist(i_BoardID 
         (c.Flags & 64)<>0
     UNION ALL
     SELECT 
-        yafnet.yaf_biginttoint(acc.ForumID) AS ForumID, 
+        {databaseSchema}.{objectQualifier}biginttoint(acc.ForumID) AS ForumID, 
         f.Name AS ForumName, 		 
         usr.UserID AS ModeratorID, 
         usr.Name AS ModeratorName,
@@ -6148,7 +6148,7 @@ declare ici_ReplyTo	INT DEFAULT NULL;
         /* thread exists */
         -- message exists
         select TopicID,  MessageID into ici_TopicID, ici_ReplyTo
-         from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId; 	
+         from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId; 	
      ELSE 
         if not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId limit 1) then
         /* thread doesn't exists */
@@ -8429,14 +8429,13 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_info
     i_ShowDeleted TINYINT(1),
     i_GetTags TINYINT(1)
  )
- BEGIN
-    IF i_TopicID = 0 THEN SET i_TopicID = NULL; END IF;
- 
+ BEGIN  
+    if i_TopicID = 0 then set i_TopicID = NULL; end if;
     IF i_TopicID IS NULL THEN    
       IF i_ShowDeleted = 1 THEN
         SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseSchema}.{objectQualifier}Tags tg JOIN {databaseSchema}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
         (SELECT `Message` FROM {databaseSchema}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage
-        FROM {databaseSchema}.{objectQualifier}Topic t;
+        FROM {databaseSchema}.{objectQualifier}Topic t ;
         ELSE
         SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseSchema}.{objectQualifier}Tags tg JOIN {databaseSchema}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
         (SELECT `Message` FROM {databaseSchema}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage
@@ -8446,7 +8445,7 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_info
         IF i_ShowDeleted = 1 THEN
             SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseSchema}.{objectQualifier}Tags tg JOIN {databaseSchema}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
         (SELECT `Message` FROM {databaseSchema}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage
-            FROM {databaseSchema}.{objectQualifier}Topic t;
+            FROM {databaseSchema}.{objectQualifier}Topic t WHERE TopicID = i_TopicID;
         ELSE
             SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseSchema}.{objectQualifier}Tags tg JOIN {databaseSchema}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
         (SELECT `Message` FROM {databaseSchema}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage 
@@ -11628,14 +11627,14 @@ FROM     {databaseSchema}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
             and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) and a.IsUserMask = 0) 				
+            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0) 				
 ORDER BY a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseSchema}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
 AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) and a.IsUserMask = 0) LIMIT 1;
+            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0) LIMIT 1;
 END IF;
 END;
 --GO
@@ -14182,6 +14181,10 @@ begin
     DECLARE PI_Literals1 VARCHAR(255);
     DECLARE PI_LiteralsALL VARCHAR(4);
 
+	if (i_SearchText is null) then
+	set i_SearchText = '';
+	end if;
+	 
     SET i_SearchText = LOWER(i_SearchText);
     
     if CHAR_LENGTH(i_SearchText) > 0 THEN 
@@ -14196,6 +14199,10 @@ begin
     END IF;   
 
     SET PI_LiteralsALL ='%';
+
+	if (i_ForumID is null) then
+	set i_ForumID = 0;
+	end if; 
      
     SELECT IFNULL(MAX(tg.TagCount),0) INTO ici_maxcount
     FROM {databaseSchema}.{objectQualifier}Tags tg 

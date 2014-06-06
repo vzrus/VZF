@@ -5083,12 +5083,12 @@ $BODY$
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}forumaccess_list(integer);
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forumaccess_list(
-                  i_forumid integer, i_userid integer, i_includeusermasks boolean)
+                  i_forumid integer, i_userid integer, i_includeusergroups boolean)
                   RETURNS SETOF {databaseSchema}.{objectQualifier}forumaccess_list_return_type AS
 $BODY$DECLARE
              _rec {databaseSchema}.{objectQualifier}forumaccess_list_return_type%ROWTYPE;
 BEGIN
-IF i_includeusermasks  THEN
+IF i_includeusergroups  THEN
 FOR _rec IN
         SELECT 
                a.groupid,
@@ -7282,16 +7282,18 @@ $BODY$
 
 -- Function: {databaseSchema}.{objectQualifier}message_update(integer, integer, varchar, integer, text, varchar, boolean, boolean)
 
--- DROP FUNCTION {databaseSchema}.{objectQualifier}message_update(integer, integer, varchar, integer, text, varchar, boolean, boolean);
-
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}message_update(integer, integer, varchar, integer, text, varchar, boolean, boolean);
+--GO
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}message_update(integer,integer,character varying,character varying,character varying,character varying,integer,text,character varying,integer,boolean,boolean,text,character varying,text,timestamp without time zone);
+--GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}message_update
                            (
                            i_messageid integer, 
                            i_priority integer, 
                            i_subject varchar, 
-                           i_description varchar, 
-                           i_status varchar, 
+						   i_status varchar, 
                            i_styles varchar,
+                           i_description varchar,                           
                            i_flags integer, 
                            i_message text, 
                            i_reason varchar, 
@@ -12381,10 +12383,10 @@ BEGIN
         (i_rankid is null or a.rankid=i_rankid) AND
         a.isguest IS FALSE 
             AND
-        a.displayname ~* CASE 
-            WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('.*' || i_literals || '.*') 
-            WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('^(' || i_literals || ')')
-            ELSE '.*' END  
+        a.displayname LIKE CASE 
+            WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('%' || i_literals || '%') 
+            WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN (i_literals || '%')
+            ELSE '%' END  
         and
         (a.numposts >= (case 
         when i_numpostscompare = 3 THEN  i_numposts end) 
@@ -12449,10 +12451,10 @@ BEGIN
         (i_rankid is null or a.rankid=i_rankid) AND
         a.isguest IS FALSE 
             AND
-        a.displayname ~* CASE 
-            WHEN (i_beginswith is false AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('.*' || i_literals || '.*') 
-            WHEN (i_beginswith is true AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('^' || i_literals)
-            ELSE '.*' END  
+       a.displayname LIKE CASE 
+            WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('%' || i_literals || '%') 
+            WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN (i_literals || '%')
+            ELSE '%' END  
         and
         (a.numposts >= (case 
         when i_numpostscompare = 3 THEN  i_numposts end) 
@@ -14609,8 +14611,7 @@ BEGIN
             
         ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize; 
 FOR _rec in
-    SELECT  t.thanksfromuserid,    
-                t.thankstouserid,
+    SELECT  t.thanksfromuserid,                
                 c.messageid,
                 a.forumid,
                 a.topicid,
@@ -16889,7 +16890,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser(integer,integer) IS 'Returns categories where a user has access.';
@@ -16920,7 +16921,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}topic_tags(integer,integer,integer) IS 'Returns tags list for a topic with tags count.';
@@ -16936,16 +16937,17 @@ $BODY$DECLARE
              _rec {databaseSchema}.{objectQualifier}forum_tags_rt%ROWTYPE;
 
 BEGIN
-SELECT MAX(tg.tagcount) INTO _maxcount
+SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
+
             FROM {databaseSchema}.{objectQualifier}tags tg 
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
     WHERE aa.boardid=i_boardid and (i_forumid <= 0 OR t.forumid=i_forumid) AND
-      tg.tag ~* CASE 
-            WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('.*' || i_searchtext || '.*') 
-            WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('^(' || i_searchtext  || ')')  
-            ELSE '.*' END ; 
+      tg.tag LIKE CASE 
+            WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
+            WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
+            ELSE '%' END ; 
 
    -- find total returned count
         select
@@ -16954,12 +16956,12 @@ SELECT MAX(tg.tagcount) INTO _maxcount
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
-    WHERE aa.boardid=i_boardid and (i_forumid <= 0 OR t.forumid=i_forumid)
+    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid)
     AND
-      tg.tag ~* CASE 
-           WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('.*' || i_searchtext || '.*') 
-            WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('^(' || i_searchtext  || ')')                  
-            ELSE '.*' END ;	
+      tg.tag LIKE CASE 
+            WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
+            WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
+            ELSE '%' END ; 
 
          ici_pageindex := ici_pageindex+1;
          ici_firstselectrownumber := (ici_pageindex - 1) * i_pagesize;
@@ -16969,18 +16971,18 @@ FOR _rec IN SELECT DISTINCT(tg.tagid),tg.tag,tg.tagcount,_maxcount AS MaxTagCoun
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.forumid = t.forumid AND aa.userid = i_pageuserid)
-    WHERE aa.boardid=i_boardid and (i_forumid <= 0 OR t.forumid=i_forumid) AND
-      tg.tag ~* CASE 
-           WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('.*' || i_searchtext || '.*') 
-            WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('^(' || i_searchtext  || ')')                    
-            ELSE '.*' END -- and tg.tag <= ici_firstselecttag
+    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) AND
+      tg.tag LIKE CASE 
+            WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
+            WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
+            ELSE '%' END
     ORDER BY tg.tag limit i_pagesize offset ici_firstselectrownumber
 LOOP
 RETURN NEXT _rec;
 END LOOP; 	
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_tags(integer,integer,integer,integer,integer,varchar,boolean) IS 'Returns tags list for a forum or board with tags count.';
@@ -17033,7 +17035,7 @@ RETURN NEXT _rec;
 END LOOP;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100 ROWS 1000;
 --GO
 
@@ -17055,7 +17057,7 @@ $BODY$
 begin
 	return (SELECT {databaseSchema}.{objectQualifier}forum_save_parentschecker(i_forumid, i_parentid));
 END$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100; 
 --GO
 

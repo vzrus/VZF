@@ -6,6 +6,63 @@
 -- CREATE FUNCTION plpgsql_call_handler () RETURNS OPAQUE AS '/usr/local/pgsql/lib/plpgsql' LANGUAGE C;
 -- CREATE TRUSTED LANGUAGE plpgsql HANDLER plpgsql_call_handler;
 
+/* DO $$
+declare r record;
+begin
+for r in
+select constraint_name, table_schema, table_name from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where constraint_schema ='myscheme' and constraint_type ='FOREIGN KEY'
+loop
+execute 'ALTER table ' || r.table_schema ||'.' || r.table_name || ' DROP CONSTRAINT ' || r.constraint_name || ' CASCADE;';
+end loop;
+end$$;
+
+ DO $$
+declare r record;
+begin
+for r in
+select constraint_name, table_schema, table_name from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where constraint_schema ='myscheme' and constraint_type ='PRIMARY KEY'
+loop
+execute 'ALTER table ' || r.table_schema ||'.' || r.table_name || ' DROP CONSTRAINT ' || r.constraint_name || ' CASCADE;';
+end loop;
+end$$;
+
+ DO $$
+declare r record;
+begin
+for r in
+select constraint_name, table_schema, table_name from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where constraint_schema ='myscheme' and constraint_type ='PRIMARY KEY'
+loop
+execute 'DROP INDEX [ CONCURRENTLY ] [ IF EXISTS ] name [, ...] [ CASCADE | RESTRICT ]ALTER table ' || r.table_schema ||'.' || r.table_name || ' DROP CONSTRAINT ' || r.constraint_name || ' CASCADE;';
+end loop;
+end$$; 
+
+ --DO $$
+declare r record;
+begin
+for r in
+SELECT i.relname as indname,
+       i.relowner as indowner,
+       cast(idx.indrelid::regclass as varchar) as objectname,
+       am.amname as indam,
+       idx.indkey,
+       ARRAY(
+       SELECT pg_get_indexdef(idx.indexrelid, k + 1, true)
+       FROM generate_subscripts(idx.indkey, 1) as k
+       ORDER BY k
+       ) as indkey_names,
+       idx.indexprs IS NOT NULL as indexprs,
+       idx.indpred IS NOT NULL as indpred
+FROM   pg_index as idx
+JOIN   pg_class as i
+ON     i.oid = idx.indexrelid
+JOIN   pg_am as am
+ON     i.relam = am.oid
+where cast(idx.indrelid::regclass as varchar) like 'myscheme.%'
+loop
+execute 'DROP INDEX IF EXISTS myscheme.' || r.indname || ' CASCADE;';
+end loop;
+end$$; */
+
 CREATE OR REPLACE FUNCTION {databaseSchema}.f_delfunc(_schema text, _del text)
  RETURNS text AS
 $BODY$
@@ -295,3 +352,5 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100; 
   --GO
+
+

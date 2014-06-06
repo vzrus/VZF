@@ -72,7 +72,7 @@ truncate table {databaseSchema}.{objectQualifier}forum_ns;
 EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns enable trigger user;';
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 	-- GRANT EXECUTE ON FUNCTION {databaseSchema}.{objectQualifier}create_or_check_tables() TO public;
 	--GO
@@ -549,7 +549,7 @@ return _leftNodePrevious;
 
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE STRICT SECURITY DEFINER
+  LANGUAGE 'plpgsql' VOLATILE CALLED ON NULL INPUT SECURITY DEFINER
   COST 100;
 --GO
 
@@ -618,7 +618,7 @@ END LOOP;
 -- END IF;
 END;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 -- GO
 

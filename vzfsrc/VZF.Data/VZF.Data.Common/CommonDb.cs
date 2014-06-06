@@ -4148,7 +4148,7 @@ namespace VZF.Data.Common
             string searchText,
             bool beginsWith)
         {
-            if (searchText.Equals(char.MinValue.ToString(CultureInfo.InvariantCulture)))
+            if (searchText.Equals(char.MinValue.ToString(CultureInfo.InvariantCulture)) || searchText.IsNotSet())
             {
                 searchText = null;
             }

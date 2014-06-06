@@ -186,9 +186,24 @@ ref string index, ref string stringData, ref byte[] binaryData)
             return CommonDb.GetProfileStructure(connectionStringName, "prov_Profile");
         }
 
+        /// <summary>
+        /// The add profile column.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="type">
+        /// The type.
+        /// </param>
+        /// <param name="size">
+        /// The size.
+        /// </param>
         public void AddProfileColumn(string connectionStringName, string name, string type, int size)
         {
-            DataTypeMappers.typeToDbValueMap(name, type, size);
+           type = DataTypeMappers.typeToDbValueMap(name, type, size);
 
             if (type.ToLowerInvariant().Contains("varchar") && Config.DatabaseEncoding != null)
             {

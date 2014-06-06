@@ -65,7 +65,7 @@
       <Name>VZF.Classes.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VZF.Core\VZF.Core.csproj">
-      <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>
+      <Project>{bcefe9be-7417-47fb-a0e8-75e0201e88e8}</Project>
       <Name>VZF.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">

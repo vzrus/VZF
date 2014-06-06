@@ -192,9 +192,14 @@ namespace YAF.pages
                 return;
             }
 
-
             this.canHaveForumsAsSubforums = this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums;
             this.canHaveForumsInCategories = this.Get<YafBoardSettings>().AllowPersonalForumsInCategories;
+
+            // TODO: temporary workaround needs drop down problem solution.
+            if (this.canHaveForumsInCategories)
+            {
+                this.canHaveForumsAsSubforums = true;
+            }
 
             // A new forum case
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
@@ -204,7 +209,7 @@ namespace YAF.pages
                     YafBuildLink.AccessDenied();
                 }
 
-                if (!this.canHaveForumsAsSubforums && !this.Get<YafBoardSettings>().AllowPersonalForumsInCategories)
+                if (!this.canHaveForumsAsSubforums && !this.canHaveForumsInCategories)
                 {
                     YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
                 }

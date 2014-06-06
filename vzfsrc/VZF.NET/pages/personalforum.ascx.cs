@@ -208,7 +208,7 @@ namespace YAF.pages
                        this.PageContext.PageModuleID,
                        this.PageContext.PageBoardID,
                        null,
-                       AccessFlags.Flags.None,
+                       AccessFlags.Flags.None.ToInt(),
                        this.PageContext.PageUserID,
                        false,
                        false);

@@ -1006,13 +1006,10 @@
     <Content Include="Bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
     <Content Include="Bin\Mono.Security.dll" />
-    <Content Include="Bin\Mono.Security.Protocol.Tls.dll" />
     <Content Include="Bin\MySql.Data.dll" />
-    <Content Include="Bin\MySql.Data.Entity.dll" />
     <Content Include="Bin\MySql.Web.dll" />
     <Content Include="Bin\Npgsql.dll" />
     <Content Include="Bin\nStuff.UpdateControls.dll" />
-    <Content Include="Bin\policy.2.0.Npgsql.dll" />
     <Content Include="Controls\AlbumImageList.ascx" />
     <Content Include="Controls\AlbumList.ascx" />
     <Content Include="Controls\BuddyList.ascx" />
@@ -1754,7 +1751,9 @@
     </Content>
     <Content Include="languages\finnish.xml" />
     <Content Include="languages\french.xml" />
-    <Content Include="languages\german-du.xml" />
+    <Content Include="languages\german-du.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="languages\hebrew.xml" />
     <Content Include="languages\italian.xml" />
     <Content Include="languages\lithuanian.xml" />
@@ -2451,10 +2450,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Data\App_Browsers\w3cvalidator.browser" />
-    <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
-    <Content Include="Bin\policy.2.0.Npgsql.config" />
-    <Content Include="app_my.config" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -3879,10 +3875,10 @@
     <Content Include="themes\Yafmobile\tick.png" />
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web_my.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="pages\app_my.config" />
+    <Content Include="app.config" />
     <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4646,10 +4642,17 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="web_fb.config" />
+    <Content Include="web_ms.config" />
+    <None Include="web_ms.Debug.config">
+      <DependentUpon>web_ms.config</DependentUpon>
+    </None>
+    <None Include="web_ms.Deploy.config">
+      <DependentUpon>web_ms.config</DependentUpon>
+    </None>
+    <None Include="web_ms.Release.config">
+      <DependentUpon>web_ms.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">

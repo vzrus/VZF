@@ -114,13 +114,13 @@ namespace YAF.Core
             {
                 this.Logger.Warn("UserAgent string is empty.");
             }
-
-            if (@event.Data.UserAgent != null && ((string)@event.Data.UserAgent).Length > 0
-                && (@event.Data.Platform.ToLower().Contains("unknown")
-                 || @event.Data.Browser.ToLower().Contains("unknown")) && (!UserAgentHelper.IsSearchEngineSpider(@event.Data.UserAgent)))
+          
+            if (@event.Data.UserAgent != null && ((string)@event.Data.UserAgent).Length > 0)
+            {
+                if ((@event.Data.Platform.ToLowerInvariant().Contains("unknown") || @event.Data.Browser.ToLowerInvariant().Contains("unknown")) && !UserAgentHelper.IsSearchEngineSpider(@event.Data.UserAgent))
             {
                 this.Logger.Error(
-                    "Unhandled UserAgent string:'{0}' /r/nPlatform:'{1}' /r/nBrowser:'{2}' /r/nSupports cookies='{3}' /r/nSupports EcmaScript='{4}' /r/nUserID='{5}'."
+                    "Unhandled UserAgent string:'{0}' \r\nPlatform:'{1}' \r\nBrowser:'{2}' \r\nSupports cookies='{3}' \r\nSupports EcmaScript='{4}' \r\nUserID='{5}'."
                         .FormatWith(
                             (string)@event.Data.UserAgent,
                             this.HttpRequestBase.Browser.Platform,
@@ -128,6 +128,7 @@ namespace YAF.Core
                             this.HttpRequestBase.Browser.Cookies.ToString(),
                             this.HttpRequestBase.Browser.EcmaScriptVersion,
                             YafContext.Current.User != null ? YafContext.Current.User.UserName : string.Empty));
+            }
             }
         }
 

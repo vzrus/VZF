@@ -47,8 +47,6 @@ END IF;
 END;
 --GO
 
-
-
 DROP  PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}add_or_check_ukeys;
 --GO
 CREATE PROCEDURE {databaseSchema}.{objectQualifier}add_or_check_ukeys(

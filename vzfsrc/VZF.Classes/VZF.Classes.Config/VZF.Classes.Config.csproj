@@ -69,7 +69,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseUrlBuilder.cs" />
+    <Compile Include="Pattern\BaseUrlBuilder.cs" />
     <Compile Include="Extensions\AreEqualFunc.cs" />
     <Compile Include="Pattern\IInstanceFactory.cs" />
     <Compile Include="Pattern\PageSingleton.cs" />
