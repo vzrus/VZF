@@ -101,7 +101,7 @@ namespace YAF
 
                         if (row.IsNull("FileData"))
                         {
-                            string sUpDir = YafBoardFolders.Current.Uploads;
+                            string sUpDir = YafBoardFolders.Current.TopicAttachments;
 
                             string oldFileName =
                                 context.Server.MapPath(

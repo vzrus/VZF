@@ -9,18 +9,18 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AccessMask
        (
        `AccessMaskID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        `SortOrder` INT NOT NULL DEFAULT 0,
        `CreatedByUserID` INT NULL,
-       `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `CreatedDate` DATETIME,
        `IsUserMask`  TINYINT(1) NOT NULL DEFAULT 0,
        `IsAdminMask`  TINYINT(1) NOT NULL DEFAULT 0,
        PRIMARY KEY (`AccessMaskID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 
@@ -28,32 +28,32 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AccessMaskHistory
        (
        `AccessMaskID` INT NOT NULL,    
        `ChangedUserID`		INT,	
-       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
+       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation}  NOT NULL,
        `ChangedDate`         DATETIME  NOT NULL,    
        PRIMARY KEY (`AccessMaskID`,`ChangedDate`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Active
        (
-       `SessionID` VARCHAR(24) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `SessionID` VARCHAR(24) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `BoardID` INT NOT NULL,
        `UserID` INT NOT NULL,
-       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Login` DATETIME NOT NULL,
        `LastActive` DATETIME NOT NULL,
-       `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `ForumID` INT NULL,
        `TopicID` INT NULL,
-       `Browser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `Platform` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Browser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `Platform` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        PRIMARY KEY (`SessionID`, `BoardID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ActiveAccess
@@ -79,15 +79,15 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ActiveAccess
         `DownloadAccess`		TINYINT(1) NOT NULL DEFAULT 0,
         `UserForumAccess`       TINYINT(1) NOT NULL DEFAULT 0
         )
-        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}AdminPageUserAccess
        (
        `UserID` INT NOT NULL,	  
-       `PageName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL	  
+       `PageName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL	  
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}EventLogGroupAccess
@@ -97,108 +97,108 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}EventLogGroupAccess
        `EventTypeName`	       varchar (128) NOT NULL,
        `DeleteAccess`          TINYINT(1) NOT NULL DEFAULT 0
     )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Attachment
        (
        `AttachmentID` INT NOT NULL AUTO_INCREMENT,
        `MessageID` INT NOT NULL,
-       `FileName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `FileName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Bytes` INT NOT NULL,
        `FileID` INT NULL,
-       `ContentType` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `ContentType` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Downloads` INT NOT NULL,
        `FileData` LONGBLOB NULL,
        PRIMARY KEY (`AttachmentID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}BannedIP
        (
        `ID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Mask` VARCHAR(57) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Mask` VARCHAR(57) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Since` DATETIME NOT NULL,
-       `Reason`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `Reason`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `UserID` INT NOT NULL,
        PRIMARY KEY (`ID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}BBCode
        (
        `BBCodeID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Description` VARCHAR(4000) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `OnClickJS` VARCHAR(1000) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `DisplayJS` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `EditJS` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `DisplayCSS` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `SearchRegex` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `ReplaceRegex` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `Variables` VARCHAR(1000) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Name` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Description` VARCHAR(4000) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `OnClickJS` VARCHAR(1000) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `DisplayJS` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `EditJS` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `DisplayCSS` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `SearchRegex` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `ReplaceRegex` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `Variables` VARCHAR(1000) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `UseModule` TINYINT(1) NULL,
-       `ModuleClass` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `ModuleClass` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `ExecOrder` INT NOT NULL,
        PRIMARY KEY (`BBCodeID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Board
        (
        `BoardID` INT NOT NULL AUTO_INCREMENT,
        `BoardUID` BINARY(16),
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `AllowThreaded` TINYINT(1) NOT NULL,
-       `MembershipAppName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `RolesAppName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `MembershipAppName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `RolesAppName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        PRIMARY KEY (`BoardID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Category
        (
        `CategoryID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `CategoryImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `CategoryImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `SortOrder` SMALLINT(5) NOT NULL,
        `PollGroupID` int,
 	   `CanHavePersForums` TINYINT(1) NOT NULL DEFAULT 0,
        PRIMARY KEY (`CategoryID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}CheckEmail
        (
        `CheckEmailID` INT NOT NULL AUTO_INCREMENT,
        `UserID` INT NOT NULL,
-       `Email` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Email` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Created` DATETIME NOT NULL,
-       `Hash` VARCHAR(32) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Hash` VARCHAR(32) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        PRIMARY KEY (`CheckEmailID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Choice
        (
        `ChoiceID` INT NOT NULL AUTO_INCREMENT,
        `PollID` INT NOT NULL,
-       `Choice` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Choice` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Votes` INT NOT NULL DEFAULT 0,
-       `ObjectPath` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
-       `MimeType` VARCHAR(50) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `ObjectPath` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
+       `MimeType` VARCHAR(50) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        PRIMARY KEY (`ChoiceID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}EventLog
@@ -206,22 +206,22 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}EventLog
        `EventLogID` INT NOT NULL AUTO_INCREMENT,
        `EventTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
        `UserID` INT NULL,
-       `Source` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Description` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Source` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Description` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Type` INT NOT NULL DEFAULT 0,
        PRIMARY KEY (`EventLogID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Extension
        (
        `ExtensionID` INT NOT NULL AUTO_INCREMENT,
        `BoardId` INT NOT NULL DEFAULT 1,
-       `Extension` VARCHAR(10) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Extension` VARCHAR(10) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        PRIMARY KEY (`ExtensionID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Forum
@@ -229,44 +229,44 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Forum
        `ForumID` INT NOT NULL AUTO_INCREMENT,
        `CategoryID` INT NOT NULL,
        `ParentID` INT NULL,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `SortOrder` INT NOT NULL DEFAULT 0,
        `LastPosted` DATETIME NULL,
        `LastTopicID` INT NULL,
        `LastMessageID` INT NULL,
        `LastUserID` INT NULL,
-       `LastUserName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `LastUserName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `NumTopics` INT NOT NULL,
        `NumPosts` INT NOT NULL,
-       `RemoteURL` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `RemoteURL` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Flags` INT NOT NULL DEFAULT 0,
-       `ThemeURL` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `ImageURL` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `Styles` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `ThemeURL` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `ImageURL` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `Styles` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `PollGroupID` INT NULL,
        `CreatedByUserID` INT NULL,
-       `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `CreatedDate` DATETIME,
        `IsUserForum`  TINYINT(1) NOT NULL DEFAULT 0,
 	   `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0,
        PRIMARY KEY (`ForumID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ForumHistory
        (
        `ForumID` INT NOT NULL,    
        `ChangedUserID`		INT,	
-       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
+       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation}  NOT NULL,
        `ChangedDate`         DATETIME  NOT NULL,    
        PRIMARY KEY (`ForumID`,`ChangedDate`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ForumAccess
@@ -276,27 +276,27 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}ForumAccess
        `AccessMaskID` INT NOT NULL,
        PRIMARY KEY (`GroupID`, `ForumID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Group
        (
        `GroupID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        `PMLimit` INT,
-       `Style`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `Style`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `SortOrder`  INT NOT NULL DEFAULT 0,
-       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `UsrSigChars`   INT NOT NULL DEFAULT 0,
-       `UsrSigBBCodes` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
-       `UsrSigHTMLTags` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `UsrSigBBCodes` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
+       `UsrSigHTMLTags` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `UsrAlbums`  INT NOT NULL DEFAULT 0,
        `UsrAlbumImages`  INT NOT NULL DEFAULT 0,
        `CreatedByUserID` INT NULL,
-       `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `CreatedDate` DATETIME,   
        `IsHidden` TINYINT(1) NOT NULL DEFAULT 0,
        `IsUserGroup` TINYINT(1) NOT NULL DEFAULT 0,
@@ -305,62 +305,62 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Group
 	   `UsrPersonalGroups`  INT NOT NULL DEFAULT 0,
        PRIMARY KEY (`GroupID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}GroupHistory
        (
        `GroupID` INT NOT NULL,    
        `ChangedUserID`		INT,	
-       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
+       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation}  NOT NULL,
        `ChangedDate`         DATETIME  NOT NULL,    
        PRIMARY KEY (`GroupID`,`ChangedDate`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}GroupHistory
        (
        `GroupID` INT NOT NULL,    
        `ChangedUserID`		INT NOT NULL,	
-       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
+       `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation}  NOT NULL,
        `ChangedDate`        DATETIME  NOT NULL,    
        PRIMARY KEY (`GroupID`,`ChangedDate`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}GroupMedal
        (
        `GroupID` INT NOT NULL,
        `MedalID` INT NOT NULL,
-       `Message` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Message` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Hide` TINYINT NOT NULL DEFAULT 0,
        `OnlyRibbon` TINYINT(1) NOT NULL DEFAULT 0,
        `SortOrder` TINYINT(3) UNSIGNED NOT NULL DEFAULT 255
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Mail
        (
        `MailID` INT NOT NULL AUTO_INCREMENT,
-       `FromUser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `FromUserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `ToUser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `ToUserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `FromUser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `FromUserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `ToUser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `ToUserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Created` DATETIME NOT NULL,
-       `Subject` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Body` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `BodyHtml` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Subject` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Body` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `BodyHtml` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `SendTries` INT NOT NULL DEFAULT 0,
        `SendAttempt` DATETIME NULL,
        `ProcessID` INT NULL,
        PRIMARY KEY (`MailID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 
@@ -368,14 +368,14 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Medal
        (
        `BoardID` INT NOT NULL,
        `MedalID` INT NOT NULL AUTO_INCREMENT,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Description` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Message` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Category` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `MedalURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `RibbonURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `SmallMedalURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `SmallRibbonURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Description` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Message` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Category` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `MedalURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `RibbonURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `SmallMedalURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `SmallRibbonURL` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `SmallMedalWidth` SMALLINT(5) NOT NULL,
        `SmallMedalHeight` SMALLINT(5) NOT NULL,
        `SmallRibbonWidth` SMALLINT(5) NULL,
@@ -384,7 +384,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Medal
        `Flags` INT NOT NULL DEFAULT 0,
        PRIMARY KEY (`MedalID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Message
@@ -395,49 +395,49 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Message
        `Position` INT NOT NULL,
        `Indent` INT NOT NULL,
        `UserID` INT NOT NULL,
-       `UserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `UserDisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `UserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `UserDisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Posted` DATETIME NOT NULL,
-       `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL ,
-	   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
-       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL ,
+	   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
+       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Edited` DATETIME NULL,
        `EditedBy` INT,
        `Flags` INT NOT NULL DEFAULT 23,
-       `EditReason` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `EditReason` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `IsModeratorChanged` TINYINT(1) NOT NULL DEFAULT 0,
-       `DeleteReason` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `BlogPostID` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `DeleteReason` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `BlogPostID` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `ExternalMessageId`	varchar(255) NULL,
        `ReferenceMessageId` varchar(255) NULL,
        PRIMARY KEY (`MessageID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageHistory
        (
        `MessageID` INT NOT NULL,
-       `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL ,
-       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL ,
+       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Edited` DATETIME NULL,
        `EditedBy` INT,
-       `EditReason` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `EditReason` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `IsModeratorChanged` TINYINT(1) NOT NULL DEFAULT 0,
        `Flags` INT NOT NULL DEFAULT 23
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageReported
        (
        `MessageID` INT NOT NULL,
-       `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Resolved` TINYINT(1) NULL,
        `ResolvedBy` INT NULL,
        `ResolvedDate` DATETIME NULL
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageReportedAudit
@@ -448,14 +448,14 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}MessageReportedAudi
        `Reported` DATETIME NULL,
        PRIMARY KEY (`LogID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpForum
        (
        `NntpForumID` INT NOT NULL AUTO_INCREMENT,
        `NntpServerID` INT NOT NULL,
-       `GroupName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `GroupName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `ForumID` INT NOT NULL,
        `LastMessageNo` INT NOT NULL,
        `LastUpdate` DATETIME NOT NULL,
@@ -463,21 +463,21 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpForum
        `DateCutOff` DATETIME,
        PRIMARY KEY (`NntpForumID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpServer
        (
        `NntpServerID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Address` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Address` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Port` INT NULL,
-       `UserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `UserPass` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `UserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `UserPass` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        PRIMARY KEY (`NntpServerID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpTopic
@@ -488,7 +488,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}NntpTopic
        `TopicID` INT NOT NULL,
        PRIMARY KEY (`NntpTopicID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PMessage
@@ -496,13 +496,13 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PMessage
        `PMessageID` INT NOT NULL AUTO_INCREMENT,
        `FromUserID` INT NOT NULL,
        `Created` DATETIME NOT NULL,
-       `Subject` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Body` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Subject` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Body` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Flags` INT NOT NULL,
        `ReplyTo` INT,
        PRIMARY KEY (`PMessageID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollGroupCluster
@@ -517,16 +517,16 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollGroupCluster
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Poll
        (
        `PollID` INT NOT NULL AUTO_INCREMENT,
-       `Question` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Question` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `Closes` DATETIME NULL,
        `PollGroupID` int NULL,
        `UserID` int not NULL,
-       `ObjectPath` varchar(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `MimeType` varchar(50) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `ObjectPath` varchar(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `MimeType` varchar(50) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Flags` int NULL,
        PRIMARY KEY (`PollID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollVote
@@ -534,11 +534,11 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollVote
        `PollVoteID` INT NOT NULL AUTO_INCREMENT,
        `PollID` INT NOT NULL,
        `UserID` INT NULL,
-       `RemoteIP` VARCHAR(57) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `RemoteIP` VARCHAR(57) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `ChoiceID` INT,
        PRIMARY KEY (`PollVoteID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollVoteRefuse
@@ -546,80 +546,80 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}PollVoteRefuse
        `RefuseID` INT NOT NULL AUTO_INCREMENT,
        `PollID` INT NOT NULL,
        `UserID` INT NULL,
-       `RemoteIP` VARCHAR(57) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `RemoteIP` VARCHAR(57) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        PRIMARY KEY (`RefuseID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Rank
        (
        `RankID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `MinPosts` INT NULL,
-       `RankImage` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `RankImage` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        `PMLimit` INT NOT NULL DEFAULT 0,
-       `Style`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `Style`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `SortOrder`  INT NOT NULL DEFAULT 0,
-       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}, 
+       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation}, 
        `UsrSigChars`   INT NOT NULL DEFAULT 0,
-       `UsrSigBBCodes` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
-       `UsrSigHTMLTags` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+       `UsrSigBBCodes` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
+       `UsrSigHTMLTags` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
        `UsrAlbums`  INT NOT NULL DEFAULT 0,
        `UsrAlbumImages`  INT NOT NULL DEFAULT 0,
        PRIMARY KEY (`RankID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Registry
        (
        `RegistryID` INT NOT NULL AUTO_INCREMENT,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Value` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Value` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `BoardID` INT NULL,
        PRIMARY KEY (`RegistryID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE  IF NOT EXISTS {databaseSchema}.{objectQualifier}ShoutboxMessage(
         ShoutBoxMessageID INT  NOT NULL AUTO_INCREMENT,		
         UserID int,
-        UserName varchar(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-        UserDisplayName varchar(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-        Message LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+        UserName varchar(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+        UserDisplayName varchar(128)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+        Message LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
         `Date` datetime NOT NULL,
         `IP` varchar(39) NOT NULL,
         PRIMARY KEY (`ShoutBoxMessageID`)
         )
-        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Replace_Words
        (
        `ID` INT NOT NULL AUTO_INCREMENT,
        `BoardId` INT NOT NULL,
-       `BadWord` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `GoodWord` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `BadWord` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `GoodWord` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        PRIMARY KEY (`ID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Smiley
        (
        `SmileyID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
-       `Code` VARCHAR(10) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Icon` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Emoticon` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Code` VARCHAR(10) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Icon` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Emoticon` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `SortOrder` TINYINT(3) NOT NULL DEFAULT 0,
        PRIMARY KEY (`SmileyID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Topic
@@ -627,13 +627,13 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Topic
        `TopicID` INT NOT NULL AUTO_INCREMENT,
        `ForumID` INT NOT NULL,
        `UserID` INT NOT NULL,
-       `UserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `UserDisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `UserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `UserDisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Posted` DATETIME NOT NULL,
-       `Topic` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Status` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Topic` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Status` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Styles` VARCHAR(255) NULL,
-       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Views` INT NOT NULL,
        `Priority` SMALLINT(5) NOT NULL,
        `PollID` INT NULL,
@@ -641,19 +641,19 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Topic
        `LastPosted` DATETIME NULL,
        `LastMessageID` INT NULL,
        `LastUserID` INT NULL,
-       `LastUserName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `LastUserName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `NumPosts` INT NOT NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        `AnswerMessageId` INT NULL, 
        `LastMessageFlags`	INT NOT NULL DEFAULT 22,
        `LinkDate` DATETIME,
-	   `TopicImage` varchar(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,  
+	   `TopicImage` varchar(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,  
 	   `TopicImageType` varchar(50) NULL,  
 	   `TopicImageBin` LONGBLOB NULL,  
        PRIMARY KEY (`TopicID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}User
@@ -661,25 +661,25 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}User
        `UserID` INT NOT NULL AUTO_INCREMENT,
        `BoardID` INT NOT NULL,
        `ProviderUserKey` VARCHAR(64) NULL,
-       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `DisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Password` VARCHAR(32) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `Email` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `DisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Password` VARCHAR(32) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+       `Email` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Joined` DATETIME NOT NULL,
        `LastVisit` DATETIME NOT NULL,
-       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `NumPosts` INT NOT NULL,
        `TimeZone` INT NOT NULL,
        `UseSingleSignOn`  TINYINT(1) NOT NULL DEFAULT 0,
        `TextEditor` VARCHAR(50),
-       `Avatar` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `Signature` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Avatar` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `Signature` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `AvatarImage` LONGBLOB NULL,
        `AvatarImageType`	VARCHAR (50) NULL,
        `RankID` INT NOT NULL,
        `Suspended` DATETIME NULL,
-       `LanguageFile` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-       `ThemeFile` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `LanguageFile` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+       `ThemeFile` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `OverrideDefaultThemes` TINYINT(1) NOT NULL DEFAULT 0,
        `PMNotification` TINYINT(1) NOT NULL DEFAULT 1,
        `NotificationType` INT DEFAULT 10,
@@ -690,7 +690,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}User
        `Points` INT NOT NULL DEFAULT 1,
        `IsFacebookUser` TINYINT(1) NOT NULL DEFAULT 0,
        `IsTwitterUser` TINYINT(1) NOT NULL DEFAULT 0,
-       `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `StyleFlags` INT NOT NULL DEFAULT 0,
        `IsUserStyle` TINYINT(1) NOT NULL DEFAULT 0,
        `IsGroupStyle` TINYINT(1) NOT NULL DEFAULT 0,
@@ -700,7 +700,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}User
 	   `TopicsPerPage`   INT NOT NULL DEFAULT 20, 
        PRIMARY KEY (`UserID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserForum
@@ -712,7 +712,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserForum
        `Accepted` TINYINT(1) NOT NULL,
        PRIMARY KEY (`UserID`, `ForumID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserGroup
@@ -721,20 +721,20 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserGroup
        `GroupID` INT NOT NULL,
        PRIMARY KEY (`UserID`, `GroupID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserMedal
        (
        `UserID` INT NOT NULL,
        `MedalID` INT NOT NULL,
-       `Message` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `Message` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
        `Hide` TINYINT(1) NOT NULL DEFAULT 0,
        `OnlyRibbon` TINYINT(1) NOT NULL DEFAULT 0,
        `SortOrder` TINYINT(3) UNSIGNED NOT NULL DEFAULT 255,
        `DateAwarded` DATETIME NOT NULL
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}IgnoreUser
@@ -743,7 +743,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}IgnoreUser
        `IgnoredUserID` INT NOT NULL,
        PRIMARY KEY (`UserID`, `IgnoredUserID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};	
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};	
 --GO
     
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserPMessage
@@ -755,7 +755,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}UserPMessage
        `IsReply` TINYINT(1) NOT NULL DEFAULT 0,
        PRIMARY KEY (`UserPMessageID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}WatchForum
@@ -767,7 +767,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}WatchForum
        `LastMail` DATETIME NULL,
        PRIMARY KEY (`WatchForumID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}WatchTopic
@@ -779,7 +779,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}WatchTopic
        `LastMail` DATETIME NULL,
        PRIMARY KEY (`WatchTopicID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Thanks
@@ -790,7 +790,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Thanks
        `MessageID` INT NOT NULL,
        `ThanksDate` DATETIME NOT NULL,
        PRIMARY KEY (`ThanksID`)
-       ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Buddy
@@ -802,7 +802,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}Buddy
        `Requested` DATETIME NOT NULL,
        PRIMARY KEY (`ID`)
        ) 
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 /* YAF FavoriteTopic Table */
@@ -813,7 +813,7 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}FavoriteTopic
        `TopicID` INT NOT NULL,
        PRIMARY KEY (`ID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserAlbum
@@ -825,7 +825,7 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserAlbum
        `Updated` DATETIME NOT NULL,
        PRIMARY KEY (`AlbumID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserAlbumImage
@@ -840,7 +840,7 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserAlbumImage
        `Downloads` INT NOT NULL,
        PRIMARY KEY (`ImageID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicReadTracking
@@ -849,7 +849,7 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicReadTracking
        `TopicID`			INT NOT NULL ,
        `LastAccessDate`	DATETIME NOT NULL
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}ForumReadTracking
@@ -858,28 +858,28 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}ForumReadTracking
        `ForumID`			INT NOT NULL ,
        `LastAccessDate`	DATETIME NOT NULL
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicStatus
        (
        `TopicStatusID` INT NOT NULL AUTO_INCREMENT,
-       `TopicStatusName` VARCHAR(100)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `TopicStatusName` VARCHAR(100)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `BoardID` int NOT NULL,
-       `DefaultDescription` VARCHAR(100)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `DefaultDescription` VARCHAR(100)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        PRIMARY KEY (`TopicStatusID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}Tags
        (
        `TagID` INT NOT NULL AUTO_INCREMENT,
-       `Tag` VARCHAR(1024)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Tag` VARCHAR(1024)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
        `TagCount` INT NOT NULL DEFAULT 0,
         PRIMARY KEY (`TagID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicTags
@@ -888,7 +888,7 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}TopicTags
        `TopicID` int NOT NULL,
        PRIMARY KEY (`TagID`,`TopicID`)
        )
-       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserProfile
@@ -897,17 +897,17 @@ CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}UserProfile
        `LastUpdatedDate` DATETIME NOT NULL,
        -- added columns
        `LastActivity` DATETIME,
-       `ApplicationName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
+       `ApplicationName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation}  NOT NULL,
        `IsAnonymous` TINYINT(1) NOT NULL,
-       `UserName` VARCHAR(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL
-       ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+       `UserName` VARCHAR(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL
+       ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseSchema}.{objectQualifier}ReputationVote(
         `ReputationFromUserID`  INT NOT NULL,
         `ReputationToUserID`	  INT NOT NULL,
         `VoteDate`	DATETIME NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+    ) ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding} COLLATE {databaseCollation};
 --GO
 
 -- update procedures 
@@ -965,7 +965,7 @@ DELETE FROM {databaseSchema}.{objectQualifier}ActiveAccess;
                  AND (TABLE_NAME='{objectQualifier}Active' 
                       OR TABLE_NAME=LOWER('{objectQualifier}Active'))
                  AND COLUMN_NAME='ForumPage' LIMIT 1) THEN
-     ALTER TABLE  {databaseSchema}.{objectQualifier}Active ADD `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Location`;
+     ALTER TABLE  {databaseSchema}.{objectQualifier}Active ADD `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} AFTER `Location`;
   END IF;
   
   -- Check for a right column `ForumPage` size
@@ -974,7 +974,7 @@ DELETE FROM {databaseSchema}.{objectQualifier}ActiveAccess;
              AND (TABLE_NAME='{objectQualifier}Active' 
                   OR TABLE_NAME=LOWER('{objectQualifier}Active'))
              AND COLUMN_NAME='ForumPage' AND CHARACTER_MAXIMUM_LENGTH < 255 LIMIT 1) THEN
-     ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `ForumPage` `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+     ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `ForumPage` `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   -- Check for a right column `Location` size
@@ -983,7 +983,7 @@ DELETE FROM {databaseSchema}.{objectQualifier}ActiveAccess;
              AND (TABLE_NAME='{objectQualifier}Active' 
                   OR TABLE_NAME=LOWER('{objectQualifier}Active'))
              AND COLUMN_NAME='Location' AND CHARACTER_MAXIMUM_LENGTH < 255 LIMIT 1) THEN
-     ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+     ALTER TABLE  {databaseSchema}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;  
 
   -- add `Flags` column  
@@ -1038,7 +1038,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `Topic`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `Topic`;
   END IF;
 
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1052,14 +1052,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Status' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Status` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `Topic`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `Status` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `Topic`;
   END IF;
 
   IF  EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='Status' LIMIT 1) THEN
-  ALTER TABLE {databaseSchema}.{objectQualifier}Topic CHANGE `Status` `Status`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+  ALTER TABLE {databaseSchema}.{objectQualifier}Topic CHANGE `Status` `Status`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;  
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1073,14 +1073,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `UserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `UserName`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `UserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `UserName`;
   END IF;
     
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='LastUserDisplayName' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `LastUserName`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `LastUserName`;
   END IF;
  
 -- Rank Table
@@ -1110,7 +1110,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1125,14 +1125,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrSigBBCodes' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Rank' OR TABLE_NAME=LOWER('{objectQualifier}Rank'))
   AND COLUMN_NAME='UsrSigHTMLTags' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Rank ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1175,7 +1175,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `Description`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1191,14 +1191,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrSigBBCodes' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigBBCodes`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Group' OR TABLE_NAME=LOWER('{objectQualifier}Group'))
   AND COLUMN_NAME='UsrSigHTMLTags' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Group ADD `UsrSigHTMLTags`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1239,7 +1239,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='DisplayName' LIMIT 1) THEN
-        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `DisplayName`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Name`;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}User ADD `DisplayName`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} AFTER `Name`;
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1303,7 +1303,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='UserStyle' LIMIT 1) THEN
-        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+        ALTER TABLE   {databaseSchema}.{objectQualifier}User ADD `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1388,14 +1388,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
-         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD  `UserDisplayName`	varchar(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER  `UserName`;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD  `UserDisplayName`	varchar(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER  `UserName`;
   END IF; 
 
              IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
   AND COLUMN_NAME='Description' LIMIT 1) THEN
-         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Message`;
+         ALTER TABLE  {databaseSchema}.{objectQualifier}Message ADD   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} AFTER `Message`;
   END IF;
 
  
@@ -1405,14 +1405,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='ImageURL' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `ImageURL`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `ImageURL`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='Styles' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `Styles`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `Styles`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF; 
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1426,7 +1426,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='LastUserDisplayName' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `LastUserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `LastUserName`;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `LastUserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `LastUserName`;
   END IF; 
 
   -- PollVote Table
@@ -1456,7 +1456,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}BannedIP')
   AND COLUMN_NAME='Reason' LIMIT 1) THEN
-         ALTER TABLE  {databaseSchema}.{objectQualifier}BannedIP ADD `Reason`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+         ALTER TABLE  {databaseSchema}.{objectQualifier}BannedIP ADD `Reason`  VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF; 
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1485,7 +1485,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='Question' LIMIT 1) THEN
-        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll MODIFY `Question`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll MODIFY `Question`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1520,14 +1520,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='ObjectPath' LIMIT 1) THEN
-        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
           IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Poll')
   AND COLUMN_NAME='MimeType' LIMIT 1) THEN
-        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `MimeType`  VARCHAR(50) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+        ALTER TABLE  {databaseSchema}.{objectQualifier}Poll ADD `MimeType`  VARCHAR(50) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
   CALL {databaseSchema}.{objectQualifier}pollgroup_migration();
@@ -1545,7 +1545,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Choice')
   AND COLUMN_NAME='ObjectPath' LIMIT 1) THEN
-    alter table {databaseSchema}.{objectQualifier}Choice ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+    alter table {databaseSchema}.{objectQualifier}Choice ADD `ObjectPath`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   
     END IF;
 
@@ -1553,7 +1553,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Choice')
   AND COLUMN_NAME='MimeType' LIMIT 1) THEN
-    alter table {databaseSchema}.{objectQualifier}Choice ADD `MimeType`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+    alter table {databaseSchema}.{objectQualifier}Choice ADD `MimeType`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
 
@@ -1570,7 +1570,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}ShoutboxMessage')
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
-    alter table {databaseSchema}.{objectQualifier}ShoutboxMessage ADD `UserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER `UserName`;
+    alter table {databaseSchema}.{objectQualifier}ShoutboxMessage ADD `UserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `UserName`;
   END IF;
 
  -- UserPMessage Table
@@ -1705,7 +1705,7 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
   AND COLUMN_NAME='TopicImage' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}Topic ADD `TopicImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Topic ADD `TopicImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
        IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1735,14 +1735,14 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='CreatedByUserName' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='CreatedByUserDisplayName' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Group ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1799,14 +1799,14 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CreatedByUserName' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='CreatedByUserDisplayName' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}Forum ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1842,7 +1842,7 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
   AND COLUMN_NAME='Description' AND IS_NULLABLE='NO' LIMIT 1) THEN
-  ALTER TABLE {databaseSchema}.{objectQualifier}Forum MODIFY `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  ALTER TABLE {databaseSchema}.{objectQualifier}Forum MODIFY `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation};
   END IF;
 
   -- set sortorder of forum table to integer
@@ -1874,14 +1874,14 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='CreatedByUserName' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
   AND COLUMN_NAME='CreatedByUserDisplayName' LIMIT 1) THEN
- ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+ ALTER TABLE {databaseSchema}.{objectQualifier}AccessMask ADD `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL;
   END IF;
 
      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 

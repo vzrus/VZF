@@ -126,7 +126,10 @@
     <Resource tag="SEARCH">Gebruikt de zoekfunctie</Resource>
     <Resource tag="SHOUTBOX">Gebruikt shoutbox</Resource>
     <Resource tag="SHOWSMILIES">Onbekend</Resource>
+    <Resource tag="TAGS_BOARD">Views tag list for board.</Resource>
     <Resource tag="TEAM">Bekijkt team pagina</Resource>
+    <Resource tag="TOPICBYTAGS_FORUM">Views tag list for forum</Resource>
+    <Resource tag="TOPICBYTAGS_TOPIC">Views tag list for topic</Resource>
     <Resource tag="TOPICINFORUM"> in forum </Resource>
     <Resource tag="TOPICS">Bekijkt topic</Resource>
     <Resource tag="VIEWTHANKS">Bekijkt bedankt info</Resource>

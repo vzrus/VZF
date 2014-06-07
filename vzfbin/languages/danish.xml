@@ -126,7 +126,10 @@
     <Resource tag="SEARCH">Bruger søgning</Resource>
     <Resource tag="SHOUTBOX">Bruger shoutbox</Resource>
     <Resource tag="SHOWSMILIES">Ingen data</Resource>
+    <Resource tag="TAGS_BOARD">Views tag list for board.</Resource>
     <Resource tag="TEAM">Views team page</Resource>
+    <Resource tag="TOPICBYTAGS_FORUM">Views tag list for forum</Resource>
+    <Resource tag="TOPICBYTAGS_TOPIC">Views tag list for topic</Resource>
     <Resource tag="TOPICINFORUM"> i forummet </Resource>
     <Resource tag="TOPICS">Viser emner</Resource>
     <Resource tag="VIEWTHANKS">Viser takke info</Resource>

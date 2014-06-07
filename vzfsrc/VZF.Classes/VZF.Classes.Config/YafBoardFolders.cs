@@ -20,143 +20,172 @@ using System;
 
 namespace YAF.Classes
 {
-  using YAF.Classes.Pattern;
-
-  /// <summary>
-  /// The yaf board folders.
-  /// </summary>
-  public class YafBoardFolders
-  {
-    /// <summary>
-    /// Gets Current.
-    /// </summary>
-    public static YafBoardFolders Current
-    {
-      get
-      {
-        return PageSingleton<YafBoardFolders>.Instance;
-      }
-    }
+    using YAF.Classes.Pattern;
 
     /// <summary>
-    /// Gets BoardFolder.
+    /// The yaf board folders.
     /// </summary>
-    public static string BoardFolder
+    public class YafBoardFolders
     {
-      get
-      {
-          return Config.MultiBoardFolders ? string.Format(Config.BoardRoot + "{0}/", YafControlSettings.Current.BoardID) : Config.BoardRoot;
-      }
-    }
-
-    /// <summary>
-    /// Gets Uploads.
-    /// </summary>
-    public string Uploads
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Uploads");
-      }
-    }
-
-    /// <summary>
-    /// Gets Themes.
-    /// </summary>
-    public string Themes
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Themes");
-      }
-    }
-
-    /// <summary>
-    /// Gets Images.
-    /// </summary>
-    public string Images
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Images");
-      }
-    }
-
-    /// <summary>
-    /// Gets Avatars.
-    /// </summary>
-    public string Avatars
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Images/Avatars");
-      }
-    }
-
-    /// <summary>
-    /// Gets Categories.
-    /// </summary>
-    public string Categories
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Images/Categories");
-      }
-    }
-
-    /// <summary>
-    /// Gets Categories.
-    /// </summary>
-    public string Forums
-    {
-        get
+        /// <summary>
+        /// Gets Current.
+        /// </summary>
+        public static YafBoardFolders Current
         {
-            return String.Concat(BoardFolder, "Images/Forums");
+            get
+            {
+                return PageSingleton<YafBoardFolders>.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Gets BoardFolder.
+        /// </summary>
+        public static string BoardFolder
+        {
+            get
+            {
+                return Config.MultiBoardFolders
+                           ? string.Format(Config.BoardRoot + "{0}/", YafControlSettings.Current.BoardID)
+                           : Config.BoardRoot;
+            }
+        }
+
+        /// <summary>
+        /// Gets Uploads.
+        /// </summary>
+        public string Uploads
+        {
+            get
+            {
+                return String.Concat(BoardFolder, "Uploads");
+            }
+        }
+
+        public string Albums
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Uploads, this.PathSeparator, "Albums");
+            }
+        }
+
+        public string TopicAttachments
+        {
+            get
+            {
+                return string.Concat(BoardFolder,this.Topics, this.PathSeparator, "Attachments");
+            }
+        }
+
+        /// <summary>
+        /// Gets Themes.
+        /// </summary>
+        public string Themes
+        {
+            get
+            {
+                return string.Concat(BoardFolder, "Themes");
+            }
+        }
+
+        /// <summary>
+        /// Gets Images.
+        /// </summary>
+        public string Images
+        {
+            get
+            {
+                return string.Concat(BoardFolder, "Images");
+            }
+        }
+
+        /// <summary>
+        /// Gets Avatars.
+        /// </summary>
+        public string Avatars
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Avatars");
+            }
+        }
+
+        /// <summary>
+        /// Gets Categories.
+        /// </summary>
+        public string Categories
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Categories");
+            }
+        }
+
+        /// <summary>
+        /// Gets Categories.
+        /// </summary>
+        public string Forums
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Forums");
+            }
+        }
+
+        /// <summary>
+        /// Gets Emoticons.
+        /// </summary>
+        public string Emoticons
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Emoticons");
+            }
+        }
+
+        /// <summary>
+        /// Gets Medals.
+        /// </summary>
+        public string Medals
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Medals");
+            }
+        }
+
+        /// <summary>
+        /// Gets the path separator.
+        /// </summary>
+        public string PathSeparator
+        {
+            get
+            {
+                return "/";
+            }
+        }
+
+        /// <summary>
+        /// Gets Ranks.
+        /// </summary>
+        public string Ranks
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Ranks");
+            }
+        }
+
+        /// <summary>
+        /// Gets Topics.
+        /// </summary>
+        public string Topics
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Topics");
+            }
         }
     }
-
-    /// <summary>
-    /// Gets Emoticons.
-    /// </summary>
-    public string Emoticons
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Images/Emoticons");
-      }
-    }
-
-    /// <summary>
-    /// Gets Medals.
-    /// </summary>
-    public string Medals
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Images/Medals");
-      }
-    }
-
-    /// <summary>
-    /// Gets Ranks.
-    /// </summary>
-    public string Ranks
-    {
-      get
-      {
-        return String.Concat(BoardFolder, "Images/Ranks");
-      }
-    }
-
-    /// <summary>
-    /// Gets Topics.
-    /// </summary>
-    public string Topics
-    {
-        get
-        {
-            return String.Concat(BoardFolder, "Images/Topics");
-        }
-    }
-  }
 }

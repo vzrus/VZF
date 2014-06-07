@@ -3025,6 +3025,7 @@ WHERE ForumID = i_ForumID;
         DELETE FROM {databaseSchema}.{objectQualifier}UserForum
         WHERE       ForumID = i_ForumID;
 
+
        -- And after this we can delete Forum itself
 
         DELETE FROM {databaseSchema}.{objectQualifier}Forum
@@ -13036,10 +13037,7 @@ CREATE procedure {databaseSchema}.{objectQualifier}album_image_list
 end;
 --GO
 
-CREATE procedure {databaseSchema}.{objectQualifier}album_images_by_user
-    (
-      i_UserID INT
-    )
+CREATE procedure {databaseSchema}.{objectQualifier}album_images_by_user(i_UserID INT)
     READS SQL DATA
     BEGIN        
             SELECT  *

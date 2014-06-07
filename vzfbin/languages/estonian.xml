@@ -126,7 +126,10 @@
     <Resource tag="SEARCH">Käivitab otsingu</Resource>
     <Resource tag="SHOUTBOX">Kasutab shoutboxi</Resource>
     <Resource tag="SHOWSMILIES">Andmed puuduvad</Resource>
+    <Resource tag="TAGS_BOARD">Views tag list for board.</Resource>
     <Resource tag="TEAM">Views team page</Resource>
+    <Resource tag="TOPICBYTAGS_FORUM">Views tag list for forum</Resource>
+    <Resource tag="TOPICBYTAGS_TOPIC">Views tag list for topic</Resource>
     <Resource tag="TOPICINFORUM">foorumis</Resource>
     <Resource tag="TOPICS">Avab teema</Resource>
     <Resource tag="VIEWTHANKS">Avab tänuavalduste info</Resource>

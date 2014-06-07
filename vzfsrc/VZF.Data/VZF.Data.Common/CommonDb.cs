@@ -1086,7 +1086,7 @@ namespace VZF.Data.Common
 
                     var uploadDir =
                         HostingEnvironmentUtil.MapPath(
-                            string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                            string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.TopicAttachments));
 
                     foreach (DataRow row in tbAttachments.Rows)
                     {
@@ -6451,7 +6451,7 @@ namespace VZF.Data.Common
                         true);
                     string uploadDir =
                         HostingEnvironmentUtil.MapPath(
-                            String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                            String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.TopicAttachments));
                     foreach (DataRow row in tbAttachments.Rows)
                     {
                         try
@@ -10180,7 +10180,7 @@ namespace VZF.Data.Common
                     dbcharset = CommonDb.db_getfirstcharset(mid);
                 }
 
-                script = Regex.Replace(script, "({databaseEncoding}_{databaseCollation})", dbcollation, RegexOptions.IgnoreCase);
+                script = Regex.Replace(script, "({databaseCollation})", dbcollation, RegexOptions.IgnoreCase);
                 script = Regex.Replace(script, "({databaseEncoding})", dbcharset, RegexOptions.IgnoreCase);
             }
 
@@ -10837,9 +10837,7 @@ namespace VZF.Data.Common
                 HostingEnvironmentUtil.MapPath(
                     string.Concat(
                         BaseUrlBuilder.ServerFileRoot,
-                        YafBoardFolders.Current.Uploads,
-                        "/",
-                        YafBoardFolders.Current.Topics));
+                        YafBoardFolders.Current.TopicAttachments));
 
             try
             {
@@ -11143,14 +11141,13 @@ namespace VZF.Data.Common
                         CommandType.StoredProcedure,
                         true))
                 {
-                    if (dt.Rows.Count > 0)
+                    if (dt != null && dt.Rows.Count > 0)
                     {
                         return dt.Rows[0];
                     }
-                    else
-                    {
-                        return null;
-                    }
+                   
+                    return null;
+                    
                 }
             }
         }

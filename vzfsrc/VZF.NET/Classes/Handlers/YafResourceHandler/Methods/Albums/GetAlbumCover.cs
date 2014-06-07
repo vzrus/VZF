@@ -86,10 +86,11 @@ namespace YAF
                     using (
                         DataTable dt = CommonDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("cover")))
                     {
+
                         if (dt.Rows.Count > 0)
                         {
                             DataRow row = dt.Rows[0];
-                            string sUpDir = YafBoardFolders.Current.Uploads;
+                            string sUpDir = YafBoardFolders.Current.Albums;
 
                             string oldFileName =
                                 context.Server.MapPath(

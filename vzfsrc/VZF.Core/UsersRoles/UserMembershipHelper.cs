@@ -252,7 +252,7 @@ namespace YAF.Core
                 // Delete the images/albums both from database and physically.
                 string sUpDir =
                     HttpContext.Current.Server.MapPath(
-                        string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                        string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Albums));
 
                 using (DataTable dt = CommonDb.album_list(YafContext.Current.PageModuleID, userID, null))
                 {

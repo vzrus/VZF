@@ -126,7 +126,10 @@
     <Resource tag="SEARCH">بحث عن مستخدم</Resource>
     <Resource tag="SHOUTBOX">استخدام  الدردشة </Resource>
     <Resource tag="SHOWSMILIES">لا يوجد بيانات</Resource>
+    <Resource tag="TAGS_BOARD">Views tag list for board.</Resource>
     <Resource tag="TEAM">Views team page</Resource>
+    <Resource tag="TOPICBYTAGS_FORUM">Views tag list for forum</Resource>
+    <Resource tag="TOPICBYTAGS_TOPIC">Views tag list for topic</Resource>
     <Resource tag="TOPICINFORUM"> في المنتدى </Resource>
     <Resource tag="TOPICS">مشاهدات الموضوع </Resource>
     <Resource tag="VIEWTHANKS">عرض معلومات الشكر </Resource>

@@ -26,15 +26,15 @@ SELECT  {databaseSchema}.{objectQualifier}fts_column_add1('russian', true);
 --GO
 DROP TRIGGER IF EXISTS objectQualifier_tr_message_fts_ru_update ON {databaseSchema}.{objectQualifier}message;
 --GO
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}message_fts_ru_update() RETURNS TRIGGER AS 
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}message_fts_ru_update(culture varchar(50)) RETURNS TRIGGER AS 
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        new.message_fts_russian = to_tsvector('pg_catalog.russian', COALESCE(NEW.message, ''));
+        new.message_fts_russian = to_tsvector('pg_catalog.' || 'russian', COALESCE(NEW.message, ''));
     END IF;
     IF TG_OP = 'UPDATE' THEN
         IF NEW.message <> OLD.message THEN
-            new.message_fts_russian = to_tsvector('pg_catalog.russian', COALESCE(NEW.message, ''));
+            new.message_fts_russian = to_tsvector('pg_catalog.' || 'russian', COALESCE(NEW.message, ''));
         END IF;
     END IF;
     RETURN NEW;

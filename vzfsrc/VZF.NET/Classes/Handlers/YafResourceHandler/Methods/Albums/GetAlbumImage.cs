@@ -71,7 +71,7 @@ namespace YAF
                     {
                         byte[] data;
 
-                        string sUpDir = YafBoardFolders.Current.Uploads;
+                        string sUpDir = YafBoardFolders.Current.Albums;
 
                         string oldFileName =
                             context.Server.MapPath(

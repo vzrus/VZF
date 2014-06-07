@@ -551,6 +551,11 @@
             Gets Medals.
             </summary>
         </member>
+        <member name="P:YAF.Classes.YafBoardFolders.PathSeparator">
+            <summary>
+            Gets the path separator.
+            </summary>
+        </member>
         <member name="P:YAF.Classes.YafBoardFolders.Ranks">
             <summary>
             Gets Ranks.

@@ -21,6 +21,7 @@ namespace YAF.Pages
     #region Using
 
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.IO;
     using System.Web;
@@ -98,7 +99,7 @@ namespace YAF.Pages
         {
             string sUpDir =
               this.Get<HttpRequestBase>().MapPath(
-                string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Albums));
 
             YafAlbum.Album_Image_Delete(
               sUpDir, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("a"), this.PageContext.PageUserID, null);
@@ -141,7 +142,7 @@ namespace YAF.Pages
                 case "delete":
                     string sUpDir =
                       this.Get<HttpRequestBase>().MapPath(
-                        String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                        String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Albums));
 
                     YafAlbum.Album_Image_Delete(sUpDir, null, this.PageContext.PageUserID, e.CommandArgument.ToType<int>());
 
@@ -444,13 +445,22 @@ namespace YAF.Pages
 
             string sUpDir =
               this.Get<HttpRequestBase>().MapPath(
-                string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Albums));
 
             // check if Uploads folder exists
             if (!Directory.Exists(sUpDir))
             {
                 Directory.CreateDirectory(sUpDir);
             }
+
+            // move images from common folder old location
+            // create new folder
+            if (!Directory.Exists(string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Albums)))
+            {
+                Directory.CreateDirectory(string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Albums));
+            }
+
+
 
             string filename = file.PostedFile.FileName;
 

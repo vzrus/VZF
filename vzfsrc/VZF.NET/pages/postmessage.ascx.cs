@@ -470,7 +470,7 @@ namespace YAF.Pages
             TypedMessageList currentMessage = null;
 
             DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
-            if (topicInfo["TopicID"].ToType<int>() != this.PageContext.PageTopicID)
+            if (topicInfo == null || topicInfo["TopicID"].ToType<int>() != this.PageContext.PageTopicID)
             {
                 // new topic
                 topicInfo = null;
@@ -577,11 +577,15 @@ namespace YAF.Pages
 
             if (topicInfo == null || (currentMessage != null && currentMessage.Position == 0))
             {
-                this.ImageRow.Visible = this.Get<YafBoardSettings>().AllowTopicImages
-                                        && (topicInfo["UserID"].ToType<int>() == PageContext.PageUserID
-                                            || PageContext.IsForumModerator);
+                bool showtopicImage = false;
+                if (topicInfo != null)
+                {                
+                    showtopicImage = topicInfo["UserID"].ToType<int>() == PageContext.PageUserID;
+                }
 
-                if (this.ImageRow.Visible)
+                this.ImageRow.Visible = this.Get<YafBoardSettings>().AllowTopicImages
+                                        && (showtopicImage  || PageContext.IsForumModerator);
+                            if (this.ImageRow.Visible)
                 {
                     this.TopicImageAncor.HRef = YafBuildLink.GetLink(
                         ForumPages.imageadd, "ti={0}&u={1}", topicInfo["TopicID"], PageContext.PageUserID);
@@ -589,7 +593,7 @@ namespace YAF.Pages
                     this.TopicImage.Src = this.Get<ITheme>().GetItem("ICONS", "TOPIC_NEW"); /* "{0}{1}/{2}".FormatWith(
                        YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Forums, topicInfo["TopicImage"].ToString()); */
                 }
-            }
+        }
 
             // "{0}{1}/{2}".FormatWith(YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Forums, row["TopicImage"].ToString());
 

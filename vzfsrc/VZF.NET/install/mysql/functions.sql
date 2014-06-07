@@ -202,8 +202,6 @@ READS SQL DATA
 BEGIN
 DECLARE  oNumPosts INT DEFAULT 0;
 DECLARE itmpp INT;
-
-
 DECLARE ctpcr20 CURSOR  FOR
 SELECT b.`ForumID`
 FROM   {databaseSchema}.{objectQualifier}Forum b

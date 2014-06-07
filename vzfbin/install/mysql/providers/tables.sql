@@ -7,8 +7,8 @@
 
 CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}prov_Application (
   `ApplicationID` BINARY(16) NOT NULL,
-  `ApplicationName` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `ApplicationNameLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+  `ApplicationName` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `ApplicationNameLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
   `Description` LONGTEXT NULL,
   PRIMARY KEY (`ApplicationID`),
   INDEX `IX_{databaseSchema}_{objectQualifier}prov_Application_Name` (`ApplicationName`(165))
@@ -19,15 +19,15 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}prov_Membership (
   `UserID` BINARY(16) NOT NULL,
   `UserUUID` CHAR(36) NOT NULL,
   `ApplicationID` BINARY(16) NOT NULL,
-  `Username` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-  `UsernameLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-  `Password` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `PasswordSalt` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `PasswordFormat` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `Email` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `EmailLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `PasswordQuestion` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
-  `PasswordAnswer` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+  `Username` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+  `UsernameLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+  `Password` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `PasswordSalt` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `PasswordFormat` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `Email` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `EmailLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `PasswordQuestion` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
+  `PasswordAnswer` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL,
   `IsApproved` TINYINT(1) NULL,
   `IsLockedOut` TINYINT(1) NULL,
   `LastLogin` DATETIME NULL,
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}prov_Membership (
     CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}prov_Role (
   `RoleID` BINARY(16) NOT NULL,
   `ApplicationID` BINARY(16) NOT NULL,
-  `RoleName` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-  `RoleNameLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+  `RoleName` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
+  `RoleNameLwd` VARCHAR(256) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NOT NULL,
   PRIMARY KEY (`RoleID`),
   INDEX `IX_{databaseSchema}_{objectQualifier}prov_Role_ApplicationID` (`ApplicationID`),
   INDEX `IX_{databaseSchema}_{objectQualifier}prov_Role_Name` (`RoleName`)
@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}prov_Membership (
   CREATE TABLE IF NOT EXISTS {databaseSchema}.{objectQualifier}prov_Profile (
   `UserID` BINARY(16) NOT NULL,
   `LastUpdatedDate` DATETIME NOT NULL,
-  `valueindex` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
-  `stringdata` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+  `valueindex` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
+  `stringdata` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseCollation},
   `binarydata` LONGBLOB,  
   PRIMARY KEY (`UserID`)
   )

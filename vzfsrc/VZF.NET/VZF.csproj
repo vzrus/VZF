@@ -3874,6 +3874,7 @@
     <Content Include="themes\Yafmobile\tag-label.png" />
     <Content Include="themes\Yafmobile\tick.png" />
     <Content Include="themes\Yafmobile\users.png" />
+    <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
@@ -4605,17 +4606,18 @@
     <None Include="themes\Fancy\fonts\Lobster-webfont.ttf" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.woff" />
     <Content Include="vzf14.pfx" />
-    <Content Include="uploads\2.0.18044_original.jpg.yafalbum" />
-    <Content Include="uploads\2.0.2903861.jpg.yafalbum" />
-    <Content Include="uploads\2.1.1275672472_src43.jpg.yafalbum" />
-    <Content Include="uploads\2.1.18044_original.jpg.yafalbum" />
-    <Content Include="uploads\2.1.2903861.jpg.yafalbum" />
-    <Content Include="uploads\2.18044_original.jpg.yafupload" />
-    <Content Include="uploads\2.2.2de737a66eae.gif.yafalbum" />
-    <Content Include="uploads\2.5.18044_original.jpg.yafalbum" />
-    <Content Include="uploads\3.YafLogo.png.yafupload" />
-    <Content Include="uploads\32.1f.jpg.yafupload" />
-    <Content Include="uploads\32.2.gif.yafupload" />
+    <Content Include="uploads\Albums\2.0.18044_original.jpg.yafalbum" />
+    <Content Include="uploads\Albums\2.0.2903861.jpg.yafalbum" />
+    <Content Include="uploads\Albums\2.1.1275672472_src43.jpg.yafalbum" />
+    <Content Include="uploads\Albums\2.1.18044_original.jpg.yafalbum" />
+    <Content Include="uploads\Albums\2.1.2903861.jpg.yafalbum" />
+    <Content Include="uploads\Albums\2.1.potter16.gif.yafalbum" />
+    <Content Include="uploads\Albums\2.2.2de737a66eae.gif.yafalbum" />
+    <Content Include="uploads\Albums\2.5.18044_original.jpg.yafalbum" />
+    <Content Include="uploads\Attachments\2.18044_original.jpg.yafupload" />
+    <Content Include="uploads\Attachments\3.YafLogo.png.yafupload" />
+    <Content Include="uploads\Attachments\32.1f.jpg.yafupload" />
+    <Content Include="uploads\Attachments\32.2.gif.yafupload" />
     <Content Include="uploads\Images\Topics\10002.award_star_bronze_3.png.yafupload" />
     <Content Include="uploads\Images\Topics\10002.medal_bronze_2.png.yafupload" />
     <Content Include="uploads\Images\Topics\10002.medal_silver_2.png.yafupload" />
@@ -4697,10 +4699,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="uploads\Albums\" />
-    <Folder Include="uploads\Attachments\" />
     <Folder Include="uploads\Avatars\" />
-    <Folder Include="uploads\Topics\" />
   </ItemGroup>
   <ItemGroup>
     <WebReferenceUrl Include="http://mamacenter.net/RegisterV2.asmx">

@@ -4,6 +4,8 @@
 -- Copyright vzrus(c) 2006-2012
 
 /*Here we add or check foreign keys*/
+
+
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}delete_foreign_keys_by_table;
 CREATE PROCEDURE {databaseSchema}.{objectQualifier}delete_foreign_keys_by_table(pSchema VARCHAR(64), pTable VARCHAR(64))
   DETERMINISTIC

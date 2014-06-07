@@ -463,8 +463,8 @@ namespace YAF.Pages
       {
           string previousDirectory =
               this.Get<HttpRequestBase>().MapPath(
-                  string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
-
+                  string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.TopicAttachments));
+         
           // check if Uploads folder exists
           if (!Directory.Exists(previousDirectory))
           {

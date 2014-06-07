@@ -16932,7 +16932,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_tags(i_boardi
 $BODY$DECLARE
              ici_firstselectrownumber int :=0; 
              _maxcount integer;		
-             ici_tags_totalrowsnumber  integer; 
+             ici_tags_totalrowsnumber  integer :=0; 
              ici_pageindex integer := i_pageindex;
              _rec {databaseSchema}.{objectQualifier}forum_tags_rt%ROWTYPE;
 
@@ -16951,7 +16951,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
 
    -- find total returned count
         select
-        COUNT(DISTINCT(tg.tagid)) into ici_tags_totalrowsnumber
+        COUNT(DISTINCT(tt.tagid)) into ici_tags_totalrowsnumber
    FROM {databaseSchema}.{objectQualifier}tags tg 
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
@@ -16966,7 +16966,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
          ici_pageindex := ici_pageindex+1;
          ici_firstselectrownumber := (ici_pageindex - 1) * i_pagesize;
 
-FOR _rec IN SELECT DISTINCT(tg.tagid),tg.tag,tg.tagcount,_maxcount AS MaxTagCount, ici_tags_totalrowsnumber AS TotalCount
+FOR _rec IN SELECT DISTINCT(tt.tagid),tg.tag,tg.tagcount,_maxcount AS MaxTagCount, ici_tags_totalrowsnumber AS TotalCount
             FROM {databaseSchema}.{objectQualifier}tags tg 
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
