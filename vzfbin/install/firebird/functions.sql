@@ -466,6 +466,7 @@ declare variable LASTPOS integer;
 declare variable NEXTPOS integer;
 declare variable TEMPSTR varchar(4096);
 declare variable THISID integer;
+declare taglowered varchar(4096); 
 begin
 
 DELETE FROM {objectQualifier}TOPICTAGS WHERE TOPICID = :I_TOPICID;
@@ -476,10 +477,18 @@ DELETE FROM {objectQualifier}TOPICTAGS WHERE TOPICID = :I_TOPICID;
   begin
 	TEMPSTR = SUBSTRING(:I_TAGIDS from :LASTPOS for :NEXTPOS - :LASTPOS);
 
-	UPDATE OR INSERT INTO  {objectQualifier}TAGS(TAG)
-	VALUES (:TEMPSTR) 
-	MATCHING (TAG)
-	RETURNING TAGID INTO :THISID;	
+	IF (EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}TAGS where TAG = :TEMPSTR)) THEN
+	BEGIN
+	UPDATE {objectQualifier}TAGS 
+	SET TAG = :TEMPSTR
+	WHERE LOWER(TAG) = LOWER(:TEMPSTR);
+	END
+	ELSE
+	BEGIN
+	INSERT INTO  {objectQualifier}TAGS(TAG)
+	VALUES (:TEMPSTR) 	
+	RETURNING TAGID INTO :THISID;
+	END	
 	
 	IF (NOT EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}TOPICTAGS where TAGID = :THISID and TOPICID =  :I_TOPICID)) THEN
 	BEGIN

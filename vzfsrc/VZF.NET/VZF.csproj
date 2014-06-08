@@ -89,7 +89,7 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -3876,16 +3876,16 @@
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web.config">
+    <Content Include="web_my.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="app.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app_my.config" />
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web_pg.config">
+    <None Include="web.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
     <Content Include="editors\ckeditor\plugins\scayt\README.md" />
     <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />

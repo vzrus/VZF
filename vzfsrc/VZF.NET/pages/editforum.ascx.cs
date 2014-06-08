@@ -221,7 +221,6 @@ namespace YAF.pages
                 YafBuildLink.AccessDenied();
             }
 
-
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") != null)
             {
                 if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa")))
@@ -421,9 +420,8 @@ namespace YAF.pages
                 this.CategoryList.DataBind();
             }
 
-
             if (forumId.HasValue || this.canHaveForumsAsSubforums || this.canHaveForumsInCategories)
-            {
+            {                
                 this.AccessList.DataSource = CommonDb.forumaccess_list(
                     this.PageContext.PageModuleID,
                     forumId,
@@ -431,7 +429,6 @@ namespace YAF.pages
                     true);
                 this.AccessList.DataBind();
             }
-
 
             // Load forum's combo
             this.BindParentList();

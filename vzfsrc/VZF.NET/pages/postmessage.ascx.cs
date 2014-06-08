@@ -953,38 +953,27 @@ namespace YAF.Pages
                     IsApproved = this.spamApproved
                 };
 
-            string blogPostID = this.HandlePostToBlog(this._forumEditor.Text, this.TopicSubjectTextBox.Text);
-           
-            string tags = this.Tags.Text.Trim();
-
-            // remove empty spaces, tags shhould be one word only
-            if (tags.IsSet())
-            {
-                while (tags.Contains(" "))
-                {
-                    tags = tags.Replace(" ", string.Empty);
-                }
-            }
+            string blogPostID = this.HandlePostToBlog(this._forumEditor.Text, this.TopicSubjectTextBox.Text);                    
 
             // Save to Db
             topicId = CommonDb.topic_save(
                 PageContext.PageModuleID,
                 this.PageContext.PageForumID,
-                this.TopicSubjectTextBox.Text.Trim(),
+                this.TopicSubjectTextBox.Text.RemoveDoubleWhiteSpaces().Truncate(250),
                 this.TopicStatus.SelectedValue.Equals("-1") || this.TopicStatus.SelectedIndex.Equals(0) ? string.Empty : this.TopicStatus.SelectedValue,
                 this.TopicStylesTextBox.Text.Trim(),
-                this.TopicDescriptionTextBox.Text.Trim(),
+                this.TopicDescriptionTextBox.Text.RemoveDoubleWhiteSpaces().Truncate(250),
                 this._forumEditor.Text,
                 this.PageContext.PageUserID,
                 this.Priority.SelectedValue,
-                this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON","GUEST_NAME"), this.From.Text.Trim()) : this.From.Text.Trim(), 
-                this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
+                this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON", "GUEST_NAME"), this.From.Text.Trim()) : this.From.Text.Trim(),
+                this.Get<HttpRequestBase>().GetUserRealIPAddress(),
                 DateTime.UtcNow,
                 blogPostID,
                 messageFlags.BitValue,
-                this.MessageDescriptionTextBox.Text,
+                this.MessageDescriptionTextBox.Text.RemoveDoubleWhiteSpaces().Truncate(250),
                 ref messageId,
-                tags);
+                this.Tags.Text.RemoveDoubleWhiteSpaces());
 
             this.UpdateWatchTopic(this.PageContext.PageUserID, (int)topicId);
 

@@ -1939,6 +1939,10 @@ ORDER BY  "LastPostInfoID", a.posted DESC LIMIT 1;
 else
 select 0, 0, 1, 1, null, null, null, null, '' into _rec;
 END IF;
+ -- first delete tags
+ DELETE FROM {databaseSchema}.{objectQualifier}topictags 
+		 WHERE topicid IN (SELECT TopicID FROM {databaseSchema}.{objectQualifier}topic WHERE topicmovedid IS NOT NULL AND linkdate IS NOT NULL AND linkdate < i_UTCTIMESTAMP);
+ -- then a link
 DELETE FROM {databaseSchema}.{objectQualifier}topic where topicmovedid IS NOT NULL AND linkdate IS NOT NULL AND linkdate < i_utctimestamp;
 RETURN _rec;
 -- this can be in any very rare updatable cached place 
@@ -9688,17 +9692,20 @@ $BODY$DECLARE
              ici_ForumID integer;
              ici_ForumID2 integer;
              ici_pollID integer;
-             ici_Deleted integer;     
+             ici_Deleted integer;
+			 ici_topicmovedid int; 
     BEGIN
     /*SET NOCOUNT ON*/   
 
-    SELECT forumid 
-    INTO ici_ForumID  
+    SELECT forumid, topicmovedid 
+    INTO ici_ForumID, ici_topicmovedid 
     FROM  {databaseSchema}.{objectQualifier}topic WHERE topicid=i_topicid;
-    
+	-- just remove link    	
+    IF (ici_topicmovedid IS NOT NULL) THEN	   
+    DELETE FROM {databaseSchema}.{objectQualifier}topic where topicid = ici_topicid; 	 
+    ELSE  
     UPDATE  {databaseSchema}.{objectQualifier}topic SET lastmessageid = NULL 
-    WHERE topicid = i_topicid;
- 
+    WHERE topicid = i_topicid; 
 
   UPDATE  {databaseSchema}.{objectQualifier}forum SET
     lasttopicid = NULL,
@@ -9707,9 +9714,7 @@ $BODY$DECLARE
     lastusername = NULL,
     lastuserdisplayname = NULL,
     lastposted = NULL
-    WHERE lastmessageid IN (SELECT messageid from  {databaseSchema}.{objectQualifier}message where topicid = i_topicid);
-    
-    
+    WHERE lastmessageid IN (SELECT messageid from  {databaseSchema}.{objectQualifier}message where topicid = i_topicid);    
     
       
    UPDATE  {databaseSchema}.{objectQualifier}active SET topicid = NULL WHERE topicid = i_topicid;
@@ -9742,6 +9747,9 @@ $BODY$DECLARE
 
     -- delete messages and topics
       
+	UPDATE {databaseSchema}.{objectQualifier}tags set tagcount = tagcount - 1 where tagid in (select tagid from {databaseSchema}.{objectQualifier}topictags  WHERE topicid = i_topicid);
+	DELETE FROM {databaseSchema}.{objectQualifier}topictags  WHERE topicid IN (select topicid from {databaseSchema}.{objectQualifier}topic where topicid = i_topicid or topicmovedid = i_topicid);
+
     DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicmovedid = i_topicid;
    
     DELETE FROM  {databaseSchema}.{objectQualifier}attachment
@@ -9753,6 +9761,7 @@ $BODY$DECLARE
     DELETE FROM  {databaseSchema}.{objectQualifier}message WHERE topicid = i_topicid;    
     DELETE FROM  {databaseSchema}.{objectQualifier}watchtopic WHERE topicid = i_topicid;
     DELETE FROM {databaseSchema}.{objectQualifier}favoritetopic  WHERE topicid = i_topicid;
+
     DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicmovedid = i_topicid;
     DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicid = i_topicid;
     DELETE FROM  {databaseSchema}.{objectQualifier}topicreadtracking WHERE topicid = i_topicid;
@@ -9762,9 +9771,7 @@ $BODY$DECLARE
     DELETE FROM  {databaseSchema}.{objectQualifier}messagereported 
       WHERE messageid IN 
         (SELECT messageid FROM {databaseSchema}.{objectQualifier}message WHERE topicid = i_topicid);	
-    END IF;
-   
-    
+    END IF;   
 
     -- commit
     IF i_updatelastpost IS NOT FALSE THEN
@@ -9772,6 +9779,7 @@ $BODY$DECLARE
     
     IF ici_ForumID IS NOT NULL THEN
         PERFORM  {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID); END IF;
+END IF;
 RETURN;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -10689,6 +10697,7 @@ $BODY$DECLARE
              ici_OldForumID integer;
              ici_newTimestamp timestamp;
              ici_addinterval interval := i_linkdays || ' day';
+			 ici_movedtopicid integer;
 BEGIN     
         if i_linkdays > -1 then		
          ici_newTimestamp := i_utctimestamp + ici_addinterval;
@@ -10696,17 +10705,25 @@ BEGIN
      SELECT  forumid INTO ici_OldForumID FROM {databaseSchema}.{objectQualifier}topic 
      WHERE topicid = i_topicid;
   IF ici_OldForumID != i_ForumID THEN 
-      IF i_ShowMoved IS NOT FALSE THEN
+      IF i_ShowMoved THEN
          /*create a moved message*/   
-         -- delete an old link IF exists
+         -- delete an old link IF exists 
          delete from {databaseSchema}.{objectQualifier}topic where topicmovedid = i_topicid;
+
          INSERT INTO {databaseSchema}.{objectQualifier}topic(forumid,userid,username,userdisplayname,posted,topic,views,flags,priority,pollid,topicmovedid,lastposted,numposts, linkdate)
          SELECT forumid,userid,username,userdisplayname,posted,topic,0,flags,priority,pollid,i_TopicID,lastposted,0,ici_newTimestamp
-         FROM {databaseSchema}.{objectQualifier}topic where topicid = i_topicid;
-     END IF;    
+         FROM {databaseSchema}.{objectQualifier}topic where topicid = i_topicid returning topicid into ici_movedtopicid;		  
+		 INSERT INTO {databaseSchema}.{objectQualifier}topictags(topicid,tagid) 
+		 select ici_movedtopicid,tagid from {databaseSchema}.{objectQualifier}topictags WHERE topicid = i_topicid;
+	 ELSE
+		 DELETE FROM {databaseSchema}.{objectQualifier}topictags 
+		 WHERE topicid = i_topicid;
+     END IF;
+	     UPDATE {databaseSchema}.{objectQualifier}tags	set  tagcount = tagcount - 1 where tagid in (select tagid from 	{databaseSchema}.{objectQualifier}topictags WHERE topicid = i_topicid);
+   
     -- move the topic 
      UPDATE {databaseSchema}.{objectQualifier}topic SET forumid = i_forumid WHERE topicid = i_topicid;
- 
+      
     -- update last posts 
     PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_OldForumID);
     PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(i_forumid);
@@ -16943,7 +16960,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
-    WHERE aa.boardid=i_boardid and (i_forumid <= 0 OR t.forumid=i_forumid) AND
+    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) AND
       tg.tag LIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  

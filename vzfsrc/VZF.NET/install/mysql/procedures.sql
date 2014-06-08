@@ -2207,7 +2207,11 @@ SELECT
         '' AS LastUserStyle ;
 END IF;
 -- can be anyway in a place with very low update rate
-DELETE FROM {databaseSchema}.{objectQualifier}Topic WHERE TopicMovedID IS NOT NULL AND LinkDays IS NOT NULL AND LinkDays < i_UTCTIMESTAMP;
+ -- first delete tags
+ DELETE FROM {databaseSchema}.{objectQualifier}TopicTags 
+		 WHERE TopicID IN (SELECT TopicID FROM {databaseSchema}.{objectQualifier}Topic WHERE TopicMovedID IS NOT NULL AND LinkDate IS NOT NULL AND LinkDate < i_UTCTIMESTAMP);
+ -- then a link
+ DELETE FROM {databaseSchema}.{objectQualifier}Topic WHERE TopicMovedID IS NOT NULL AND LinkDate IS NOT NULL AND LinkDate < i_UTCTIMESTAMP;
 END;
 --GO
 
@@ -5843,11 +5847,11 @@ BEGIN
         WHILE ici_Pos > 0 DO		
             SET ici_MessageID = LTRIM(RTRIM(LEFT(i_MessageIDs, ici_Pos - 1)));
             IF ici_MessageID <> '' THEN	
-                IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}Tags WHERE Tag = ici_MessageID LIMIT 1)) THEN
+                IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}Tags WHERE LOWER(Tag) = LOWER(ici_MessageID) LIMIT 1)) THEN
                 INSERT INTO {databaseSchema}.{objectQualifier}Tags(Tag) VALUES (ici_MessageID);
                 SET ici_thistagid = LAST_INSERT_ID();
                 ELSE
-                SELECT TagID INTO ici_thistagid FROM {databaseSchema}.{objectQualifier}Tags WHERE Tag = ici_MessageID LIMIT 1;
+                SELECT TagID INTO ici_thistagid FROM {databaseSchema}.{objectQualifier}Tags WHERE LOWER(Tag) = LOWER(ici_MessageID) LIMIT 1;
                 END IF;
                 IF (NOT EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}TopicTags WHERE TagID = ici_thistagid AND TopicID = i_TopicID LIMIT 1)) THEN
                 INSERT INTO {databaseSchema}.{objectQualifier}TopicTags(TagID,TopicID) VALUES (ici_thistagid,i_TopicID);
@@ -8227,10 +8231,13 @@ END;
     DECLARE ici_ForumID2 INT;
     DECLARE ici_pollID INT;
     DECLARE ici_Deleted INT;
+	DECLARE ici_TopicMovedID INT;
 
-    SELECT ForumID INTO ici_ForumID  FROM  {databaseSchema}.{objectQualifier}Topic 
-    WHERE TopicID=i_TopicID;
-    UPDATE  {databaseSchema}.{objectQualifier}Topic SET LastMessageID = NULL 
+	SELECT ForumID, TopicMovedID INTO ici_ForumID, ici_TopicMovedID  FROM  {databaseSchema}.{objectQualifier}Topic  WHERE TopicID=i_TopicID;
+    IF (ici_TopicMovedID IS NOT NULL) THEN	   
+    DELETE FROM {databaseSchema}.{objectQualifier}Topic where TopicID = i_TopicID;
+    ELSE  
+	UPDATE  {databaseSchema}.{objectQualifier}Topic SET LastMessageID = NULL 
     WHERE TopicID = i_TopicID; 
 
   UPDATE  {databaseSchema}.{objectQualifier}Forum SET
@@ -8247,21 +8254,25 @@ END;
     UPDATE  {databaseSchema}.{objectQualifier}Active SET TopicID = NULL WHERE TopicID = i_TopicID;
 
     /*delete messages and topics*/
-    DELETE FROM  {databaseSchema}.{objectQualifier}nntptopic WHERE TopicID = i_TopicID;
-    UPDATE {databaseSchema}.{objectQualifier}topic SET PollID = NULL WHERE TopicID = i_TopicID AND TopicMovedID IS NOT NULL;
+    DELETE FROM  {databaseSchema}.{objectQualifier}NntpTopic WHERE TopicID = i_TopicID;
+    UPDATE {databaseSchema}.{objectQualifier}Topic SET PollID = NULL WHERE TopicID = i_TopicID AND TopicMovedID IS NOT NULL;
     
 
     IF i_EraseTopic = 0 THEN
-    UPDATE  {databaseSchema}.{objectQualifier}topic SET `Flags` = `Flags` | 8 WHERE TopicID = i_TopicID OR TopicMovedID = i_TopicID;
-    UPDATE  {databaseSchema}.{objectQualifier}message SET `Flags` = `Flags` | 8 WHERE TopicID = i_TopicID;
+    UPDATE  {databaseSchema}.{objectQualifier}Topic SET `Flags` = `Flags` | 8 WHERE TopicID = i_TopicID OR TopicMovedID = i_TopicID;
+    UPDATE  {databaseSchema}.{objectQualifier}Message SET `Flags` = `Flags` | 8 WHERE TopicID = i_TopicID;
     ELSE
          -- remove polls	
-            SELECT  pollID INTO ici_pollID FROM  {databaseSchema}.{objectQualifier}topic WHERE TopicID = i_TopicID;
+            SELECT  pollID INTO ici_pollID FROM  {databaseSchema}.{objectQualifier}Topic WHERE TopicID = i_TopicID;
     IF ici_pollID IS NOT NULL THEN
-    UPDATE  {databaseSchema}.{objectQualifier}topic set PollID = NULL where TopicID = i_TopicID;
+    UPDATE  {databaseSchema}.{objectQualifier}Topic set PollID = NULL where TopicID = i_TopicID;
     CALL {databaseSchema}.{objectQualifier}pollgroup_remove(ici_pollID, i_TopicID, null, null, null, 0, 0); 
     END IF; 
-     
+
+	-- remove tags references
+	UPDATE {databaseSchema}.{objectQualifier}Tags set TagCount = TagCount - 1 where TagID in (select TagID from {databaseSchema}.{objectQualifier}TopicTags  WHERE TopicID = i_TopicID);
+	DELETE FROM {databaseSchema}.{objectQualifier}TopicTags  WHERE TopicID IN (select topicid from {databaseSchema}.{objectQualifier}Topic where TopicID = i_TopicID or TopicMovedID = i_TopicID); 
+	      
     DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE TopicMovedID = i_TopicID;	
     
     DELETE FROM  {databaseSchema}.{objectQualifier}Attachment
@@ -8287,6 +8298,7 @@ END;
     IF ici_ForumID IS NOT NULL THEN 		
         CALL  {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID); 
         END IF;
+END IF;
 END;
 --GO
 
@@ -8883,7 +8895,7 @@ BEGIN
             IFNULL(c.LastUserDisplayName,(SELECT x.DisplayName FROM {databaseSchema}.{objectQualifier}User x where x.UserID=c.LastUserID)) AS LastUserDisplayName,
             c.LastMessageID,
             c.TopicID AS LastTopicID,
-            c.LinkDays,
+            c.LinkDate,
             c.Flags AS TopicFlags,
             c.Priority,
             c.PollID,
@@ -8959,6 +8971,7 @@ CREATE procedure {databaseSchema}.{objectQualifier}topic_move(i_TopicID INT,i_Fo
 BEGIN
      DECLARE ici_OldForumID INT;
      declare ici_newTimestamp datetime;
+	 declare i_MovedTopicID int;
         if i_LinkDays > -1
         then
         SET ici_newTimestamp = DATE_ADD(i_UTCTIMESTAMP, INTERVAL i_LinkDays day );
@@ -8970,10 +8983,18 @@ BEGIN
       -- delete an old link if exists
      DELETE FROM {databaseSchema}.{objectQualifier}Topic WHERE TopicMovedID = i_TopicID;	
          /*create a moved message*/
-         INSERT INTO {databaseSchema}.{objectQualifier}Topic(ForumID,UserID,UserName,UserDisplayName,Posted,Topic,Views,Flags,Priority,PollID,TopicMovedID,LastPosted,NumPosts, LinkDays)
+         INSERT INTO {databaseSchema}.{objectQualifier}Topic(ForumID,UserID,UserName,UserDisplayName,Posted,Topic,Views,Flags,Priority,PollID,TopicMovedID,LastPosted,NumPosts, LinkDate)
          SELECT ForumID,UserID,UserName,UserDisplayName,Posted,Topic,0,Flags,Priority,PollID,i_TopicID,LastPosted,0, ici_newTimestamp 
          FROM {databaseSchema}.{objectQualifier}Topic WHERE TopicID = i_TopicID;
+		 SET i_MovedTopicID = LAST_INSERT_ID();
+		 INSERT INTO {databaseSchema}.{objectQualifier}TopicTags(TopicID,TagID) 
+		 select i_MovedTopicID,TagID from {databaseSchema}.{objectQualifier}TopicTags WHERE TopicID = i_TopicID;		 
+     ELSE
+	  DELETE FROM {databaseSchema}.{objectQualifier}TopicTags 
+		 WHERE TopicID = i_TopicID;
      END IF;
+
+	 UPDATE {databaseSchema}.{objectQualifier}Tags	set  TagCount = TagCount - 1 where TagID in (select TagID from 	{databaseSchema}.{objectQualifier}TopicTags WHERE TopicID = i_TopicID);
  
     /* move the topic */
      UPDATE {databaseSchema}.{objectQualifier}Topic SET ForumID = i_ForumID WHERE TopicID = i_TopicID;

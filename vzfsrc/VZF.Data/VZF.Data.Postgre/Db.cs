@@ -197,8 +197,8 @@ namespace VZF.Data.Postgre
                // "pgsql/nestedsets.sql", 
               //  "pgsql/nestedsets_sp.sql",
                 "pgsql/triggers.sql", 
-                "pgsql/postinstall.sql",
-                "pgsql/fulltext_ru.sql"
+                "pgsql/postinstall.sql"
+              //  "pgsql/fulltext_ru.sql"
             };
 
         /// <summary>

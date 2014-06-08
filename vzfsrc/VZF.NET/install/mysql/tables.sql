@@ -1065,8 +1065,8 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
-  AND COLUMN_NAME='LinkDays' LIMIT 1) THEN
-  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `LinkDays` DATETIME;
+  AND COLUMN_NAME='LinkDate' LIMIT 1) THEN
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD  `LinkDate` DATETIME;
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1074,6 +1074,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
   ALTER TABLE  {databaseSchema}.{objectQualifier}Topic ADD `UserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `UserName`;
+  END IF;
+
+  IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseSchema}')  AND
+  (TABLE_NAME='{objectQualifier}Topic' OR TABLE_NAME=LOWER('{objectQualifier}Topic')) 
+  AND COLUMN_NAME='LinkDays' LIMIT 1) THEN
+  UPDATE `{databaseSchema}`.`{objectQualifier}Topic` SET `LinkDate` =  `LinkDays` where TopicMovedID IS NOT NULL and `LinkDays` IS NOT NULL;
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Topic DROP COLUMN `LinkDays`;
   END IF;
     
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 

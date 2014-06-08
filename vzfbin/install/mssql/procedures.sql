@@ -1381,14 +1381,14 @@ WHILE LEN(@Tags) > 0
         SET @Tag = @Tags
         SET @Tags = ''
       END
-      if (not exists(SELECT 1 FROM  [{databaseSchema}].[{objectQualifier}Tags] where Tag = @Tag))
+      if (not exists(SELECT 1 FROM  [{databaseSchema}].[{objectQualifier}Tags] where LOWER(Tag) = LOWER(@Tag)))
                               BEGIN
                               INSERT INTO [{databaseSchema}].[{objectQualifier}Tags]  (Tag) VALUES (@Tag) --Use Appropriate conversion
                               SELECT  @ThisTagID = SCOPE_IDENTITY() 
                               END
                               ELSE
                               BEGIN							  
-                              SELECT  @ThisTagID = TagID FROM  [{databaseSchema}].[{objectQualifier}Tags] where Tag = @Tag
+                              SELECT  @ThisTagID = TagID FROM  [{databaseSchema}].[{objectQualifier}Tags] where LOWER(Tag) = LOWER(@Tag)
                               END
                               -- really the check doesn't work
                               if (not exists( SELECT 1 FROM  [{databaseSchema}].[{objectQualifier}TopicTags] where TopicID = @TopicID and TagID = @ThisTagID))
@@ -2592,7 +2592,11 @@ BEGIN
         LastUserStyle = ''
         END
         -- this can be in any very rare updatable cached place 
-        DELETE FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicMovedID IS NOT NULL AND LinkDate IS NOT NULL AND LinkDate < GETUTCDATE()
+		-- first delete tags
+        DELETE FROM [{databaseSchema}].[{objectQualifier}TopicTags] 
+		 WHERE TopicID IN (SELECT TopicID FROM [{databaseSchema}].[{objectQualifier}Topic] WHERE LinkDate IS NOT NULL AND LinkDate < @UtcTimestamp);
+        -- then a link
+        DELETE FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicMovedID IS NOT NULL AND LinkDate IS NOT NULL AND LinkDate < @UtcTimestamp
         
 END
 GO
@@ -6919,13 +6923,13 @@ AS
 BEGIN
         SET NOCOUNT ON
     DECLARE @ForumID int
-    DECLARE @LinkDate datetime	
+    DECLARE @TopicMovedID int	
     DECLARE @pollID int
     -- AND LinkDate IS NOT NULL	
-    SELECT @ForumID=ForumID,@LinkDate = LinkDate FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicID=@TopicID
-    IF (@LinkDate IS NOT NULL)
+    SELECT @ForumID=ForumID,@TopicMovedID = TopicMovedID FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicID=@TopicID
+    IF (@TopicMovedID IS NOT NULL)
     BEGIN
-    DELETE FROM [{databaseSchema}].[{objectQualifier}Topic] where LinkDate IS NOT NULL AND TopicMovedID = @TopicID
+    DELETE FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID
     END
     ELSE
     BEGIN
@@ -6954,14 +6958,18 @@ BEGIN
     ELSE
     BEGIN
         --remove polls	
-        SELECT @pollID = pollID FROM  [{databaseSchema}].[{objectQualifier}topic] WHERE TopicID = @TopicID
+        SELECT @pollID = pollID FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicID = @TopicID
         IF (@pollID is not null)
         BEGIN
-            UPDATE  [{databaseSchema}].[{objectQualifier}topic] SET PollID = null WHERE TopicID = @TopicID
+            UPDATE  [{databaseSchema}].[{objectQualifier}Topic] SET PollID = null WHERE TopicID = @TopicID
             EXEC [{databaseSchema}].[{objectQualifier}pollgroup_remove] @pollID, @TopicID, null, null, null, 0, 0 
         END	
-    
-        DELETE FROM  [{databaseSchema}].[{objectQualifier}topic] WHERE TopicMovedID = @TopicID
+
+		-- remove tags references
+        UPDATE [{databaseSchema}].[{objectQualifier}Tags] set TagCount = TagCount - 1 where TagID in (select TagID from [{databaseSchema}].[{objectQualifier}TopicTags]  WHERE TopicID = @TopicID);
+	    DELETE FROM [{databaseSchema}].[{objectQualifier}TopicTags]  WHERE TopicID IN (select TopicID from [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID or TopicMovedID = @TopicID); 
+       
+	    DELETE FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicMovedID = @TopicID
         
         DELETE  [{databaseSchema}].[{objectQualifier}Attachment] WHERE MessageID IN (SELECT MessageID FROM  [{databaseSchema}].[{objectQualifier}message] WHERE TopicID = @TopicID) 
         DELETE  [{databaseSchema}].[{objectQualifier}MessageHistory] WHERE MessageID IN (SELECT MessageID FROM  [{databaseSchema}].[{objectQualifier}message] WHERE TopicID = @TopicID) 	
@@ -7578,8 +7586,10 @@ GO
 
 CREATE procedure [{databaseSchema}].[{objectQualifier}topic_move](@TopicID int,@ForumID int,@ShowMoved bit, @LinkDays int, @UTCTIMESTAMP datetime) AS
 begin
-        declare @OldForumID int		
-        declare @newTimestamp datetime
+        declare @OldForumID int;		
+        declare @newTimestamp datetime;
+		declare @MovedTopicID int;
+
         if @LinkDays > -1
         begin
         SET @newTimestamp = DATEADD(d,@LinkDays,@UTCTIMESTAMP);
@@ -7592,8 +7602,17 @@ begin
         -- create a moved message
         insert into [{databaseSchema}].[{objectQualifier}Topic](ForumID,UserID,UserName,UserDisplayName,Posted,Topic,[Views],Flags,Priority,PollID,TopicMovedID,LastPosted,NumPosts,LinkDate)
         select ForumID,UserID,UserName,UserDisplayName,Posted,Topic,0,Flags,Priority,PollID,@TopicID,LastPosted,0,@newTimestamp
-        from [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID
-    end
+        from [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID;
+		 set @MovedTopicID = @@IDENTITY;
+			 INSERT INTO [{databaseSchema}].[{objectQualifier}TopicTags](TopicID,TagID) 
+		 select @MovedTopicID,TagID from [{databaseSchema}].[{objectQualifier}TopicTags] WHERE TopicID = @TopicID;
+		 end
+		 else
+		 begin	
+		 delete from [{databaseSchema}].[{objectQualifier}TopicTags] WHERE TopicID = @TopicID;
+		 end
+		 UPDATE [{databaseSchema}].[{objectQualifier}Tags]	set  TagCount = TagCount - 1 where TagID in (select TagID from 	[{databaseSchema}].[{objectQualifier}TopicTags] WHERE TopicID = @TopicID);
+    
 
     -- move the topic
     update [{databaseSchema}].[{objectQualifier}Topic] set ForumID = @ForumID where TopicID = @TopicID

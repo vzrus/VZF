@@ -447,12 +447,12 @@ BEGIN
  i_messageids = string_to_array(i_messageidsstr,',');
  -- i := 1; 
   WHILE i_messageids[i] IS NOT NULL LOOP
-		UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where tag = i_messageids[i] returning tagid into i_tagid ;
+		UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where lower(tag) = lower(i_messageids[i]) returning tagid into i_tagid ;
 		IF NOT found THEN
 		BEGIN
 			INSERT INTO {databaseSchema}.{objectQualifier}tags(tag) VALUES (i_messageids[i]) returning tagid into i_tagid ;
 		EXCEPTION WHEN unique_violation THEN
-			UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where tag = i_messageids[i] returning tagid into i_tagid ;
+			UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where lower(tag) = lower(i_messageids[i]) returning tagid into i_tagid ;
 		END;
 		END IF;
 

@@ -108,7 +108,7 @@ namespace VZF.Utils
             if (maxStringLength > 0 && text.Length > 0)
             {
                 string[] texArr = text.Trim().Split(' ');
-               
+
                 int length = 0;
                 int count = 0;
                 foreach (string s in texArr)
@@ -119,10 +119,10 @@ namespace VZF.Utils
                         if (count == 0)
                         {
                             newText = string.Empty;
-                            
+
                         }
                         break;
-                        
+
                     }
                     count++;
                     newText = newText + " " + s;
@@ -539,16 +539,16 @@ namespace VZF.Utils
 
             objList.ForEachFirst(
                 (x, isFirst) =>
+                {
+                    if (!isFirst)
                     {
-                        if (!isFirst)
-                        {
-                            // append delimiter if this isn't the first string
-                            sb.Append(delimiter);
-                        }
+                        // append delimiter if this isn't the first string
+                        sb.Append(delimiter);
+                    }
 
-                        // append string...
-                        sb.Append((object)x);
-                    });
+                    // append string...
+                    sb.Append((object)x);
+                });
 
             return sb.ToString();
         }
@@ -572,14 +572,14 @@ namespace VZF.Utils
 
             input.ForEachChar(
                 c =>
+                {
+                    if (!Char.IsWhiteSpace(c) && !Char.IsLetterOrDigit(c) && c != '_')
                     {
-                        if (!Char.IsWhiteSpace(c) && !Char.IsLetterOrDigit(c) && c != '_')
-                        {
-                            sb.Append("\\");
-                        }
+                        sb.Append("\\");
+                    }
 
-                        sb.Append(c);
-                    });
+                    sb.Append(c);
+                });
 
             return sb.ToString();
         }
@@ -703,6 +703,22 @@ namespace VZF.Utils
             }
 
             return output;
+        }
+
+        public static string RemoveDoubleWhiteSpaces(this string input)
+        {
+            // remove extra empty spaces from a string.
+            if (input.IsSet())
+            {
+                while (input.Contains("  "))
+                {
+                    input = input.Replace(" ", string.Empty);
+                }
+
+                input = input.Trim();
+            }
+
+            return input;
         }
 
         #endregion

@@ -1,4 +1,9 @@
-﻿-- helper functions
+﻿ALTER DATABASE {databaseSchema}
+    DEFAULT CHARACTER SET {databaseEncoding}
+    DEFAULT COLLATE {databaseCollation};
+--GO
+
+-- helper functions
 
 DROP  PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}add_or_check_pkeys;
 --GO
