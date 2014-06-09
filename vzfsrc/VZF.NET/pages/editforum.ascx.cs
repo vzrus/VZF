@@ -187,19 +187,13 @@ namespace YAF.pages
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            this.canHaveForumsAsSubforums = this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums;
+            this.canHaveForumsInCategories = this.Get<YafBoardSettings>().AllowPersonalForumsInCategories;  
+
             if (this.IsPostBack)
             {
                 return;
-            }
-
-            this.canHaveForumsAsSubforums = this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums;
-            this.canHaveForumsInCategories = this.Get<YafBoardSettings>().AllowPersonalForumsInCategories;
-
-            // TODO: temporary workaround needs drop down problem solution.
-            if (this.canHaveForumsInCategories)
-            {
-                this.canHaveForumsAsSubforums = true;
-            }
+            }                  
 
             // A new forum case
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
@@ -297,15 +291,12 @@ namespace YAF.pages
                     return;
                 }
             }
-
-            if (this.canHaveForumsAsSubforums)
-            {
-                using (
-                    DataTable dt = CommonDb.forum_list(
-                        PageContext.PageModuleID,
-                        this.PageContext.PageBoardID,
-                        forumId.Value))
-                {
+            using (
+                   DataTable dt = CommonDb.forum_list(
+                       PageContext.PageModuleID,
+                       this.PageContext.PageBoardID,
+                       forumId.Value))
+            {        
                     DataRow row = dt.Rows[0];
                     var flags = new ForumFlags(row["Flags"]);
                     this.Name.Text = (string)row["Name"];
@@ -317,10 +308,30 @@ namespace YAF.pages
                     this.ForumNameTitle.Text = this.Name.Text;
                     this.Moderated.Checked = flags.IsModerated;
                     this.Styles.Text = row["Styles"].ToString();
-                    this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
-                    this.CategoryList.SelectedValue = row["CategoryID"].ToString();
-
                     this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
+                    this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
+                    this.remoteurl.Text = row["RemoteURL"].ToString();
+
+                    if (this.canHaveForumsInCategories && this.CategoryList.DataSource != null)
+                    {
+                        this.CategoryAllowed.SelectedValue = row["CategoryID"].ToString();
+                    }
+
+                    if (this.canHaveForumsAsSubforums)
+                    {
+                        this.CategoryList.SelectedValue = row["CategoryID"].ToString();
+                        // populate parent forums list with forums according to selected category
+                        this.BindParentList();
+                        if (!row.IsNull("ParentID"))
+                        {
+                            this.ParentList.SelectedValue = row["ParentID"].ToString();
+                        }
+
+                        if (!row.IsNull("ThemeURL"))
+                        {
+                            this.ThemeList.SelectedValue = row["ThemeURL"].ToString();
+                        }
+                    }          
 
                     /* ListItem item = this.ForumImages.Items.FindByText(row["ImageURL"].ToString());
                 if (item != null)
@@ -328,23 +339,7 @@ namespace YAF.pages
                     item.Selected = true;
                     this.Preview.Src = "{0}{2}/{1}".FormatWith(
                       YafForumInfo.ForumClientFileRoot, row["ImageURL"], YafBoardFolders.Current.Forums); // path corrected
-                } */
-
-                    // populate parent forums list with forums according to selected category
-                    this.BindParentList();
-
-                    if (!row.IsNull("ParentID"))
-                    {
-                        this.ParentList.SelectedValue = row["ParentID"].ToString();
-                    }
-
-                    if (!row.IsNull("ThemeURL"))
-                    {
-                        this.ThemeList.SelectedValue = row["ThemeURL"].ToString();
-                    }
-
-                    this.remoteurl.Text = row["RemoteURL"].ToString();
-                }
+                } */       
             }
 
             this.NewGroupRow.Visible = false;
@@ -380,47 +375,57 @@ namespace YAF.pages
 
             DataTable dataCat = CommonDb.category_pfaccesslist(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             DataTable dataCatNew = dataCat.Clone();
+            DataTable dataForumNew = dataCat.Clone();
             foreach (DataRow row in dataCat.Rows)
             {
-                if (!row["CanHavePersForums"].ToType<bool>() && !row["HasForumsForPersForums"].ToType<bool>())
+                if (row["CanHavePersForums"].ToType<bool>())
                 {
-                    continue;
+                    DataRow newRow = dataCatNew.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+                    dataCatNew.Rows.Add(newRow);
                 }
-
-                DataRow newRow = dataCatNew.NewRow();
-                newRow.ItemArray = row.ItemArray;
-                dataCatNew.Rows.Add(newRow);
+                if (row["HasForumsForPersForums"].ToType<bool>())
+                {
+                    DataRow newRow = dataForumNew.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+                    dataForumNew.Rows.Add(newRow);
+                }               
             }
 
             dataCatNew.AcceptChanges();
+            dataForumNew.AcceptChanges();
 
             if (dataCatNew.Rows.Count <= 0)
             {
                 YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
             }
 
-            if (this.canHaveForumsInCategories)
+            if (this.canHaveForumsInCategories && dataCatNew.Rows.Count > 0)
             {
                 this.tr_categoriesallowed.Visible = true;
 
-                this.CategoryAllowed.DataSource = dataCatNew;
+                this.CategoryAllowed.DataSource = dataCatNew;             
                 this.CategoryAllowed.DataValueField = "CategoryID";
                 this.CategoryAllowed.DataTextField = "Name";
                 this.CategoryAllowed.DataBind();
             }
 
-            if (this.canHaveForumsAsSubforums)
+            if (this.canHaveForumsAsSubforums && dataForumNew.Rows.Count > 0)
             {
                 this.tr_categoriesforforumsallowed.Visible = true;
                 this.tr_forumsallowed.Visible = true;
 
-                this.CategoryList.DataSource = dataCatNew;
+                this.CategoryList.DataSource = dataForumNew;
                 this.CategoryList.DataValueField = "CategoryID";
-                this.CategoryList.DataTextField = "Name";
+                this.CategoryList.DataTextField = "Name";              
                 this.CategoryList.DataBind();
+
+                // Load forum's combo
+                this.BindParentList();
             }
 
-            if (forumId.HasValue || this.canHaveForumsAsSubforums || this.canHaveForumsInCategories)
+            // forum already exists
+            if (forumId.HasValue)
             {                
                 this.AccessList.DataSource = CommonDb.forumaccess_list(
                     this.PageContext.PageModuleID,
@@ -428,10 +433,7 @@ namespace YAF.pages
                     PageContext.PageUserID,
                     true);
                 this.AccessList.DataBind();
-            }
-
-            // Load forum's combo
-            this.BindParentList();
+            }           
 
             // Load forum's themes
             var listheader = new ListItem { Text = this.GetText("ADMIN_EDITFORUM", "CHOOSE_THEME"), Value = string.Empty };
@@ -476,7 +478,7 @@ namespace YAF.pages
 
                 this.ParentList.DataSource = dataCatNew;
                 this.ParentList.DataValueField = "ForumID";
-                this.ParentList.DataTextField = "Title";
+                this.ParentList.DataTextField = "Title";                
                 this.ParentList.DataBind();
             }
         }
@@ -518,11 +520,11 @@ namespace YAF.pages
         /// </param>
         private void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.CategoryList.SelectedValue.Trim().Length == 0)
+            if ((this.canHaveForumsAsSubforums && this.CategoryList.SelectedValue.Trim().Length == 0) && (this.canHaveForumsInCategories && this.CategoryAllowed.SelectedValue.Trim().Length == 0))
             {
                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CATEGORY"));
                 return;
-            }
+            }            
 
             if (this.Name.Text.Trim().Length == 0)
             {
@@ -576,19 +578,30 @@ namespace YAF.pages
             int? forumId = this.GetQueryStringAsInt("fa");
             int? forumCopyId = this.GetQueryStringAsInt("copy");
 
+            object categoryId = null;
             object parentID = null;
-
-            if (this.ParentList.SelectedValue.Length > 0)
+            if (this.canHaveForumsAsSubforums && this.CategoryList.SelectedValue.Trim().Length != 0)
             {
-                parentID = this.ParentList.SelectedValue;
+                categoryId = this.CategoryList.SelectedValue.Trim();
+                if (this.ParentList.SelectedValue.Length > 0)
+                {
+                    parentID = this.ParentList.SelectedValue;
+                }
+
+                // parent selection check.
+                if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("fa"))
+                {
+                    this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_PARENT_SELF"));
+                    return;
+                }
             }
 
-            // parent selection check.
-            if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("fa"))
+            if (this.canHaveForumsInCategories && this.CategoryAllowed.SelectedValue.Trim().Length != 0)
             {
-                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_PARENT_SELF"));
-                return;
-            }
+                categoryId = this.CategoryAllowed.SelectedValue.Trim();
+            } 
+
+          
 
             // The picked forum cannot be a child forum as it's a parent
             // If we update a forum ForumID > 0 
@@ -635,7 +648,7 @@ namespace YAF.pages
             var newForumId = CommonDb.forum_save(
                 PageContext.PageModuleID,
                 forumId,
-                this.CategoryList.SelectedValue,
+                categoryId,
                 parentID,
               this.Name.Text.Trim(),
               this.Description.Text.Trim().IsSet() ? this.Description.Text.Trim() : null,

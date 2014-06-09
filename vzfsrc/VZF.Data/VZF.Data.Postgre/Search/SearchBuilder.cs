@@ -19,8 +19,9 @@
 namespace VZF.Data.Postgre.Search
 {
     #region Using
-
+   
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
 
     using VZF.Data.DAL;
@@ -80,6 +81,9 @@ namespace VZF.Data.Postgre.Search
         /// <param name="forumIdToStartAt">
         /// The forum Id To Start At.
         /// </param>
+        /// <param name="culture">
+        /// The culture.
+        /// </param>
         /// <returns>
         /// The build search sql.
         /// </returns>
@@ -96,7 +100,8 @@ namespace VZF.Data.Postgre.Search
             bool useFullText,
             string categoriesIds,
             string ids,
-            [NotNull] IEnumerable<int> forumIdToStartAt)
+            [NotNull] IEnumerable<int> forumIdToStartAt,
+            string culture)
         {
             CodeContracts.ArgumentNotNull(toSearchWhat, "toSearchWhat");
             CodeContracts.ArgumentNotNull(toSearchFromWho, "toSearchFromWho");
@@ -105,7 +110,65 @@ namespace VZF.Data.Postgre.Search
             string orderString = string.Empty;
             var searchSql = new StringBuilder();
             string forumIDs = ids;
+            string ftsLanguage = "simple";
+            culture = culture.Substring(0, 2);
+            foreach (CultureInfo ci in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+            {
+                if (ci.Parent.Name == culture)
+                {
+                    switch (culture)
+                    {
+                        case "en":
+                            ftsLanguage = "english";
+                            break;
+                        case "ru":
+                            ftsLanguage = "russian";
+                            break;
+                        case "sp":
+                            ftsLanguage = "spanish";
+                            break;
+                        case "fr":
+                            ftsLanguage = "french";
+                            break;
+                        case "de":
+                            ftsLanguage = "german";
+                            break;
+                        case "da":
+                            ftsLanguage = "danish";
+                            break;
+                        case "nl":
+                            ftsLanguage = "dutch";
+                            break;
+                        case "fi":
+                            ftsLanguage = "finnish";
+                            break;
+                        case "hu":
+                            ftsLanguage = "hungarian";
+                            break;
+                        case "it":
+                            ftsLanguage = "italian";
+                            break;
+                        case "nn":
+                            ftsLanguage = "norwegian";
+                            break;
+                        case "pt":
+                            ftsLanguage = "portugues";
+                            break;
+                        case "ro":
+                            ftsLanguage = "romanian";
+                            break;
+                        case "se":
+                            ftsLanguage = "swedish";
+                            break;
+                        case "tr":
+                            ftsLanguage = "turkish";
+                            break;
+                    }
+                }
 
+                break;
+            }
+           
             // fix quotes for SQL insertion...
             toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
             toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
@@ -136,13 +199,17 @@ namespace VZF.Data.Postgre.Search
             orderString += "ORDER BY a.forumid ";
 
             string[] words;
-            bool bFirst;
 
-            if (!string.IsNullOrEmpty(toSearchFromWho))
+            bool bFirst = false;
+
+            if (!string.IsNullOrEmpty(toSearchFromWho) || !string.IsNullOrEmpty(toSearchWhat))
             {
                 searchSql.Append("AND (");
                 bFirst = true;
+            }
 
+            if (!string.IsNullOrEmpty(toSearchFromWho))
+            {
                 // generate user search sql...
                 switch (searchFromWhoMethod)
                 {
@@ -182,6 +249,7 @@ namespace VZF.Data.Postgre.Search
                                 searchSql.Append(string.Format(" (c.userid IN ({0}))", userId));
                             }
                         }
+
                         break;
                     case SearchWhatFlags.AnyWords:
                         words = toSearchFromWho.Split(' ');
@@ -195,11 +263,23 @@ namespace VZF.Data.Postgre.Search
                             {
                                 bFirst = false;
                             }
-                            searchSql.Append(
+
+                            if (searchDisplayName)
+                            {
+                                searchSql.Append(
+                                    string.Format(
+                                        " ((c.userdisplayname IS NULL AND b.displayname  ~* '.*{0}.*') OR (c.userdisplayname ~* '.*{0}.*'))",
+                                        word));
+                            }
+                            else
+                            {
+                                searchSql.Append(
                                 string.Format(
                                     " ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))",
                                     word));
+                            }
                         }
+
                         break;
                     case SearchWhatFlags.ExactMatch:
 
@@ -224,7 +304,6 @@ namespace VZF.Data.Postgre.Search
                         else
                         {
                             searchSql.Append(string.Format(" (c.userid IN ({0})) ", userId));
-
                         }
 
                         break;
@@ -235,14 +314,11 @@ namespace VZF.Data.Postgre.Search
 
             if (!string.IsNullOrEmpty(toSearchWhat))
             {
-                searchSql.Append("AND (");
-                bFirst = true;
-
                 // generate message and topic search sql...
                 switch (searchWhatMethod)
                 {
                     case SearchWhatFlags.AllWords:
-                        words = toSearchWhat.Split(' ');
+                        words = toSearchWhat.RemoveDoubleWhiteSpaces().Split(' ');
                         if (useFullText)
                         {
                             string ftInner = string.Empty;
@@ -252,21 +328,21 @@ namespace VZF.Data.Postgre.Search
                             {
                                 if (!bFirst)
                                 {
-                                    ftInner += " AND ";
+                                    ftInner += " & ";
                                 }
                                 else
                                 {
                                     bFirst = false;
                                 }
 
-                                ftInner += string.Format(@"""{0}""", word);
+                                ftInner += string.Format("{0}", word);
                             }
 
                             // make final string...
                             searchSql.Append(
                                 string.Format(
-                                    "( CONTAINS (c.message, ' {0} ') OR CONTAINS (a.topic, ' {0} ' ) )",
-                                    ftInner));
+                                    "select to_tsvector('{0}',c.message) @@ to_tsquery('{0}','{1}') OR to_tsvector('{0}',a.topic) @@ to_tsquery('{0}','{1}') ",
+                                     ftsLanguage, ftInner.Trim().Trim('&').Trim()));
                         }
                         else
                         {
@@ -280,6 +356,8 @@ namespace VZF.Data.Postgre.Search
                                 {
                                     bFirst = false;
                                 }
+
+
                                 searchSql.Append(
                                     string.Format("(c.message ~* '.*{0}.*' OR a.topic ~* '.*{0}.*' )", word));
                             }
@@ -287,44 +365,48 @@ namespace VZF.Data.Postgre.Search
 
                         break;
                     case SearchWhatFlags.AnyWords:
-                        words = toSearchWhat.Split(' ');
+                        words = toSearchWhat.RemoveDoubleWhiteSpaces().Split(' ');
 
                         if (useFullText)
                         {
                             string ftInner = string.Empty;
+                            string ftInnerBody = string.Empty;
 
                             // make the inner FULLTEXT search
                             foreach (string word in words)
                             {
                                 if (!bFirst)
                                 {
-                                    ftInner += " OR ";
+                                  //  ftInner += " OR ";
+                                    ftInnerBody += " | ";
                                 }
                                 else
                                 {
                                     bFirst = false;
                                 }
 
-                                ftInner += string.Format(@"""{0}""", word);
+                               // ftInner += string.Format(@"""{0}""", word);
+                                ftInnerBody += string.Format("{0}", word);
 
                                 if (int.TryParse(word, out userId))
                                 {
-                                    searchSql.Append(string.Format(" (c.userid IN ({0}))", userId));
+                                   // searchSql.Append(string.Format(" (c.userid IN ({0}))", userId));
                                 }
                                 else
                                 {
-                                    searchSql.Append(
+                                    /* searchSql.Append(
                                         string.Format(
-                                            " ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))",
-                                            word));
+                                            " ((c.username IS NULL AND b.name LIKE '%{0}%') OR (c.username like '{0}%'))",
+                                            word)); */
                                 }
                             }
 
                             // make final string...
                             searchSql.Append(
                                 string.Format(
-                                    "( CONTAINS (c.message, ' {0} ' ) OR CONTAINS (a.topic, ' {0} ' ) )",
-                                    ftInner));
+                                    "SELECT to_tsvector('{0}',c.message) @@ to_tsquery('{0}','{1}') OR to_tsvector('{0}',a.topic) @@ to_tsquery('{0}','{1}') ",
+                                    ftsLanguage,
+                                    ftInnerBody.Trim().Trim('|').Trim()));
                         }
                         else
                         {
@@ -336,14 +418,34 @@ namespace VZF.Data.Postgre.Search
                                     string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*' ", word));
                             }
                         }
+
                         break;
                     case SearchWhatFlags.ExactMatch:
+                         words = toSearchWhat.Split(' ');
                         if (useFullText)
                         {
+                            string ftInner = string.Empty;
+
+                            // make the inner FULLTEXT search
+                            foreach (string word in words)
+                            {
+                                if (!bFirst)
+                                {
+                                    ftInner += " & ";
+                                }
+                                else
+                                {
+                                    bFirst = false;
+                                }
+
+                                ftInner += string.Format("{0}", word);
+                            }
+
+                            // make final string...
                             searchSql.Append(
                                 string.Format(
-                                    "( CONTAINS (c.message, ' \"{0}\" ' ) OR CONTAINS (a.topic, ' \"{0}\" '  )",
-                                    toSearchWhat));
+                                    "select to_tsvector('{0}',c.message) @@ to_tsquery('{0}','{1}') OR to_tsvector('{0}',a.topic) @@ to_tsquery('{0}','{1}') ",
+                                     ftsLanguage, ftInner.Trim().Trim('&').Trim()));
                         }
                         else
                         {
@@ -360,12 +462,12 @@ namespace VZF.Data.Postgre.Search
             // vzrus
             if (categoriesIds.IsSet())
             {
-                searchSql.Append(string.Format("AND f.categoryid IN ({0})", categoriesIds));
+                searchSql.Append(string.Format(" AND f.categoryid IN ({0})", categoriesIds));
             }
 
             if (forumIDs.IsSet())
             {
-                searchSql.Append(string.Format("AND a.forumid IN ({0})", forumIDs));
+                searchSql.Append(string.Format(" AND a.forumid IN ({0})", forumIDs));
             }
 
             if (orderString != string.Empty)
@@ -375,7 +477,7 @@ namespace VZF.Data.Postgre.Search
 
             if (!orderString.Contains("ORDER BY"))
             {
-                searchSql.Append(" ORDER BY ");
+                searchSql.Append("ORDER BY ");
             }
 
             searchSql.Append(orderString + "c.posted DESC ");

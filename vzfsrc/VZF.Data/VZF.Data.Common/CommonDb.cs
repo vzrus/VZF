@@ -5234,7 +5234,8 @@ namespace VZF.Data.Common
             int maxResults,
             bool useFullText,
             bool searchDisplayName,
-            bool includeChildren)
+            bool includeChildren,
+            string culture)
         {
             string dataEngine;
             string connectionString;
@@ -5367,7 +5368,8 @@ namespace VZF.Data.Common
                         useFullText,
                         categoriesIds,
                         forumIDs,
-                        forumIdToStartAt);
+                        forumIdToStartAt, 
+                        culture);
                     break;
                 case SqlDbAccess.MySql:
                     sql = new VZF.Data.MySql.Search.SearchBuilder().BuildSearchSql(

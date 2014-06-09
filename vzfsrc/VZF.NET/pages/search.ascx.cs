@@ -43,6 +43,7 @@ namespace YAF.Pages
     using YAF.Types.Interfaces;
     using VZF.Utilities;
     using VZF.Utils;
+    using System.Globalization;
 
     #endregion
 
@@ -717,7 +718,7 @@ namespace YAF.Pages
                         this.PageContext.PageBoardID,
                         this.Get<YafBoardSettings>().ReturnSearchMax,
                         this.Get<YafBoardSettings>().UseFullTextSearch,
-                        this.Get<YafBoardSettings>().EnableDisplayName, includeChildren);
+                        this.Get<YafBoardSettings>().EnableDisplayName, includeChildren, PageContext.CurrentUserData.CultureUser);
 
                     if (newSearch)
                     {

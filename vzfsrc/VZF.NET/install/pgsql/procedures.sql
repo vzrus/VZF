@@ -12400,7 +12400,7 @@ BEGIN
         (i_rankid is null or a.rankid=i_rankid) AND
         a.isguest IS FALSE 
             AND
-        a.displayname LIKE CASE 
+        a.displayname ILIKE CASE 
             WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('%' || i_literals || '%') 
             WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN (i_literals || '%')
             ELSE '%' END  
@@ -12468,7 +12468,7 @@ BEGIN
         (i_rankid is null or a.rankid=i_rankid) AND
         a.isguest IS FALSE 
             AND
-       a.displayname LIKE CASE 
+       a.displayname ILIKE CASE 
             WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('%' || i_literals || '%') 
             WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN (i_literals || '%')
             ELSE '%' END  
