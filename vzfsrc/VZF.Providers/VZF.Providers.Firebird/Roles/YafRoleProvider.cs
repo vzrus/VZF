@@ -28,6 +28,7 @@ namespace YAF.Providers.Roles
   using System.Linq;
   using System.Web.Security;
 
+  using YAF.Classes;
   using YAF.Classes.Pattern;
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
   using YAF.Types;
@@ -349,23 +350,27 @@ namespace YAF.Providers.Roles
     public override void Initialize(string name, NameValueCollection config)
     {
       // verify that the configuration section was properly passed
-      if (config == null)
+      if (!config.HasKeys())
       {
         ExceptionReporter.ThrowArgument("ROLES", "CONFIGNOTFOUND");
       }
+     
+      // Application Name
+      this._appName = config["applicationName"].ToStringDBNull(Config.ApplicationName);
 
       // Connection String Name
-      this._connStrName = config["connectionStringName"].ToStringDBNull();
+      this._connStrName = config["connectionStringName"].ToStringDBNull(Config.ConnectionStringName);
    
       // is the connection string set?
       if (this._connStrName.IsSet())
       {
         string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
         ConnectionString = connStr;
+
         // set the app variable...
         if (YafContext.Application[ConnStrAppKeyName] == null)
         {
-          YafContext.Application.Add(ConnectionString, connStr);
+            YafContext.Application.Add(ConnStrAppKeyName, connStr);
         }
         else
         {

@@ -17,28 +17,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Linq;
-using YAF.Classes;
-using YAF.Types.Constants;
-using YAF.Types.Objects;
-
 namespace VZF.Controls
 {
     #region Using
 
     using System;
     using System.Data;
+    using System.Linq;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
-
-    
-    using YAF.Core;
-    using YAF.Types;
-    using YAF.Types.EventProxies;
-    using YAF.Types.Interfaces;
     using VZF.Utils;
     using VZF.Utils.Helpers;
+
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.EventProxies;
+    using YAF.Types.Interfaces;
+    using YAF.Types.Objects;
 
     #endregion
 

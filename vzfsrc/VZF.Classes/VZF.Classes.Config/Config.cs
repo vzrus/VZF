@@ -52,6 +52,18 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets the application name.
+        /// </summary>
+        [NotNull]
+        public static string ApplicationName
+        {
+            get
+            {
+                return GetConfigValueAsString("YAF.ApplicationName") ?? "YetAnotherForum";
+            }
+        }
+
+        /// <summary>
         ///     Gets AppRoot.
         /// </summary>
         [NotNull]

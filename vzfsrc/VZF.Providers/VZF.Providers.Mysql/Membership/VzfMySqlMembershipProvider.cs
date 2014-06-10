@@ -29,6 +29,7 @@ namespace YAF.Providers.Membership
   using System.Text.RegularExpressions;
   using System.Web.Security;
 
+  using YAF.Classes;
   using YAF.Core; 
   using YAF.Types.Interfaces; 
   using YAF.Types.Constants;
@@ -1104,7 +1105,7 @@ namespace YAF.Providers.Membership
     public override void Initialize(string name, NameValueCollection config)
     {
       // Verify that the configuration section was properly passed
-      if (config == null)
+      if (!config.HasKeys())
       {
         ExceptionReporter.ThrowArgument("ROLES", "CONFIGNOTFOUND");
       }
@@ -1140,10 +1141,10 @@ namespace YAF.Providers.Membership
       this._msCompliant = (config["msCompliant"] ?? "false").ToBool();
 
       // Application Name
-      this._appName = config["applicationName"].ToStringDBNull("YetAnotherForum");
+      this._appName = config["applicationName"].ToStringDBNull(Config.ApplicationName);
 
       // Connection String Name
-      this._connStrName = config["connectionStringName"].ToStringDBNull();
+      this._connStrName = config["connectionStringName"].ToStringDBNull(Config.ConnectionStringName);
 
       this._passwordStrengthRegularExpression = config["passwordStrengthRegularExpression"].ToStringDBNull();
 
@@ -1178,6 +1179,7 @@ namespace YAF.Providers.Membership
         string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
         ConnectionString = connStr;
         ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
+
         // set the app variable...
         if (YafContext.Application[ConnStrAppKeyName] == null)
         {

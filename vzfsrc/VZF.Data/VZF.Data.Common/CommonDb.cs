@@ -129,7 +129,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
                
                 sc.CommandText.AppendObjectQuery("accessmask_list", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
             }
         }
 

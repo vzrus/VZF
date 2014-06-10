@@ -27,6 +27,7 @@
 jQuery.PageMethodToPage = function (pagePath, fn, successFn, errorFn, jsonParams) {
     
     //Call the page method 
+   // errorFn = errorFn + " jsonParams:" + jsonParams + "path: " + pagePath + "/" + fn;
     jQuery.ajax({
         type: "POST",
         url: pagePath + "/" + fn,
@@ -34,6 +35,6 @@ jQuery.PageMethodToPage = function (pagePath, fn, successFn, errorFn, jsonParams
         data: jsonParams,
         dataType: "json",
         success: successFn,
-        error: errorFn
-    });
+        error: errorFn 
+});
 };

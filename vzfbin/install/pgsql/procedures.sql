@@ -537,12 +537,12 @@ END IF;
   end if;
 IF i_accessmaskid IS NULL THEN
        INSERT INTO {databaseSchema}.{objectQualifier}accessmask
-         (name,boardid,flags,sortorder,isusermask,createdbyuserid,createdbyusername,createdbyuserdisplayname, createddate)
-       VALUES(substr(i_name,1,128),i_boardid,ici_flags, i_sortorder,i_isusermask,i_userid,ici_UserName,ici_UserDisplayName,i_utctimestamp)
+         (name,boardid,flags,sortorder,isusermask, isadminmask,createdbyuserid,createdbyusername,createdbyuserdisplayname, createddate)
+       VALUES(substr(i_name,1,128),i_boardid,ici_flags, i_sortorder,i_isusermask, i_isadminmask, i_userid,ici_UserName,ici_UserDisplayName,i_utctimestamp)
        returning accessmaskid into i_accessmaskid;
 ELSE
        UPDATE {databaseSchema}.{objectQualifier}accessmask
-       SET    name = substr(i_name,1,128), flags = ici_flags, sortorder = i_sortorder, isusermask = i_isusermask 
+       SET    name = substr(i_name,1,128), flags = ici_flags, sortorder = i_sortorder, isusermask = i_isusermask , isadminmask = i_isadminmask
        WHERE  accessmaskid = i_accessmaskid;
 END IF;
 
@@ -12400,7 +12400,7 @@ BEGIN
         (i_rankid is null or a.rankid=i_rankid) AND
         a.isguest IS FALSE 
             AND
-        a.displayname LIKE CASE 
+        a.displayname ILIKE CASE 
             WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('%' || i_literals || '%') 
             WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN (i_literals || '%')
             ELSE '%' END  
@@ -12468,7 +12468,7 @@ BEGIN
         (i_rankid is null or a.rankid=i_rankid) AND
         a.isguest IS FALSE 
             AND
-       a.displayname LIKE CASE 
+       a.displayname ILIKE CASE 
             WHEN (not i_beginswith  AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN ('%' || i_literals || '%') 
             WHEN (i_beginswith AND i_literals IS NOT NULL AND LENGTH(i_literals) > 0) THEN (i_literals || '%')
             ELSE '%' END  

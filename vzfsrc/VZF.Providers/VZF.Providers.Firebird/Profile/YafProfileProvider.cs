@@ -160,20 +160,19 @@ namespace YAF.Providers.Profile
         public override void Initialize(string name, NameValueCollection config)
         {
             // verify that the configuration section was properly passed
-            if (config == null) throw new ArgumentNullException("config");
-
-            // Connection String Name
-            this._connStrName = config["connectionStringName"].ToStringDBNull();
-
-            // application name
-            _appName = config["applicationName"];
-            if (string.IsNullOrEmpty(_appName))
+            if (!config.HasKeys())
             {
-                _appName = "YetAnotherForum";
+                throw new ArgumentNullException("config");
             }
 
+            // Application Name
+            this._appName = config["applicationName"].ToStringDBNull(Config.ApplicationName);
+
+            // Connection String Name
+            this._connStrName = config["connectionStringName"].ToStringDBNull(Config.ConnectionStringName);
+
             // is the connection string set?
-            if (!string.IsNullOrEmpty(_connStrName))
+            if (!string.IsNullOrEmpty(this._connStrName))
             {
                 string connStr = ConfigurationManager.ConnectionStrings[_connStrName].ConnectionString;
                 ConnectionString = connStr;

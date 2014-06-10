@@ -28,6 +28,7 @@ namespace YAF.Providers.Roles
 
     using VZF.Utils;
 
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types;
@@ -346,13 +347,16 @@ namespace YAF.Providers.Roles
         public override void Initialize(string name, NameValueCollection config)
         {
             // verify that the configuration section was properly passed
-            if (config == null)
+            if (!config.HasKeys())
             {
                 ExceptionReporter.ThrowArgument("ROLES", "CONFIGNOTFOUND");
             }
 
+            // Application Name
+            this._appName = config["applicationName"].ToStringDBNull(Config.ApplicationName);
+
             // Connection String Name
-            this._connStrName = config["connectionStringName"].ToStringDBNull();
+            this._connStrName = config["connectionStringName"].ToStringDBNull(Config.ConnectionStringName);
 
             // is the connection string set?
             if (this._connStrName.IsSet())

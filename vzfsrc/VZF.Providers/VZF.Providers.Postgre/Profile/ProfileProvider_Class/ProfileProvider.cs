@@ -45,7 +45,7 @@ namespace YAF.Providers.Profile
         /// <summary>
         /// The conn str app key name.
         /// </summary>
-        private static string _connStrAppKeyName = "PgProfileConnectionString";
+        private static string _connStrAppKeyName = "YafProfileConnectionString";
 
         /// <summary>
         /// The _connection string.
@@ -101,7 +101,7 @@ namespace YAF.Providers.Profile
                 _connectionString = value;
             }
         }
-
+      
         /// <summary>
         /// Gets the Connection String App Key Name.
         /// </summary>

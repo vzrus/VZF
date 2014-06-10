@@ -32,6 +32,8 @@ namespace YAF.Providers.Profile
     using VZF.Data.Common;
     using VZF.Data.Utils;
     using VZF.Utils;
+
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
@@ -480,17 +482,11 @@ namespace YAF.Providers.Profile
                 throw new ArgumentNullException("config");
             }
 
+            // Application Name
+            this._appName = config["applicationName"].ToStringDBNull(Config.ApplicationName);
+
             // Connection String Name
-            this._connStrName = config["connectionStringName"].ToStringDBNull();
-     
-
-            // application name
-            this._appName = config["applicationName"];
-
-            if (string.IsNullOrEmpty(this._appName))
-            {
-                this._appName = "YetAnotherForum";
-            }
+            this._connStrName = config["connectionStringName"].ToStringDBNull(Config.ConnectionStringName);
 
             // is the connection string set?
             if (this._connStrName.IsSet())

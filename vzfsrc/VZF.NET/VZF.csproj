@@ -1007,7 +1007,6 @@
     <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
     <Content Include="Bin\Mono.Security.dll" />
     <Content Include="Bin\MySql.Data.dll" />
-    <Content Include="Bin\MySql.Web.dll" />
     <Content Include="Bin\Npgsql.dll" />
     <Content Include="Bin\nStuff.UpdateControls.dll" />
     <Content Include="Controls\AlbumImageList.ascx" />
@@ -2449,8 +2448,15 @@
       <DependentUpon>topics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="App_Data\App_Browsers\w3cvalidator.browser" />
+    <Content Include="App_Browsers\w3cvalidator.browser" />
     <Content Include="app_ms.config" />
+    <Content Include="App_Browsers\ie.browser" />
+    <Content Include="App_Browsers\ie11.browser" />
+    <Content Include="App_Browsers\MozillaPatch.browser" />
+    <Content Include="App_Browsers\Net4Patch.browser" />
+    <Content Include="App_Browsers\OceanAppleWebKit.browser" />
+    <Content Include="App_Browsers\OceanSpiders.browser" />
+    <Content Include="App_Browsers\w3cvalidator.browser" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -3891,8 +3897,9 @@
     <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />
     <Content Include="editors\ckeditor\plugins\wsc\README.md" />
     <Content Include="install\mssql\procedures.sql.orig.orig" />
-    <Content Include="packages.config" />
-    <Content Include="db.config" />
+    <Content Include="db.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="mail.config" />
     <Content Include="editors\tinymce\langs\readme.md" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\readme.md" />

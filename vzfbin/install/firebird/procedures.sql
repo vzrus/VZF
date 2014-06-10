@@ -589,7 +589,8 @@ begin
             NAME			= :I_NAME,
             FLAGS			= :I_FLAGS,
             SORTORDER       = :I_SORTORDER,
-            ISUSERMASK      = :I_ISUSERMASK
+            ISUSERMASK      = :I_ISUSERMASK,
+			ISADMINMASK     = :I_ISADMINMASK
         WHERE ACCESSMASKID=:I_ACCESSMASKID;
 if (:I_USERID is null) THEN
     begin 

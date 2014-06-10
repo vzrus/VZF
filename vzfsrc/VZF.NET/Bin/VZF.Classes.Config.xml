@@ -2126,6 +2126,11 @@
                 Gets a value indicating whether AllowLoginAndLogoff.
             </summary>
         </member>
+        <member name="P:YAF.Classes.Config.ApplicationName">
+            <summary>
+            Gets the application name.
+            </summary>
+        </member>
         <member name="P:YAF.Classes.Config.AppRoot">
             <summary>
                 Gets AppRoot.

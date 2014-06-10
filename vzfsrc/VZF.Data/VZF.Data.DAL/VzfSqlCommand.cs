@@ -453,6 +453,7 @@ namespace VZF.Data.DAL
         /// </returns>
         public object ExecuteScalar(CommandType commandType, bool inTransaction)
         {
+            inTransaction = false;
             var conn = this.GetConnection();
 
             try
@@ -720,7 +721,7 @@ namespace VZF.Data.DAL
             return this.ExecuteDataTableFromReader(
                 commandBehavior,
                 commandType,
-                inTransaction,
+                false,
                 this._isolationLevel);
         }
 

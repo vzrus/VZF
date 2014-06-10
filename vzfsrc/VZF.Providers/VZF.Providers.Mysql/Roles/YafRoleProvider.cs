@@ -29,6 +29,8 @@ namespace YAF.Providers.Roles
     using System.Web.Security;
     using VZF.Data.DAL;
     using VZF.Utils;
+
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
@@ -345,18 +347,22 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "CONFIGNOTFOUND");
       }
 
-      // Connection String Name
-      this._connStrName = config["connectionStringName"].ToStringDBNull();
+      // Application Name
+      this._appName = config["applicationName"].ToStringDBNull(Config.ApplicationName);
 
-      // is the connection string set?
+      // Connection String Name
+      this._connStrName = config["connectionStringName"].ToStringDBNull(Config.ConnectionStringName);
+     
+        // is the connection string set?
       if (this._connStrName.IsSet())
       {
         string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
         ConnectionString = connStr;
+
         // set the app variable...
         if (YafContext.Application[ConnStrAppKeyName] == null)
         {
-          YafContext.Application.Add(ConnectionString, connStr);
+            YafContext.Application.Add(ConnStrAppKeyName, connStr);
         }
         else
         {

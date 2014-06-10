@@ -198,7 +198,7 @@ namespace YAF.Providers.Profile
             using (var sc = new VzfSqlCommand(connectionStringName))
             {
                 string sql = String.Format("ALTER TABLE {0} ADD  {1}  {2} ", SqlDbAccess.GetVzfObjectNameFromConnectionString("prov_profile", connectionStringName), name, type);
-
+                sc.CommandText.AppendQuery(sql);
                 sc.ExecuteNonQuery(CommandType.Text, false);
             }
         }
@@ -207,6 +207,8 @@ namespace YAF.Providers.Profile
         {
             if (Config.IsMojoPortal)
             {
+                var mm = Membership.GetUser(username.ToString());
+               
                 return Membership.GetUser(username.ToString(),true).ProviderUserKey;
             }
 

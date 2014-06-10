@@ -20,22 +20,23 @@ namespace VZF.Controls
 {
   #region Using
 
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Web;
-  using System.Web.UI;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI;
 
-  using YAF.Classes;
-  using YAF.Core;
-  using YAF.Core.Services;
-  using YAF.Types;
-  using YAF.Types.Interfaces;
-  using YAF.Types.Objects;
-  using VZF.Utils;
-  using VZF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
-  #endregion
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Core.Services;
+    using YAF.Types;
+    using YAF.Types.Interfaces;
+    using YAF.Types.Objects;
+
+    #endregion
 
   /// <summary>
   /// The email_digest.

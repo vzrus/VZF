@@ -11781,8 +11781,8 @@ SET i_AccessMaskID =  LAST_INSERT_ID();
 ELSE
 UPDATE {databaseSchema}.{objectQualifier}AccessMask
 SET    `Name` = i_Name,
-`Flags` = l_Flags,`SortOrder` = i_SortOrder
-WHERE  AccessMaskID = i_AccessMaskID AND IsUserMask = i_IsUserMask;
+`Flags` = l_Flags,`SortOrder` = i_SortOrder, `IsUserMask` = i_IsUserMask,`IsAdminMask` = i_IsAdminMask
+WHERE  AccessMaskID = i_AccessMaskID;
 END IF;
 
  IF i_UserID IS NOT NULL THEN   
