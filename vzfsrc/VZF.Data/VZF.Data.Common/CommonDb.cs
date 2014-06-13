@@ -11166,7 +11166,7 @@ namespace VZF.Data.Common
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowDeleted", false));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowDeleted", showDeleted));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetTags", getTags));
 
                 sc.CommandText.AppendObjectQuery("topic_info", mid);

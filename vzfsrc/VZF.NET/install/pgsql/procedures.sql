@@ -10003,7 +10003,7 @@ $BODY$DECLARE
  
     IF ici_topicid IS NULL OR ici_topicid = 0 THEN
     
-    IF i_showdeleted IS TRUE THEN
+    IF i_showdeleted THEN
 FOR _rec IN
             SELECT
                   t.topicid,

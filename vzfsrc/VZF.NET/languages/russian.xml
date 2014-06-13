@@ -1564,15 +1564,15 @@
     <Resource tag="MSG_TASK">Задача очистки в очереди</Resource>
     <Resource tag="PRUNE_DAYS">Введите минимальное кол-во дней:</Resource>
     <Resource tag="PRUNE_DAYS_HELP">Темы с последним сообщением старше указанного лимита будут удалены.</Resource>
-    <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
-    <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>
+    <Resource tag="PRUNE_DELETED">Почистить только удалённые:</Resource>
+    <Resource tag="PRUNE_DELETED_HELP">Будут удалены только удалённые темы</Resource>
     <Resource tag="PRUNE_FORUM">Форум:</Resource>
     <Resource tag="PRUNE_FORUM_HELP">Выполнить форум.</Resource>
     <Resource tag="PRUNE_INFO">ВНИМАНИЕ! Задача очистки уже выполняется. Нельзя запланировать новую задачу до окончания текущей.</Resource>
     <Resource tag="PRUNE_PERMANENT">Навсегда удалить из базы данных:</Resource>
     <Resource tag="PRUNE_PERMANENT_HELP">Все темы с помеченные как удалённые будут удалены.</Resource>
-    <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
-    <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
+    <Resource tag="PRUNE_PERMANENT1">Навсегда удалить темы</Resource>
+    <Resource tag="PRUNE_PERMANENT1_HELP">Все темы не помеченные как неудаляемые будут удалены с диска.</Resource>
     <Resource tag="PRUNE_START">Начать задачу очистки</Resource>
     <Resource tag="TITLE">Почистить темы</Resource>
   </page>
@@ -1915,8 +1915,8 @@
     <Resource tag="BUTTON_EDIT">Изменить</Resource>
     <Resource tag="BUTTON_EDIT_TT">Изменить это сообщение</Resource>
     <Resource tag="BUTTON_EDITALBUMIMAGES">Загрузить/Удалить изображения</Resource>
-    <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
-    <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
+    <Resource tag="BUTTON_ERASETOPIC">Удалить полностью</Resource>
+    <Resource tag="BUTTON_ERASETOPIC_TT">Полностью удалить эту тему</Resource>
     <Resource tag="BUTTON_LOCKTOPIC">Закрыть Тему</Resource>
     <Resource tag="BUTTON_LOCKTOPIC_TT">Закрыть эту тему</Resource>
     <Resource tag="BUTTON_MODERATE">Модерировать</Resource>
@@ -1938,8 +1938,8 @@
     <Resource tag="BUTTON_REPLY">Ответить</Resource>
     <Resource tag="BUTTON_REPLY_TT">Ответить на сообщение</Resource>
     <Resource tag="BUTTON_RESETCOVER">Удалить обложку</Resource>
-    <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
-    <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC">Восстановить тему</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC_TT">Восстановить эту тему</Resource>
     <Resource tag="BUTTON_RETWEET">Ретвит</Resource>
     <Resource tag="BUTTON_RETWEET_TT">Выполнить ретвит сообщения</Resource>
     <Resource tag="BUTTON_SETCOVER">Использовать как обложку</Resource>

@@ -62,6 +62,11 @@ namespace VZF.Controls
         /// </summary>
         private bool _showSignature = true;
 
+        /// <summary>
+        /// The _show deleted.
+        /// </summary>
+        private bool _showDeleted = false;
+
         #endregion
 
         #region Properties
@@ -190,6 +195,22 @@ namespace VZF.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether show deleted.
+        /// </summary>
+        public bool ShowDeleted
+        {
+            get
+            {
+                return this._showDeleted;
+            }
+
+            set
+            {
+                this._showDeleted = value;
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets a value indicating whether ShowSignature.
         /// </summary>
         public bool ShowSignature
@@ -271,11 +292,11 @@ namespace VZF.Controls
                     // add attached files control...
                     var attached = new MessageAttached { MessageID = this.DataRow["MessageID"].ToType<int>() };
 
-                    if (this.DataRow["UserID"] != DBNull.Value
+                    if (this.DataRow["UserDisplayName"] != DBNull.Value
                         && YafContext.Current.Get<YafBoardSettings>().EnableDisplayName)
                     {
                         attached.UserName =
-                            UserMembershipHelper.GetDisplayNameFromID(this.DataRow["UserID"].ToType<long>());
+                           this.DataRow["UserDisplayName"].ToString();
                     }
                     else
                     {
@@ -302,7 +323,7 @@ namespace VZF.Controls
                 return;
             }
 
-            if (this.MessageFlags.IsDeleted)
+            if (this.MessageFlags.IsDeleted && !this.ShowDeleted)
             {
                 if (this.DataRow.Table.Columns.Contains("IsModeratorChanged"))
                 {
