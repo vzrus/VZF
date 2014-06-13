@@ -2441,7 +2441,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3878,10 +3878,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="web_pg.config">
+    <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -4644,15 +4644,15 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
+    <Content Include="web_ms.config" />
+    <None Include="web_ms.Debug.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
-    <None Include="web.Deploy.config">
-      <DependentUpon>web.config</DependentUpon>
+    <None Include="web_ms.Deploy.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
+    <None Include="web_ms.Release.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -9684,19 +9684,18 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_delete(
                            i_topicid integer, 
-						   i_topicmovedid integer, 
-                           i_updatelastpost boolean, 
-                           i_erasetopic boolean)
+						   i_topicmovedid integer,                            
+                           i_erasetopic boolean,
+						   i_updatelastpost boolean)
                   RETURNS void AS
 $BODY$DECLARE 
-             ici_ForumID integer;
-             ici_ForumID2 integer;
+             ici_ForumID integer;           
              ici_pollID integer;
              ici_Deleted integer;			 
     BEGIN
 	 
 	-- just remove link    	
-    IF (i_topicmovedid = i_topicid) THEN	   
+    IF (i_topicmovedid IS NOT NULL AND i_topicmovedid = i_topicid) THEN	   
     DELETE FROM {databaseSchema}.{objectQualifier}topic where topicmovedid = i_topicid; 	 
     ELSE 
 	SELECT forumid
@@ -9717,10 +9716,9 @@ $BODY$DECLARE
     
       
    UPDATE  {databaseSchema}.{objectQualifier}active SET topicid = NULL WHERE topicid = i_topicid;
-   --delete messages and topics
-   
+   --delete messages and topics   
   
-  IF i_erasetopic IS FALSE THEN   
+  IF not i_erasetopic THEN   
     UPDATE  {databaseSchema}.{objectQualifier}topic 
     SET 
     flags = flags | 8
@@ -9759,18 +9757,18 @@ $BODY$DECLARE
     DELETE FROM  {databaseSchema}.{objectQualifier}message WHERE topicid = i_topicid;    
     DELETE FROM  {databaseSchema}.{objectQualifier}watchtopic WHERE topicid = i_topicid;
     DELETE FROM {databaseSchema}.{objectQualifier}favoritetopic  WHERE topicid = i_topicid;
-
-    DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicmovedid = i_topicid;
-    DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicid = i_topicid;
-    DELETE FROM  {databaseSchema}.{objectQualifier}topicreadtracking WHERE topicid = i_topicid;
+	 DELETE FROM  {databaseSchema}.{objectQualifier}topicreadtracking WHERE topicid = i_topicid;
+  
     DELETE FROM  {databaseSchema}.{objectQualifier}messagereportedaudit 
       WHERE messageid IN 
         (SELECT messageid FROM  {databaseSchema}.{objectQualifier}message WHERE topicid = i_topicid);
     DELETE FROM  {databaseSchema}.{objectQualifier}messagereported 
       WHERE messageid IN 
         (SELECT messageid FROM {databaseSchema}.{objectQualifier}message WHERE topicid = i_topicid);	
-    END IF;   
-
+	DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicmovedid = i_topicid;
+    DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE topicid = i_topicid;
+    END IF;  
+   
     -- commit
     IF i_updatelastpost IS NOT FALSE THEN
         PERFORM  {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_ForumID);END IF;
