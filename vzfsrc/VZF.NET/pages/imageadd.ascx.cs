@@ -76,7 +76,7 @@ namespace YAF.Pages
         if (this.Request.QueryString.GetFirstOrDefault("ti") != null)
         {
             var dt = CommonDb.topic_info(
-                PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("ti").ToType<int>(), false);
+                this.PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("ti").ToType<int>(), false, false);
             if (dt != null)
             {
                 this.PageLinks.AddLink(

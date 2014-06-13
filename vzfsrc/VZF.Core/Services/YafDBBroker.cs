@@ -602,7 +602,7 @@ namespace YAF.Core.Services
                         0,
                         maxCount,
                         false,
-                        false,
+                        false, false,
                         false,
                         this.Get<YafBoardSettings>().AllowTopicTags).AsEnumerable();
 

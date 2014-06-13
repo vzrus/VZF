@@ -470,7 +470,7 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        /// Gets or sets LogError.
+        /// Gets or sets a value indicating whether log error.
         /// </summary>
         public bool LogError
         {
@@ -482,6 +482,22 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("LogError", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether show board tags.
+        /// </summary>
+        public bool ShowBoardTags
+        {
+            get
+            {
+                return this._reg.GetValue("ShowBoardTags", true);
+            }
+
+            set
+            {
+                this._reg.SetValue("ShowBoardTags", value);
             }
         }
 
@@ -808,6 +824,22 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("TagTopicMaxCount", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the board tags per page.
+        /// </summary>
+        public int BoardTagsPerPage
+        {
+            get
+            {
+                return this._regBoard.GetValue("BoardTagsPerPage", 100);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("BoardTagsPerPage", value);
             }
         }
 

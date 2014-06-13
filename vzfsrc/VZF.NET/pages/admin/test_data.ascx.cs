@@ -347,14 +347,14 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            DataTable topics = CommonDb.topic_list(PageContext.PageModuleID, this.PostsForum.SelectedValue.ToType<int>(),
+            DataTable topics = CommonDb.topic_list(this.PageContext.PageModuleID, this.PostsForum.SelectedValue.ToType<int>(),
                 this.PageContext.PageUserID,
                 DateTimeHelper.SqlDbMinTime(),
                 DateTime.UtcNow,
                 0,
                 100,
                 false,
-                false,
+                false, false,
                 false,
                 false);
 

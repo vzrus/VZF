@@ -133,7 +133,18 @@ namespace YAF.Pages
                 }
 
                 // If this is the album owner we show him the tab, else it should be hidden 
-                if ((albumUser == this.PageContext.PageUserID) || this.PageContext.IsAdmin)
+                if (albumUser == this.PageContext.PageUserID)
+                {
+                    // Check if a user have permissions to have albums, even if he has no albums at all.
+                    var usrAlbums = PageContext.UsrAlbums;
+
+                    if (usrAlbums > 0)
+                    {
+                        return true;
+                    }
+                }
+
+                if (this.PageContext.IsAdmin)
                 {
                     // Check if a user have permissions to have albums, even if he has no albums at all.
                     var usrAlbums =

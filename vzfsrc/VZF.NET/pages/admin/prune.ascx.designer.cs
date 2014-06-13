@@ -94,6 +94,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox permDeleteChkBox;
         
         /// <summary>
+        /// HelpLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel1;
+        
+        /// <summary>
+        /// deletedOnlyChkBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox deletedOnlyChkBox;
+        
+        /// <summary>
         /// commit control.
         /// </summary>
         /// <remarks>

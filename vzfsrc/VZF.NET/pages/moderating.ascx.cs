@@ -85,14 +85,15 @@ namespace YAF.Pages
         {
             this.PagerTop.PageSize = PageContext.TopicsPerPage;
            
-            DataTable dt = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
+            DataTable dt = CommonDb.topic_list(this.PageContext.PageModuleID, this.PageContext.PageForumID,
                 null,
                 DateTimeHelper.SqlDbMinTime(),
                 DateTime.UtcNow,
                 this.PagerTop.CurrentPageIndex,
                 this.PagerTop.PageSize,
                 false,
-                true,
+                true, 
+                this.PageContext.ForumModeratorAccess,
                 false,
                 this.Get<YafBoardSettings>().AllowTopicTags);
 
@@ -121,11 +122,45 @@ namespace YAF.Pages
                 this.topiclist.Controls.OfType<RepeaterItem>().SelectMany(x => x.Controls.OfType<TopicLine>()).Where(
                     x => x.IsSelected && x.TopicRowID.HasValue).ToList();
 
-            list.ForEach(x => CommonDb.topic_delete(PageContext.PageModuleID, x.TopicRowID));
+            list.ForEach(x => CommonDb.topic_delete(PageContext.PageModuleID, x.TopicRowID, null, false));
 
             this.PageContext.AddLoadMessage(this.GetText("moderate", "deleted"));
             this.BindData();
         }
+
+        protected void RestoreTopics_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            var list =
+                this.topiclist.Controls.OfType<RepeaterItem>().SelectMany(x => x.Controls.OfType<TopicLine>()).Where(
+                    x => x.IsSelected && x.TopicRowID.HasValue).ToList();
+
+            list.ForEach(x => CommonDb.topic_restore(PageContext.PageModuleID, x.TopicRowID,  PageContext.PageUserID));
+
+            this.PageContext.AddLoadMessage(this.GetText("moderate", "restored"));
+            this.BindData();
+        }
+
+        /// <summary>
+        /// The erase topics_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void EraseTopics_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            var list =
+                this.topiclist.Controls.OfType<RepeaterItem>().SelectMany(x => x.Controls.OfType<TopicLine>()).Where(
+                    x => x.IsSelected && x.TopicRowID.HasValue).ToList();
+
+            list.ForEach(x => CommonDb.topic_delete(PageContext.PageModuleID, x.TopicRowID, x.TopicMovedID(), true));
+
+            this.PageContext.AddLoadMessage(this.GetText("moderate", "deleted"));
+            this.BindData();
+        }
+
 
         /// <summary>
         /// The delete user_ load.
@@ -150,12 +185,35 @@ namespace YAF.Pages
         }
 
         /// <summary>
+        /// The erase_ load.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Erase_Load([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            ((ThemeButton)sender).Attributes["onclick"] =
+                "return confirm('{0}')".FormatWith(this.GetText("moderate", "CONFIRM_ERASE"));
+        }
+
+        protected void Restore_Load([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            ((ThemeButton)sender).Attributes["onclick"] =
+                "return confirm('{0}')".FormatWith(this.GetText("moderate", "CONFIRM_RESTORE"));
+        }
+
+        /// <summary>
         /// The page_ load.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            this.RestoreTopic.Visible = this.RestoreTopic2.Visible =
+            this.EraseTopic.Visible = this.EraseTopic2.Visible = this.PageContext.IsAdmin;
             if (!this.PageContext.ForumModeratorAccess)
             {
             var forumId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f");
@@ -227,7 +285,7 @@ namespace YAF.Pages
                     CommonDb.userforum_delete(PageContext.PageModuleID, e.CommandArgument, this.PageContext.PageForumID);
                     this.BindData();
 
-                    // clear moderatorss cache
+                    // clear moderators cache
                     this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
                     break;
             }

@@ -668,6 +668,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="ShowBoardTagsLbl" runat="server" LocalizedTag="SHOW_BOARDTAGS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="ShowBoardTags" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="BoardTagsPerPageLbl" runat="server" LocalizedTag="BOARDTAGPERPAGE" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox ID="BoardTagsPerPage" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="postheader" style="width:50%">
                             <VZF:HelpLabel ID="HelpLabel222" runat="server" LocalizedTag="TAG_FORBIDDENSYMB" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
@@ -683,6 +699,7 @@
                             <asp:TextBox Style="width:350px" ID="HoverCardOpenDelay" runat="server"></asp:TextBox>
                         </td>   
                     </tr>
+         
                     <tr>
                         <td class="header1" colspan="2">
                             <VZF:LocalizedLabel ID="LocalizedLabel23" runat="server" LocalizedTag="HEADER_POLL" LocalizedPage="ADMIN_HOSTSETTINGS" />

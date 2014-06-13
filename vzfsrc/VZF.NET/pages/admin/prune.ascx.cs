@@ -153,7 +153,8 @@ namespace YAF.Pages.Admin
         this.PageContext.PageBoardID, 
         this.forumlist.SelectedValue.ToType<int>(), 
         this.days.Text.ToType<int>(), 
-        this.permDeleteChkBox.Checked);
+        this.permDeleteChkBox.Checked,
+        this.deletedOnlyChkBox.Checked);
 
       this.PageContext.AddLoadMessage(this.GetText("ADMIN_PRUNE", "MSG_TASK"));
     }

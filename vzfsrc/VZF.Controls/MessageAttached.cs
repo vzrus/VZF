@@ -126,7 +126,7 @@ namespace VZF.Controls
             YafContext.Current.Get<HttpSessionStateBase>()["localizationFile"] =
                 this.Get<ILocalization>().LanguageFileName;
 
-            using (DataTable attachListDT = CommonDb.attachment_list(PageContext.PageModuleID, this.MessageID, null, null,null,null))
+            using (DataTable attachListDT = CommonDb.attachment_list(PageContext.PageModuleID, this.MessageID, null, null,0,1000000))
             {
                 // show file then image attachments...
                 int tmpDisplaySort = 0;

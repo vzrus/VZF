@@ -191,6 +191,17 @@ namespace YAF.Core
       }
     }
 
+        /// <summary>
+        /// Gets a value indicating whether is first message.
+        /// </summary>
+        public bool IsFirstMessage
+    {
+        get
+        {
+            return DataRow["Position"].ToType<int>() == 0;
+        }
+    }
+
     /// <summary>
     /// Gets a value indicating whether CanThankPost.
     /// </summary>

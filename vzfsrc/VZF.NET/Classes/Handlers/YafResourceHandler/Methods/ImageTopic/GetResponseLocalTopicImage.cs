@@ -34,7 +34,7 @@ namespace YAF
             try
             {
                 var row = CommonDb.topic_info(
-                    YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("ti"), false);
+                    YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("ti"), false, false);
 
                 if (row != null)
                 {

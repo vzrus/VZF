@@ -360,7 +360,7 @@ namespace YAF.Pages
             }
 
             DataTable dt = CommonDb.announcements_list(
-                PageContext.PageModuleID,
+                this.PageContext.PageModuleID,
                 this.PageContext.PageForumID,
                 userId,
                 null,
@@ -368,7 +368,8 @@ namespace YAF.Pages
                 0,
                 10,
                 this.Get<YafBoardSettings>().UseStyledNicks,
-                true,
+                true, 
+                this.PageContext.ForumModeratorAccess,
                 this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
                 this.Get<YafBoardSettings>().AllowTopicTags);
             if (dt != null && dt.Rows.Count > 0)
@@ -394,15 +395,16 @@ namespace YAF.Pages
             }
 
             DataTable dtTopics = CommonDb.topic_list(
-                PageContext.PageModuleID,
+                this.PageContext.PageModuleID,
                 this.PageContext.PageForumID,
                 userId,
                 date,
                 DateTime.UtcNow,
                 this.Pager.CurrentPageIndex,
-                PageContext.TopicsPerPage,
+                this.PageContext.TopicsPerPage,
                 this.Get<YafBoardSettings>().UseStyledNicks,
-                true,
+                true, 
+                this.PageContext.ForumModeratorAccess,
                 this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
                 this.Get<YafBoardSettings>().AllowTopicTags);
 

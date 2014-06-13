@@ -203,7 +203,7 @@ namespace YAF.Pages
         this._forum = dt.Rows[0];
       }
 
-      this._topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
+      this._topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true, false);
 
       if (this.IsPostBack)
       {

@@ -469,7 +469,7 @@ namespace YAF.Pages
 
             TypedMessageList currentMessage = null;
 
-            DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
+            DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true, false);
             if (topicInfo == null || topicInfo["TopicID"].ToType<int>() != this.PageContext.PageTopicID)
             {
                 // new topic
@@ -1555,7 +1555,7 @@ namespace YAF.Pages
         /// </summary>
         private void InitReplyToTopic()
         {
-            DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.TopicID, true);
+            DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.TopicID, true, false);
             var topicFlags = new TopicFlags(topic["Flags"].ToType<int>());
 
             // Ederon : 9/9/2007 - moderators can reply in locked topics

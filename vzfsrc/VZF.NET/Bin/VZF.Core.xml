@@ -6394,6 +6394,11 @@
             Gets a value indicating whether IsSponserMessage.
             </summary>
         </member>
+        <member name="P:YAF.Core.PostDataHelperWrapper.IsFirstMessage">
+            <summary>
+            Gets a value indicating whether is first message.
+            </summary>
+        </member>
         <member name="P:YAF.Core.PostDataHelperWrapper.CanThankPost">
             <summary>
             Gets a value indicating whether CanThankPost.
@@ -13411,7 +13416,7 @@
             Initializes a new instance of the <see cref="T:YAF.Core.Tasks.PruneTopicTask"/> class.
             </summary>
         </member>
-        <member name="M:YAF.Core.Tasks.PruneTopicTask.Start(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+        <member name="M:YAF.Core.Tasks.PruneTopicTask.Start(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
             <summary>
             The start.
             </summary>

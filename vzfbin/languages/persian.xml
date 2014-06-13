@@ -1024,6 +1024,8 @@
     <Resource tag="AVATAR_UPLOAD_HELP">کاربران می توانند آواتار بارگذاری کنند؟</Resource>
     <Resource tag="AVATAR_WIDTH">عرض آواتار :</Resource>
     <Resource tag="AVATAR_WIDTH_HELP">حداکثر عرض برای آواتار.</Resource>
+    <Resource tag="BOARDTAGPERPAGE">Number of tags per page.</Resource>
+    <Resource tag="BOARDTAGPERPAGE_HELP">The number of tags displayed on board page.</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER">فعال سازی CAPTCHA/reCAPTCHA برای ثبت نام :</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER_HELP">برای ثبت نام کاربران را ملزم به ورود CAPTCHA می کند.</Resource>
     <Resource tag="CAPTCHA_GUEST_POSTING">فعال سازی reCAPTCHA برای ارسال های میهمان ها.</Resource>
@@ -1355,6 +1357,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="SHOW_ATOM_LINKS_HELP">فعال/غیرفعال کردن پیوند های Atom در انجمن.</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS">نمایش آواتار ها در فهرست گیری موضوعی:</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">با استفاده از این گزینه صفحات موضوعات تصاویر آواتار را نمایش خواهند داد.</Resource>
+    <Resource tag="SHOW_BOARDTAGS">Display board tags.</Resource>
+    <Resource tag="SHOW_BOARDTAGS_HELP">Display board tags on the main page.</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE">نمایش کراولر ها در لیست کاربران فعال:</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE_HELP">با انتخاب این گزینه کراولر ها در لیست کاربران فعال نمایش داده خواهد شد.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES">نمایش پیام های حذف شده:</Resource>
@@ -1586,11 +1590,15 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="MSG_TASK">زمانبندی فرمان اصلاح</Resource>
     <Resource tag="PRUNE_DAYS">سن حداقل را به روز وارد کنید:</Resource>
     <Resource tag="PRUNE_DAYS_HELP">موضوعاتی با آخرین ارسال قدیمی تر از این حذف خواهند شد.</Resource>
+    <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
+    <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>
     <Resource tag="PRUNE_FORUM">انجمن:</Resource>
     <Resource tag="PRUNE_FORUM_HELP">انجمنی را انتخاب کنید.</Resource>
     <Resource tag="PRUNE_INFO">نکته : فرمان اصلاح هم اکنون در حال اجراست. تا اتمام این فرمان فرمان جدیدی قابل اجرا نیست.</Resource>
     <Resource tag="PRUNE_PERMANENT">حذف دائم از پایگه داده:</Resource>
     <Resource tag="PRUNE_PERMANENT_HELP">تمام موضوعات مشخص شده با عنوان حذف شده حذف دائم خواهند شد.</Resource>
+    <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
+    <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
     <Resource tag="PRUNE_START">آغاز فرمان اصلاح</Resource>
     <Resource tag="TITLE">اصلاح موضوعات</Resource>
   </page>
@@ -1941,6 +1949,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="BUTTON_EDIT">ویرایش</Resource>
     <Resource tag="BUTTON_EDIT_TT">ویرایش این ارسال</Resource>
     <Resource tag="BUTTON_EDITALBUMIMAGES">ارسال/حذف عکسها</Resource>
+    <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
+    <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
     <Resource tag="BUTTON_LOCKTOPIC">قفل عنوان</Resource>
     <Resource tag="BUTTON_LOCKTOPIC_TT">قفل این عنوان</Resource>
     <Resource tag="BUTTON_MODERATE">مدیریت</Resource>
@@ -1962,6 +1972,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="BUTTON_REPLY">پاسخ</Resource>
     <Resource tag="BUTTON_REPLY_TT">پاسخ به پیغام</Resource>
     <Resource tag="BUTTON_RESETCOVER">حذف روی جلد</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
     <Resource tag="BUTTON_RETWEET">Retweet</Resource>
     <Resource tag="BUTTON_RETWEET_TT">Retweet this Message</Resource>
     <Resource tag="BUTTON_SETCOVER">انتخاب به عنوان روی جلد</Resource>
@@ -4229,6 +4241,8 @@ Spoiler Content
     <Resource tag="CONFIRM_DELETE">آیا این عنوان حذف شود?</Resource>
     <Resource tag="CONFIRM_DELETE_USER">Delete this user?</Resource>
     <Resource tag="CONFIRM_DELETETOPICLINK">حذف پیوند موضوع؟ خود موضوع حذف نخواهد شد.</Resource>
+    <Resource tag="CONFIRM_ERASE">Do you really want completely delete the topic?</Resource>
+    <Resource tag="CONFIRM_RESTORE">Do you really want restore the topic?</Resource>
     <Resource tag="DELETED">عنوان حذف شد.</Resource>
     <Resource tag="EDIT">ویرایش</Resource>
     <Resource tag="INVITE">دعوت کاربر</Resource>

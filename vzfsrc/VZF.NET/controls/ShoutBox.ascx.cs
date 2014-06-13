@@ -25,6 +25,7 @@ namespace VZF.Controls
     using VZF.Data.Common;
     using VZF.Utils;
 
+    using YAF;
     using YAF.Classes;
     using YAF.Core;
     using YAF.Types;
@@ -114,6 +115,7 @@ namespace VZF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            var dd = Page.FindControlRecursiveAs<Forum>("forum").BoardID;
             if (!this.Get<YafBoardSettings>().ShowShoutbox
                                          && !this.Get<IPermissions>()
                                                 .Check(this.Get<YafBoardSettings>().ShoutboxViewPermissions))

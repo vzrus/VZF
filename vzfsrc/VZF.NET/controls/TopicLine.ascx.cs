@@ -230,6 +230,11 @@ namespace VZF.Controls
             return false;
         }
 
+        public object TopicMovedID()
+        {
+            return TopicRow["TopicMovedID"].ToType<int?>();
+        }
+
         /// <summary>
         /// Create pager for post.
         /// </summary>

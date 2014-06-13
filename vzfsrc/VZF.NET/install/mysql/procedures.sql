@@ -444,6 +444,8 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_poll_update;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_prune;
 --GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_restore;
+--GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_save;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_updatelastpost;
@@ -3014,7 +3016,7 @@ WHERE ForumID = i_ForumID;
    DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
    LOOP
            FETCH topic_cursor INTO itmpTopicID;           
-           CALL {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, 1 , 1);
+           CALL {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, null, 0, 1);
    END LOOP;          
    END;
            CLOSE topic_cursor;
@@ -4244,15 +4246,18 @@ BEGIN
                                JOIN {databaseSchema}.{objectQualifier}Topic y 
                                   ON y.TopicID=x.TopicID 
                                    WHERE y.ForumID = i_ForumID 
-                                     AND SIGN(y.Flags & 16) >= 1 
-                                       AND SIGN(y.Flags & 8) = 0 
-                                          AND SIGN(x.Flags & 8) = 0 ),
+								   -- message is approved
+                                     AND (x.Flags & 16) = 16
+									 -- topic is not deleted
+                                       AND (y.Flags & 8) != 8
+									   -- message is not deleted
+                                          AND (x.Flags & 8) != 8),
         NumTopics = (SELECT COUNT(distinct x.TopicID) FROM {databaseSchema}.{objectQualifier}Topic x 
                                JOIN {databaseSchema}.{objectQualifier}Message y 
                                   ON y.TopicID=x.TopicID 
                                    WHERE x.ForumID = i_ForumID 
-                                    AND (y.Flags & 16) > 0 AND (y.Flags & 8)= 0
-                                           AND SIGN(x.Flags & 8) = 0 )
+                                    AND (y.Flags & 16) = 16 AND (y.Flags & 8) <> 8
+                                           AND (x.Flags & 8) <> 8 )
     WHERE ForumID=i_ForumID;
 END;
 --GO
@@ -5163,7 +5168,7 @@ BEGIN
     
     /* Delete topic if there are no more messages*/
     SELECT COUNT(1) INTO ici_MessageCount FROM {databaseSchema}.{objectQualifier}Message WHERE TopicID = ici_TopicID AND (Flags & 8)=0;
-    IF ici_MessageCount=0 THEN CALL {databaseSchema}.{objectQualifier}topic_delete (ici_TopicID, 1, i_EraseMessage); END IF;
+    IF ici_MessageCount=0 THEN CALL {databaseSchema}.{objectQualifier}topic_delete (ici_TopicID, null, 0, i_EraseMessage); END IF;
  
     /*UPDATE lastpost*/
     CALL {databaseSchema}.{objectQualifier}topic_updatelastpost (ici_ForumID,ici_TopicID);
@@ -5245,7 +5250,7 @@ BEGIN
  
     /* Delete topic if there are no more messages*/
     SELECT COUNT(1) INTO ici_MessageCount FROM {databaseSchema}.{objectQualifier}Message WHERE TopicID = ici_TopicID AND (Flags & 8)=0;
-    IF ici_MessageCount=0 THEN CALL {databaseSchema}.{objectQualifier}topic_delete (ici_TopicID,0,0); END IF;
+    IF ici_MessageCount=0 THEN CALL {databaseSchema}.{objectQualifier}topic_delete (ici_TopicID,null,0,1); END IF;
     /*update lastpost*/
     CALL {databaseSchema}.{objectQualifier}topic_updatelastpost (ici_ForumID,ici_TopicID);
     CALL {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_ForumID);
@@ -5568,7 +5573,7 @@ IF ici_Position IS NULL THEN set ici_Position = 0; END IF;
 	SET ici_EraseOldTopic = 1;
 	END IF;
 
-    CALL {databaseSchema}.{objectQualifier}topic_delete(ici_OldTopicID,0,ici_EraseOldTopic); 
+    CALL {databaseSchema}.{objectQualifier}topic_delete(ici_OldTopicID,null,0, ici_EraseOldTopic); 
     END IF;
  
     -- update lastpost
@@ -5998,7 +6003,7 @@ BEGIN
                 ON c.ForumID = b.ForumID
     WHERE
         (i_Minutes IS NULL 
-                 OR CAST(ROUND((i_UTCTIMESTAMP-b.LastUpdate)/60) AS SIGNED)>i_Minutes) AND
+                 OR date_add(b.LastUpdate, interval i_Minutes minute) < i_UTCTIMESTAMP) AND
         (i_NntpForumID IS NULL OR b.NntpForumID=i_NntpForumID) AND
         a.BoardID=i_BoardID AND
         (i_Active IS NULL OR b.Active=i_Active)
@@ -6127,8 +6132,8 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}nntptopic_savemessage(
     i_UserName		VARCHAR(128),
     i_IP			VARCHAR(39),
     i_Posted			DATETIME, 
-    i_ExternalMessageId	VARCHAR(64),
-    i_ReferenceMessageId VARCHAR(64),
+    i_ExternalMessageId	VARCHAR(255),
+    i_ReferenceMessageId VARCHAR(255),
     i_UTCTIMESTAMP DATETIME
  )  
  BEGIN   
@@ -6164,15 +6169,16 @@ declare ici_ReplyTo	INT DEFAULT NULL;
         SELECT LAST_INSERT_ID() INTO ici_TopicID; 
 
         INSERT INTO {databaseSchema}.{objectQualifier}NntpTopic(NntpForumID,Thread,TopicID)
-        VALUES (i_NntpForumID,'',ici_TopicID);
+        VALUES (i_NntpForumID,'',ici_TopicID);		
+			
         end if;
         end if;
     END IF;	
     IF ici_TopicID IS NOT NULL
     then
-
 	 CALL {databaseSchema}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Body,i_UserName,i_IP,i_Posted,ici_ReplyTo,null, i_ExternalMessageId, i_ReferenceMessageId, null,17,i_UTCTIMESTAMP,ici_MessageID);
-    --    CALL {databaseSchema}.{objectQualifier}message_save( ici_TopicID, i_UserID, i_Body, i_UserName, i_IP, i_Posted, cic_ReplyTo, NULL, i_ExternalMessageId, i_ReferenceMessageId,null, 17, NULL,i_UTCTIMESTAMP, ici_MessageID); 
+
+   
     END if;	
 
  
@@ -6181,9 +6187,10 @@ declare ici_ReplyTo	INT DEFAULT NULL;
     WHERE ForumID=ici_ForumID AND (Flags & 4)=0) THEN
     
         UPDATE {databaseSchema}.{objectQualifier}User SET NumPosts=NumPosts+1 WHERE UserID=i_UserID;
-    END IF;
-    
-    /* update topic */
+		
+    END IF;    
+
+    CALL {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
     UPDATE {databaseSchema}.{objectQualifier}Topic SET 
         LastPosted		= i_Posted,
         LastMessageID	= ici_MessageID,
@@ -6197,10 +6204,12 @@ declare ici_ReplyTo	INT DEFAULT NULL;
         LastMessageID	= ici_MessageID,
         LastUserID		= i_UserID,
         LastUserName	= i_UserName
-    WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted)));
+    WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted))); 
+
+
 -- CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_TopicID);
-CALL {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
-CALL {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
+-- CALL {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
+
 
     /* update forum 
 
@@ -7248,8 +7257,7 @@ INTO  	@PostTotalRowsNumber,
         g.Flags AS ForumFlags,
         m.MessageID,
         m.Posted,
-        d.Topic AS Subject,
-        d.Status,
+        d.Topic AS Subject,       
         m.Message AS Message, 
 		m.Description as MessageDescription, 
         m.UserID,
@@ -7265,8 +7273,7 @@ INTO  	@PostTotalRowsNumber,
         m.ExternalMessageId,
         m.ReferenceMessageId,
         IfNull(m.UserName,b.Name) AS UserName,
-        IfNull(m.UserDisplayName,b.DisplayName) AS DisplayName,
-        b.DisplayName,
+        IfNull(m.UserDisplayName,b.DisplayName) AS DisplayName,       
         b.Suspended,
         b.Joined,
         b.Avatar,
@@ -8224,23 +8231,24 @@ END;
 
 --GO
     /* STORED PROCEDURE CREATED BY VZ-TEAM */    
-    CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_delete (i_TopicID int,i_UpdateLastPost TINYINT(1),i_EraseTopic TINYINT(1))
+    CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_delete (i_TopicID int,i_TopicMovedID INT,i_UpdateLastPost TINYINT(1),i_EraseTopic TINYINT(1))
     BEGIN
     /*SET NOCOUNT ON*/
     DECLARE ici_ForumID INT;
     DECLARE ici_ForumID2 INT;
     DECLARE ici_pollID INT;
-    DECLARE ici_Deleted INT;
-	DECLARE ici_TopicMovedID INT;
+    DECLARE ici_Deleted INT;	
+		
+    IF (i_TopicMovedID = i_TopicID) THEN
+	-- delete link only	   
+    DELETE FROM {databaseSchema}.{objectQualifier}Topic where TopicMovedID = i_TopicID;	
+    ELSE
 
-	SELECT ForumID, TopicMovedID INTO ici_ForumID, ici_TopicMovedID  FROM  {databaseSchema}.{objectQualifier}Topic  WHERE TopicID=i_TopicID;
-    IF (ici_TopicMovedID IS NOT NULL) THEN	   
-    DELETE FROM {databaseSchema}.{objectQualifier}Topic where TopicID = i_TopicID;
-    ELSE  
+	SELECT ForumID INTO ici_ForumID FROM  {databaseSchema}.{objectQualifier}Topic  WHERE TopicID=i_TopicID;
 	UPDATE  {databaseSchema}.{objectQualifier}Topic SET LastMessageID = NULL 
     WHERE TopicID = i_TopicID; 
 
-  UPDATE  {databaseSchema}.{objectQualifier}Forum SET
+    UPDATE  {databaseSchema}.{objectQualifier}Forum SET
     LastTopicID = NULL,
     LastMessageID = NULL,
     LastUserID = NULL,
@@ -8254,7 +8262,7 @@ END;
     UPDATE  {databaseSchema}.{objectQualifier}Active SET TopicID = NULL WHERE TopicID = i_TopicID;
 
     /*delete messages and topics*/
-    DELETE FROM  {databaseSchema}.{objectQualifier}NntpTopic WHERE TopicID = i_TopicID;
+   
     UPDATE {databaseSchema}.{objectQualifier}Topic SET PollID = NULL WHERE TopicID = i_TopicID AND TopicMovedID IS NOT NULL;
     
 
@@ -8262,6 +8270,7 @@ END;
     UPDATE  {databaseSchema}.{objectQualifier}Topic SET `Flags` = `Flags` | 8 WHERE TopicID = i_TopicID OR TopicMovedID = i_TopicID;
     UPDATE  {databaseSchema}.{objectQualifier}Message SET `Flags` = `Flags` | 8 WHERE TopicID = i_TopicID;
     ELSE
+	        DELETE FROM  {databaseSchema}.{objectQualifier}NntpTopic WHERE TopicID = i_TopicID;
          -- remove polls	
             SELECT  pollID INTO ici_pollID FROM  {databaseSchema}.{objectQualifier}Topic WHERE TopicID = i_TopicID;
     IF ici_pollID IS NOT NULL THEN
@@ -8271,9 +8280,9 @@ END;
 
 	-- remove tags references
 	UPDATE {databaseSchema}.{objectQualifier}Tags set TagCount = TagCount - 1 where TagID in (select TagID from {databaseSchema}.{objectQualifier}TopicTags  WHERE TopicID = i_TopicID);
-	DELETE FROM {databaseSchema}.{objectQualifier}TopicTags  WHERE TopicID IN (select topicid from {databaseSchema}.{objectQualifier}Topic where TopicID = i_TopicID or TopicMovedID = i_TopicID); 
+	DELETE FROM {databaseSchema}.{objectQualifier}TopicTags  where TopicID = i_TopicID = i_TopicID; 
 	      
-    DELETE FROM  {databaseSchema}.{objectQualifier}topic WHERE TopicMovedID = i_TopicID;	
+    DELETE FROM  {databaseSchema}.{objectQualifier}Topic WHERE TopicMovedID = i_TopicID;	
     
     DELETE FROM  {databaseSchema}.{objectQualifier}Attachment
     WHERE MessageID IN
@@ -8438,7 +8447,7 @@ END;
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_info
  (
-    i_TopicID INT,
+    i_TopicID INT,	
     i_ShowDeleted TINYINT(1),
     i_GetTags TINYINT(1)
  )
@@ -8498,6 +8507,7 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}announcements_list
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
     i_ShowMoved TINYINT(1),
+	i_ShowDeleted TINYINT(1),
     i_FindLastRead TINYINT(1),
     i_GetTags TINYINT(1),
 	i_UTCTIMESTAMP DATETIME
@@ -8527,8 +8537,8 @@ BEGIN
         INTO ici_post_priorityrowsnumber
     FROM {databaseSchema}.{objectQualifier}Topic c
     WHERE c.ForumID = i_ForumID		
-        AND	(c.Priority=2) 
-        AND	(c.Flags & 8) <> 8
+        AND	(c.Priority=2)	
+        AND	(i_ShowDeleted = 1 or (c.Flags & 8) <> 8)
         AND	(c.TopicMovedID IS NOT NULL OR c.NumPosts > 0) 
         AND
         ((i_ShowMoved = 1)
@@ -8556,7 +8566,7 @@ t.LastPosted INTO @i_FirstSelectLastPosted
     where
         t.ForumID = ',i_ForumID,'	    
         AND	(t.Priority=2)
-        AND	(t.Flags & 8) <> 8
+         AND (',i_ShowDeleted,' = 1 or (t.Flags & 8) <> 8)
         AND	(t.TopicMovedID IS NOT NULL OR t.NumPosts > 0) 
         AND
         ((',i_ShowMoved,' = 1)
@@ -8628,7 +8638,7 @@ t.LastPosted INTO @i_FirstSelectLastPosted
         join {databaseSchema}.{objectQualifier}Forum d on d.ForumID=c.ForumID	
         WHERE c.ForumID = ',i_ForumID,'
         AND	(Priority=2) AND c.LastPosted <= ''',COALESCE(@i_FirstSelectLastPosted,UTC_TIMESTAMP()),'''
-        AND	(c.Flags & 8) <> 8
+         AND (',i_ShowDeleted,' = 1 or (c.Flags & 8) <> 8)
         AND	((c.TopicMovedID IS NOT NULL) OR (c.NumPosts > 0)) 
         AND
         ((',i_ShowMoved,' = 1)
@@ -8653,6 +8663,7 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_list
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
     i_ShowMoved TINYINT(1),
+	i_ShowDeleted TINYINT(1),
     i_FindLastRead TINYINT(1),
     i_GetTags TINYINT(1),
 	i_UTCTIMESTAMP DATETIME
@@ -8683,7 +8694,7 @@ BEGIN
     FROM {databaseSchema}.{objectQualifier}Topic c
     WHERE c.ForumID = i_ForumID		
         AND (c.Priority = 1) 
-        AND	(c.Flags & 8) <> 8
+          AND (i_ShowDeleted = 1 or (c.Flags & 8) <> 8)
         AND	(c.TopicMovedID IS NOT NULL OR c.NumPosts > 0) 
         AND
         ((i_ShowMoved = 1)
@@ -8700,7 +8711,7 @@ BEGIN
     WHERE c.ForumID = i_ForumID		
         AND	((Priority>0 AND c.Priority <> 2) 
         OR (c.Priority <= 0 AND c.LastPosted >= i_SinceDate )) 
-        AND	(c.Flags & 8) <> 8
+         AND (i_ShowDeleted = 1 or (c.Flags & 8) <> 8)
         AND	(c.TopicMovedID IS NOT NULL OR c.NumPosts > 0) 
         AND
         ((i_ShowMoved = 1)
@@ -8735,7 +8746,7 @@ t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
     where
         t.ForumID = ',i_ForumID,'	    
     AND	(( (',ici_shiftsticky,' = 1) and (t.Priority > 0 AND t.Priority <> 2)) OR (t.Priority <= 0 AND t.LastPosted >= ''',i_SinceDate,''' )) 
-        AND	(t.Flags & 8) <> 8
+          AND (',i_ShowDeleted,' = 1 or (t.Flags & 8) <> 8)
         AND	(t.TopicMovedID IS NOT NULL OR t.NumPosts > 0) 
         AND
         ((',i_ShowMoved,' = 1)
@@ -8809,7 +8820,7 @@ t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
         join {databaseSchema}.{objectQualifier}Forum d on d.ForumID=c.ForumID	
         WHERE c.ForumID = ',i_ForumID,'
         AND	(( (',@Shiftsticky,' = 1) and (c.Priority>0 AND c.Priority<>2)) OR (c.Priority <=0 AND c.LastPosted <= ''',COALESCE(@i_FirstSelectLastPosted,UTC_TIMESTAMP()),''' )) 
-        AND	(c.Flags & 8) <> 8
+         AND (',i_ShowDeleted,' = 1 or (c.Flags & 8) <> 8)
         AND	((c.TopicMovedID IS NOT NULL) OR (c.NumPosts > 0)) 
         AND
         ((',i_ShowMoved,' = 1)
@@ -9016,14 +9027,12 @@ CREATE  PROCEDURE {databaseSchema}.{objectQualifier}topic_prune(
                 i_BoardID INT,
                 i_ForumID INT,
                 i_Days    INT,
-                i_PermDelete TINYINT(1))                
-BEGIN        
-       
-        DECLARE  iciTopicID INT;
-        DECLARE  iciCount INT DEFAULT 0;
-        DECLARE ici_ForumID INT DEFAULT NULL;       
+                i_DeletedOnly TINYINT(1),
+				i_UTCTIMESTAMP DATETIME)                
+BEGIN  
+  
               
-        DECLARE  icic1 CURSOR FOR SELECT TopicID
+        SELECT yt.TopicID
         FROM  {databaseSchema}.{objectQualifier}Topic yt
         INNER JOIN
         {databaseSchema}.{objectQualifier}Forum yf
@@ -9035,62 +9044,13 @@ BEGIN
         yf.CategoryID = yc.CategoryID
         WHERE
             yc.BoardID = i_BoardID AND
-            yt.ForumID = ici_ForumID AND
+           (i_ForumID IS NULL OR yt.ForumID = i_ForumID) AND
             Priority = 0 AND
             (yt.Flags & 512) = 0 AND 			
                 -- not flagged as persistent 
-         DATEDIFF(UTC_DATE(),LastPosted) > i_Days;           
-        
-        DECLARE icic2 CURSOR FOR SELECT TopicID
-        FROM   {databaseSchema}.{objectQualifier}Topic
-        WHERE  Priority = 0
-        AND (Flags & 512) = 0
-        AND  DATEDIFF(UTC_DATE(),LastPosted) > i_Days;     
-
-    
-     IF i_ForumID IS NOT NULL AND i_ForumID >0 THEN 
-     SET ici_ForumID = i_ForumID;
-     END IF;
-     
-     IF ici_ForumID = 0 THEN
-     SET ici_ForumID = NULL;
-     END IF;
-
-     IF ici_ForumID IS NOT NULL AND ici_ForumID > 0 THEN
-     OPEN icic1;
-     BEGIN
-       DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
-     LOOP 
-       FETCH icic1  INTO iciTopicID; 
-       IF (iciCount % 100 = 0) THEN SELECT SLEEP(.5); END IF;		
-       CALL {databaseSchema}.{objectQualifier}topic_delete(iciTopicID , 0, i_PermDelete);
-       SET iciCount = iciCount + 1;     
-     END LOOP;
-     END;
-     
-     CLOSE icic1;
-     ELSE
-     OPEN icic2;
-      BEGIN
-   DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
-   LOOP
-     FETCH icic2  INTO iciTopicID;  
-     CALL {databaseSchema}.{objectQualifier}topic_delete(iciTopicID , 0, i_PermDelete);
-     SET iciCount = iciCount + 1;
-     END LOOP;
-     END;
-     CLOSE icic2;
-     END IF;
-
-
-
-     /*DEALLOCATE icic
-     -- This takes forever with many posts...
-     --CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(null)
-     CALL {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_ForumID);
-     */
-     SELECT iciCount AS COUNT;
-     END;
+         DATEDIFF(UTC_DATE(),yt.LastPosted) > i_Days
+		 AND (i_DeletedOnly = 0 OR (yt.Flags & 8) = 8);
+		  END;
      --GO
 
 
@@ -14227,8 +14187,8 @@ begin
     FROM {databaseSchema}.{objectQualifier}Tags tg 
     JOIN  {databaseSchema}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
     JOIN  {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
-    JOIN  {databaseSchema}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.ForumID=i_ForumID) AND aa.UserID = i_PageUserID	
+    JOIN  {databaseSchema}.{objectQualifier}ActiveAccess aa ON (aa.ForumID = t.ForumID AND aa.UserID = i_PageUserID)
+    WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.ForumID=i_ForumID) AND (t.Flags & 8) <> 8 
     AND     
          LOWER(tg.Tag) LIKE (CASE 
             WHEN (i_BeginsWith = 0 and i_SearchText != '') THEN PI_Literals0 
@@ -14245,7 +14205,8 @@ begin
     JOIN  {databaseSchema}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
     JOIN  {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseSchema}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and (i_ForumID IS NULL OR t.forumid=i_ForumID) AND aa.UserID = i_PageUserID
+    WHERE BoardID=i_BoardID and (i_ForumID IS NULL OR t.forumid=i_ForumID) AND aa.UserID = i_PageUserID 	
+	AND (t.Flags & 8) <> 8 
     AND     
          LOWER(tg.Tag) LIKE (CASE 
             WHEN (i_BeginsWith = 0 and i_SearchText != '') THEN PI_Literals0 
@@ -14263,7 +14224,8 @@ begin
     JOIN {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN {databaseSchema}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
           WHERE BoardID=', i_BoardID,' and  (',IFNULL(i_ForumID,0),' = 0 OR t.ForumID = ',IFNULL(i_ForumID,0),') AND aa.UserID = ',i_PageUserID,'	
-        AND     
+        AND (t.Flags & 8) <> 8 
+	    AND     
          LOWER(tg.Tag) LIKE (CASE 
             WHEN (',COALESCE(i_BeginsWith,0),' = 0  AND ''',i_SearchText,''' != '''') THEN ''',PI_Literals0,'''    
             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND ''',i_SearchText,''' != '''') THEN ''',PI_Literals1,'''               
@@ -14729,5 +14691,22 @@ begin
              END IF;  
 			  END IF;              
 end;
+--GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_restore(i_TopicID INT, i_UserID INT)
+BEGIN
+DECLARE ici_ForumID INT;
+    UPDATE {databaseSchema}.{objectQualifier}Topic SET Flags = Flags ^ 8 
+    WHERE TopicID = i_TopicID and (Flags & 8) = 8;
+	UPDATE {databaseSchema}.{objectQualifier}Topic SET Flags = Flags ^ 8 
+    WHERE TopicMovedID = i_TopicID and (Flags & 8) = 8;
+	UPDATE {databaseSchema}.{objectQualifier}Message SET Flags = Flags ^ 8 
+    WHERE TopicID = i_TopicID and (Flags & 8) = 8;
+	SELECT ForumID INTO ici_ForumID FROM {databaseSchema}.{objectQualifier}Topic where TopicID = i_TopicID;
+    CALL  {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_ForumID);   	
+    CALL  {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID); 
+       
+END;
 --GO
 

@@ -76,6 +76,15 @@ namespace YAF.Pages {
         protected global::VZF.Controls.ThemeButton AddUser;
         
         /// <summary>
+        /// RestoreTopic control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton RestoreTopic;
+        
+        /// <summary>
         /// DeleteTopic control.
         /// </summary>
         /// <remarks>
@@ -83,6 +92,15 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.ThemeButton DeleteTopic;
+        
+        /// <summary>
+        /// EraseTopic control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton EraseTopic;
         
         /// <summary>
         /// PagerTop control.
@@ -148,6 +166,15 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.Repeater topiclist;
         
         /// <summary>
+        /// RestoreTopic2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton RestoreTopic2;
+        
+        /// <summary>
         /// DeleteTopics2 control.
         /// </summary>
         /// <remarks>
@@ -155,6 +182,15 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.ThemeButton DeleteTopics2;
+        
+        /// <summary>
+        /// EraseTopic2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton EraseTopic2;
         
         /// <summary>
         /// PagerBottom control.

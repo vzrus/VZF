@@ -8,7 +8,17 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Classes" %>
 <%@ Import Namespace="YAF.Types.Interfaces.Extensions" %>
-<tr class="<%=this.IsAlt ? "topicRow_Alt post_alt" : "topicRow post" %>">
+<% string topicClass;
+    if ((this.TopicRow["TopicFlags"].ToType<int>() & 8) == 8)
+              {
+                 topicClass = "topicRow topicDeleted";
+              }
+              else
+              {
+                 topicClass = this.IsAlt ? "topicRow_Alt post_alt" : "topicRow post";
+              }  %>
+
+<tr class="<%=topicClass%>">
     <asp:PlaceHolder ID="SelectionHolder" runat="server" Visible="false">
         <td>
             <asp:CheckBox ID="chkSelected" runat="server" />

@@ -739,7 +739,12 @@
         </member>
         <member name="P:YAF.Classes.YafBoardSettings.LogError">
             <summary>
-            Gets or sets LogError.
+            Gets or sets a value indicating whether log error.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.YafBoardSettings.ShowBoardTags">
+            <summary>
+            Gets or sets a value indicating whether show board tags.
             </summary>
         </member>
         <member name="P:YAF.Classes.YafBoardSettings.LogWarning">
@@ -850,6 +855,11 @@
         <member name="P:YAF.Classes.YafBoardSettings.TagTopicMaxCount">
             <summary>
             Gets or sets a value indicating Tag Topic Max Count.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.YafBoardSettings.BoardTagsPerPage">
+            <summary>
+            Gets or sets the board tags per page.
             </summary>
         </member>
         <member name="P:YAF.Classes.YafBoardSettings.ShowShareTopicTo">

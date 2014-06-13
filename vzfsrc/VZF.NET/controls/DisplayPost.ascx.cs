@@ -98,6 +98,11 @@ namespace VZF.Controls
         public int PostCount { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether is first.
+        /// </summary>
+        public bool IsFirst { get; set; }
+
+        /// <summary>
         ///   Gets Post Data helper functions.
         /// </summary>
         public PostDataHelperWrapper PostData
@@ -565,7 +570,7 @@ namespace VZF.Controls
                 this.MovePost.Visible = false;
             }
 
-            if (this.PostData.CanDeletePost && !this.PostData.PostDeleted && !this.PostData.IsLocked)
+            if (!this.PostData.IsFirstMessage && this.PostData.CanDeletePost && !this.PostData.PostDeleted && !this.PostData.IsLocked)
             {
                 this.Delete.Visible = true;
                 this.Delete.NavigateUrl = YafBuildLink.GetLinkNotEscaped(

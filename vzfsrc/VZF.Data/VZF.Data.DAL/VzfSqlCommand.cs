@@ -453,14 +453,12 @@ namespace VZF.Data.DAL
         /// </returns>
         public object ExecuteScalar(CommandType commandType, bool inTransaction)
         {
-            inTransaction = false;
             var conn = this.GetConnection();
 
             try
             {
                 using (var cmd = conn.CreateCommand())
                 {
-                 
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandType = commandType;
                    
@@ -721,7 +719,7 @@ namespace VZF.Data.DAL
             return this.ExecuteDataTableFromReader(
                 commandBehavior,
                 commandType,
-                false,
+                inTransaction,
                 this._isolationLevel);
         }
 
@@ -768,16 +766,47 @@ namespace VZF.Data.DAL
                     try
                     {
                         Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
-                        IDataReader reader;
+                      
                         if (inTransaction)
                         {
                             using (var transaction = conn.BeginTransaction(isolationLevel))
                             {
                                 cmd.Transaction = transaction;
-                                reader = cmd.ExecuteReader(commandBehavior);
+                                using (var reader = cmd.ExecuteReader(commandBehavior))
+                                {
+                                    // Retrieve column schema into our DataTable.                          
+                                    dt = this.GetTableColumns(dt, reader);
+                                    if (reader.FieldCount > 0)
+                                    {
+                                        while (reader.Read())
+                                        {
+                                            var dr = dt.NewRow();
 
-                                // Retrieve column schema into our DataTable.                          
+                                            foreach (DataColumn column in dt.Columns)
+                                            {
+                                                dr[column] = TypeChecker(column, reader[column.Ordinal]);
+                                            }
+
+                                            dt.Rows.Add(dr);
+                                        }
+                                    }
+                                }
+
+                                transaction.Commit();
+
+                                dt.AcceptChanges();
+                               
+                                return dt;
+                            }
+                        }
+                        else
+                        {
+                            cmd.Transaction = this._transaction;
+                            using (var reader = cmd.ExecuteReader(commandBehavior))
+                            {
+                                // Retrieve column schema into our DataTable.                        
                                 dt = this.GetTableColumns(dt, reader);
+
                                 if (reader.FieldCount > 0)
                                 {
                                     while (reader.Read())
@@ -792,48 +821,15 @@ namespace VZF.Data.DAL
                                         dt.Rows.Add(dr);
                                     }
                                 }
-
-                                reader.Close();
-
-                                transaction.Commit();
-
-                                dt.AcceptChanges();
-                               
-                                return dt;
                             }
-                        }
-                        else
-                        {
-                            cmd.Transaction = this._transaction;
-                            reader = cmd.ExecuteReader();
-
-                            // Retrieve column schema into our DataTable.                        
-                            dt = this.GetTableColumns(dt, reader);
-
-                            if (reader.FieldCount > 0)
-                            {
-                                while (reader.Read())
-                                {
-                                    var dr = dt.NewRow();
-
-                                    foreach (DataColumn column in dt.Columns)
-                                    {
-                                        dr[column] = TypeChecker(column, reader[column.Ordinal]);
-                                    }
-
-                                    dt.Rows.Add(dr);
-                                }
-                            }
-
-                            reader.Close();
 
                             dt.AcceptChanges();
-                           
                             return dt;
                         }
                     }
                     finally
                     {
+                        
                         cmd.Parameters.Clear();
                         qc.Dispose();
                     }

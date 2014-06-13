@@ -2947,7 +2947,7 @@ BEGIN
 LOOP
   FETCH topic_cursor INTO itmpTopicID;
   EXIT WHEN NOT FOUND;
-  PERFORM {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, true , true);
+  PERFORM {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, null, false , true);
   EXIT WHEN NOT FOUND;
 END LOOP;        
            CLOSE topic_cursor;
@@ -6357,7 +6357,7 @@ BEGIN
     WHERE lastmessageid = i_messageid;  	
  
     -- should it be physically deleter or not
-    IF i_erasemessage IS TRUE THEN
+    IF i_erasemessage THEN
         DELETE FROM {databaseSchema}.{objectQualifier}attachment WHERE messageid = i_messageid;
         DELETE FROM {databaseSchema}.{objectQualifier}messagereportedaudit WHERE messageid = i_messageid;
         DELETE FROM {databaseSchema}.{objectQualifier}messagereported WHERE messageid = i_messageid;
@@ -6383,7 +6383,7 @@ BEGIN
     WHERE topicid = ici_topicid 
     AND (flags & 8)=0;
     IF ici_MessageCount=0 
-    THEN PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_topicid, true, i_erasemessage); 
+    THEN PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_topicid, null, false, i_erasemessage); 
     END IF;
  
     -- UPDATE lastpost
@@ -6393,10 +6393,10 @@ BEGIN
     -- UPDATE topic numposts
     UPDATE {databaseSchema}.{objectQualifier}topic
      SET numposts = 
-     (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}message x 
-     WHERE x.topicid={databaseSchema}.{objectQualifier}topic.topicid 
-     and x.isapproved IS TRUE and x.isdeleted IS NOT TRUE)
-    WHERE topicid = ici_topicid;
+     (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}message  
+     WHERE {databaseSchema}.{objectQualifier}message.topicid={databaseSchema}.{objectQualifier}topic.topicid 
+     and {databaseSchema}.{objectQualifier}message.isapproved IS TRUE and {databaseSchema}.{objectQualifier}message.isdeleted IS NOT TRUE)
+    WHERE {databaseSchema}.{objectQualifier}topic.topicid = ici_topicid;
     RETURN;
 END; $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -6472,19 +6472,18 @@ BEGIN
     FROM {databaseSchema}.{objectQualifier}message 
     WHERE topicid = ici_topicid AND (flags & 8)=0;
     IF ici_MessageCount=0 THEN 
-    PERFORM {databaseSchema}.{objectQualifier}topic_delete(ici_topicid,false,false); 
+    PERFORM {databaseSchema}.{objectQualifier}topic_delete(ici_topicid,null,false,true); 
     END IF;
     -- update lastpost
     PERFORM {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_topicid);
     PERFORM {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
     -- update topic numposts
-    UPDATE {databaseSchema}.{objectQualifier}topic 
-    SET numposts = 
-    (select count(1) from {databaseSchema}.{objectQualifier}message x 
-    WHERE x.topicid={databaseSchema}.{objectQualifier}topic.topicid 
-    and x.isapproved IS TRUE and x.isdeleted IS NOT TRUE )
-    WHERE topicid = ici_topicid;
-    RETURN;
+    UPDATE {databaseSchema}.{objectQualifier}topic
+     SET numposts = 
+     (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}message  
+     WHERE {databaseSchema}.{objectQualifier}message.topicid={databaseSchema}.{objectQualifier}topic.topicid 
+     and {databaseSchema}.{objectQualifier}message.isapproved IS TRUE and {databaseSchema}.{objectQualifier}message.isdeleted IS NOT TRUE)
+    WHERE {databaseSchema}.{objectQualifier}topic.topicid = ici_topicid;
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -6867,7 +6866,7 @@ IF ici_Position IS NULL THEN  ici_Position := 0; END IF;
     WHERE topicid = ici_OldTopicID and (flags & 8)=8) THEN	
  ici_eraseoldtopic = true;
  end if;
-	PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_OldTopicID,false,ici_eraseoldtopic); 
+	PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_OldTopicID,null, false,ici_eraseoldtopic); 
 	END IF;
  
      -- update lastpost
@@ -9685,6 +9684,7 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_delete(
                            i_topicid integer, 
+						   i_topicmovedid integer, 
                            i_updatelastpost boolean, 
                            i_erasetopic boolean)
                   RETURNS void AS
@@ -9692,18 +9692,17 @@ $BODY$DECLARE
              ici_ForumID integer;
              ici_ForumID2 integer;
              ici_pollID integer;
-             ici_Deleted integer;
-			 ici_topicmovedid int; 
+             ici_Deleted integer;			 
     BEGIN
-    /*SET NOCOUNT ON*/   
-
-    SELECT forumid, topicmovedid 
-    INTO ici_ForumID, ici_topicmovedid 
-    FROM  {databaseSchema}.{objectQualifier}topic WHERE topicid=i_topicid;
+	 
 	-- just remove link    	
-    IF (ici_topicmovedid IS NOT NULL) THEN	   
-    DELETE FROM {databaseSchema}.{objectQualifier}topic where topicid = ici_topicid; 	 
-    ELSE  
+    IF (i_topicmovedid = i_topicid) THEN	   
+    DELETE FROM {databaseSchema}.{objectQualifier}topic where topicmovedid = i_topicid; 	 
+    ELSE 
+	SELECT forumid
+    INTO ici_ForumID 
+    FROM  {databaseSchema}.{objectQualifier}topic WHERE topicid=i_topicid;
+
     UPDATE  {databaseSchema}.{objectQualifier}topic SET lastmessageid = NULL 
     WHERE topicid = i_topicid; 
 
@@ -9719,11 +9718,9 @@ $BODY$DECLARE
       
    UPDATE  {databaseSchema}.{objectQualifier}active SET topicid = NULL WHERE topicid = i_topicid;
    --delete messages and topics
-   DELETE FROM  {databaseSchema}.{objectQualifier}nntptopic WHERE topicid = i_topicid; 
    
   
-  IF i_erasetopic IS FALSE THEN
-
+  IF i_erasetopic IS FALSE THEN   
     UPDATE  {databaseSchema}.{objectQualifier}topic 
     SET 
     flags = flags | 8
@@ -9734,6 +9731,7 @@ $BODY$DECLARE
       WHERE topicid = i_topicid; 
        
     ELSE
+	DELETE FROM  {databaseSchema}.{objectQualifier}nntptopic WHERE topicid = i_topicid; 
  -- remove polls
     SELECT  pollid INTO ici_pollID FROM  {databaseSchema}.{objectQualifier}topic 
     WHERE topicid = i_topicid;
@@ -9996,7 +9994,7 @@ END;$BODY$
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}topic_info(integer, boolean);
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_info(
-                           i_topicid integer, 
+                           i_topicid integer, 						
                            i_showdeleted boolean,
                            i_gettags boolean)
                   RETURNS SETOF {databaseSchema}.{objectQualifier}topic_info_return_type AS
@@ -10276,6 +10274,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}announcements_list(
                            i_pagesize integer,
                            i_stylednicks boolean,
                            i_showmoved boolean,
+						   i_showdeleted boolean,
                            i_findlastunread boolean,
                            i_gettags boolean,
                            i_utctimestamp timestamp)
@@ -10300,7 +10299,7 @@ BEGIN
     FROM {databaseSchema}.{objectQualifier}topic t 
     WHERE t.forumid = i_forumid		
         AND	(t.priority=2) 
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	(t.topicmovedid IS NOT NULL OR t.numposts > 0) 
         AND
         ((i_showmoved IS TRUE)
@@ -10318,7 +10317,7 @@ BEGIN
     where
         t.forumID = i_forumid	    
         AND	(t.priority=2) 
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	(t.topicmovedid IS NOT NULL OR t.numposts > 0) 
         AND
         ((i_showmoved IS TRUE)
@@ -10403,7 +10402,7 @@ varchar(4000)) AS FirstMessage,
         join {databaseSchema}.{objectQualifier}forum d on d.ForumID=t.ForumID	
         WHERE t.forumid = i_forumid
         AND	(t.priority=2) 
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	((t.topicmovedid IS NOT NULL) OR (t.numposts > 0)) 
         AND
         t.lastposted <= COALESCE(ici_firstselectposted,TIMESTAMP '-infinity')
@@ -10445,6 +10444,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_list(
                            i_pagesize integer,
                            i_stylednicks boolean,
                            i_showmoved boolean,
+						   i_showdeleted boolean,
                            i_findlastunread boolean,
                            i_gettags boolean,
                            i_utctimestamp timestamp)
@@ -10470,7 +10470,7 @@ BEGIN
     FROM {databaseSchema}.{objectQualifier}topic t 
     WHERE t.forumid = i_forumid		
         AND (t.priority=1) 
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	(t.topicmovedid IS NOT NULL OR t.numposts > 0) 
         AND
         ((i_showmoved IS TRUE)
@@ -10488,7 +10488,7 @@ BEGIN
             OR 
             (t.priority <=0 AND t.lastposted>=i_sincedate)
             ) 
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	(t.topicmovedid IS NOT NULL OR t.numposts > 0) 
         AND
         ((i_showmoved IS TRUE)
@@ -10510,7 +10510,7 @@ BEGIN
          OR 
          (t.priority <=0 AND t.lastposted >= i_sincedate)		
          )
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	(t.topicmovedid IS NOT NULL OR t.numposts > 0) 
         AND
         ((i_showmoved IS TRUE)
@@ -10595,7 +10595,7 @@ varchar(4000)) AS FirstMessage,
         join {databaseSchema}.{objectQualifier}forum d on d.ForumID=t.ForumID	
         WHERE t.forumid = i_forumid
         AND	(( (t.priority>0 AND t.priority<>2)) OR (t.priority <=0 AND t.lastposted<= COALESCE(ici_firstselectposted,TIMESTAMP '-infinity'))) 
-        AND	(t.flags & 8) <> 8
+        AND	(i_showdeleted  or (t.flags & 8) <> 8)
         AND	((t.topicmovedid IS NOT NULL) OR (t.numposts > 0)) 
         AND
         ((i_showmoved IS TRUE)
@@ -10745,24 +10745,13 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_prune(
                            i_boardid integer,
                            i_forumid integer, 
                            i_days integer, 
-                           i_permdelete boolean)
-                  RETURNS integer AS
+                           i_deletedonly boolean,
+						   i_utctimestamp timestamp)
+                  RETURNS SETOF integer AS
 $BODY$DECLARE
-             frmnull integer DEFAULT 0;
-             frmnotnull integer DEFAULT 0;
-             iciTopicID integer;
-             iciCount integer DEFAULT 0;
-             ici_ForumID integer:=i_forumid;
-             ref_tprune1 refcursor;
-BEGIN    
-
-
-     /*SET iciCount = 0;*/
-     IF ici_ForumID = 0 THEN
-    ici_ForumID := NULL;END IF;
-
-     IF ici_ForumID IS NOT NULL THEN
-     OPEN ref_tprune1 FOR SELECT topicid
+             _rec RECORD;     
+BEGIN 
+   FOR _rec IN  SELECT yt.topicid
         FROM  {databaseSchema}.{objectQualifier}topic  yt
         INNER JOIN
         {databaseSchema}.{objectQualifier}forum yf
@@ -10773,48 +10762,19 @@ BEGIN
         ON
         yc.boardid = i_boardid AND
         yf.categoryid = yc.categoryid
-        WHERE  forumid = ici_ForumID
-        AND priority = 0
-        AND (flags & 512) = 0
+        WHERE (i_forumid is null or forumid = i_forumid)
+        AND yt.priority = 0
+        AND (yt.flags & 512) = 0
         -- not flagged as persistent 
-        AND (current_date-CAST(lastposted AS date) > i_days);
+        AND (i_utctimestamp-CAST(lastposted AS date) > i_days)
+		AND (i_deletedonly = 0 OR (yt.flags & 8) = 8)
      LOOP
-  FETCH ref_tprune1  INTO iciTopicID; 
-    EXIT WHEN NOT FOUND;
-     PERFORM {databaseSchema}.{objectQualifier}topic_delete(iciTopicID , false, i_permdelete);
-     iciCount := iciCount + 1;     
-    -- PERFORM {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, true , i_permdelete);
-END LOOP; 
-     CLOSE ref_tprune1;
-     ELSE
-     OPEN ref_tprune1 FOR SELECT topicid
-        FROM  {databaseSchema}.{objectQualifier}topic
-        WHERE  
-        priority = 0
-        AND (flags & 512) = 0
-        AND (current_date-CAST(lastposted AS date) > i_days);
-        
-     LOOP
-  FETCH ref_tprune1  INTO iciTopicID;
-  EXIT WHEN NOT FOUND;
-  -- introduced to not forget ms sql changes. It's an attempt to make prune in background
-  IF iciCount % 100 = 0 THEN SELECT pg_sleep(0.05); END IF;
-     PERFORM {databaseSchema}.{objectQualifier}topic_delete(iciTopicID , false, i_permdelete);
-     iciCount := iciCount + 1;  
-END LOOP;     
-     CLOSE ref_tprune1;
-     END IF;
-     
-    
-     -- This takes forever with many posts...
-     --CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(null)
-
-     RETURN iciCount;
+ RETURN NEXT _rec.topicid;
+END LOOP;    
      END;
-
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+  COST 100 ROWS 1000;
 --GO
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_save(
@@ -11062,7 +11022,8 @@ IF ici_topicid IS NOT NULL THEN
          ON x.topicid = t.topicid
          WHERE  
          (x.flags & 24) = 16 AND x.topicid = ici_topicid
-                             ORDER BY x.posted DESC LIMIT 1;         
+                             ORDER BY x.posted DESC LIMIT 1;
+							          
             UPDATE {databaseSchema}.{objectQualifier}topic
                SET    lastposted = ici_lastposted,
                       lastmessageid=ici_LastMessageID,
@@ -11079,7 +11040,8 @@ ELSE
         ON x.topicid = t.topicid
         WHERE  
          (x.flags & 24) = 16 AND x.topicid = topicmovedid
-                             ORDER BY x.posted DESC LIMIT 1;         
+                             ORDER BY x.posted DESC LIMIT 1;   
+							       
         UPDATE {databaseSchema}.{objectQualifier}topic
          SET    lastposted = ici_lastposted,
             lastmessageid=ici_LastMessageID,
@@ -11087,7 +11049,7 @@ ELSE
             lastusername=ici_LastUserName,
             lastuserdisplayname=ici_LastUserDisplayName,
             lastmessageflags=ici_lastmessageflags
-     WHERE  x.topicmovedid IS NULL
+     WHERE  topicmovedid IS NULL
      AND (ici_ForumID IS NULL
      OR forumid = ici_ForumID);
 
@@ -16960,7 +16922,9 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
-    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) AND
+    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) 
+	 AND (t.flags & 8) <> 8 
+	 AND
       tg.tag LIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
@@ -16974,6 +16938,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid)
+	AND (t.flags & 8) <> 8
     AND
       tg.tag LIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
@@ -16988,7 +16953,8 @@ FOR _rec IN SELECT DISTINCT(tt.tagid),tg.tag,tg.tagcount,_maxcount AS MaxTagCoun
             JOIN  {databaseSchema}.{objectQualifier}topictags tt ON tt.TagID = tg.TagID 
             JOIN  {databaseSchema}.{objectQualifier}topic t ON t.TopicID = tt.TopicID
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.forumid = t.forumid AND aa.userid = i_pageuserid)
-    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) AND
+    WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) 
+	AND (t.flags & 8) <> 8 AND
       tg.tag LIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
@@ -17188,4 +17154,29 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER 
   COST 100;
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_restore(
+                           i_topicid integer, 
+                           i_userid integer)
+                  RETURNS void AS
+$BODY$
+DECLARE ici_forumid integer;
+BEGIN   
+        UPDATE {databaseSchema}.{objectQualifier}topic 
+        SET flags = flags # 8
+        WHERE topicid = i_topicid and (flags & 8) = 8; 
+		  UPDATE {databaseSchema}.{objectQualifier}topic 
+        SET flags = flags # 8
+        WHERE topicmovedid = i_topicid and (flags & 8) = 8; 
+		UPDATE {databaseSchema}.{objectQualifier}message 
+        SET flags = flags # 8
+        WHERE topicid = i_topicid and (flags & 8) = 8;  
+
+		select forumid into ici_forumid from {databaseSchema}.{objectQualifier}topic where topicid = i_topicid;
+        PERFORM  {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_forumid);  
+        PERFORM  {databaseSchema}.{objectQualifier}forum_updatestats(ici_forumid); 
+END;$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
+  COST 100; 
 --GO

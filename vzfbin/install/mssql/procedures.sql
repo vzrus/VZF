@@ -840,6 +840,10 @@ IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{data
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}topic_prune]
 GO
 
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}topic_restore]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}topic_restore]
+GO
+
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}topic_save]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}topic_save]
 GO
@@ -3162,7 +3166,7 @@ begin
     -- Check @@FETCH_STATUS to see if there are any more rows to fetch.
     while @@FETCH_STATUS = 0
     begin
-        exec [{databaseSchema}].[{objectQualifier}topic_delete] @tmpTopicID,1,1;
+        exec [{databaseSchema}].[{objectQualifier}topic_delete] @tmpTopicID,null,0,1;
     
        -- This is executed as long as the previous fetch succeeds.
         fetch next from topic_cursor
@@ -4275,7 +4279,7 @@ begin
     
     -- Delete topic if there are no more messages
     select @MessageCount = count(1) from [{databaseSchema}].[{objectQualifier}Message] where TopicID = @TopicID and IsDeleted=0
-    if @MessageCount=0 exec [{databaseSchema}].[{objectQualifier}topic_delete] @TopicID, 1, @EraseMessage
+    if @MessageCount=0 exec [{databaseSchema}].[{objectQualifier}topic_delete] @TopicID, null, 0, @EraseMessage
 
     -- update lastpost
     exec [{databaseSchema}].[{objectQualifier}topic_updatelastpost] @ForumID,@TopicID
@@ -6918,21 +6922,20 @@ declare @FirstSelectPosted datetime
 end
 GO
 
-CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_delete] (@TopicID int,@UpdateLastPost bit=1,@EraseTopic bit=0) 
+CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_delete] (@TopicID int, @TopicMovedID int, @UpdateLastPost bit=1,@EraseTopic bit=0) 
 AS
 BEGIN
-        SET NOCOUNT ON
-    DECLARE @ForumID int
-    DECLARE @TopicMovedID int	
+    SET NOCOUNT ON
+    DECLARE @ForumID int   	
     DECLARE @pollID int
-    -- AND LinkDate IS NOT NULL	
-    SELECT @ForumID=ForumID,@TopicMovedID = TopicMovedID FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicID=@TopicID
-    IF (@TopicMovedID IS NOT NULL)
+    -- AND LinkDate IS NOT NULL	   
+    IF (@TopicMovedID = @TopicID)
     BEGIN
-    DELETE FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID
+    DELETE FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicMovedID = @TopicID
     END
     ELSE
     BEGIN
+	SELECT @ForumID=ForumID FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicID=@TopicID
     UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET LastMessageID = null WHERE TopicID = @TopicID
     
     UPDATE [{databaseSchema}].[{objectQualifier}Forum] SET 
@@ -6947,9 +6950,7 @@ BEGIN
     UPDATE  [{databaseSchema}].[{objectQualifier}Active] SET TopicID = null WHERE TopicID = @TopicID
     
     --delete messages and topics
-    DELETE FROM  [{databaseSchema}].[{objectQualifier}nntptopic] WHERE TopicID = @TopicID
-    
-    IF @EraseTopic = 0
+	IF @EraseTopic = 0
     BEGIN
         UPDATE  [{databaseSchema}].[{objectQualifier}topic] set Flags = Flags | 8 where TopicMovedID = @TopicID
         UPDATE  [{databaseSchema}].[{objectQualifier}topic] set Flags = Flags | 8 where TopicID = @TopicID
@@ -6957,6 +6958,7 @@ BEGIN
     END
     ELSE
     BEGIN
+	    DELETE FROM  [{databaseSchema}].[{objectQualifier}nntptopic] WHERE TopicID = @TopicID
         --remove polls	
         SELECT @pollID = pollID FROM  [{databaseSchema}].[{objectQualifier}Topic] WHERE TopicID = @TopicID
         IF (@pollID is not null)
@@ -7128,13 +7130,13 @@ GO
 
 CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_info]
 (
-    @TopicID int = null,
+    @TopicID int,	
     @ShowDeleted bit = 0,
     @GetTags bit = 0
 )
 AS
 BEGIN
-        IF @TopicID = 0 SET @TopicID = NULL
+    IF @TopicID = 0 SET @TopicID = NULL
 
     IF @TopicID IS NULL
     BEGIN
@@ -7149,9 +7151,11 @@ BEGIN
     ELSE
     BEGIN
         IF @ShowDeleted = 1 
+		   BEGIN
             SELECT t.*,
-            (CASE WHEN @GetTags = 1 THEN [{databaseSchema}].[{objectQualifier}topic_gettags_str](t.TopicID) ELSE '' END) as TopicTags FROM [{databaseSchema}].[{objectQualifier}Topic] t WHERE TopicID = @TopicID
-        ELSE
+            (CASE WHEN @GetTags = 1 THEN [{databaseSchema}].[{objectQualifier}topic_gettags_str](t.TopicID) ELSE '' END) as TopicTags FROM [{databaseSchema}].[{objectQualifier}Topic] t WHERE TopicID = @TopicID 
+           END
+	    ELSE
             SELECT t.*,
             (CASE WHEN @GetTags = 1 THEN [{databaseSchema}].[{objectQualifier}topic_gettags_str](t.TopicID) ELSE '' END) as TopicTags FROM [{databaseSchema}].[{objectQualifier}Topic] t WHERE TopicID = @TopicID AND IsDeleted=0		
     END
@@ -7331,6 +7335,7 @@ CREATE procedure [{databaseSchema}].[{objectQualifier}announcements_list]
     @PageSize int = 0, 
     @StyledNicks bit = 0,
     @ShowMoved  bit = 0,
+	@ShowDeleted bit = 0,
     @FindLastRead bit = 0,
     @GetTags bit = 0,
 	@UTCTIMESTAMP datetime
@@ -7346,7 +7351,7 @@ begin
    FROM [{databaseSchema}].[{objectQualifier}Topic] c
    WHERE c.ForumID = @ForumID
    AND	c.[Priority] = 2
-   AND	c.IsDeleted = 0
+   AND	(@ShowDeleted = 1 or c.IsDeleted = 0)
     AND	(c.TopicMovedID IS NOT NULL OR c.NumPosts > 0)
     AND
     (@ShowMoved = 1 or (@ShowMoved <> 1 AND c.TopicMovedID IS NULL))
@@ -7360,7 +7365,7 @@ begin
      select ROW_NUMBER() over (order by tt.[Priority] desc,tt.LastPosted desc) as RowNum, tt.TopicID
      from [{databaseSchema}].[{objectQualifier}Topic] tt
      where tt.ForumID = @ForumID and tt.[Priority] = 2
-      AND	tt.IsDeleted = 0
+      AND	(@ShowDeleted = 1 or tt.IsDeleted = 0)
       AND	((tt.TopicMovedID IS NOT NULL) OR (tt.NumPosts > 0))
       AND
       (@ShowMoved = 1 or (@ShowMoved <> 1 AND TopicMovedID IS NULL))
@@ -7438,6 +7443,7 @@ CREATE procedure [{databaseSchema}].[{objectQualifier}topic_list]
     @PageSize int = 0, 
     @StyledNicks bit = 0,
     @ShowMoved  bit = 0,
+	@ShowDeleted bit = 0,
     @FindLastRead bit = 0,
     @GetTags bit = 0,
 	@UTCTIMESTAMP datetime
@@ -7453,7 +7459,7 @@ begin
    FROM [{databaseSchema}].[{objectQualifier}Topic] c
    WHERE c.ForumID = @ForumID
    AND	((c.Priority = 1) OR (c.Priority <=0 AND c.LastPosted>=@SinceDate ))
-   AND	c.IsDeleted = 0
+   AND	(@ShowDeleted = 1 or c.IsDeleted = 0)
     AND	(c.TopicMovedID IS NOT NULL OR c.NumPosts > 0)
     AND
     (@ShowMoved = 1 or (@ShowMoved <> 1 AND c.TopicMovedID IS NULL))
@@ -7467,7 +7473,7 @@ begin
      select ROW_NUMBER() over (order by tt.[Priority] desc,tt.LastPosted desc) as RowNum, tt.TopicID
      from [{databaseSchema}].[{objectQualifier}Topic] tt
      where tt.ForumID = @ForumID and (tt.[Priority] = 1 OR (tt.[Priority] <=0 AND tt.LastPosted >=@SinceDate))
-      AND	tt.IsDeleted = 0
+       AND	(@ShowDeleted = 1 or tt.IsDeleted = 0)
       AND	((tt.TopicMovedID IS NOT NULL) OR (tt.NumPosts > 0))
       AND
       (@ShowMoved = 1 or (@ShowMoved <> 1 AND TopicMovedID IS NULL))
@@ -7628,18 +7634,12 @@ begin
 end
 GO
 
-CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_prune](@BoardID int, @ForumID int=null,@Days int, @PermDelete bit, @UTCTIMESTAMP datetime) as
-BEGIN
-        DECLARE @c cursor
-    DECLARE @TopicID int
-    DECLARE @Count int
-    SET @Count = 0
-    IF @ForumID = 0 SET @ForumID = NULL
-    IF @ForumID IS NOT NULL
-    BEGIN
-        SET @c = cursor for
+CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_prune](@BoardID int, @ForumID int=null,@Days int, @DeletedOnly bit, @UTCTIMESTAMP datetime) as
+BEGIN      
+    IF @ForumID = 0 SET @ForumID = NULL;   
+           
         SELECT 
-            TopicID
+            yt.TopicID
         FROM [{databaseSchema}].[{objectQualifier}topic] yt
         INNER JOIN
         [{databaseSchema}].[{objectQualifier}Forum] yf
@@ -7651,37 +7651,10 @@ BEGIN
         yf.CategoryID = yc.CategoryID
         WHERE
             yc.BoardID = @BoardID AND
-            yt.ForumID = @ForumID AND
-            Priority = 0 AND
+            (@ForumID IS NULL OR yt.ForumID = @ForumID) AND
+            yt.Priority = 0 AND
             (yt.Flags & 512) = 0 AND /* not flagged as persistent */
-            datediff(dd,yt.LastPosted,@UTCTIMESTAMP )>@Days
-    END
-    ELSE BEGIN
-        SET @c = CURSOR FOR
-        SELECT 
-            TopicID
-        FROM 
-            [{databaseSchema}].[{objectQualifier}Topic]
-        WHERE 
-            Priority = 0 and
-            (Flags & 512) = 0 and					/* not flagged as persistent */
-            datediff(dd,LastPosted,@UTCTIMESTAMP )>@Days
-    END
-    OPEN @c
-    FETCH @c into @TopicID
-    WHILE @@FETCH_STATUS=0 BEGIN
-        IF (@Count % 100 = 1) WAITFOR DELAY '000:00:05'
-        EXEC [{databaseSchema}].[{objectQualifier}topic_delete] @TopicID, @PermDelete
-        SET @Count = @Count + 1
-        FETCH @c INTO @TopicID
-    END
-    CLOSE @c
-    DEALLOCATE @c
-
-    -- This takes forever with many posts...
-    --exec [{databaseSchema}].[{objectQualifier}topic_updatelastpost]
-
-    SELECT Count = @Count
+            datediff(dd,yt.LastPosted,@UTCTIMESTAMP )>@Days AND (@DeletedOnly = 0 OR (yt.Flags & 8) = 8);
 END
 GO
 
@@ -9493,7 +9466,7 @@ begin
 
     -- Delete topic if there are no more messages
     select @MessageCount = count(1) from [{databaseSchema}].[{objectQualifier}Message] where TopicID = @TopicID and IsDeleted=0
-    if @MessageCount=0 exec [{databaseSchema}].[{objectQualifier}topic_delete] @TopicID
+    if @MessageCount=0 exec [{databaseSchema}].[{objectQualifier}topic_delete] @TopicID,null,0,1 
     -- update lastpost
     exec [{databaseSchema}].[{objectQualifier}topic_updatelastpost] @ForumID,@TopicID
     exec [{databaseSchema}].[{objectQualifier}forum_updatestats] @ForumID
@@ -9611,7 +9584,7 @@ WHERE  MessageID = @MessageID
 
     -- Delete topic if there are no more messages
     select @MessageCount = count(1) from [{databaseSchema}].[{objectQualifier}Message] where TopicID = @OldTopicID and IsDeleted=0
-    if @MessageCount=0 exec [{databaseSchema}].[{objectQualifier}topic_delete] @OldTopicID
+    if @MessageCount=0 exec [{databaseSchema}].[{objectQualifier}topic_delete] @OldTopicID,null,0,1
 
     -- update lastpost
     exec [{databaseSchema}].[{objectQualifier}topic_updatelastpost] @OldForumID,@OldTopicID
@@ -12308,7 +12281,7 @@ declare @LastSelectRowNumber int
     JOIN [{databaseSchema}].[{objectQualifier}TopicTags] tt ON tt.TagID = tg.TagID 
     JOIN [{databaseSchema}].[{objectQualifier}Topic] t ON t.TopicID = tt.TagID
     JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] aa ON (aa.ForumID = t.ForumID and aa.UserID = @PageUserID)
-    WHERE BoardID=@BoardID and (@ForumID is null or t.ForumID=@ForumID) 
+    WHERE BoardID=@BoardID and (@ForumID is null or t.ForumID=@ForumID)  AND (t.Flags & 8) <> 8
     AND  LOWER(tg.Tag) LIKE CASE 
             WHEN (@BeginsWith = 0 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN '%' + LOWER(@SearchText) + '%' 
             WHEN (@BeginsWith = 1 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN LOWER(@SearchText) + '%'        
@@ -12321,7 +12294,7 @@ declare @LastSelectRowNumber int
     JOIN [{databaseSchema}].[{objectQualifier}TopicTags] tt ON tt.TagID = tg.TagID 
     JOIN [{databaseSchema}].[{objectQualifier}Topic] t ON t.TopicID = tt.TagID
     JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] aa ON (aa.ForumID = t.ForumID and aa.UserID = @PageUserID)	 
-    WHERE BoardID=@BoardID and (@ForumID is null or t.ForumID=@ForumID) 
+    WHERE BoardID=@BoardID and (@ForumID is null or t.ForumID=@ForumID)  AND (t.Flags & 8) <> 8
 	      AND  LOWER(tg.Tag) LIKE CASE 
             WHEN (@BeginsWith = 0 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN '%' + LOWER(@SearchText) + '%' 
             WHEN (@BeginsWith = 1 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN LOWER(@SearchText) + '%'             
@@ -12337,7 +12310,7 @@ declare @LastSelectRowNumber int
             JOIN [{databaseSchema}].[{objectQualifier}Topic] t ON t.TopicID = tt.TagID
             JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] aa 
 			ON (aa.ForumID = t.ForumID  and aa.UserID = @PageUserID)     
-			 where BoardID=@BoardID and (@ForumID is null or t.ForumID=@ForumID)			   
+			 where BoardID=@BoardID and (@ForumID is null or t.ForumID=@ForumID) AND (t.Flags & 8) <> 8		   
           AND  LOWER(tg.Tag) LIKE CASE 
             WHEN (@BeginsWith = 0 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN '%' + LOWER(@SearchText) + '%' 
             WHEN (@BeginsWith = 1 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN LOWER(@SearchText) + '%'             
@@ -12424,4 +12397,16 @@ CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_imagesave](
              TopicImageType = @TopicImageType
       WHERE  TopicID = @TopicID;       
 END;
+GO
+
+create procedure [{databaseSchema}].[{objectQualifier}topic_restore](@TopicID int, @UserID int) as
+begin
+declare @ForumID int;
+        UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET Flags = Flags ^ 8 WHERE  TopicID = @TopicID and (Flags & 8) = 8;
+		UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET Flags = Flags ^ 8 WHERE  TopicMovedID = @TopicID and (Flags & 8) = 8;
+		UPDATE [{databaseSchema}].[{objectQualifier}Message] SET Flags = Flags ^ 8 WHERE  TopicID = @TopicID and (Flags & 8) = 8;
+		SELECT @ForumID = ForumID FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID;
+        EXEC  [{databaseSchema}].[{objectQualifier}forum_updatelastpost] @ForumID    
+        EXEC  [{databaseSchema}].[{objectQualifier}forum_updatestats] @ForumID
+end
 GO

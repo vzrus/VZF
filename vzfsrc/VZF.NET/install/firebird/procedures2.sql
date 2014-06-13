@@ -153,6 +153,7 @@ end;
     I_PAGESIZE INTEGER,
     I_STYLEDNICKS BOOL, 
     I_SHOWMOVED BOOL,
+	I_SHOWDELETED BOOL,
     I_FINDLASTUNREAD BOOL,
     I_GETTAGS BOOL,
 	i_UTCTIMESTAMP TIMESTAMP)
@@ -218,7 +219,7 @@ BEGIN
     WHERE
         c1.FORUMID = :I_FORUMID	
         AND	(c1."PRIORITY" = 2) 
-        AND	c1.ISDELETED = 0
+        AND	(:I_SHOWDELETED = 1 or c1.ISDELETED = 0)
         AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
         AND
         ((:I_SHOWMOVED = 1)
@@ -327,7 +328,7 @@ FOR
         JOIN {objectQualifier}FORUM d ON d.FORUMID=c.FORUMID  		
     WHERE c.FORUMID = :I_FORUMID
         AND	(c."PRIORITY" = 2) 
-        AND	c.ISDELETED = 0
+        AND	(:I_SHOWDELETED = 1 or c.ISDELETED = 0)
         AND	((c.TOPICMOVEDID IS NOT NULL) OR (c.NUMPOSTS > 0)) 
         AND
         ((:I_SHOWMOVED = 1)
@@ -389,6 +390,7 @@ END;
     I_PAGESIZE integer,
     I_STYLEDNICKS BOOL,
     I_SHOWMOVED BOOL,
+	I_SHOWDELETED BOOL,
     I_FINDLASTUNREAD BOOL,
     I_GETTAGS BOOL,
 	I_UTCTIMESTAMP timestamp)
@@ -454,16 +456,17 @@ BEGIN
 SELECT 		
         COUNT(1) 
     FROM
-        YAF_TOPIC c1 
+        YAF_TOPIC t 
     WHERE
-        c1.FORUMID = :I_FORUMID	
-        AND (c1."PRIORITY"=1) 
-        AND	c1.ISDELETED = 0
-        AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
+        t.FORUMID = :I_FORUMID	
+        AND (t."PRIORITY"=1) 
+        AND	(:I_SHOWDELETED = 1 or t.ISDELETED = 0)
+        AND	(t.TOPICMOVEDID IS NOT NULL OR t.NUMPOSTS > 0) 
         AND
         ((:I_SHOWMOVED = 1)
         or
-        (:I_SHOWMOVED <> 1 AND  c1.TOPICMOVEDID IS NULL))
+        (:I_SHOWMOVED <> 1 AND  c1.TOPICMOVEDID IS NULL))	
+		
           INTO :ici_post_priorityrowsnumber;
         ici_post_priorityrowsnumber_pages = CEILING(CAST(:ici_post_priorityrowsnumber AS decimal)/:I_PAGESIZE); 		 
       
@@ -472,16 +475,16 @@ SELECT
         SELECT 		
         COUNT(1) 
     FROM
-        {objectQualifier}TOPIC c1 
+        {objectQualifier}TOPIC t 
     WHERE
-        c1.FORUMID = :I_FORUMID	
-        AND	(c1."PRIORITY" = 1 OR (c1."PRIORITY" <=0 AND c1.LASTPOSTED >= :I_SINCEDATE )) 
-        AND	c1.ISDELETED = 0
-        AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
+       t.FORUMID = :I_FORUMID	
+        AND	(t."PRIORITY" = 1 OR (t."PRIORITY" <=0 AND t.LASTPOSTED >= :I_SINCEDATE )) 
+        AND (:I_SHOWDELETED = 1 or t.ISDELETED = 0)
+        AND	(t.TOPICMOVEDID IS NOT NULL OR t.NUMPOSTS > 0) 
         AND
         ((:I_SHOWMOVED = 1)
         or
-        (:I_SHOWMOVED <> 1 AND  c1.TOPICMOVEDID IS NULL))
+        (:I_SHOWMOVED <> 1 AND  t.TOPICMOVEDID IS NULL))
          INTO :ici_post_totalrowsnumber;
 
       I_PAGEINDEX = :I_PAGEINDEX+1;
@@ -510,7 +513,7 @@ SELECT
     where
             t.FORUMID = :I_FORUMID	
         AND	((:ici_shiftsticky = 1 and t."PRIORITY"=1) OR (t."PRIORITY" <=0 AND t.LASTPOSTED >= :I_SINCEDATE )) 
-        AND	t.ISDELETED = 0
+        AND	(:I_SHOWDELETED = 1 or t.ISDELETED = 0)
         AND	(t.TOPICMOVEDID IS NOT NULL OR t.NUMPOSTS > 0) 
         AND
         ((:I_SHOWMOVED = 1)
@@ -1902,7 +1905,7 @@ SELECT
            JOIN {objectQualifier}TOPICTAGS tt ON tt.TAGID = tg.TAGID 
            JOIN {objectQualifier}TOPIC t ON tt.TOPICID = t.TOPICID
            JOIN {objectQualifier}ACTIVEACCESS aa ON (aa.FORUMID = t.FORUMID AND aa.USERID = :I_PAGEUSERID)
-           WHERE aa.BoardID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) 
+           WHERE aa.BoardID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) AND BIN_AND(t.FLAGS, 8) != 8
            AND (LOWER(tg.TAG) LIKE (CASE 
             WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN ('%' || LOWER(:I_SEARCHTEXT) || '%')   
             WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN (LOWER(:I_SEARCHTEXT) || '%')                
@@ -1915,7 +1918,7 @@ SELECT
            JOIN {objectQualifier}TOPICTAGS tt ON tt.TAGID = tg.TAGID 
            JOIN {objectQualifier}TOPIC t ON tt.TOPICID = t.TOPICID
            JOIN {objectQualifier}ACTIVEACCESS aa ON (aa.FORUMID = t.ForumID AND aa.USERID = :I_PAGEUSERID)
-           WHERE aa.BOARDID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID)  
+           WHERE aa.BOARDID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) AND BIN_AND(t.FLAGS, 8) != 8  
              AND (LOWER(tg.TAG) LIKE (CASE 
             WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN ('%' || LOWER(:I_SEARCHTEXT) || '%')   
             WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN (LOWER(:I_SEARCHTEXT) || '%') 
@@ -1936,7 +1939,7 @@ FOR	SELECT
            JOIN {objectQualifier}TOPICTAGS tt ON tt.TAGID = tg.TAGID 
            JOIN {objectQualifier}TOPIC t ON tt.TOPICID = t.TOPICID
            JOIN {objectQualifier}ACTIVEACCESS aa ON (aa.FORUMID = t.FORUMID AND aa.USERID = :I_PAGEUSERID)
-            WHERE aa.BoardID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) 
+            WHERE aa.BoardID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) AND BIN_AND(t.FLAGS, 8) != 8
            AND (LOWER(tg.TAG) LIKE CASE 
             WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN '%' || LOWER(:I_SEARCHTEXT) || '%'   
             WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN LOWER(:I_SEARCHTEXT) || '%'                        

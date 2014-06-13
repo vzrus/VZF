@@ -1077,7 +1077,6 @@ namespace VZF.Data.Common
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", 0));
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", 1000));
 
-
                     sc.CommandText.AppendObjectQuery("attachment_list", mid);
                     var tbAttachments = sc.ExecuteDataTableFromReader(
                         CommandBehavior.Default,
@@ -5269,13 +5268,18 @@ namespace VZF.Data.Common
 
             string forumIDs = string.Empty;
             string categoriesIds = string.Empty;
+            DataTable dt = null;
+            if ((categoryId.Any() || forumIdToStartAt.Any()) && !Config.LargeForumTree)
+            {
+                dt = CommonDb.forum_listall_sorted(mid, boardId, userId, forumIdToStartAt.ToArray<int>());
+            }
 
             if (categoryId.Any())
             {
                 if (Config.LargeForumTree)
                 {
-                    DataTable dt = CommonDb.forum_categoryaccess_activeuser(mid, boardId, userId);
-                    foreach (DataRow c in dt.Rows)
+                    DataTable dt1 = CommonDb.forum_categoryaccess_activeuser(mid, boardId, userId);
+                    foreach (DataRow c in dt1.Rows)
                     {
                         foreach (int c1 in categoryId)
                         {
@@ -5288,20 +5292,43 @@ namespace VZF.Data.Common
 
                     categoriesIds = categoriesIds.Trim(',');
                 }
+                else
+                {
+                    if (dt != null)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            // if not a category
+                            if (Convert.ToInt32(dr["ForumID"]) == -1)
+                            {
+                                categoriesIds = categoriesIds + Convert.ToInt32(dr["ForumID"]) + ",";
+                            }
+                        }
+
+                        categoriesIds = categoriesIds.Substring(0, forumIDs.Length - 1);
+
+                        categoriesIds = categoriesIds.Trim(',');
+                    }
+                }
             }
 
             if (forumIdToStartAt.Any())
             {
                 if (!Config.LargeForumTree)
                 {
-                    DataTable dt = CommonDb.forum_listall_sorted(mid, boardId, userId, forumIdToStartAt.ToArray<int>());
-
-                    foreach (DataRow dr in dt.Rows)
+                    if (dt != null)
                     {
-                        forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]) + ",";
-                    }
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            // if not a category
+                            if (Convert.ToInt32(dr["ForumID"]) != -1)
+                            {
+                                forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]) + ",";
+                            }
+                        }
 
-                    forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
+                        forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
+                    }
                 }
                 else
                 {
@@ -6418,7 +6445,7 @@ namespace VZF.Data.Common
                 // Delete replies
                 using (var sc = new VzfSqlCommand(mid))
                 {
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "MessageID", messageID));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
 
                     sc.CommandText.AppendObjectQuery("message_getReplies", mid);
                     DataTable tbReplies = sc.ExecuteDataTableFromReader(
@@ -6444,7 +6471,11 @@ namespace VZF.Data.Common
             {
                 using (var sc = new VzfSqlCommand(mid))
                 {
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "MessageID", messageID));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", null));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", null));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", 0));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", 1000000));
 
                     sc.CommandText.AppendObjectQuery("attachment_list", mid);
                     DataTable tbAttachments = sc.ExecuteDataTableFromReader(
@@ -6492,7 +6523,7 @@ namespace VZF.Data.Common
                 using (var sc = new VzfSqlCommand(mid))
                 {
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "isModeratorChanged", isModeratorChanged));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_isModeratorChanged", isModeratorChanged));
                     sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeleteReason", deleteReason));
                     sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsDeleteAction", isDeleteAction));
 
@@ -10791,7 +10822,7 @@ namespace VZF.Data.Common
         /// </param>
         public static void topic_delete(int? mid, object topicID)
         {
-            topic_delete(mid, topicID, false);
+            topic_delete(mid, topicID, null, false);
         }
 
         /// <summary>
@@ -10803,7 +10834,7 @@ namespace VZF.Data.Common
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        private static void topic_deleteAttachments([NotNull] int? mid, object topicID)
+        private static void topic_deleteAttachments([NotNull] int? mid, object topicID, bool eraseMessages )
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -10818,7 +10849,7 @@ namespace VZF.Data.Common
                 {
                     foreach (DataRow row in dt.Rows)
                     {
-                        message_deleteRecursively(mid, row["MessageID"], true, string.Empty, 0, true, true);
+                        message_deleteRecursively(mid, row["MessageID"], true, string.Empty, 0, true, eraseMessages);
                     }
                 }
             }
@@ -10844,7 +10875,7 @@ namespace VZF.Data.Common
             try
             {
                 string topicImage = string.Empty;
-                var dt = topic_info(mid, topicID, false);
+                var dt = topic_info(mid, topicID, false, false);
                 if (dt != null)
                 {
                     topicImage = dt["TopicImage"].ToString();
@@ -10881,16 +10912,16 @@ namespace VZF.Data.Common
         /// <param name="eraseTopic">
         /// The erase topic.
         /// </param>     
-        public static void topic_delete(int? mid, object topicID, object eraseTopic)
+        public static void topic_delete(int? mid, object topicID, object topicMovedID, bool eraseTopic)
         {
             if (eraseTopic == null)
             {
-                eraseTopic = (int)0;
+                eraseTopic = false;
             }
 
             if (eraseTopic.ToType<bool>())
             {
-                topic_deleteAttachments(mid, topicID);
+                topic_deleteAttachments(mid, topicID, eraseTopic);
 
                 topic_deleteimages(mid, (int)topicID);
             }
@@ -10898,6 +10929,7 @@ namespace VZF.Data.Common
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicMovedID", topicMovedID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_EraseTopic", eraseTopic));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UpdateLastPost", true));
 
@@ -11117,18 +11149,19 @@ namespace VZF.Data.Common
         /// The topic_info.
         /// </summary>
         /// <param name="mid">
-        /// The mid.
+        ///     The mid.
         /// </param>
         /// <param name="topicID">
-        /// The topic id.
+        ///     The topic id.
         /// </param>
         /// <param name="getTags">
-        /// The get tags.
+        ///     The get tags.
         /// </param>
+        /// <param name="showDeleted"></param>
         /// <returns>
         /// The <see cref="DataRow"/>.
         /// </returns>
-        public static DataRow topic_info(int? mid, object topicID, bool getTags)
+        public static DataRow topic_info(int? mid, object topicID, bool getTags, bool showDeleted)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -11281,6 +11314,9 @@ namespace VZF.Data.Common
         /// <param name="showMoved">
         /// The show moved.
         /// </param>
+        /// <param name="showDeleted">
+        /// The show deleted.
+        /// </param>
         /// <param name="findLastRead">
         /// The find last read.
         /// </param>
@@ -11288,20 +11324,9 @@ namespace VZF.Data.Common
         /// The get tags.
         /// </param>
         /// <returns>
-        /// The <see cref="T:System.Data.DataTable"/>.
+        /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable topic_list(
-            int? mid,
-            [NotNull] object forumID,
-            [NotNull] object userId,
-            [NotNull] object sinceDate,
-            [NotNull] object toDate,
-            [NotNull] object pageIndex,
-            [NotNull] object pageSize,
-            [NotNull] object useStyledNicks,
-            [NotNull] object showMoved,
-            [CanBeNull] bool findLastRead,
-            [NotNull] bool getTags)
+        public static DataTable topic_list(int? mid, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, bool showDeleted, [CanBeNull] bool findLastRead, [NotNull] bool getTags)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -11313,6 +11338,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowMoved", showMoved));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowDeleted", showDeleted));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_FindLastRead", findLastRead));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetTags", getTags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
@@ -11322,57 +11348,7 @@ namespace VZF.Data.Common
             }
         }
 
-        /// <summary>
-        /// The announcements_list.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <param name="forumID">
-        /// The forum id.
-        /// </param>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="sinceDate">
-        /// The since date.
-        /// </param>
-        /// <param name="toDate">
-        /// The to date.
-        /// </param>
-        /// <param name="pageIndex">
-        /// The page index.
-        /// </param>
-        /// <param name="pageSize">
-        /// The page size.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// The use styled nicks.
-        /// </param>
-        /// <param name="showMoved">
-        /// The show moved.
-        /// </param>
-        /// <param name="findLastRead">
-        /// The find last read.
-        /// </param>
-        /// <param name="getTags">
-        /// The get tags.
-        /// </param>
-        /// <returns>
-        /// The <see cref="T:System.Data.DataTable"/>.
-        /// </returns>
-        public static DataTable announcements_list(
-            int? mid,
-            [NotNull] object forumID,
-            [NotNull] object userId,
-            [NotNull] object sinceDate,
-            [NotNull] object toDate,
-            [NotNull] object pageIndex,
-            [NotNull] object pageSize,
-            [NotNull] object useStyledNicks,
-            [NotNull] object showMoved,
-            [CanBeNull] bool findLastRead,
-            [NotNull] bool getTags)
+        public static DataTable announcements_list(int? mid, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, bool showDeleted, [CanBeNull] bool findLastRead, [NotNull] bool getTags)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -11384,6 +11360,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowMoved", showMoved));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowDeleted", showDeleted));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_FindLastRead", findLastRead));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetTags", getTags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
@@ -11468,6 +11445,9 @@ namespace VZF.Data.Common
         /// <param name="permDelete">
         /// The perm delete.
         /// </param>
+        /// <param name="deletedOnly">
+        /// The deleted only.
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
@@ -11476,17 +11456,36 @@ namespace VZF.Data.Common
             [NotNull] object boardID,
             [NotNull] object forumID,
             [NotNull] object days,
-            [NotNull] object permDelete)
+            [NotNull] object permDelete,
+            bool deletedOnly)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Days", days));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PermDelete", permDelete));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeletedOnly", deletedOnly));
 
                 sc.CommandText.AppendObjectQuery("topic_prune", mid);
-                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+                var dataTable = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    topic_delete(mid, row[0].ToType<int?>(), null, (bool)permDelete);
+                }
+
+                return dataTable.Rows.Count;
+            }
+        }
+
+        public static void topic_restore(int? mid, object topicID, int userID)
+        {
+            using (var sc = new VzfSqlCommand(mid))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID)); 
+
+                sc.CommandText.AppendObjectQuery("topic_restore", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -14207,7 +14206,18 @@ namespace VZF.Data.Common
                 case SqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.FullTextSupported;
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.FullTextSupported;
+                    using (var sc = new VzfSqlCommand(mid))
+                    {
+                        sc.CommandText.AppendQuery("SELECT VERSION();");
+                        var fullVersion = sc.ExecuteScalar(CommandType.Text).ToString();
+                        var fullVersionArr = fullVersion.Trim().Split('.');
+                        if (fullVersionArr[0].ToType<int>() >= 5 && fullVersionArr[1].ToType<int>() >= 6)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.FullTextSupported;
                     

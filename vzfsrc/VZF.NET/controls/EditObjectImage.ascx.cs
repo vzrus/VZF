@@ -142,7 +142,7 @@ namespace VZF.Controls
             }
 
             DataRow row = CommonDb.topic_info(
-                this.PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false);
+                this.PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false, false);
             if (row != null)
             {
                 string topicImageName = row["TopicImage"].ToString();
@@ -406,7 +406,7 @@ namespace VZF.Controls
                 if (this.PageContext.QueryIDs["ti"] != null)
                 {
                     var dt = CommonDb.topic_info(
-                        PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false);
+                        this.PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false, false);
                     if (dt != null)
                     {
                         this.TopicImg.ImageUrl =
@@ -442,7 +442,7 @@ namespace VZF.Controls
             if (this.PageContext.QueryIDs["ti"] != null)
             {
                 row = CommonDb.topic_info(
-                    PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false);
+                    this.PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false, false);
                 if (row != null)
                 {
                     topicId = row["TopicID"].ToType<int>();

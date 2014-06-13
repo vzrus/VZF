@@ -1561,6 +1561,42 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.TextBox TagMaxLength;
         
         /// <summary>
+        /// ShowBoardTagsLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel ShowBoardTagsLbl;
+        
+        /// <summary>
+        /// ShowBoardTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ShowBoardTags;
+        
+        /// <summary>
+        /// BoardTagsPerPageLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel BoardTagsPerPageLbl;
+        
+        /// <summary>
+        /// BoardTagsPerPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox BoardTagsPerPage;
+        
+        /// <summary>
         /// HelpLabel222 control.
         /// </summary>
         /// <remarks>

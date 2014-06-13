@@ -1018,6 +1018,8 @@
     <Resource tag="AVATAR_UPLOAD_HELP">Gebruikers mogen avatars uploaden naar hun profiel.</Resource>
     <Resource tag="AVATAR_WIDTH">Avatar Breedte:</Resource>
     <Resource tag="AVATAR_WIDTH_HELP">Maximale breedte voor avatars.</Resource>
+    <Resource tag="BOARDTAGPERPAGE">Number of tags per page.</Resource>
+    <Resource tag="BOARDTAGPERPAGE_HELP">The number of tags displayed on board page.</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER">Gebruik CAPTCHA/reCAPTCHA bij het Registratieproces:</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER_HELP">Eis dat gebruikers de CAPTCHA invullen wanneer ze het registratieproces doorlopen.</Resource>
     <Resource tag="CAPTCHA_GUEST_POSTING">Gebruik CAPTCHA voor berichten door Gasten:</Resource>
@@ -1348,6 +1350,8 @@
     <Resource tag="SHOW_ATOM_LINKS_HELP">Laat Atom links zien door het forum heen.</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS">Laat Avatars in Topiclijsten zien:</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">Als deze is aangevinkt, worden de Gebruikers Avatars getoond in de topiclijsten.</Resource>
+    <Resource tag="SHOW_BOARDTAGS">Display board tags.</Resource>
+    <Resource tag="SHOW_BOARDTAGS_HELP">Display board tags on the main page.</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE">Laat Bots zien in de Actieve Gebruikerslijst:</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE_HELP">Als deze is aangevinkt, worden Bots zichtbaar in de Actieve Gebruikerslijst.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES">Laat verwijderde berichten zien:</Resource>
@@ -1580,11 +1584,15 @@
     <Resource tag="MSG_TASK">Opschoontaak ingepland.</Resource>
     <Resource tag="PRUNE_DAYS">Geef minimum postleeftijd op:</Resource>
     <Resource tag="PRUNE_DAYS_HELP">Topics met de laatste post die ouder is dan deze waarde worden verwijderd.</Resource>
+    <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
+    <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>
     <Resource tag="PRUNE_FORUM">Forum:</Resource>
     <Resource tag="PRUNE_FORUM_HELP">Selecteer een forum.</Resource>
     <Resource tag="PRUNE_INFO">NB: Opschoontaak LOOPT. Dan kan er geen nieuwe taak gestart worden.</Resource>
     <Resource tag="PRUNE_PERMANENT">Verwijder definitief uit DB:</Resource>
     <Resource tag="PRUNE_PERMANENT_HELP">Alle Topics die gemarkeerd zijn als 'Verwijderd', zullen definitief worden verwijderd.</Resource>
+    <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
+    <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
     <Resource tag="PRUNE_START">Start Opschoontaak</Resource>
     <Resource tag="TITLE">Schoon Topics</Resource>
   </page>
@@ -1927,6 +1935,8 @@
     <Resource tag="BUTTON_EDIT">Bewerk</Resource>
     <Resource tag="BUTTON_EDIT_TT">Bewerk dit bericht</Resource>
     <Resource tag="BUTTON_EDITALBUMIMAGES">Upload/Verwijder Plaatjes</Resource>
+    <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
+    <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
     <Resource tag="BUTTON_LOCKTOPIC">Vergrendel topic</Resource>
     <Resource tag="BUTTON_LOCKTOPIC_TT">Vergrendel dit topic</Resource>
     <Resource tag="BUTTON_MODERATE">Modereer</Resource>
@@ -1948,6 +1958,8 @@
     <Resource tag="BUTTON_REPLY">Antwoord</Resource>
     <Resource tag="BUTTON_REPLY_TT">Antwoord op bericht</Resource>
     <Resource tag="BUTTON_RESETCOVER">Voorblad verwijderen</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
     <Resource tag="BUTTON_RETWEET">Retweet</Resource>
     <Resource tag="BUTTON_RETWEET_TT">Retweet dit bericht</Resource>
     <Resource tag="BUTTON_SETCOVER">Gebruik als voorblad</Resource>
@@ -4178,6 +4190,8 @@ Spoiler Inhoud
     <Resource tag="CONFIRM_DELETE">Dit topic verwijderen?</Resource>
     <Resource tag="CONFIRM_DELETE_USER">Verwijder deze gebruiker?</Resource>
     <Resource tag="CONFIRM_DELETETOPICLINK">Verwijder link naar het topic? Het topic zelf wordt niet verwijderd.</Resource>
+    <Resource tag="CONFIRM_ERASE">Do you really want completely delete the topic?</Resource>
+    <Resource tag="CONFIRM_RESTORE">Do you really want restore the topic?</Resource>
     <Resource tag="DELETED">Topic verwijderd.</Resource>
     <Resource tag="EDIT">Bewerken</Resource>
     <Resource tag="INVITE">Gebruiker uitnodigen</Resource>

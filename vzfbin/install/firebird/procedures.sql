@@ -1402,17 +1402,17 @@ CREATE PROCEDURE  {objectQualifier}POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOP
     -- don't remove cluster if the polls are not removed from db 
     end
 --GO
- CREATE PROCEDURE  {objectQualifier}TOPIC_DELETE (I_TOPICID INTEGER,I_UPDATELASTPOST BOOL,I_ERASETOPIC BOOL)
+ CREATE PROCEDURE  {objectQualifier}TOPIC_DELETE (I_TOPICID INTEGER,I_TOPICMOVEDID INTEGER,I_UPDATELASTPOST BOOL,I_ERASETOPIC BOOL)
     AS
     DECLARE VARIABLE ici_ForumID INTEGER;   
     DECLARE VARIABLE ici_pollID INTEGER;
     DECLARE VARIABLE ici_Deleted INTEGER;	
     BEGIN
   
-	IF (EXISTS (SELECT TOPICID FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID AND TOPICMOVEDID IS NOT NULL)) THEN
+	IF (:I_TOPICMOVEDID = :I_TOPICID) THEN
 	BEGIN
 	-- this is link, simply remove it
-	DELETE FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID;  
+	DELETE FROM {objectQualifier}TOPIC WHERE TOPICMOVEDID = :I_TOPICID;  
 	END
 	ELSE
 	BEGIN
@@ -1436,7 +1436,7 @@ CREATE PROCEDURE  {objectQualifier}POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOP
     UPDATE  {objectQualifier}ACTIVE SET TOPICID = NULL WHERE TOPICID = :I_TOPICID;
 
 -- delete messages and topics
-    DELETE FROM  {objectQualifier}NNTPTOPIC WHERE TOPICID = :I_TOPICID;	
+  
     UPDATE {objectQualifier}TOPIC SET POLLID = NULL WHERE TOPICID = :I_TOPICID AND TOPICMOVEDID IS NOT NULL;
     IF (I_ERASETOPIC = 0) THEN
     BEGIN
@@ -1445,6 +1445,7 @@ CREATE PROCEDURE  {objectQualifier}POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOP
     END
     ELSE
     BEGIN
+	    DELETE FROM  {objectQualifier}NNTPTOPIC WHERE TOPICID = :I_TOPICID;	
         -- remove polls	
         SELECT POLLID FROM  {objectQualifier}TOPIC 
         WHERE TOPICID = :I_TOPICID INTO :ici_pollID;
@@ -1477,11 +1478,9 @@ CREATE PROCEDURE  {objectQualifier}POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOP
         DELETE  FROM {objectQualifier}MESSAGEREPORTED WHERE MESSAGEID 
         IN (SELECT MESSAGEID FROM  {objectQualifier}MESSAGE WHERE TOPICID = :I_TOPICID);
         DELETE  FROM {objectQualifier}FAVORITETOPIC  WHERE TOPICID = :I_TOPICID;
-    END
-    
-   
+    END   
 
-    /*commit*/
+    /* commit */
     IF (I_UPDATELASTPOST<>0) THEN
         EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
     
@@ -1578,11 +1577,8 @@ INTO :ici_LastMessageID;
         INTO :itmpTopicID
         DO
         BEGIN
-        EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :itmpTopicID, 1, 1;        
-        END  
-        
-  
-                     
+        EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :itmpTopicID, null, 0, 1;        
+        END                
       
         /* TopicDelete finished*/ 
       
@@ -4833,7 +4829,7 @@ INTO :ici_Posted;
     WHERE TOPICID = :ici_OldTopicID 
     and ISDELETED = 0) = 0) THEN
 		ici_EraseOldTopic = 1;
-    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:ici_OldTopicID,0,:ici_EraseOldTopic);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:ici_OldTopicID,null,0,:ici_EraseOldTopic);
 	END 
 	 
     -- update lastpost
@@ -5358,15 +5354,14 @@ BEGIN
     /* Delete topic if there are no more messages*/
     IF (NOT EXISTS (SELECT FIRST 1 1  
     FROM {objectQualifier}MESSAGE WHERE TOPICID = :ici_TopicID 
-    AND BIN_AND(FLAGS, 8)=0)) THEN	
-    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :ici_TopicID, 1, :I_ERASEMESSAGE; 
- 
-    /*UPDATE lastpost*/
+    AND BIN_AND(FLAGS, 8)=0)) THEN		
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :ici_TopicID, null, 0, :I_ERASEMESSAGE; 
+	/* UPDATE lastpost */
     EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
-    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
+    EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;	
  
-    /*UPDATE topic numposts*/
+    /* UPDATE topic numposts */
     UPDATE {objectQualifier}TOPIC SET
         NUMPOSTS = 
         (SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
@@ -5450,11 +5445,13 @@ i_DelAction=:I_ISDELETEACTION*8;
     IF (NOT EXISTS (SELECT FIRST 1 1  
     FROM {objectQualifier}MESSAGE WHERE TOPICID = :ici_TopicID 
     AND BIN_AND(FLAGS, 8)=0)) THEN	
-    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE (:ici_TopicID,0,0);
+    EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE (:ici_TopicID,null, 0,1);
+	
     /*update lastpost*/
     EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
+	
     /* update topic numposts*/
     UPDATE {objectQualifier}TOPIC set
         NUMPOSTS = 
@@ -7619,7 +7616,7 @@ END;
 
 CREATE PROCEDURE  {objectQualifier}TOPIC_INFO
  (
-    I_TOPICID INTEGER,
+    I_TOPICID INTEGER,	
     I_SHOWDELETED BOOL,
     I_GETTAGS BOOL
  )
@@ -8024,30 +8021,16 @@ BEGIN
 END;
 --GO
 
-
-
-
 CREATE  PROCEDURE {objectQualifier}TOPIC_PRUNE(
                 I_BOARDID INTEGER,
                 I_FORUMID INTEGER,
                 I_DAYS    INTEGER,
-                I_PERMDELETE BOOL)
+                I_DELETEDONLY BOOL,
+				I_UTCTIMESTAMP TIMESTAMP)
                 RETURNS
-                ("COUNT" INTEGER)              
+                ("TopicID" INTEGER)              
 AS       
-        DECLARE  iciTopicID INTEGER;
-        DECLARE  iciCount INTEGER DEFAULT 0;
-        DECLARE ici_ForumID INTEGER DEFAULT NULL;        
 BEGIN
-
- IF (I_FORUMID IS NOT NULL AND I_FORUMID >=0) THEN 
- ici_ForumID = I_FORUMID;
-
-
-     -- SET iciCount = 0;
-     IF (ici_ForumID = 0) THEN   ici_ForumID = NULL;
-
-IF (ici_ForumID IS NOT NULL) THEN
      FOR SELECT yt.TOPICID FROM  {objectQualifier}TOPIC yt
      INNER JOIN
         {objectQualifier}FORUM yf
@@ -8059,35 +8042,14 @@ IF (ici_ForumID IS NOT NULL) THEN
         yf.CATEGORYID = yc.CATEGORYID
         WHERE 
         yc.BOARDID = :I_BOARDID AND		
-        yt.FORUMID = :ici_ForumID
+        (:I_FORUMID IS NULL OR yt.FORUMID = :I_FORUMID)
         AND "PRIORITY" = 0
-        AND BIN_AND(yt.FLAGS, 512) = 0
-        AND  current_date-CAST(yt.LASTPOSTED AS DATE) > :I_DAYS
-          
-        INTO     :iciTopicID 
-     
-     DO
-     BEGIN        
-     EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:iciTopicID , 0, :I_PERMDELETE);
-     iciCount = iciCount + 1;
-     END
-ELSE    
-     FOR SELECT TOPICID
-        FROM   {objectQualifier}TOPIC
-        WHERE  "PRIORITY" = 0
-        AND BIN_AND(FLAGS, 512) = 0
-     AND  current_date-CAST(LASTPOSTED AS DATE) > :I_DAYS
-     INTO     :iciTopicID
-      DO
-      BEGIN
-     -- introduced to not forget ms sql changes. It's an attempt to make prune in background
-     --  WAITFOR analogue can be implemented as udf only Don't implement, as it stops all connections?          
-     EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:iciTopicID , 0, :I_PERMDELETE);
-     iciCount = iciCount + 1;
-     END
-     "COUNT" = iciCount;
-     SUSPEND;
-     END;
+        AND BIN_AND(yt.FLAGS, 512) != 512
+        AND  ((current_date-CAST(yt.LASTPOSTED AS DATE)) > :I_DAYS)
+		 AND (:I_DELETEDONLY = 0 OR BIN_AND(yt.Flags,8) = 8)
+		 INTO :"TopicID"
+		DO SUSPEND;
+END;
 --GO
 
 CREATE PROCEDURE  {objectQualifier}TOPIC_SAVE(
@@ -13318,4 +13280,20 @@ SELECT p.O_DEPENDENCY
 FROM {objectQualifier}FORUM_SAVE_PARENTSCHECKER(:I_FORUMID, :I_PARENTID) p into :O_DEPENDENCY;
  SUSPEND;
 end;
+--GO
+
+CREATE PROCEDURE  {objectQualifier}TOPIC_RESTORE 
+    (I_TOPICID INTEGER,
+	 I_USERID INTEGER)
+AS
+DECLARE
+ici_ForumID INTEGER;
+BEGIN
+    UPDATE {objectQualifier}TOPIC SET FLAGS = BIN_XOR(FLAGS,8) WHERE TOPICID=:I_TOPICID AND BIN_AND(FLAGS,8) = 8;
+	UPDATE {objectQualifier}MESSAGE SET FLAGS = BIN_XOR(FLAGS,8) WHERE TOPICID=:I_TOPICID AND BIN_AND(FLAGS,8) = 8;
+	UPDATE {objectQualifier}TOPIC SET FLAGS = BIN_XOR(FLAGS,8) WHERE TOPICMOVEDID=:I_TOPICID AND BIN_AND(FLAGS,8) = 8;
+	SELECT FORUMID FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID INTO :ici_ForumID;
+    EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
+    EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
+END;
 --GO

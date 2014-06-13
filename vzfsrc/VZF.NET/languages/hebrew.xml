@@ -1047,6 +1047,8 @@
     <Resource tag="AVATAR_UPLOAD_HELP">Can users upload avatars to their profile.</Resource>
     <Resource tag="AVATAR_WIDTH">Avatar Width:</Resource>
     <Resource tag="AVATAR_WIDTH_HELP">Maximum width for avatars.</Resource>
+    <Resource tag="BOARDTAGPERPAGE">Number of tags per page.</Resource>
+    <Resource tag="BOARDTAGPERPAGE_HELP">The number of tags displayed on board page.</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER">Enable CAPTCHA/reCAPTCHA for Register:</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER_HELP">Require users to enter the CAPTCHA when they register for the forum.</Resource>
     <Resource tag="CAPTCHA_GUEST_POSTING">Enable CAPTCHA for Guest Posting:</Resource>
@@ -1376,6 +1378,8 @@
     <Resource tag="SHOW_ATOM_LINKS_HELP">Enable or disable display of Atom links throughout the forum.</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS">Show Avatars in Topic Listing:</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">If this is checked, the topic pages will show avatar graphics.</Resource>
+    <Resource tag="SHOW_BOARDTAGS">Display board tags.</Resource>
+    <Resource tag="SHOW_BOARDTAGS_HELP">Display board tags on the main page.</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE">Show Crawlers In Active Lists:</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE_HELP">If checked, Crawlers will be displayed In Active Lists.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES">Show Deleted Messages:</Resource>
@@ -1610,11 +1614,15 @@
     <Resource tag="MSG_TASK">Prune Task Scheduled</Resource>
     <Resource tag="PRUNE_DAYS">Enter minimum age in days:</Resource>
     <Resource tag="PRUNE_DAYS_HELP">Topics with the last post older than this will be deleted.</Resource>
+    <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
+    <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>
     <Resource tag="PRUNE_FORUM">Forum:</Resource>
     <Resource tag="PRUNE_FORUM_HELP">Select a forum.</Resource>
     <Resource tag="PRUNE_INFO">NOTE: Prune Task is currently RUNNING. Cannot start a new prune task until it's finished.</Resource>
     <Resource tag="PRUNE_PERMANENT">Permanently remove from DB:</Resource>
     <Resource tag="PRUNE_PERMANENT_HELP">All Topics marked with the Deleted flag will be permanently deleted.</Resource>
+    <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
+    <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
     <Resource tag="PRUNE_START">Start Prune Task</Resource>
     <Resource tag="TITLE">Prune Topics</Resource>
   </page>
@@ -1959,6 +1967,8 @@
     <Resource tag="BUTTON_EDIT">ערוך</Resource>
     <Resource tag="BUTTON_EDIT_TT">ערוך/י הודעה זו</Resource>
     <Resource tag="BUTTON_EDITALBUMIMAGES">Upload/Delete Images</Resource>
+    <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
+    <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
     <Resource tag="BUTTON_LOCKTOPIC">נעל דיון</Resource>
     <Resource tag="BUTTON_LOCKTOPIC_TT">נעל/י דיון זה</Resource>
     <Resource tag="BUTTON_MODERATE">פקח</Resource>
@@ -1980,6 +1990,8 @@
     <Resource tag="BUTTON_REPLY">שלח תגובה</Resource>
     <Resource tag="BUTTON_REPLY_TT">שלח/י תגובה להודעה זו</Resource>
     <Resource tag="BUTTON_RESETCOVER">Remove Cover</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
     <Resource tag="BUTTON_RETWEET">Retweet</Resource>
     <Resource tag="BUTTON_RETWEET_TT">Retweet this Message</Resource>
     <Resource tag="BUTTON_SETCOVER">Set as Cover</Resource>
@@ -4263,6 +4275,8 @@ Spoiler Content
     <Resource tag="CONFIRM_DELETE">האם ברצונך למחוק דיון זה?</Resource>
     <Resource tag="CONFIRM_DELETE_USER">Delete this user?</Resource>
     <Resource tag="CONFIRM_DELETETOPICLINK">Delete the topic link? The topic itself will not be deleted.</Resource>
+    <Resource tag="CONFIRM_ERASE">Do you really want completely delete the topic?</Resource>
+    <Resource tag="CONFIRM_RESTORE">Do you really want restore the topic?</Resource>
     <Resource tag="DELETED">הדיון נמחק.</Resource>
     <Resource tag="EDIT">ערוך</Resource>
     <Resource tag="INVITE">הזמנת משתמש</Resource>

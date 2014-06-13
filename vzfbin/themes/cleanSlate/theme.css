@@ -340,6 +340,11 @@
     background-color: #f4e941;   
 }
 
+.yafnet .topicDeleted
+{
+    background-color:  #f4e941; 
+}
+
 .yafnet tr.topicRow .topicMain,
 .yafnet tr.topicRow_Alt .topicMain
 {

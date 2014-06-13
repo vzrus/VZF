@@ -573,7 +573,7 @@ namespace YAF.Pages
             this._quickReplyEditor.BaseDir = "{0}editors".FormatWith(YafForumInfo.ForumClientFileRoot);
             this._quickReplyEditor.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
 
-            this._topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
+            this._topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true, true);
 
             // in case topic is deleted or not existant
             if (this._topic == null)

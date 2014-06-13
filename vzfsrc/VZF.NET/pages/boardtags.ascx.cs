@@ -28,7 +28,6 @@ namespace YAF.Pages
     using System.Globalization;
     using System.Linq;
     using System.Text;
-    using System.Web;
 
     using VZF.Data.Common;
     using VZF.Utils;
@@ -58,6 +57,11 @@ namespace YAF.Pages
             if (this.IsPostBack)
             {
                 return;
+            }
+
+            if (!this.Get<YafBoardSettings>().ShowBoardTags)
+            {
+                YafBuildLink.RedirectInfoPage(InfoMessage.AccessDenied);
             }
 
             this.PageLinksTop.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
@@ -266,7 +270,7 @@ namespace YAF.Pages
         private void BindData()
         {
             this.AlphaSort1.PagerPage = ForumPages.boardtags;
-            this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;     
+            this.PagerTop.PageSize = this.Get<YafBoardSettings>().BoardTagsPerPage;     
            
 
             char selectedCharLetter = this.AlphaSort1.CurrentLetter;

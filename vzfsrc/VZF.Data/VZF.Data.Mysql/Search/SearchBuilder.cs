@@ -131,7 +131,7 @@ namespace VZF.Data.MySql.Search
 
             searchSql +=
                 " a.ForumID, a.TopicID, a.Topic, b.UserID, IFNULL(c.Username, b.Name) as Name, c.MessageID, c.Posted, '' AS Message, c.Flags";
-            searchSql += " from " + SqlDbAccess.GetVzfObjectName("Topic", mid) + " a left join "
+            searchSql += "{FTS} from " + SqlDbAccess.GetVzfObjectName("Topic", mid) + " a left join "
                          + SqlDbAccess.GetVzfObjectName("Message", mid) + " c on a.TopicID = c.TopicID left join "
                          + SqlDbAccess.GetVzfObjectName("User", mid) + " b on c.UserID = b.UserID join "
                          + SqlDbAccess.GetVzfObjectName("vaccess", mid) + " x ON x.ForumID=a.ForumID ";
@@ -297,22 +297,24 @@ namespace VZF.Data.MySql.Search
                             {
                                 if (!bFirst)
                                 {
-                                    ftInner += " AND ";
+                                    ftInner += " ";
                                 }
                                 else
                                 {
                                     bFirst = false;
                                 }
 
-                                ftInner += string.Format(@"""{0}""", word);
+                                ftInner += string.Format(@"{0}", word);
                             }
 
                             // make final string...
-                            searchSql +=
-                                string.Format(
-                                    "( CONTAINS (c.Message, CONVERT(' {0} ' USING {1}) OR CONTAINS (a.Topic, CONVERT(' {0} ' USING {1})) )",
-                                    ftInner,
-                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                            searchSql = searchSql.Replace(
+                              "{FTS}",
+                              string.Format(
+                                  ", MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE), MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) ",
+                                  ftInner,
+                                  !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
+                            searchSql += "(MessageScore = 1 OR TopicScore = 1) ";
                         }
                         else
                         {
@@ -343,22 +345,24 @@ namespace VZF.Data.MySql.Search
                             {
                                 if (!bFirst)
                                 {
-                                    ftInner += " OR ";
+                                    ftInner += " ";
                                 }
                                 else
                                 {
                                     bFirst = false;
                                 }
 
-                                ftInner += string.Format(@"""{0}""", word);
+                                ftInner += string.Format(@"{0}", word);
                             }
 
                             // make final string...
-                            searchSql +=
+                            searchSql = searchSql.Replace(
+                                "{FTS}",
                                 string.Format(
-                                    "( CONTAINS (c.Message, CONVERT(' {0} ' USING {1})) OR CONTAINS (a.Topic, CONVERT(' {0} ' USING {1})) )",
+                                    ", MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE), MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) ",
                                     ftInner,
-                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
+                            searchSql += "(MessageScore = 1 OR TopicScore = 1) ";
                         }
                         else
                         {
@@ -380,11 +384,13 @@ namespace VZF.Data.MySql.Search
                     case SearchWhatFlags.ExactMatch:
                         if (useFullText)
                         {
-                            searchSql +=
-                                string.Format(
-                                    "( CONTAINS (c.Message, CONVERT(' \"{0}\" ' USING {1})) OR CONTAINS (a.Topic, CONVERT(' \"{0}\" ' USING {1}) )",
-                                    toSearchWhat,
-                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                            searchSql = searchSql.Replace(
+                            "{FTS}",
+                            string.Format(
+                                " MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN BOOLEAN MODE) as MessageScore, MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN BOOLEAN MODE) as TopicScore",
+                                toSearchWhat,
+                                !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
+                            searchSql += "(MessageScore = 1 OR TopicScore = 1) ";
                         }
                         else
                         {
@@ -404,7 +410,7 @@ namespace VZF.Data.MySql.Search
             // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
             if (forumIdToStartAt.Any())
             {
-                searchSql += string.Format("AND a.ForumID IN ( SELECT {0})", forumIDs);
+                searchSql += string.Format("AND a.ForumID IN (SELECT {0})", forumIDs);
             }
 
             if (orderString != string.Empty)
@@ -424,7 +430,7 @@ namespace VZF.Data.MySql.Search
                 searchSql += limitString;
             }
 
-            return searchSql;
+            return searchSql.Replace("{FTS}", string.Empty);
         }
 
         #endregion

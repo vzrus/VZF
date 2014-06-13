@@ -31,10 +31,18 @@
 		</tr>
 		<tr>
 			<td class="postheader">
-                <VZF:HelpLabel ID="LocalizedLabel2" runat="server" LocalizedTag="PRUNE_PERMANENT" LocalizedPage="ADMIN_PRUNE" />
+                <VZF:HelpLabel ID="LocalizedLabel2" runat="server" LocalizedTag="PRUNE_PERMANENT1" LocalizedPage="ADMIN_PRUNE" />
 			</td>
 			<td class="post">
 				<asp:CheckBox ID="permDeleteChkBox" runat="server" />
+			</td>
+		</tr>
+        <tr>
+			<td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="PRUNE_DELETED" LocalizedPage="ADMIN_PRUNE" />
+			</td>
+			<td class="post">
+				<asp:CheckBox ID="deletedOnlyChkBox" runat="server" />
 			</td>
 		</tr>
 		<tr>

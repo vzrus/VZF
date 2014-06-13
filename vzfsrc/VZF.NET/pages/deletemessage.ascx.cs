@@ -396,7 +396,7 @@ namespace YAF.Pages
                 this.EraseMessage.Checked);
 
             // retrieve topic information.
-            DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, tmpTopicId, true);
+            DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, tmpTopicId, true, false);
 
             // If topic has been deleted, redirect to topic list for active forum, else show remaining posts for topic
             if (topic == null)

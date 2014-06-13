@@ -209,7 +209,7 @@ namespace VZF.Controls
             userName = this.Get<HttpServerUtilityBase>().HtmlEncode(userName);
 
             // albums link
-            if (this.PostData.UserId != this.PageContext.PageUserID && !this.PostData.PostDeleted
+            if ( this.DataRow["IP"].ToString() != "NNTP" && this.PostData.UserId != this.PageContext.PageUserID && !this.PostData.PostDeleted
                 && this.PageContext.User != null && this.Get<YafBoardSettings>().EnableAlbum)
             {
                 var numAlbums =
@@ -229,26 +229,38 @@ namespace VZF.Controls
             }
 
             // private messages
-            this.Pm.Visible = this.PostData.UserId != this.PageContext.PageUserID && !this.IsGuest
+            this.Pm.Visible = DataRow["IP"].ToString() != "NNTP" && this.PostData.UserId != this.PageContext.PageUserID && !this.IsGuest
                               && !this.PostData.PostDeleted && this.PageContext.User != null
                               && this.Get<YafBoardSettings>().AllowPrivateMessages && !this.PostData.IsSponserMessage;
-            this.Pm.NavigateUrl = YafBuildLink.GetLinkNotEscaped(ForumPages.pmessage, "u={0}", this.PostData.UserId);
-            this.Pm.ParamTitle0 = userName;
+            if (this.Pm.Visible)
+            {
+                this.Pm.NavigateUrl = YafBuildLink.GetLinkNotEscaped(ForumPages.pmessage, "u={0}", this.PostData.UserId);
+                this.Pm.ParamTitle0 = userName;
+            }
 
             // emailing
-            this.Email.Visible = this.PostData.UserId != this.PageContext.PageUserID && !this.IsGuest
+            this.Email.Visible = DataRow["IP"].ToString() != "NNTP" && this.PostData.UserId != this.PageContext.PageUserID && !this.IsGuest
                                  && !this.PostData.PostDeleted && this.PageContext.User != null
                                  && this.Get<YafBoardSettings>().AllowEmailSending && !this.PostData.IsSponserMessage;
-            this.Email.NavigateUrl = YafBuildLink.GetLinkNotEscaped(ForumPages.im_email, "u={0}", this.PostData.UserId);
-            this.Email.ParamTitle0 = userName;
+            if (this.Email.Visible)
+            {
+                this.Email.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.im_email,
+                    "u={0}",
+                    this.PostData.UserId);
+                this.Email.ParamTitle0 = userName;
+            }
 
             // home page
-            this.Home.Visible = !this.PostData.PostDeleted && this.PostData.UserProfile.Homepage.IsSet();
-            this.SetupThemeButtonWithLink(this.Home, this.PostData.UserProfile.Homepage);
-            this.Home.ParamTitle0 = userName;
+            this.Home.Visible = DataRow["IP"].ToString() != "NNTP" && !this.PostData.PostDeleted && this.PostData.UserProfile.Homepage.IsSet();
+            if (this.Home.Visible)
+            {
+                this.SetupThemeButtonWithLink(this.Home, this.PostData.UserProfile.Homepage);
+                this.Home.ParamTitle0 = userName;
+            }
 
             // blog page
-            this.Blog.Visible = !this.PostData.PostDeleted && this.PostData.UserProfile.Blog.IsSet();
+            this.Blog.Visible = DataRow["IP"].ToString() != "NNTP" && !this.PostData.PostDeleted && this.PostData.UserProfile.Blog.IsSet();
             if (this.Blog.Visible)
             {
                 this.Blog.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
@@ -256,7 +268,7 @@ namespace VZF.Controls
                 this.Blog.ParamTitle0 = userName;
             }
 
-            if (!this.PostData.PostDeleted && this.PageContext.User != null
+            if (DataRow["IP"].ToString() != "NNTP" && !this.PostData.PostDeleted && this.PageContext.User != null
                 && (this.PostData.UserId != this.PageContext.PageUserID))
             {
                 // MSN
@@ -295,7 +307,7 @@ namespace VZF.Controls
             var loadHoverCardJs = false;
 
             // Facebook
-            if (this.PostData.UserProfile.Facebook.IsSet())
+            if (DataRow["IP"].ToString() != "NNTP" && this.PostData.UserProfile.Facebook.IsSet())
             {
                 this.Facebook.Visible = this.PostData.UserProfile.Facebook.IsSet();
 
@@ -317,7 +329,7 @@ namespace VZF.Controls
             }
 
             // Twitter
-            if (this.PostData.UserProfile.Twitter.IsSet())
+            if (DataRow["IP"].ToString() != "NNTP" && this.PostData.UserProfile.Twitter.IsSet())
             {
                 this.Twitter.Visible = this.PostData.UserProfile.Twitter.IsSet();
                 this.Twitter.NavigateUrl = "http://twitter.com/{0}".FormatWith(this.PostData.UserProfile.Twitter);

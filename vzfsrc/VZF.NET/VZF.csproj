@@ -1650,6 +1650,7 @@
     <Content Include="install\mysql\constraints.sql" />
     <Content Include="install\mysql\custom.sql" />
     <Content Include="install\mysql\fkeys.sql" />
+    <Content Include="install\mysql\fulltext.sql" />
     <Content Include="install\mysql\functions.sql" />
     <Content Include="install\mysql\indexes.sql" />
     <Content Include="install\mysql\pkeys.sql" />
@@ -1696,19 +1697,10 @@
     <Content Include="install\pgsql\views.sql" />
     <Content Include="install\TopicStatusList.xml" />
     <Content Include="install\wizard.css" />
-    <Content Include="languages\admin\english.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="languages\arabic.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="languages\estonian.xml" />
-    <Content Include="languages\help\english.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="languages\install\english.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="LICENSES.txt" />
     <Content Include="MANYDATABASES_HOWTO.txt" />
     <Content Include="pages\admin\eventloggroupaccess.ascx" />
@@ -2449,7 +2441,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app_ms.config" />
+    <Content Include="app.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3886,10 +3878,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="web.config">
+    <None Include="web_pg.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -4652,15 +4644,15 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web_ms.config" />
-    <None Include="web_ms.Debug.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="web_ms.Deploy.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <None Include="web.Deploy.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="web_ms.Release.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

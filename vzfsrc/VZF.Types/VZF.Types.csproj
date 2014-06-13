@@ -94,7 +94,6 @@
     <Compile Include="Flags\MedalFlags.cs" />
     <Compile Include="Flags\MessageFlags.cs" />
     <Compile Include="Flags\PollFlags.cs" />
-    <Compile Include="Interfaces\Data\ICommonDb.cs" />
     <Compile Include="Objects\PollGroup.cs" />
     <Compile Include="Flags\PollGroupFlags.cs" />
     <Compile Include="Flags\RankFlags.cs" />

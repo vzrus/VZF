@@ -292,7 +292,7 @@ namespace VZF.Controls
                 }
             }
 
-            if (this.Get<YafBoardSettings>().TagTopicMaxCount > 0)
+            if (this.Get<YafBoardSettings>().ShowBoardTags && this.Get<YafBoardSettings>().BoardTagsPerPage > 0)
             {
                 this.BoardTagsLink.Visible = this.Get<YafBoardSettings>().TagTopicMaxCount > 0;
                 this.BoardTagsLink.Text = this.GetText("TAGSBOARD", "TAGS_BOARD_LNK");

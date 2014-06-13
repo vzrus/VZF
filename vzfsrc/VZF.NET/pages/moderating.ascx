@@ -51,9 +51,15 @@
     </tr>
 </table>
 <br />
+<VZF:ThemeButton ID="RestoreTopic" runat="server" CssClass="yafcssbigbutton rightItem"
+    TextLocalizedTag="BUTTON_RESTORETOPIC" TitleLocalizedTag="BUTTON_RESTORETOPIC_TT"
+    OnLoad="Restore_Load" OnClick="RestoreTopics_Click" Visible="false" />
 <VZF:ThemeButton ID="DeleteTopic" runat="server" CssClass="yafcssbigbutton rightItem"
     TextLocalizedTag="BUTTON_DELETETOPIC" TitleLocalizedTag="BUTTON_DELETETOPIC_TT"
     OnLoad="Delete_Load" OnClick="DeleteTopics_Click" />
+<VZF:ThemeButton ID="EraseTopic" runat="server" CssClass="yafcssbigbutton rightItem"
+    TextLocalizedTag="BUTTON_ERASETOPIC" TitleLocalizedTag="BUTTON_ERASETOPIC_TT"
+    OnLoad="Erase_Load" OnClick="EraseTopics_Click" Visible="false" />
 <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" UsePostBack="True" />
 <table class="content" cellspacing="1" cellpadding="0" width="100%">
     <tr>
@@ -83,7 +89,9 @@
     </tr>
     <asp:Repeater ID="topiclist" runat="server" OnItemCommand="topiclist_ItemCommand">
         <ItemTemplate>
+             <tr>
             <VZF:TopicLine runat="server" DataRow="<%# Container.DataItem %>" AllowSelection="true" />
+             </tr>
         </ItemTemplate>
     </asp:Repeater>
     <tr>
@@ -92,9 +100,15 @@
         </td>
     </tr>
 </table>
+<VZF:ThemeButton ID="RestoreTopic2" runat="server" CssClass="yafcssbigbutton rightItem"
+    TextLocalizedTag="BUTTON_RESTORETOPIC" TitleLocalizedTag="BUTTON_RESTORETOPIC_TT"
+    OnLoad="Restore_Load" OnClick="RestoreTopics_Click" Visible="false" />
 <VZF:ThemeButton ID="DeleteTopics2" runat="server" CssClass="yafcssbigbutton rightItem"
     TextLocalizedTag="BUTTON_DELETETOPIC" TitleLocalizedTag="BUTTON_DELETETOPIC_TT"
     OnLoad="Delete_Load" OnClick="DeleteTopics_Click" />
+<VZF:ThemeButton ID="EraseTopic2" runat="server" CssClass="yafcssbigbutton rightItem"
+    TextLocalizedTag="BUTTON_ERASETOPIC" TitleLocalizedTag="BUTTON_ERASETOPIC_TT"
+    OnLoad="Erase_Load" OnClick="EraseTopics_Click" Visible="false" />
 <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" UsePostBack="True" />
 <div id="DivSmartScroller">
     <VZF:SmartScroller ID="SmartScroller1" runat="server" />

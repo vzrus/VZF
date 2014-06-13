@@ -52,6 +52,8 @@ namespace YAF.Core.Tasks
     /// </summary>
     private bool _permDelete;
 
+    private bool _deletedOnly;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="PruneTopicTask"/> class.
     /// </summary>
@@ -118,6 +120,19 @@ namespace YAF.Core.Tasks
       }
     }
 
+    public bool DeletedOnly
+    {
+        get
+        {
+            return this._deletedOnly;
+        }
+
+        set
+        {
+            this._deletedOnly = value;
+        }
+    }
+
     /// <summary>
     /// The start.
     /// </summary>
@@ -136,15 +151,14 @@ namespace YAF.Core.Tasks
     /// <returns>
     /// The start.
     /// </returns>
-    public static bool Start(int moduleId, int boardId, int forumId, int days, bool permDelete)
+    public static bool Start(int moduleId, int boardId, int forumId, int days, bool permDelete, bool deletedOnly)
     {
       if (YafContext.Current.Get<ITaskModuleManager>() == null)
       {
         return false;
       }
-
-    	YafContext.Current.Get<ITaskModuleManager>().StartTask(
-    		TaskName, () => new PruneTopicTask { Module = moduleId, Data = boardId, ForumId = forumId, Days = days, PermDelete = permDelete });
+        YafContext.Current.Get<ITaskModuleManager>().StartTask(
+    		TaskName, () => new PruneTopicTask { Module = moduleId, Data = boardId, ForumId = forumId, Days = days, PermDelete = permDelete, DeletedOnly = deletedOnly });
 
       return true;
     }
@@ -156,9 +170,9 @@ namespace YAF.Core.Tasks
     {
       try
       {
-        this.Logger.Info("Starting Prune Task for ForumID {0}, {1} Days, Perm Delete {2}.", this.ForumId, this.Days, this.PermDelete);
+        this.Logger.Info("Starting Prune Task for ForumID {0}, {1} Days, Perm Delete {2}, DeletedOnly {3}.", this.ForumId, this.Days, this.PermDelete, this.DeletedOnly);
 
-        int count = CommonDb.topic_prune(YafContext.Current.PageModuleID, (int)this.Data, this.ForumId, this.Days, this.PermDelete);
+        int count = CommonDb.topic_prune(YafContext.Current.PageModuleID, (int)this.Data, this.ForumId, this.Days, this.PermDelete, this.DeletedOnly);
 
         this.Logger.Info("Prune Task Complete. Pruned {0} topics.", count);
       }

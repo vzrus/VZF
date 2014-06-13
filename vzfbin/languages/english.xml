@@ -1615,6 +1615,10 @@ Spoiler Content
       <Resource tag="BUTTON_DELETE_TT">Delete this Post</Resource>
       <Resource tag="BUTTON_DELETETOPIC">Delete Topic</Resource>
       <Resource tag="BUTTON_DELETETOPIC_TT">Delete this topic</Resource>
+      <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
+      <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
+      <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
+      <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
       <Resource tag="BUTTON_EDIT">Edit</Resource>
       <Resource tag="BUTTON_EDIT_TT">Edit this Post</Resource>
       <Resource tag="BUTTON_LOCKTOPIC">Lock Topic</Resource>
@@ -2449,9 +2453,12 @@ Spoiler Content
       <Resource tag="ACCESSMASK">Access Mask</Resource>
       <Resource tag="BY">by {0}</Resource>
       <Resource tag="CONFIRM_DELETE">Delete this topic?</Resource>
+     <Resource tag="CONFIRM_ERASE">Do you really want completely delete the topic?</Resource>
+     <Resource tag="CONFIRM_RESTORE">Do you really want restore the topic?</Resource>
     <Resource tag="CONFIRM_DELETETOPICLINK">Delete the topic link? The topic itself will not be deleted.</Resource>
      <Resource tag="CONFIRM_DELETE_USER">Delete this user?</Resource>
       <Resource tag="DELETED">Topic deleted.</Resource>
+     <Resource tag="DELETED">Topic restored.</Resource>
     <Resource tag="TOPICLINK_DELETED">The topic link is deleted.</Resource>
       <Resource tag="EDIT">Edit</Resource>
       <Resource tag="INVITE">Invite User</Resource>
@@ -3944,11 +3951,12 @@ Visit {forumname} at {forumlink}
       <Resource tag="PRUNE_START">Start Prune Task</Resource>
       <Resource tag="PRUNE_FORUM">Forum:</Resource>
       <Resource tag="PRUNE_DAYS">Enter minimum age in days:</Resource>
-      <Resource tag="PRUNE_PERMANENT">Permanently remove from DB:</Resource>
-      
+       <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
+       <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
+       <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
+       <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>      
       <Resource tag="PRUNE_FORUM_HELP">Select a forum.</Resource>
-      <Resource tag="PRUNE_DAYS_HELP">Topics with the last post older than this will be deleted.</Resource>
-      <Resource tag="PRUNE_PERMANENT_HELP">All Topics marked with the Deleted flag will be permanently deleted.</Resource>
+      <Resource tag="PRUNE_DAYS_HELP">Topics with the last post older than this will be deleted.</Resource>   
     </page>
      <page name="ADMIN_PM">
       <Resource tag="TITLE">PM Maintenance</Resource>
@@ -5096,6 +5104,10 @@ Visit {forumname} at {forumlink}
        <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
      <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>
        <Resource tag="TAG_MAXLENGTH_HELP">Tag's max length.</Resource>
+     <Resource tag="BOARDTAGPERPAGE">Number of tags per page.</Resource>
+       <Resource tag="BOARDTAGPERPAGE_HELP">The number of tags displayed on board page.</Resource>
+     <Resource tag="SHOW_BOARDTAGS">Display board tags.</Resource>
+       <Resource tag="SHOW_BOARDTAGS_HELP">Display board tags on the main page.</Resource>
      <Resource tag="TAG_FORBIDDENSYMB">Tag's forbidden symbols.</Resource>
        <Resource tag="TAG_FORBIDDENSYMB_HELP">Tag's forbidden symbols delimited by comma.</Resource>
      <Resource tag="TIMEAGO_INTERVAL">Relative Time Refresh Interval:</Resource>

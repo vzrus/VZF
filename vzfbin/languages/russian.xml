@@ -1018,6 +1018,8 @@
     <Resource tag="AVATAR_UPLOAD_HELP">Разрешить пользователям загружать аватары в профиле.</Resource>
     <Resource tag="AVATAR_WIDTH">Ширина аватара:</Resource>
     <Resource tag="AVATAR_WIDTH_HELP">Максимальная ширина аватара.</Resource>
+    <Resource tag="BOARDTAGPERPAGE">Number of tags per page.</Resource>
+    <Resource tag="BOARDTAGPERPAGE_HELP">The number of tags displayed on board page.</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER">Включить CAPTCHA/reCAPTCHA при регистрации:</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER_HELP">Требовать от пользователей ввести данные CAPTCHA при регистрации на форуме.</Resource>
     <Resource tag="CAPTCHA_GUEST_POSTING">Включить CAPTCHA при постах гостей:</Resource>
@@ -1339,6 +1341,8 @@
     <Resource tag="SHOW_ATOM_LINKS_HELP">Отображать ссылки на ленты Atom по всему форумы. Вы должны также включить индивидуальные ленты.</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS">Показывать аватары в списке тем:</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">На страницах со списком тем будут отображены миниатюры аватаров.</Resource>
+    <Resource tag="SHOW_BOARDTAGS">Display board tags.</Resource>
+    <Resource tag="SHOW_BOARDTAGS_HELP">Display board tags on the main page.</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE">Отображать ботов в активных пользователях:</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE_HELP">Боты будут отображаться в активных пользователях, иначе они будут обрабатываться как гости.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES">Показывать удалённые сообщения:</Resource>
@@ -1560,11 +1564,15 @@
     <Resource tag="MSG_TASK">Задача очистки в очереди</Resource>
     <Resource tag="PRUNE_DAYS">Введите минимальное кол-во дней:</Resource>
     <Resource tag="PRUNE_DAYS_HELP">Темы с последним сообщением старше указанного лимита будут удалены.</Resource>
+    <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
+    <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>
     <Resource tag="PRUNE_FORUM">Форум:</Resource>
     <Resource tag="PRUNE_FORUM_HELP">Выполнить форум.</Resource>
     <Resource tag="PRUNE_INFO">ВНИМАНИЕ! Задача очистки уже выполняется. Нельзя запланировать новую задачу до окончания текущей.</Resource>
     <Resource tag="PRUNE_PERMANENT">Навсегда удалить из базы данных:</Resource>
     <Resource tag="PRUNE_PERMANENT_HELP">Все темы с помеченные как удалённые будут удалены.</Resource>
+    <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
+    <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
     <Resource tag="PRUNE_START">Начать задачу очистки</Resource>
     <Resource tag="TITLE">Почистить темы</Resource>
   </page>
@@ -1907,6 +1915,8 @@
     <Resource tag="BUTTON_EDIT">Изменить</Resource>
     <Resource tag="BUTTON_EDIT_TT">Изменить это сообщение</Resource>
     <Resource tag="BUTTON_EDITALBUMIMAGES">Загрузить/Удалить изображения</Resource>
+    <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
+    <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
     <Resource tag="BUTTON_LOCKTOPIC">Закрыть Тему</Resource>
     <Resource tag="BUTTON_LOCKTOPIC_TT">Закрыть эту тему</Resource>
     <Resource tag="BUTTON_MODERATE">Модерировать</Resource>
@@ -1928,6 +1938,8 @@
     <Resource tag="BUTTON_REPLY">Ответить</Resource>
     <Resource tag="BUTTON_REPLY_TT">Ответить на сообщение</Resource>
     <Resource tag="BUTTON_RESETCOVER">Удалить обложку</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
     <Resource tag="BUTTON_RETWEET">Ретвит</Resource>
     <Resource tag="BUTTON_RETWEET_TT">Выполнить ретвит сообщения</Resource>
     <Resource tag="BUTTON_SETCOVER">Использовать как обложку</Resource>
@@ -4196,6 +4208,8 @@ Spoiler Content
     <Resource tag="CONFIRM_DELETE">Удалить эту тему?</Resource>
     <Resource tag="CONFIRM_DELETE_USER">Удалить этого пользователя из особого доступа к форуму?</Resource>
     <Resource tag="CONFIRM_DELETETOPICLINK">Удалить эту ссылку на тему? Сама тема удалена не будет.</Resource>
+    <Resource tag="CONFIRM_ERASE">Do you really want completely delete the topic?</Resource>
+    <Resource tag="CONFIRM_RESTORE">Do you really want restore the topic?</Resource>
     <Resource tag="DELETED">Тема удалена.</Resource>
     <Resource tag="EDIT">Изменить</Resource>
     <Resource tag="INVITE">Пригласить пользователя</Resource>

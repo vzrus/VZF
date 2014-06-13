@@ -789,7 +789,7 @@ namespace YAF.Pages
             if (this.PageContext.QueryIDs.ContainsKey("t"))
             {
                 this._topicId = this.PageContext.QueryIDs["t"].ToType<int>();
-                this._topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this._topicId, true);
+                this._topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this._topicId, true, false);
             }
 
             if (this.PageContext.QueryIDs.ContainsKey("m"))
