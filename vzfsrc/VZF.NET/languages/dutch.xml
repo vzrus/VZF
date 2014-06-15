@@ -1358,6 +1358,8 @@
     <Resource tag="SHOW_DEL_MESSAGES_HELP">Als deze is aangevinkt, blijven verwijderde berichten staan met een notitie.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">Laat verwijderde berichten zien aan Iedereen:</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">Als Verwijderde berichten blijven staan, zorgt deze optie ervoor, dat alle gebruikers de berichten blijven zien.&lt;br /&gt; Als deze is uitgevinkt, zijn de verwijderde berichten alleen zichtbaar voor Administrators, Moderators, en de gebruiker van het verwijderde bericht.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">Laat de 'Snel naar...' optie zien:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">Zet de 'Snel naar...' keuzelijst aan of uit.</Resource>
     <Resource tag="SHOW_FORUM_STATS">Laat Forum Statistieken zien:</Resource>

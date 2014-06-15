@@ -83,6 +83,29 @@ namespace YAF.Pages
         /// </summary>
         protected void BindData()
         {
+            using (
+                DataTable dtAnnouncments = CommonDb.announcements_list(
+                    this.PageContext.PageModuleID,
+                    this.PageContext.PageForumID,
+                    null,
+                    null,
+                    DateTime.UtcNow,
+                    0,
+                    10,
+                    this.Get<YafBoardSettings>().UseStyledNicks,
+                    true,
+                    this.Get<YafBoardSettings>().ShowDeletedTopicsInTopicListForModerators
+                    && this.PageContext.ForumModeratorAccess,
+                    this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
+                    this.Get<YafBoardSettings>().AllowTopicTags))
+            {
+                if (dtAnnouncments != null && dtAnnouncments.Rows.Count > 0)
+                {
+                    this.Announcements.DataSource = dtAnnouncments;
+
+                }
+            }
+
             this.PagerTop.PageSize = PageContext.TopicsPerPage;
            
             DataTable dt = CommonDb.topic_list(this.PageContext.PageModuleID, this.PageContext.PageForumID,

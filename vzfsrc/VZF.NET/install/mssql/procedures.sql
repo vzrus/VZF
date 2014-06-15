@@ -12405,6 +12405,11 @@ declare @ForumID int;
         UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET Flags = Flags ^ 8 WHERE  TopicID = @TopicID and (Flags & 8) = 8;
 		UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET Flags = Flags ^ 8 WHERE  TopicMovedID = @TopicID and (Flags & 8) = 8;
 		UPDATE [{databaseSchema}].[{objectQualifier}Message] SET Flags = Flags ^ 8 WHERE  TopicID = @TopicID and (Flags & 8) = 8;
+        UPDATE  [{databaseSchema}].[{objectQualifier}Topic] 
+		SET LastMessageID = (SELECT TOP 1 m.MessageID from  [{databaseSchema}].[{objectQualifier}Message] m
+            where m.TopicID = i_TopicID and (m.Flags & 8) != 8 ORDER BY m.Posted desc)
+        where TopicID = i_TopicID; 		
+		
 		SELECT @ForumID = ForumID FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID;
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatelastpost] @ForumID    
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatestats] @ForumID

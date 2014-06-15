@@ -368,8 +368,8 @@ namespace YAF.Pages
                 0,
                 10,
                 this.Get<YafBoardSettings>().UseStyledNicks,
-                true, 
-                this.PageContext.ForumModeratorAccess,
+                true,
+                this.Get<YafBoardSettings>().ShowDeletedTopicsInTopicListForModerators && this.PageContext.ForumModeratorAccess,
                 this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
                 this.Get<YafBoardSettings>().AllowTopicTags);
             if (dt != null && dt.Rows.Count > 0)
@@ -403,8 +403,8 @@ namespace YAF.Pages
                 this.Pager.CurrentPageIndex,
                 this.PageContext.TopicsPerPage,
                 this.Get<YafBoardSettings>().UseStyledNicks,
-                true, 
-                this.PageContext.ForumModeratorAccess,
+                true,
+                this.Get<YafBoardSettings>().ShowDeletedTopicsInTopicListForModerators && this.PageContext.ForumModeratorAccess,
                 this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
                 this.Get<YafBoardSettings>().AllowTopicTags);
 

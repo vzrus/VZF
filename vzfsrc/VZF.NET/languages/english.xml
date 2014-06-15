@@ -5040,6 +5040,8 @@ Visit {forumname} at {forumlink}
        <Resource tag="ACTIVE_USERTIME_HELP">Number of minutes to display users in Active Users list.</Resource>
      <Resource tag="SHOW_AVATARS_TOPICLISTS">Show Avatars in Topic Listing:</Resource>
        <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">If this is checked, the topic pages will show avatar graphics.</Resource>
+     <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+       <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
      <Resource tag="SHOW_MOVED_TOPICS">Show Moved Topics:</Resource>
        <Resource tag="SHOW_MOVED_TOPICS_HELP">If this is checked, topics that are moved will leave behind a pointer to the new topic.</Resource>
      <Resource tag="SHOW_MODLIST">Show Moderator List:</Resource>

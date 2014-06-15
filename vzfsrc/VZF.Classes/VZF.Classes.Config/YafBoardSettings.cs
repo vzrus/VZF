@@ -726,6 +726,22 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether show deleted topics in topic list.
+        /// </summary>
+        public bool ShowDeletedTopicsInTopicListForModerators 
+        {
+            get
+            {
+                return this._regBoard.GetValue("ShowDeletedTopicsInTopicListForModerators", false);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("ShowDeletedTopicsInTopicListForModerators", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether 
         /// which Spam Service Type should been used
         /// 0 = No Service

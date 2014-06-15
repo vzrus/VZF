@@ -17162,14 +17162,19 @@ $BODY$
 DECLARE ici_forumid integer;
 BEGIN   
         UPDATE {databaseSchema}.{objectQualifier}topic 
-        SET flags = flags # 8
+        SET flags = flags # 8 
         WHERE topicid = i_topicid and (flags & 8) = 8; 
 		  UPDATE {databaseSchema}.{objectQualifier}topic 
         SET flags = flags # 8
         WHERE topicmovedid = i_topicid and (flags & 8) = 8; 
 		UPDATE {databaseSchema}.{objectQualifier}message 
         SET flags = flags # 8
-        WHERE topicid = i_topicid and (flags & 8) = 8;  
+        WHERE topicid = i_topicid and (flags & 8) = 8;
+
+		UPDATE  {databaseSchema}.{objectQualifier}topic 
+		SET lastmessageid = (SELECT m.messageid from  {databaseSchema}.{objectQualifier}message m
+           where m.topicid = i_topicid and (m.Flags & 8) != 8 ORDER BY m.posted desc LIMIT 1)
+        where topicid = i_topicid;   
 
 		select forumid into ici_forumid from {databaseSchema}.{objectQualifier}topic where topicid = i_topicid;
         PERFORM  {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_forumid);  

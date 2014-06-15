@@ -1,6 +1,8 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.hostsettings"
     CodeBehind="hostsettings.ascx.cs" %>
-<%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="YAF.Types.Interfaces" 
+    <%@ Import Namespace="VZF.Controls" 
+<%@ Register TagPrefix="VZF" Namespace="VZF.Controls" Assembly="VZF.Controls" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server" ID="Adminmenu1">
   <asp:Panel id="HostSettingsTabs" runat="server">
@@ -1178,6 +1180,15 @@
                             <asp:CheckBox ID="ShowMoved" runat="server"></asp:CheckBox>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel237" runat="server" LocalizedTag="SHOW_DELETEDINTOPICS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="ShowDeletedTopicsInTopicListForModerators" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+            
                     <tr>
                         <td class="postheader">
                             <VZF:HelpLabel ID="HelpLabel155" runat="server" LocalizedTag="SHOW_MODLIST" LocalizedPage="ADMIN_HOSTSETTINGS" />

@@ -3874,14 +3874,14 @@
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web_my.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app.config" />
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="web.config">
+    <None Include="web_pg.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />

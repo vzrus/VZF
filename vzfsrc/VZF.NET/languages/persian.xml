@@ -1365,6 +1365,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_HELP">با انتخاب این گزینه، پیام های حذف شدهبا یادداشتی رها می شوند.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">نمایش پیام های حذف شده به همه :</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">در صورت علامت زدن این گزینه همه کاربران پیام های حذف شده را خواهند دید. در غیر اینصورت فقط مدیران ، محدودکننده ها و صاحب پیام آنرا خواهند دید.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">نمایش کادر پرش انجمن:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">نمایش یا عدم نمایش کادر پرش در میان انجمن.</Resource>
     <Resource tag="SHOW_FORUM_STATS">نمایش آمار انجمن :</Resource>

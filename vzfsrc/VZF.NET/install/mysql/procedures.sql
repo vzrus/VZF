@@ -8231,7 +8231,7 @@ END;
 
 --GO
     /* STORED PROCEDURE CREATED BY VZ-TEAM */    
-    CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_delete (i_TopicID int,i_TopicMovedID INT,i_UpdateLastPost TINYINT(1),i_EraseTopic TINYINT(1))
+    CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_delete (i_TopicID int,i_TopicMovedID INT,i_EraseTopic TINYINT(1),i_UpdateLastPost TINYINT(1))
     BEGIN
     /*SET NOCOUNT ON*/
     DECLARE ici_ForumID INT;
@@ -14703,6 +14703,12 @@ DECLARE ici_ForumID INT;
     WHERE TopicMovedID = i_TopicID and (Flags & 8) = 8;
 	UPDATE {databaseSchema}.{objectQualifier}Message SET Flags = Flags ^ 8 
     WHERE TopicID = i_TopicID and (Flags & 8) = 8;
+
+	UPDATE  {databaseSchema}.{objectQualifier}Topic SET 
+    LastMessageID = (SELECT m.MessageID from  {databaseSchema}.{objectQualifier}Message m
+    where m.TopicID = i_TopicID and (m.Flags & 8) != 8 ORDER BY m.Posted desc LIMIT 1)
+    where TopicID = i_TopicID;     
+
 	SELECT ForumID INTO ici_ForumID FROM {databaseSchema}.{objectQualifier}Topic where TopicID = i_TopicID;
     CALL  {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_ForumID);   	
     CALL  {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID); 

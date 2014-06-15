@@ -2659,6 +2659,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox ShowMoved;
         
         /// <summary>
+        /// HelpLabel237 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel237;
+        
+        /// <summary>
+        /// ShowDeletedTopicsInTopicListForModerators control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ShowDeletedTopicsInTopicListForModerators;
+        
+        /// <summary>
         /// HelpLabel155 control.
         /// </summary>
         /// <remarks>
