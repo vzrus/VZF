@@ -180,6 +180,12 @@ namespace YAF.Pages
                         this.RefreshTime = 10;
                         this.RefreshURL = YafBuildLink.GetLink(ForumPages.forum);
                         break;
+                    case InfoMessage.ForumAdminShouldSetPersonalMasksOrEnableCommonMasks: // some sort of failure
+                        this.Title.Text = this.GetText("TITLE_SHOULDALLOWPERSORCOMMONMASKS");
+                        this.Info.Text = this.GetText("SHOULDALLOWPERSORCOMMONMASKS");
+                        this.RefreshTime = 10;
+                        this.RefreshURL = YafBuildLink.GetLink(ForumPages.forum);
+                        break;
                 }
             }
             catch (Exception)

@@ -124,7 +124,7 @@
                 <asp:CheckBox ID="Moderated" runat="server"></asp:CheckBox>
             </td>
         </tr>
-         <tr>
+         <tr id="tr_isuserforum" runat="server">
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel15" runat="server" LocalizedTag="ISUSERFORUM" LocalizedPage="ADMIN_EDITFORUM" />
             </td>

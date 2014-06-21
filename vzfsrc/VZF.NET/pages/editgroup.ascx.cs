@@ -391,7 +391,15 @@ namespace YAF.Pages
                 this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, true);
             }
 
-            this.AccessMasksList = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);
+
+            this.AccessMasksList = CommonDb.accessmask_pforumlist(
+              mid: PageContext.PageModuleID,
+              boardId: this.PageContext.PageBoardID,
+              accessMaskID: null,
+              excludeFlags: 0,
+              pageUserID: this.PageContext.PageUserID,
+              isUserMask: true,            
+              isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums);
            
             // bind data to controls
             this.DataBind();

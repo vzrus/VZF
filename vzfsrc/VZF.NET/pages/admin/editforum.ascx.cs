@@ -48,6 +48,11 @@ namespace YAF.Pages.Admin
   /// </summary>
   public partial class editforum : AdminPage
   {
+    private bool UserForum { get; set; }
+    private int? UsrId { get; set; }   
+
+    private DataTable accessMaskListId; 
+
     #region Public Methods
 
     /// <summary>
@@ -79,7 +84,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
     {
-      ((DropDownList)sender).DataSource = CommonDb.accessmask_aforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
+      ((DropDownList)sender).DataSource = accessMaskListId;  
       ((DropDownList)sender).DataValueField = "AccessMaskID";
       ((DropDownList)sender).DataTextField = "Name";
     }
@@ -178,6 +183,8 @@ namespace YAF.Pages.Admin
       {
         return;
       }
+       var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");     
+     
 
       this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
       this.PageLinks.AddLink(
@@ -203,7 +210,7 @@ namespace YAF.Pages.Admin
 
       this.BindData();
 
-      var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");
+    
 
         if (!forumId.HasValue)
         {
@@ -311,9 +318,75 @@ namespace YAF.Pages.Admin
       this.CategoryList.DataBind();
 
       if (forumId.HasValue)
-      {
-        this.AccessList.DataSource = CommonDb.forumaccess_list(this.PageContext.PageModuleID, forumId.Value, null, false);
-        this.AccessList.DataBind();
+      {         
+    
+          using (var ftype = CommonDb.forum_list(PageContext.PageModuleID, PageContext.PageBoardID, forumId))
+          {
+              UserForum = ftype.Rows[0]["IsUserForum"].ToType<bool>();
+              UsrId = ftype.Rows[0]["CreatedByUserID"].ToType<int>();
+          }
+
+          bool userGroups = false;
+          bool adminGroups = false;
+          bool commonGroups = false;
+
+          if (UserForum)
+          {
+              userGroups = true;
+              adminGroups = false;
+              commonGroups = !this.Get<YafBoardSettings>().AllowPersonalGroupsOnlyForPersonalForums;
+
+              accessMaskListId = CommonDb.accessmask_pforumlist(
+      mid: PageContext.PageModuleID,
+      boardId: this.PageContext.PageBoardID,
+      accessMaskID: null,
+      excludeFlags: 0,
+      pageUserID: UsrId,
+      isUserMask: true,
+      isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums);
+              
+          }
+          else
+          {
+              userGroups = false;
+              adminGroups = true;
+              commonGroups = true;
+
+              accessMaskListId = CommonDb.accessmask_aforumlist(
+      mid: PageContext.PageModuleID,
+      boardId: this.PageContext.PageBoardID,
+      accessMaskID: null,
+      excludeFlags: 0,
+      pageUserID: null,
+      isAdminMask: true,
+      isCommonMask: true);
+          }
+
+          this.AccessList.DataSource = CommonDb.forumaccess_list(
+                this.PageContext.PageModuleID,
+                forumId.Value,
+                UsrId,
+                userGroups,
+                commonGroups,
+                adminGroups);       
+
+
+        if (accessMaskListId.Rows.Count == 0 && this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums)
+        {
+            if (PageContext.PersonalAccessMasksNumber <= 0 && PageContext.UsrPersonalMasks > 0)
+            {
+                YafBuildLink.Redirect(ForumPages.personalaccessmask, "u={0}".FormatWith(PageContext.PageUserID));
+            }
+
+            if (PageContext.UsrPersonalMasks <= 0)
+            {
+                YafBuildLink.RedirectInfoPage(InfoMessage.ForumAdminShouldSetPersonalMasksOrEnableCommonMasks);
+            }
+
+            CommonDb.eventlog_create(PageContext.PageModuleID, PageContext.PageUserID, this, "Bad logic in the editpersonalforum masks.", EventLogTypes.Information);
+        }
+
+        this.AccessList.DataBind();      
       }
 
       // Load forum's combo
@@ -321,7 +394,23 @@ namespace YAF.Pages.Admin
 
       // Load forum's themes
       var listheader = new ListItem { Text = this.GetText("ADMIN_EDITFORUM", "CHOOSE_THEME"), Value = string.Empty };
+     // this is a new forum, we assume that this is a common forum. 
+        if (accessMaskListId == null)
+      { 
+          accessMaskListId = CommonDb.accessmask_aforumlist(
+      mid: PageContext.PageModuleID,
+      boardId: this.PageContext.PageBoardID,
+      accessMaskID: null,
+      excludeFlags: 0,
+      pageUserID: null,
+      isAdminMask: true,
+      isCommonMask: true);
 
+      // we can't create a personal forum here, we can only edit it;
+      this.IsUserForum.Checked = false;
+      tr_isuserforum.Visible = false;
+
+      }
       this.AccessMaskID.DataBind();
 
       this.ThemeList.DataSource = StaticDataHelper.Themes();

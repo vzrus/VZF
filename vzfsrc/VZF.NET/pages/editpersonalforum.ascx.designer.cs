@@ -10,7 +10,7 @@
 namespace YAF.pages {
     
     
-    public partial class editforum {
+    public partial class editpersonalforum {
         
         /// <summary>
         /// PageLinks control.

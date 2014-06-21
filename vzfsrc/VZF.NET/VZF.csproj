@@ -460,6 +460,13 @@
     <Compile Include="pages\admin\boardsettings.ascx.designer.cs">
       <DependentUpon>boardsettings.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\admin\editforum.ascx.cs">
+      <DependentUpon>editforum.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\admin\editforum.ascx.designer.cs">
+      <DependentUpon>editforum.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\admin\eventloggroupaccess.ascx.cs">
       <DependentUpon>eventloggroupaccess.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -510,9 +517,6 @@
     </Compile>
     <Compile Include="pages\admin\editcategory.ascx.designer.cs">
       <DependentUpon>editcategory.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="pages\admin\editforum.ascx.designer.cs">
-      <DependentUpon>editforum.ascx</DependentUpon>
     </Compile>
     <Compile Include="pages\admin\editgroup.ascx.designer.cs">
       <DependentUpon>editgroup.ascx</DependentUpon>
@@ -752,12 +756,12 @@
     <Compile Include="pages\editaccessmask.ascx.designer.cs">
       <DependentUpon>editaccessmask.ascx</DependentUpon>
     </Compile>
-    <Compile Include="pages\editforum.ascx.cs">
-      <DependentUpon>editforum.ascx</DependentUpon>
+    <Compile Include="pages\editpersonalforum.ascx.cs">
+      <DependentUpon>editpersonalforum.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="pages\editforum.ascx.designer.cs">
-      <DependentUpon>editforum.ascx</DependentUpon>
+    <Compile Include="pages\editpersonalforum.ascx.designer.cs">
+      <DependentUpon>editpersonalforum.ascx</DependentUpon>
     </Compile>
     <Compile Include="pages\editgroup.ascx.cs">
       <DependentUpon>editgroup.ascx</DependentUpon>
@@ -1703,6 +1707,7 @@
     <Content Include="languages\estonian.xml" />
     <Content Include="LICENSES.txt" />
     <Content Include="MANYDATABASES_HOWTO.txt" />
+    <Content Include="pages\admin\editforum.ascx" />
     <Content Include="pages\admin\eventloggroupaccess.ascx" />
     <Content Include="pages\admin\eventloggroups.ascx" />
     <Content Include="pages\admin\pageaccessedit.ascx" />
@@ -1720,7 +1725,7 @@
     <Content Include="pages\personalaccessmask.ascx" />
     <Content Include="pages\personalgroup.ascx" />
     <Content Include="pages\editaccessmask.ascx" />
-    <Content Include="pages\editforum.ascx" />
+    <Content Include="pages\editpersonalforum.ascx" />
     <Content Include="pages\editgroup.ascx" />
     <Content Include="pages\personalforum.ascx" />
     <Content Include="pages\topicsbytags.ascx" />
@@ -1777,7 +1782,6 @@
     <Content Include="pages\admin\editaccessmask.ascx" />
     <Content Include="pages\admin\editboard.ascx" />
     <Content Include="pages\admin\editcategory.ascx" />
-    <Content Include="pages\admin\editforum.ascx" />
     <Content Include="pages\admin\editgroup.ascx" />
     <Content Include="pages\admin\editlanguage.ascx" />
     <Content Include="pages\admin\editmedal.ascx" />
@@ -2118,10 +2122,6 @@
     </Compile>
     <Compile Include="pages\admin\editcategory.ascx.cs">
       <DependentUpon>editcategory.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="pages\admin\editforum.ascx.cs">
-      <DependentUpon>editforum.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="pages\admin\editgroup.ascx.cs">
@@ -3278,7 +3278,9 @@
     <Content Include="images\emoticons\eusa.pak" />
     <Content Include="images\emoticons\ModernSmileyPack.pak" />
     <Content Include="images\ranks\YafRanks.psd" />
-    <Content Include="themes\BlueGrey.xml" />
+    <Content Include="themes\BlueGrey.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="themes\BlueGrey\arrow-branch-090-left.png" />
     <Content Include="themes\BlueGrey\arrow-branch-270.png" />
     <Content Include="themes\BlueGrey\arrow-branch.png" />
@@ -3542,6 +3544,7 @@
     <Content Include="themes\BlueGrey\flags\zm.png" />
     <Content Include="themes\BlueGrey\flags\zw.png" />
     <Content Include="themes\BlueGrey\frog3.gif" />
+    <Content Include="themes\BlueGrey\icon_key.png" />
     <Content Include="themes\BlueGrey\lifebuoy-small.png" />
     <Content Include="themes\BlueGrey\minus-circle.png" />
     <Content Include="themes\BlueGrey\odnoklassniki.png" />
@@ -3552,6 +3555,7 @@
     <Content Include="themes\BlueGrey\tables.png" />
     <Content Include="themes\BlueGrey\tag-label.png" />
     <Content Include="themes\BlueGrey\tick.png" />
+    <Content Include="themes\BlueGrey\topic_deleted.gif" />
     <Content Include="themes\BlueGrey\users.png" />
     <Content Include="themes\cleanSlate\arrow-branch-090-left.png" />
     <Content Include="themes\cleanSlate\arrow-branch-270.png" />
@@ -3565,6 +3569,7 @@
     <Content Include="themes\cleanSlate\disk-black.png" />
     <Content Include="themes\cleanSlate\fire-big.png" />
     <Content Include="themes\cleanSlate\frog3.gif" />
+    <Content Include="themes\cleanSlate\icon_key.png" />
     <Content Include="themes\cleanSlate\lifebuoy-small.png" />
     <Content Include="themes\cleanSlate\minus-circle.png" />
     <Content Include="themes\cleanSlate\odnoklassniki.png" />
@@ -3575,6 +3580,7 @@
     <Content Include="themes\cleanSlate\tables.png" />
     <Content Include="themes\cleanSlate\tag-label.png" />
     <Content Include="themes\cleanSlate\tick.png" />
+    <Content Include="themes\cleanSlate\topic_deleted.gif" />
     <Content Include="themes\cleanSlate\users.png" />
     <Content Include="themes\Fancy\images\arrow-branch-090-left.png" />
     <Content Include="themes\Fancy\images\arrow-branch-270.png" />
@@ -3839,6 +3845,7 @@
     <Content Include="themes\Fancy\images\flags\zw.png" />
     <Content Include="themes\Fancy\images\frog3.gif" />
     <Content Include="themes\Fancy\images\balloon-twitter-retweet.png" />
+    <Content Include="themes\Fancy\images\icon_key.png" />
     <Content Include="themes\Fancy\images\lifebuoy-small.png" />
     <Content Include="themes\Fancy\images\minus-circle.png" />
     <Content Include="themes\Fancy\images\pin--plus.png" />
@@ -3848,6 +3855,7 @@
     <Content Include="themes\Fancy\images\tables.png" />
     <Content Include="themes\Fancy\images\tag-label.png" />
     <Content Include="themes\Fancy\images\tick.png" />
+    <Content Include="themes\Fancy\images\topic_deleted.gif" />
     <Content Include="themes\Fancy\images\users.png" />
     <Content Include="themes\Yafmobile\arrow-branch-090-left.png" />
     <Content Include="themes\Yafmobile\arrow-branch-270.png" />
@@ -3861,6 +3869,7 @@
     <Content Include="themes\Yafmobile\disk-black.png" />
     <Content Include="themes\Yafmobile\fire-big.png" />
     <Content Include="themes\Yafmobile\frog3.gif" />
+    <Content Include="themes\Yafmobile\icon_key.png" />
     <Content Include="themes\Yafmobile\lifebuoy-small.png" />
     <Content Include="themes\Yafmobile\minus-circle.png" />
     <Content Include="themes\Yafmobile\odnoklassniki.png" />
@@ -3871,6 +3880,7 @@
     <Content Include="themes\Yafmobile\tables.png" />
     <Content Include="themes\Yafmobile\tag-label.png" />
     <Content Include="themes\Yafmobile\tick.png" />
+    <Content Include="themes\Yafmobile\topic_deleted.gif" />
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
@@ -4386,7 +4396,9 @@
     <Content Include="themes\cleanSlate\vote_refuse.gif" />
     <Content Include="themes\cleanSlate\voting_bar.gif" />
     <Content Include="themes\cleanSlate\cleanslate.js" />
-    <Content Include="themes\Fancy.xml" />
+    <Content Include="themes\Fancy.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="themes\Fancy\fonts\entypo-webfont.svg" />
     <Content Include="themes\Fancy\fonts\Lobster-webfont.svg" />
     <Content Include="themes\Fancy\images\albums.png" />
@@ -4511,7 +4523,9 @@
     <Content Include="themes\Fancy\js\jquery.uniform.min.js" />
     <Content Include="themes\Fancy\theme.css" />
     <Content Include="themes\Fancy\uniform.default.css" />
-    <Content Include="themes\YafMobile.xml" />
+    <Content Include="themes\YafMobile.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="themes\Yafmobile\albums.png" />
     <Content Include="themes\Yafmobile\arrow_up_button.png" />
     <Content Include="themes\Yafmobile\chart.png" />

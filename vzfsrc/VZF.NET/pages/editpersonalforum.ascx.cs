@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Vladimir Zakharov" file="editforum.ascx.cs">
+// <copyright company="Vladimir Zakharov" file="editpersonalforum.ascx.cs">
 //   VZF by vzrus
 //   Copyright (C) 2006-2014 Vladimir Zakharov
 //   https://github.com/vzrus
@@ -44,8 +44,13 @@ namespace YAF.pages
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
 
-    public partial class editforum : ForumPage
+    public partial class editpersonalforum : ForumPage
     {
+        private bool UserForum { get; set; }
+        private int? UsrId { get; set; }
+
+        private DataTable accessMaskListId;
+ 
         #region Public Methods
 
         /// <summary>
@@ -92,7 +97,7 @@ namespace YAF.pages
         /// </param>
         protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ((DropDownList)sender).DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: PageContext.PageUserID, isUserMask: true, isAdminMask: false);
+            ((DropDownList)sender).DataSource = accessMaskListId;
             ((DropDownList)sender).DataValueField = "AccessMaskID";
             ((DropDownList)sender).DataTextField = "Name";
         }
@@ -193,7 +198,8 @@ namespace YAF.pages
             if (this.IsPostBack)
             {
                 return;
-            }                  
+            }
+            
 
             // A new forum case
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
@@ -238,6 +244,30 @@ namespace YAF.pages
                 {
                     YafBuildLink.AccessDenied();
                 }
+            }
+           
+            accessMaskListId = CommonDb.accessmask_pforumlist(
+              mid: PageContext.PageModuleID,
+              boardId: this.PageContext.PageBoardID,
+              accessMaskID: null,
+              excludeFlags: 0,
+              pageUserID: this.PageContext.PageUserID,
+              isUserMask: true,             
+              isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums);
+           
+            if (accessMaskListId.Rows.Count == 0 && this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums)
+            {
+                if (PageContext.PersonalAccessMasksNumber <= 0 && PageContext.UsrPersonalMasks > 0)
+                {
+                    YafBuildLink.Redirect(ForumPages.personalaccessmask, "u={0}".FormatWith(PageContext.PageUserID));
+                }
+
+                if (PageContext.UsrPersonalMasks <= 0)
+                {
+                    YafBuildLink.RedirectInfoPage(InfoMessage.ForumAdminShouldSetPersonalMasksOrEnableCommonMasks);
+                }
+
+                CommonDb.eventlog_create(PageContext.PageModuleID, PageContext.PageUserID, this, "Bad logic in the editpersonalforum masks.", EventLogTypes.Information);
             }
 
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
@@ -426,12 +456,15 @@ namespace YAF.pages
 
             // forum already exists
             if (forumId.HasValue)
-            {                
+            {
                 this.AccessList.DataSource = CommonDb.forumaccess_list(
-                    this.PageContext.PageModuleID,
-                    forumId,
-                    PageContext.PageUserID,
-                    true);
+                        this.PageContext.PageModuleID,
+                        forumId.Value,
+                        PageContext.PageUserID,
+                        true,
+                        !this.Get<YafBoardSettings>().AllowPersonalGroupsOnlyForPersonalForums,
+                        false);
+             
                 this.AccessList.DataBind();
             }           
 
@@ -452,7 +485,7 @@ namespace YAF.pages
         /// </summary>
         private void BindParentList()
         {
-            if (this.canHaveForumsAsSubforums)
+            if (this.canHaveForumsAsSubforums && this.CategoryList.SelectedValue.IsSet())
             {
                 DataTable dataCat = CommonDb.forum_listall_fromCat(
                     PageContext.PageModuleID,
@@ -691,7 +724,7 @@ namespace YAF.pages
             }
             else
             {
-                YafBuildLink.Redirect(ForumPages.editforum, "fa={0}&u={1}", newForumId, this.PageContext.PageUserID);
+                YafBuildLink.Redirect(ForumPages.editpersonalforum, "fa={0}&u={1}", newForumId, this.PageContext.PageUserID);
             }
         }
 

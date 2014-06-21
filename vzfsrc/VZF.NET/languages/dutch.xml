@@ -146,6 +146,11 @@
     <Resource tag="USERNAME">Gebruikersnaam</Resource>
   </page>
   <page name="ADMIN_ACCESSMASKS">
+    <Resource tag="ACCESSMASKTYPE_ADMIN">Admin mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_ALL">All</Resource>
+    <Resource tag="ACCESSMASKTYPE_PERSONAL">Personal Mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_SELECT">Access Mask Type</Resource>
+    <Resource tag="ACCESSMASKTYPE_SHARED">Shared Mask</Resource>
     <Resource tag="CONFIRM_DELETE">Verwijder dit Toegangsmasker?</Resource>
     <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Verwijderen</Resource>
@@ -162,8 +167,10 @@
     <Resource tag="PRIORITY">Prioriteit</Resource>
     <Resource tag="READ">Lezen</Resource>
     <Resource tag="REPLY">Reageren</Resource>
+    <Resource tag="RESET">Reset</Resource>
     <Resource tag="TITLE">Toegangsmaskers</Resource>
     <Resource tag="UPLOAD">Uploaden</Resource>
+    <Resource tag="USER">Find User:</Resource>
     <Resource tag="VOTE">Stemmen</Resource>
   </page>
   <page name="ADMIN_ADMIN">
@@ -339,6 +346,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Personal forums in categories:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
+    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
     <Resource tag="TITLE">Board Configuratie</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -408,6 +419,7 @@
     <Resource tag="MODERATOR_ACCESS">Morderator Access</Resource>
     <Resource tag="MODERATOR_ACCESS_HELP">Allows Users to Edit/Delete all Posts and Topics in a Forum.</Resource>
     <Resource tag="MSG_MASK_NAME">Je moet een naam invullen voor het Toegangsmasker.</Resource>
+    <Resource tag="MSG_NOUSERANDADMIN">You can't set user and admin masks at the same time.</Resource>
     <Resource tag="MSG_NUMBER_SORT">Je moet een geheel getal invullen tussen 0 en 32767 als sorteervolgorde.</Resource>
     <Resource tag="MSG_POSITIVE_SORT">De Sorteervolgorde moet een geheel getal zijn tussen 0 en 32767.</Resource>
     <Resource tag="POLL_ACCESS">Poll Access</Resource>
@@ -2021,6 +2033,7 @@
     <Resource tag="DISALLOWED">Niet toegestaan</Resource>
     <Resource tag="DOWNLOAD">Downloaden</Resource>
     <Resource tag="EDIT">Bewerk</Resource>
+    <Resource tag="EDITACCESS">Edit Access</Resource>
     <Resource tag="EMAILVERIFICATION_SUBJECT">{0} Email Controle</Resource>
     <Resource tag="EXTERNALUSER">(Externe Gebruiker)</Resource>
     <Resource tag="FONT_COLOR">Tekstkleur:</Resource>
@@ -4102,6 +4115,7 @@ Spoiler Inhoud
     <Resource tag="INVALID">Je hebt een ongeldige waarde opgegeven.</Resource>
     <Resource tag="MODERATED">Omdat je in een gemodereerd forum gepost hebt, zal je bericht pas verschijnen na goedkeuring door een moderator.</Resource>
     <Resource tag="REGISTRATION">Er is een e-mail naar het adres verzonden dat je hebt opgegeven. Lees a.u.b. de instructies in de e-mail om in te loggen.</Resource>
+    <Resource tag="SHOULDALLOWPERSORCOMMONMASKS">Admin should set allowed access masks for you - common or personal.</Resource>
     <Resource tag="SUSPENDED">Je account is tijdelijk geblokkeerd en zal weer actief worden op {0}.</Resource>
     <Resource tag="TITLE_ACCESSDENIED">Toegang geweigerd</Resource>
     <Resource tag="TITLE_COOKIES">cookies verplicht</Resource>
@@ -4114,6 +4128,7 @@ Spoiler Inhoud
     <Resource tag="TITLE_INVALID">Ongeldig</Resource>
     <Resource tag="TITLE_MODERATED">Informatie</Resource>
     <Resource tag="TITLE_REGISTRATION">Bedankt</Resource>
+    <Resource tag="TITLE_SHOULDALLOWPERSORCOMMONMASKS">Admin should allow any access masks!</Resource>
     <Resource tag="TITLE_SUSPENDED">Geblokkeerd</Resource>
   </page>
   <page name="LANGUAGE">

@@ -465,7 +465,7 @@ SELECT
         AND
         ((:I_SHOWMOVED = 1)
         or
-        (:I_SHOWMOVED <> 1 AND  c1.TOPICMOVEDID IS NULL))	
+        (:I_SHOWMOVED <> 1 AND  t.TOPICMOVEDID IS NULL))	
 		
           INTO :ici_post_priorityrowsnumber;
         ici_post_priorityrowsnumber_pages = CEILING(CAST(:ici_post_priorityrowsnumber AS decimal)/:I_PAGESIZE); 		 

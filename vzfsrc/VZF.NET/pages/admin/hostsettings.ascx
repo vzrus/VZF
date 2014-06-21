@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.hostsettings"
     CodeBehind="hostsettings.ascx.cs" %>
-<%@ Import Namespace="YAF.Types.Interfaces" 
-    <%@ Import Namespace="VZF.Controls" 
+<%@ Import Namespace="YAF.Types.Interfaces" %>
+    <%@ Import Namespace="VZF.Controls" %>
 <%@ Register TagPrefix="VZF" Namespace="VZF.Controls" Assembly="VZF.Controls" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server" ID="Adminmenu1">

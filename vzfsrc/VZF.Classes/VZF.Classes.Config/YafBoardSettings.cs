@@ -454,6 +454,35 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether allow personal masks only for personal forums.
+        /// </summary>
+        public bool AllowPersonalMasksOnlyForPersonalForums
+        {
+            get
+            {
+                return this._regBoard.GetValue("AllowPersonalMasksOnlyForPersonalForums", true);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("AllowPersonalMasksOnlyForPersonalForums", value);
+            }
+        }
+
+        public bool AllowPersonalGroupsOnlyForPersonalForums
+        {
+            get
+            {
+                return this._regBoard.GetValue("AllowPersonalGroupsOnlyForPersonalForums", true);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("AllowPersonalGroupsOnlyForPersonalForums", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets ShowTopicsDefault.
         /// </summary>
         public int ShowTopicsDefault

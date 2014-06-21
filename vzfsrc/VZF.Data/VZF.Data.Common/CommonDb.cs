@@ -81,30 +81,37 @@ namespace VZF.Data.Common
         /// The accessmask_list.
         /// </summary>
         /// <param name="mid">
-        ///     The mid.
+        /// The mid.
         /// </param>
         /// <param name="boardId">
-        ///     The board id.
+        /// The board id.
         /// </param>
         /// <param name="accessMaskID">
-        ///     The access mask id.
+        /// The access mask id.
         /// </param>
         /// <param name="excludeFlags">
-        ///     The exclude flags.
+        /// The exclude flags.
         /// </param>
         /// <param name="pageUserID">
-        ///     The page user id.
+        /// The page user id.
         /// </param>
         /// <param name="isUserMask">
-        ///     The is user mask.
+        /// The is user mask.
         /// </param>
         /// <param name="isAdminMask">
-        ///     The is admin mask.
+        /// The is admin mask.
         /// </param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="isCommonMask">
+        /// The is common mask.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
         /// <returns>
-        /// The <see cref="T:System.Data.DataTable"/>.
+        /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable accessmask_list(
             int? mid,
@@ -114,6 +121,7 @@ namespace VZF.Data.Common
             object pageUserID,
             bool isUserMask,
             bool isAdminMask,
+            bool isCommonMask,
             int pageIndex,
             int pageSize)
         {
@@ -125,13 +133,80 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
-               
+
                 sc.CommandText.AppendObjectQuery("accessmask_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
             }
         }
+
+        /// <summary>
+        /// The accessmask_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="accessMaskID">
+        /// The access mask id.
+        /// </param>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <param name="isCommonMask">
+        /// The is common mask.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable accessmask_searchlist(
+            int? mid,
+            object boardId,
+            object accessMaskID,
+            object excludeFlags,
+            object pageUserID,
+            bool isUserMask,
+            bool isAdminMask,
+            bool isCommonMask,
+            int pageIndex,
+            int pageSize)
+        {
+            using (var sc = new VzfSqlCommand(mid))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
+
+                sc.CommandText.AppendObjectQuery("accessmask_searchlist", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }
+        }
+
 
         /// <summary>
         /// Gets a list of access mask properties for personal forums(blogs).
@@ -167,7 +242,7 @@ namespace VZF.Data.Common
             object excludeFlags,
             object pageUserID,
             bool isUserMask,
-            bool isAdminMask)
+            bool isCommonMask)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -176,7 +251,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
 
                 sc.CommandText.AppendObjectQuery("accessmask_pforumlist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -216,8 +291,8 @@ namespace VZF.Data.Common
             object accessMaskID,
             object excludeFlags,
             object pageUserID,
-            bool isUserMask,
-            bool isAdminMask)
+            bool isAdminMask,
+            bool isCommonMask)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -225,8 +300,8 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
 
                 sc.CommandText.AppendObjectQuery("accessmask_aforumlist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -4888,27 +4963,32 @@ namespace VZF.Data.Common
         /// The forumaccess_list.
         /// </summary>
         /// <param name="mid">
-        /// The mid.
+        ///     The mid.
         /// </param>
         /// <param name="forumID">
-        /// The forum id.
+        ///     The forum id.
         /// </param>
         /// <param name="userId">
-        /// The user id.
+        ///     The user id.
         /// </param>
+        /// <param name="userGroups"></param>
+        /// <param name="noUserGroups"></param>
+        /// <param name="allGroups"></param>
         /// <param name="includeUserGroups">
         /// The include user groups.
         /// </param>
         /// <returns>
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
-        public static DataTable forumaccess_list(int? mid, object forumID, object userId, bool includeUserGroups)
+        public static DataTable forumaccess_list(int? mid, object forumID, object userId, bool userGroups, bool commonGroups, bool adminGroups)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IncludeUserGroups", includeUserGroups));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PersonalGroupUserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IncludeUserGroups", userGroups));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IncludeCommonGroups", commonGroups));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IncludeAdminGroups", adminGroups));
 
                 sc.CommandText.AppendObjectQuery("forumaccess_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);

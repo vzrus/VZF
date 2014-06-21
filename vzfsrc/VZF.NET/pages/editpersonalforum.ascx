@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="editforum.ascx.cs" Inherits="YAF.pages.editforum" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="editpersonalforum.ascx.cs" Inherits="YAF.pages.editpersonalforum" %>
 <%@ Register TagPrefix="VZF" Namespace="VZF.Controls" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
     <table class="content" cellspacing="1" cellpadding="0" width="100%">

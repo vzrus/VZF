@@ -602,6 +602,8 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}user_thankedmessage;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}accessmask_list;
 --GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}accessmask_searchlist;
+--GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}accessmask_pforumlist;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}accessmask_aforumlist;
@@ -4286,21 +4288,18 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}forumaccess_group(i_GroupID I
 --GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forumaccess_list(
-                i_ForumID INT, i_UserID INT, i_IncludeUserGroups TINYINT(1))
+                i_ForumID INT, i_PersonalGroupUserID INT, i_IncludeUserGroups TINYINT(1), i_IncludeCommonGroups TINYINT(1), i_IncludeAdminGroups TINYINT(1) )
 BEGIN
-IF i_IncludeUserGroups = 1 THEN
         SELECT a.*,
                b.Name AS GroupName
         FROM   {databaseSchema}.{objectQualifier}ForumAccess a
                INNER JOIN {databaseSchema}.{objectQualifier}Group b ON b.GroupID=a.GroupID
-        WHERE  a.ForumID = i_ForumID AND (b.IsUserGroup = 0 OR (b.IsUserGroup = 1 AND b.CreatedByUserID = i_UserID)); 
-        ELSE
-         SELECT a.*,
-               b.Name AS GroupName
-        FROM   {databaseSchema}.{objectQualifier}ForumAccess a
-               INNER JOIN {databaseSchema}.{objectQualifier}Group b ON b.GroupID=a.GroupID
-        WHERE  a.ForumID = i_ForumID AND b.IsUserGroup = 0; 
-        END IF;     
+        WHERE  a.ForumID = i_ForumID 
+		AND 
+		b.IsUserGroup = (case when i_IncludeUserGroups = 1 and i_IncludeCommonGroups = 0 AND b.CreatedByUserID = i_PersonalGroupUserID then 1
+		else 0 end)
+		AND 
+		b.IsHidden = (case when i_IncludeAdminGroups = 1 and i_IncludeCommonGroups = 0 then 1  else 0 end);        
 END;
 --GO
 
@@ -11555,12 +11554,12 @@ BEGIN
         `OnlyRibbon` DESC,
         `SortOrder` ASC;
  
-END;
+END; 
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseSchema}.{objectQualifier}accessmask_list(
-i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1), i_PageIndex int, i_PageSize int)
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1), i_IsCommonMask  TINYINT(1), i_PageIndex int, i_PageSize int)
 BEGIN
 	 declare ici_TotalRows int default 0;
      declare ici_FirstSelectRowNumber int default 0;
@@ -11572,8 +11571,54 @@ BEGIN
         select  count(1) into  ici_TotalRows FROM    {databaseSchema}.{objectQualifier}AccessMask a
               WHERE    a.BoardID = i_BoardID and
               (a.Flags & i_ExcludeFlags) = 0
-                and (i_IsUserMask = 0 or a.IsUserMask = 1)
-            -- and (i_IsAdminMask = 0 or IsAdminMask = 1)
+			  and a.IsUserMask = case when i_IsUserMask = 1 and i_IsCommonMask = 0 and (i_PageUserID is null or a.CreatedByUserID = i_PageUserID) 
+			  then 1  else 0  end
+			  and a.IsAdminMask = case when i_IsAdminMask = 1  and i_IsCommonMask = 0  then 1 else 0 end;
+			
+    
+       select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
+       
+       set @biplpr = CONCAT('select
+        a.*,
+		{databaseSchema}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+        FROM     {databaseSchema}.{objectQualifier}AccessMask a  		
+        WHERE  a.BoardID = ',i_BoardID,' and		
+            (a.Flags & ',i_ExcludeFlags,') = 0
+       and a.IsUserMask = case when ',i_IsUserMask,' = 1 and ',i_IsCommonMask,' = 0 and (',IFNULL(i_PageUserID,0),' = 0 or a.CreatedByUserID = ',IFNULL(i_PageUserID,0),') 
+			  then 1  else 0  end
+			  and a.IsAdminMask = case when ',i_IsAdminMask,' = 1  and ',i_IsCommonMask,' = 0  then 1 else 0 end       
+			  order by a.SortOrder  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+        PREPARE stmt_els FROM @biplpr;
+        EXECUTE stmt_els;
+        DEALLOCATE PREPARE stmt_els;
+ELSE
+SELECT   a.*,
+         {databaseSchema}.{objectQualifier}biginttobool(0) as TotalRows 
+FROM     {databaseSchema}.{objectQualifier}AccessMask a
+WHERE    a.BoardID = i_BoardID
+AND a.AccessMaskID = i_AccessMaskID LIMIT 1;
+END IF;
+END;
+--GO
+
+
+/* STORED PROCEDURE CREATi_BoardIDED BY VZ-TEAM */
+CREATE  PROCEDURE {databaseSchema}.{objectQualifier}accessmask_searchlist(
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1), i_IsCommonMask  TINYINT(1), i_PageIndex int, i_PageSize int)
+BEGIN
+	 declare ici_TotalRows int default 0;
+     declare ici_FirstSelectRowNumber int default 0;
+ IF i_AccessMaskID IS NULL THEN
+        if i_ExcludeFlags IS NULL THEN
+		SET i_ExcludeFlags = 0;
+		END IF;
+        set i_PageIndex = i_PageIndex + 1;  
+        select  count(1) into  ici_TotalRows FROM    {databaseSchema}.{objectQualifier}AccessMask a
+              WHERE    a.BoardID = i_BoardID and
+              (a.Flags & i_ExcludeFlags) = 0
+			  and (i_IsCommonMask = 0 or (a.IsUserMask = 0 and a.IsAdminMask = 0))
+              and (i_IsUserMask = 0 or a.IsUserMask = 1)
+			  and (i_IsAdminMask = 0 or a.IsAdminMask = 1)
             and (i_PageUserID is null  or CreatedByUserID = i_PageUserID);
     
        select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
@@ -11582,10 +11627,12 @@ BEGIN
         a.*,
 		{databaseSchema}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
         FROM     {databaseSchema}.{objectQualifier}AccessMask a  		
-        WHERE  a.BoardID = ',i_BoardID,' and
+        WHERE  a.BoardID = ',i_BoardID,' and		
             (a.Flags & ',i_ExcludeFlags,') = 0
-                and (',i_IsUserMask,' = 0 or a.IsUserMask = 1)            
-            and (',IFNULL(i_PageUserID,0) ,' = 0 or a.CreatedByUserID = ',IFNULL(i_PageUserID,0),')
+        and (',i_IsCommonMask,' = 0 or (a.IsUserMask = 0 and a.IsAdminMask = 0))
+              and (',i_IsUserMask,' = 0 or a.IsUserMask = 1)
+			  and (',i_IsAdminMask,' = 0 or a.IsAdminMask = 1) 
+			  and (',IFNULL(i_PageUserID,0) ,' = 0 or a.CreatedByUserID = ',IFNULL(i_PageUserID,0),')
         order by a.SortOrder  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
         PREPARE stmt_els FROM @biplpr;
         EXECUTE stmt_els;
@@ -11600,44 +11647,54 @@ END IF;
 END;
 --GO
 
+
 CREATE  PROCEDURE {databaseSchema}.{objectQualifier}accessmask_pforumlist(
-i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1))
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsCommonMask  TINYINT(1))
 BEGIN
 IF i_AccessMaskID IS NULL THEN
+IF i_IsCommonMask = 1 THEN
 SELECT   a.*
 FROM     {databaseSchema}.{objectQualifier}AccessMask a
-WHERE    a.BoardID = i_BoardID and
-            (a.Flags & i_ExcludeFlags) = 0
-            and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0) 				
-ORDER BY a.SortOrder;
+WHERE    a.BoardID = i_BoardID and          
+            (a.Flags & i_ExcludeFlags) = 0         
+		 and ((i_IsUserMask = 0 or (a.CreatedByUserID = i_PageUserID and a.IsUserMask = 1)) 
+		 or (i_IsCommonMask = 0 or (a.IsAdminMask = 0 and a.IsUserMask = 0))) 					
+ORDER BY a.IsUserMask,a.SortOrder;
+ELSE
+SELECT   a.*
+FROM     {databaseSchema}.{objectQualifier}AccessMask a
+WHERE    a.BoardID = i_BoardID and          
+            (a.Flags & i_ExcludeFlags) = 0         
+		 and (i_IsUserMask = 1 and (a.CreatedByUserID = i_PageUserID and a.IsUserMask = 1)) 							
+ORDER BY a.IsUserMask,a.SortOrder;
+END IF;
 ELSE
 SELECT   a.*
 FROM     {databaseSchema}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
-AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0) LIMIT 1;
+AND a.AccessMaskID = i_AccessMaskID  LIMIT 1;
 END IF;
 END;
 --GO
 
 CREATE  PROCEDURE {databaseSchema}.{objectQualifier}accessmask_aforumlist(
-i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1))
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsAdminMask TINYINT(1), i_IsCommonMask  TINYINT(1))
 BEGIN
 IF i_AccessMaskID IS NULL THEN
 SELECT   a.*
 FROM     {databaseSchema}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
-            and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and (i_IsUserMask = 1 or a.IsUserMask = 0)			
+             and ((i_IsAdminMask = 1 and a.IsAdminMask = 1)
+             or (i_IsCommonMask = 1 and (a.IsAdminMask = 0 and a.IsUserMask = 0)))  		
 ORDER BY a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseSchema}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
-AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)	
-and (i_IsUserMask = 1 or a.IsUserMask = 0) LIMIT 1;
+AND a.AccessMaskID = i_AccessMaskID   
+            and ((i_IsAdminMask = 1 and a.IsAdminMask = 1)
+            or (i_IsCommonMask = 1 and (a.IsAdminMask = 0 and a.IsUserMask = 0))) LIMIT 1;
 END IF;
 END;
 --GO

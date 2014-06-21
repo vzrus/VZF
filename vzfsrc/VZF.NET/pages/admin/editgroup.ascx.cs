@@ -39,6 +39,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Interfaces;
     using VZF.Utils;
     using VZF.Utils.Helpers;
+    using System.Collections.Generic;
  
 
     #endregion
@@ -51,6 +52,9 @@ namespace YAF.Pages.Admin
         #region Methods
 
         public DataTable AccessMasksList { get; set; }
+
+        private Dictionary<int, DataTable> personalAccessMaskListIds;
+
         /// <summary>
         /// Handles databinding event of initial access maks dropdown control.
         /// </summary>
@@ -431,7 +435,12 @@ namespace YAF.Pages.Admin
             {
                 this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, false);
             }
-            this.AccessMasksList = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true, pageIndex: 0, pageSize: 1000000);
+
+            // TODO: here should be a swithch between common forums and personal forums
+            this.AccessMasksList = 
+                CommonDb.accessmask_aforumlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, 
+                accessMaskID: null, excludeFlags: 0, pageUserID: null,
+                isAdminMask: true, isCommonMask: true);
             // bind data to controls
             this.DataBind();
         }

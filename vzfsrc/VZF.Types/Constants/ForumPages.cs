@@ -347,7 +347,7 @@ namespace YAF.Types.Constants
     /// <summary>
     /// The editforum.
     /// </summary>
-    editforum,
+    editpersonalforum,
 
     /// <summary>
     /// The editaccessmask.

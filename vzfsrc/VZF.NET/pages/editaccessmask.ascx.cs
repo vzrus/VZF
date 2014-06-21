@@ -112,14 +112,15 @@ namespace YAF.pages
                     YafBuildLink.AccessDenied();
                 }
 
-                DataTable dt = CommonDb.accessmask_list(
+                DataTable dt = CommonDb.accessmask_pforumlist(
                     this.PageContext.PageModuleID,
                     this.PageContext.PageBoardID,
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i").ToType<int>(),
                     0,
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
                     true,
-                    false, 0, 1000000);
+                    false 
+                   );
                 if (dt != null && dt.Rows.Count > 0)
                 {
                 }
@@ -218,7 +219,7 @@ namespace YAF.pages
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false, pageIndex: 0, pageSize: 1000000))
+                    var dt = CommonDb.accessmask_pforumlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isCommonMask: false))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

@@ -337,12 +337,12 @@
 /* Unresolved post in Moderation Reports */
 .yafnet .post_res
 {
-    background-color: #f4e941;   
+    background-color: #f3e3f1;   
 }
 
 .yafnet .topicDeleted
 {
-    background-color:  #f4e941; 
+    background-color:  #f3e3f1; 
 }
 
 .yafnet tr.topicRow .topicMain,

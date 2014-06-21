@@ -142,6 +142,7 @@
   </page>
   <page name="ICONS">
     <Resource tag="SAVE_ICON">~/disk-black.png</Resource>
+    <Resource tag="ACCESS_ICON">~/icon_key.png</Resource>
     <Resource tag="FORUMS_ICON">~/tables.png</Resource>
     <Resource tag="TICK_YES_ICON">~/tick.png</Resource>
     <Resource tag="USERS_ICON">~/users.png</Resource>
@@ -180,6 +181,7 @@
     <Resource tag="TOPIC">~/topic.gif</Resource>
     <Resource tag="TOPIC_ANNOUNCEMENT">~/topic_announce.gif</Resource>
     <Resource tag="TOPIC_ANNOUNCEMENT_NEW">~/topic_announce_new.gif</Resource>
+    <Resource tag="TOPIC_DELETED">~/topic_deleted.gif</Resource>
     <Resource tag="TOPIC_NEW_LOCKED">~/topic_lock_new.gif</Resource>
     <Resource tag="TOPIC_LOCKED">~/topic_lock.gif</Resource>
     <Resource tag="TOPIC_STICKY">~/topic_sticky.gif</Resource>

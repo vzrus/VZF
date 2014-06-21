@@ -372,7 +372,7 @@ namespace YAF.Pages.Admin
                     YafBuildLink.Redirect(ForumPages.admin_editboard);
                     break;
                 case 2:
-                    YafBuildLink.Redirect(ForumPages.editforum);
+                    YafBuildLink.Redirect(ForumPages.admin_editforum);
                     break;
                 case 3:
                     YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", this.Get<IYafSession>().ForumTreeChangerActiveNode);

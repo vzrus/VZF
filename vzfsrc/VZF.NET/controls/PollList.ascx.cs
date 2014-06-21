@@ -1449,7 +1449,7 @@ namespace VZF.Controls
           }
 
           break;
-        case ForumPages.admin_editforum:
+          case ForumPages.admin_editforum:
 
           // This is a poll on edit forum page
           if (this.EditForumId > 0)

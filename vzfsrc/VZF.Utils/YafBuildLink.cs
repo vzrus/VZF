@@ -30,73 +30,78 @@ namespace VZF.Utils
   /// <summary>
   /// Enumerates forum info messages.
   /// </summary>
-  public enum InfoMessage
-  {
-    /// <summary>
-    /// after posting to moderated forum
-    /// </summary>
-    Moderated = 1,
- 
-    /// <summary>
-    /// informs user he's suspended
-    /// </summary>
-    Suspended = 2, 
+    public enum InfoMessage
+    {
+        /// <summary>
+        /// after posting to moderated forum
+        /// </summary>
+        Moderated = 1,
 
-    /// <summary>
-    /// informs user about registration email being sent
-    /// </summary>
-    RegistrationEmail = 3,
+        /// <summary>
+        /// informs user he's suspended
+        /// </summary>
+        Suspended = 2,
 
-    /// <summary>
-    /// access was denied
-    /// </summary>
-    AccessDenied = 4,
+        /// <summary>
+        /// informs user about registration email being sent
+        /// </summary>
+        RegistrationEmail = 3,
 
-    /// <summary>
-    /// informs user about feature being disabled by admin 
-    /// </summary>
-    Disabled = 5, 
+        /// <summary>
+        /// access was denied
+        /// </summary>
+        AccessDenied = 4,
 
-    /// <summary>
-    /// informs user about invalid input/request
-    /// </summary>
-    Invalid = 6, 
+        /// <summary>
+        /// informs user about feature being disabled by admin 
+        /// </summary>
+        Disabled = 5,
 
-    /// <summary>
-    /// system error
-    /// </summary>
-    Failure = 7,
+        /// <summary>
+        /// informs user about invalid input/request
+        /// </summary>
+        Invalid = 6,
 
-    /// <summary>
-    /// requires cookies
-    /// </summary>
-    RequiresCookies = 8,
+        /// <summary>
+        /// system error
+        /// </summary>
+        Failure = 7,
 
-    /// <summary>
-    /// requires JS
-    /// </summary>
-    RequiresEcmaScript = 9,
-    
-    /// <summary>
-    /// unsupported JS version
-    /// </summary>
-    EcmaScriptVersionUnsupported = 10,
+        /// <summary>
+        /// requires cookies
+        /// </summary>
+        RequiresCookies = 8,
 
-    /// <summary>
-    /// The message for admin to ask access for admin pages viewing.
-    /// </summary>
-    HostAdminPermissionsAreRequired = 11,
+        /// <summary>
+        /// requires JS
+        /// </summary>
+        RequiresEcmaScript = 9,
 
-    /// <summary>
-    /// The message for HostAdminShouldSetAllowedPersonalForums.
-    /// </summary>
-    HostAdminShouldSetAllowedPersonalForums = 12,
+        /// <summary>
+        /// unsupported JS version
+        /// </summary>
+        EcmaScriptVersionUnsupported = 10,
 
-    /// <summary>
-    /// The message for HostAdminShouldSetAllowedPersonalForumsCategories.
-    /// </summary>
-    HostAdminShouldSetAllowedPersonalForumsCategories = 13
-  }
+        /// <summary>
+        /// The message for admin to ask access for admin pages viewing.
+        /// </summary>
+        HostAdminPermissionsAreRequired = 11,
+
+        /// <summary>
+        /// The message for HostAdminShouldSetAllowedPersonalForums.
+        /// </summary>
+        HostAdminShouldSetAllowedPersonalForums = 12,
+
+        /// <summary>
+        /// The message for HostAdminShouldSetAllowedPersonalForumsCategories.
+        /// </summary>
+        HostAdminShouldSetAllowedPersonalForumsCategories = 13,
+
+        /// <summary>
+        /// The message for ForumAdminShouldSetPersonalMasksOrEnableCommonMasks.
+        /// </summary>
+        ForumAdminShouldSetPersonalMasksOrEnableCommonMasks = 14
+    }
 
   /// <summary>
   /// Static class with link building functions.

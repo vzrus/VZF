@@ -182,7 +182,7 @@ namespace YAF.pages
             {
                 case "edit":
                     YafBuildLink.Redirect(
-                        ForumPages.editforum, "u={0}&f={0}", PageContext.PageUserID, e.CommandArgument);
+                        ForumPages.editpersonalforum, "u={0}&f={0}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
                     // schedule...
@@ -332,13 +332,13 @@ namespace YAF.pages
 
             // list all access masks for this boeard
             this.List.DataSource = CommonDb.accessmask_pforumlist(
-                mid: PageContext.PageModuleID,
-                boardId: this.PageContext.PageBoardID,
-                accessMaskID: null,
-                excludeFlags: 0,
-                pageUserID: this.PageContext.PageUserID,
-                isUserMask: true,
-                isAdminMask: false);
+              mid: PageContext.PageModuleID,
+              boardId: this.PageContext.PageBoardID,
+              accessMaskID: null,
+              excludeFlags: 0,
+              pageUserID: this.PageContext.PageUserID,
+              isUserMask: true,            
+              isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums); 
 
             this.DataBind();
         }

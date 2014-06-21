@@ -93,7 +93,7 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
 
             // title
-            this.PageLinks.AddLink(this.GetText("PERSONALFORUM", "TITLE"), string.Empty); 
+            this.PageLinks.AddLink(this.GetText("PERSONALFORUM", "TITLE"), string.Empty);
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(
                this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
@@ -133,7 +133,7 @@ namespace YAF.pages
         /// </param>
         protected void NewForum_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            YafBuildLink.Redirect(ForumPages.editforum, "u={0}".FormatWith(PageContext.PageUserID));
+            YafBuildLink.Redirect(ForumPages.editpersonalforum, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
         /// <summary>ag
@@ -160,7 +160,7 @@ namespace YAF.pages
 
             // create page links
             this.CreatePageLinks();
-            
+
             // sync roles just in case...
             RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
 
@@ -168,7 +168,7 @@ namespace YAF.pages
             {
                 this.NewForum.Visible = true;
             }
-            
+
             // bind data
             this.BindData();
 
@@ -192,26 +192,27 @@ namespace YAF.pages
             switch (e.CommandName)
             {
                 case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&fa={1}", PageContext.PageUserID, e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.editpersonalforum, "u={0}&fa={1}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
                     var errorMessage = string.Empty;
 
                     // schedule...
                     ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument.ToType<int>(), out errorMessage);
-                   
+
                     // Clearing cache with old Active User Lazy Data as it contains number of forums info...
                     YafContext.Current.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(this.PageContext.PageUserID));
 
                     // If we have no access masks only we redirect it to profile page
-                    var dd = CommonDb.accessmask_aforumlist(
-                       this.PageContext.PageModuleID,
-                       this.PageContext.PageBoardID,
-                       null,
-                       AccessFlags.Flags.None.ToInt(),
-                       this.PageContext.PageUserID,
-                       false,
-                       false);
+                    var dd = CommonDb.accessmask_pforumlist(
+              mid: PageContext.PageModuleID,
+              boardId: this.PageContext.PageBoardID,
+              accessMaskID: null,
+              excludeFlags: AccessFlags.Flags.None.ToInt(),
+              pageUserID: null,
+              isUserMask: false,           
+              isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums
+             );
 
                     if (dd != null && dd.Rows.Count > 0)
                     {
@@ -231,7 +232,7 @@ namespace YAF.pages
                     }
                     break;
                 case "moderate":
-                  YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
                     break;
             }
         }
@@ -272,8 +273,8 @@ namespace YAF.pages
             // Hide the New Forum Button if there are no Categories.
             // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
             // bind data to controls
-           
-        
+
+
 
             this.DataBind();
         }

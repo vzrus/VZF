@@ -126,6 +126,12 @@ namespace YAF.Pages.Admin
                 return;
             }
 
+             if (this.IsUserMaskChk.Checked && this.IsAdminMaskChk.Checked)
+             {
+                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITACCESSMASKS", "MSG_NOUSERANDADMIN"));
+                 return;
+             }
+
             short sortOrder;
 
             if (!ValidationHelper.IsValidPosShort(this.SortOrder.Text.Trim()))
@@ -184,7 +190,7 @@ namespace YAF.Pages.Admin
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true, pageIndex: 0, pageSize: 1000000))
+                    var dt = CommonDb.accessmask_searchlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: AccessFlags.Flags.None.ToInt(), pageUserID: null, isUserMask: false, isAdminMask: false, isCommonMask: false, pageIndex: 0, pageSize: 1000000))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

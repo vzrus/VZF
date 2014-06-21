@@ -220,6 +220,42 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox PersonalForumsAsSubForums;
         
         /// <summary>
+        /// HelpLabel7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel7;
+        
+        /// <summary>
+        /// AllowPersonalMasksOnlyForPersonalForums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox AllowPersonalMasksOnlyForPersonalForums;
+        
+        /// <summary>
+        /// HelpLabel8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel8;
+        
+        /// <summary>
+        /// AllowPersonalGroupsOnlyForPersonalForums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox AllowPersonalGroupsOnlyForPersonalForums;
+        
+        /// <summary>
         /// LocalizedLabel8 control.
         /// </summary>
         /// <remarks>

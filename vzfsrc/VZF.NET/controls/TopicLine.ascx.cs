@@ -6,6 +6,7 @@ namespace VZF.Controls
 
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Text;
 
     using YAF.Classes;
@@ -305,7 +306,7 @@ namespace VZF.Controls
 
                         strReturn.AppendLine(
                             this.MakeLink(
-                                iPost.ToString(),
+                                iPost.ToString(CultureInfo.InvariantCulture),
                                 YafBuildLink.GetLink(ForumPages.posts, "t={0}&p={1}", topicID, iPost),
                                 iPost));
                     }
@@ -401,6 +402,7 @@ namespace VZF.Controls
         }
 
         // Written by vzrus(2012)
+      
         /// <summary>
         /// Returns topic tags as a comma-delimited icon tooltip.
         /// </summary>
@@ -420,6 +422,7 @@ namespace VZF.Controls
                                 HttpUtility.HtmlEncode(this.TopicRow["TopicTags"]), this.TopicRow["TopicTags"]);
                 }
             }
+
             return string.Empty;
         }
 
@@ -555,6 +558,13 @@ namespace VZF.Controls
             var forumFlags = new ForumFlags(row["ForumFlags"]);
 
             var isHot = this.IsPopularTopic(lastPosted, row);
+
+
+            if (topicFlags.IsDeleted)
+            {
+                imgTitle = this.GetText("DELETED");
+                return this.Get<ITheme>().GetItem("ICONS", "TOPIC_DELETED");
+            }
 
             if (row["TopicMovedID"].ToString().Length > 0)
             {

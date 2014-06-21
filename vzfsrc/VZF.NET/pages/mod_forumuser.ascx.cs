@@ -69,7 +69,7 @@ namespace YAF.Pages
         {
             // load data
             DataTable dt;
-         
+
             if (!this.PageContext.ForumModeratorAccess)
             {
                 var forumId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f");
@@ -95,43 +95,65 @@ namespace YAF.Pages
                 }
             }
 
+            bool isUserMask = false;
+            bool isCommonMask = false;
+            bool isAdminMask = false;
+            int? userId = null;
+            int flags = AccessFlags.Flags.None.ToInt();
+            // setup datasource for access masks dropdown
             // only admin can assign all access masks
             if (!this.PageContext.IsAdmin && !this.isPersonalForum)
             {
                 // do not include access masks with this flags set
-                const int flags = (int)AccessFlags.Flags.ModeratorAccess;
-
-                // non-admins cannot assign moderation access masks
-                dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true, pageIndex: 0, pageSize: 1000000);
+                flags = (int)AccessFlags.Flags.ModeratorAccess;
+                isAdminMask = true;
+                isCommonMask = true;
+                this.AccessMaskID.DataSource = CommonDb.accessmask_aforumlist(
+           mid: PageContext.PageModuleID,
+           boardId: this.PageContext.PageBoardID,
+           accessMaskID: null,
+           excludeFlags: 0,
+           pageUserID: userId,
+           isAdminMask: isAdminMask,
+           isCommonMask: isCommonMask);
             }
             else
             {
                 if (this.isPersonalForum)
                 {
-                    dt = CommonDb.accessmask_pforumlist(
-                        mid: PageContext.PageModuleID, 
-                        boardId: this.PageContext.PageBoardID, 
-                        accessMaskID: null, 
-                        excludeFlags: 0, 
-                        pageUserID: this.PageContext.PageUserID, 
-                        isUserMask: true, 
-                        isAdminMask: false);
+
+                    userId = this.PageContext.PageUserID;
+                    isUserMask = true;
+                    isCommonMask = !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums;
+
+                    this.AccessMaskID.DataSource = CommonDb.accessmask_pforumlist(
+            mid: PageContext.PageModuleID,
+            boardId: this.PageContext.PageBoardID,
+            accessMaskID: null,
+            excludeFlags: 0,
+            pageUserID: userId,
+            isUserMask: isUserMask,
+            isCommonMask: isCommonMask);
                 }
                 else
                 {
-                    dt = CommonDb.accessmask_aforumlist(
-                        mid: PageContext.PageModuleID, 
-                        boardId: this.PageContext.PageBoardID, 
-                        accessMaskID: null, 
-                        excludeFlags: 0, 
-                        pageUserID: null, 
-                        isUserMask: false,
-                        isAdminMask: PageContext.IsAdmin);
+                    isUserMask = false;
+                    isAdminMask = PageContext.IsAdmin;
+                    isCommonMask = true;
+
+                    this.AccessMaskID.DataSource = CommonDb.accessmask_aforumlist(
+           mid: PageContext.PageModuleID,
+           boardId: this.PageContext.PageBoardID,
+           accessMaskID: null,
+           excludeFlags: 0,
+           pageUserID: userId,
+           isAdminMask: isAdminMask,
+           isCommonMask: isCommonMask);
                 }
             }
 
-            // setup datasource for access masks dropdown
-            this.AccessMaskID.DataSource = dt;
+
+
             this.AccessMaskID.DataValueField = "AccessMaskID";
             this.AccessMaskID.DataTextField = "Name";
 

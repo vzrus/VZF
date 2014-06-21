@@ -129,7 +129,7 @@ namespace YAF.pages
         /// </param>
         protected void NewForum_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            YafBuildLink.Redirect(ForumPages.editforum, "u={0}".FormatWith(PageContext.PageUserID));
+            YafBuildLink.Redirect(ForumPages.editpersonalforum, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
         /// <summary>ag
@@ -175,7 +175,7 @@ namespace YAF.pages
             switch (e.CommandName)
             {
                 case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&f={1}", PageContext.PageUserID, e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.editpersonalforum, "u={0}&f={1}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
                     // schedule...

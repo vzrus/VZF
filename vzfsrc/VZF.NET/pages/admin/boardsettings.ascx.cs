@@ -193,7 +193,9 @@ namespace YAF.Pages.Admin
             this.ForumEmail.Text = this.Get<YafBoardSettings>().ForumEmail;
             this.PersonalForumsInCategories.Checked = this.Get<YafBoardSettings>().AllowPersonalForumsInCategories;
             this.PersonalForumsAsSubForums.Checked = this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums;
-
+            this.AllowPersonalMasksOnlyForPersonalForums.Checked = this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums;
+            this.AllowPersonalGroupsOnlyForPersonalForums.Checked = this.Get<YafBoardSettings>().AllowPersonalGroupsOnlyForPersonalForums;
+            
             this.CopyrightRemovalKey.Text = this.Get<YafBoardSettings>().CopyrightRemovalDomainKey;
 
             this.DigestSendEveryXHours.Text = this.Get<YafBoardSettings>().DigestSendEveryXHours.ToString();
@@ -260,8 +262,12 @@ namespace YAF.Pages.Admin
             this.Get<YafBoardSettings>().EmailModeratorsOnModeratedPost = this.EmailModeratorsOnModeratedPost.Checked;
             this.Get<YafBoardSettings>().EmailModeratorsOnReportedPost = this.EmailModeratorsOnReportedPost.Checked;
             this.Get<YafBoardSettings>().AllowDigestEmail = this.AllowDigestEmail.Checked;
+
             this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums = this.PersonalForumsAsSubForums.Checked;
             this.Get<YafBoardSettings>().AllowPersonalForumsInCategories = this.PersonalForumsInCategories.Checked;
+            this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums = this.AllowPersonalMasksOnlyForPersonalForums.Checked;
+            this.Get<YafBoardSettings>().AllowPersonalGroupsOnlyForPersonalForums = this.AllowPersonalGroupsOnlyForPersonalForums.Checked;
+
             this.Get<YafBoardSettings>().DefaultSendDigestEmail = this.DefaultSendDigestEmail.Checked;
             this.Get<YafBoardSettings>().DefaultNotificationSetting =
                 this.DefaultNotificationSetting.SelectedValue.ToEnum<UserNotificationSetting>();

@@ -4,13 +4,37 @@
 <%@ Import Namespace="VZF.Utils.Helpers" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server">
-     <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
-    <table class="content" cellspacing="1" cellpadding="0" width="100%">
-        <tr>
+    <table cellspacing="0" cellpadding="0" class="content" width="100%">
+     <tr>
             <td class="header1" colspan="13">
                   <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_ACCESSMASKS" />
             </td>
-        </tr>
+      </tr>
+      <tr class="postheader">
+        <td colspan="2">
+            <VZF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="ACCESSMASKTYPE_SELECT" />
+        </td>
+        <td>
+            <asp:DropDownList ID="AccessMaskType" AutoPostBack="True" OnTextChanged="AccessMaskType_Selected" runat="server" Width="95%">
+            </asp:DropDownList>
+        </td>
+    </tr>
+    <tr>
+		<td class="postheader">
+			<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="USER" />
+		</td>
+		<td class="post" colspan="2">
+			<asp:TextBox runat="server" ID="UserName" />
+            <asp:DropDownList runat="server" ID="ToList" Visible="False" />
+			<asp:Button runat="server" ID="FindUsers"  Text='<%# this.GetText("FIND") %>' OnClick="FindUsers_Click" />
+        </td>
+        <td class="postheader">
+			 <asp:Button runat="server" ID="ResetBtn"  Text='<%# this.GetText("RESET") %>' OnClick="ResetBtn_Click" />
+		</td>
+	</tr>
+</table>
+     <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
+    <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr class="header2">
             <td>
                 <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="NAME"  LocalizedPage="ADMIN_ACCESSMASKS" />
@@ -72,13 +96,16 @@
                 </tr>
             </ItemTemplate>
         </asp:Repeater>
-        <tr class="footer1" align="center">
+    </table>
+    <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
+    <table class="content" cellspacing="1" cellpadding="0" width="100%">
+     <tr class="footer1" align="center">
             <td colspan="13">
                 <VZF:ThemeButton ID="New" CssClass="yafcssbigbutton centerItem" OnClick="New_Click" Visible="True"  TextLocalizedPage="ADMIN_ACCESSMASKS" TextLocalizedTag="NEW_MASK" TitleLocalizedPage="ADMIN_ACCESSMASKS" TitleLocalizedTag="NEW_MASK" runat="server"/>&nbsp;
                 <VZF:ThemeButton ID="Cancel" CssClass="yafcssbigbutton centerItem"  OnClick="Cancel_Click"  TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="CANCEL" runat="server"/>
             </td>
         </tr>
     </table>
-     <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
+     
 </VZF:AdminMenu>
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

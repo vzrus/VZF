@@ -253,7 +253,14 @@ namespace YAF.Pages.Admin
             this.PostsCategory.DataSource = categories;
 
             // Access Mask Lists               
-            this.ForumsStartMask.DataSource = CommonDb.accessmask_aforumlist(PageContext.PageModuleID, this.PageContext.PageBoardID, null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: false);
+            this.ForumsStartMask.DataSource = CommonDb.accessmask_aforumlist(
+                   mid: this.PageContext.PageModuleID,
+                   boardId: this.PageContext.PageBoardID,
+                   accessMaskID: null,
+                   excludeFlags: 0,
+                   pageUserID: null,               
+                   isAdminMask: true,
+                   isCommonMask: true);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
             this.ForumsGroups.DataSource = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000);
@@ -791,7 +798,7 @@ namespace YAF.Pages.Admin
                     this.PageContext.PageModuleID, 
                     forumId, 
                     null, 
-                    false);
+                    false, true, true);
                 forumId = CommonDb.forum_save(
                     PageContext.PageModuleID,
                     forumId,

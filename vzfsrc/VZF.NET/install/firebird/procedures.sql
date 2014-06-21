@@ -250,7 +250,7 @@ SUSPEND;
 --GO 
 
 
-CREATE PROCEDURE  {objectQualifier}ACCESSMASK_LIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL,I_PAGEINDEX INTEGER,
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_LIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL, I_ISCOMMONMASK BOOL,I_PAGEINDEX INTEGER,
 		I_PAGESIZE INTEGER) 
 RETURNS
 (
@@ -281,8 +281,9 @@ BEGIN
         WHERE
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
-            AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
-            -- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
+			AND (:I_ISCOMMONMASK = 0 OR (a.ISUSERMASK = 0 AND a.ISADMINMASK = 0)) 
+		    AND (:I_ISUSERMASK = 0 OR a.ISUSERMASK = 1)		  
+			AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 	   
             AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
         into :ICI_TOTALROWS ;
             
@@ -305,9 +306,10 @@ BEGIN
         WHERE
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
-            AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
-            -- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
-            AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
+           AND (:I_ISCOMMONMASK = 0 OR (a.ISUSERMASK = 0 AND a.ISADMINMASK = 0)) 
+		   AND (:I_ISUSERMASK = 0 OR a.ISUSERMASK = 1)
+		   AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 	   
+		   AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
         order by 
             a.SORTORDER ASC ROWS (:ICI_FIRSTSELECTROWNUMBER) TO (:ICI_TOROW)
             INTO
@@ -360,7 +362,118 @@ BEGIN
 end
 --GO
 
-CREATE PROCEDURE  {objectQualifier}ACCESSMASK_PFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_SEARCHLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL, I_ISCOMMONMASK BOOL,I_PAGEINDEX INTEGER,
+		I_PAGESIZE INTEGER) 
+RETURNS
+(
+"AccessMaskID" INTEGER,
+"BoardID" INTEGER,
+"Name" VARCHAR(128) CHARACTER SET UTF8,
+"Flags" INTEGER,
+"SortOrder" INTEGER,
+"IsUserMask" BOOL,
+"IsAdminMask" BOOL,
+"CreatedByUserID" INTEGER,
+"CreatedByUserName" VARCHAR(255) CHARACTER SET UTF8,
+"CreatedByUserDisplayName" VARCHAR(255) CHARACTER SET UTF8,
+"TotalRows" INTEGER
+)
+AS
+DECLARE VARIABLE ICI_FIRSTSELECTROWNUMBER INTEGER DEFAULT 0;
+DECLARE ICI_TOROW  INTEGER DEFAULT 0;
+DECLARE ICI_TOTALROWS INTEGER DEFAULT 0;
+BEGIN 
+
+    if (I_ACCESSMASKID is null) THEN
+	BEGIN
+	I_PAGEINDEX = :I_PAGEINDEX + 1;	 
+    select count(1)  
+         from 
+            {objectQualifier}ACCESSMASK a 
+        WHERE
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
+			AND (:I_ISCOMMONMASK = 0 OR (a.ISUSERMASK = 0 AND a.ISADMINMASK = 0)) 
+		    AND (:I_ISUSERMASK = 0 OR a.ISUSERMASK = 1)		  
+			AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 	   
+            AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
+        into :ICI_TOTALROWS ;
+            
+        ICI_FIRSTSELECTROWNUMBER = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1;
+        ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
+        FOR select 
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+            a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME,
+			(SELECT :ICI_TOTALROWS FROM RDB$DATABASE) as TotalRows
+        from 
+            {objectQualifier}ACCESSMASK a 
+        WHERE
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
+           AND (:I_ISCOMMONMASK = 0 OR (a.ISUSERMASK = 0 AND a.ISADMINMASK = 0)) 
+		   AND (:I_ISUSERMASK = 0 OR a.ISUSERMASK = 1)
+		   AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 	   
+		   AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
+        order by 
+            a.SORTORDER ASC ROWS (:ICI_FIRSTSELECTROWNUMBER) TO (:ICI_TOROW)
+            INTO
+            :"AccessMaskID",
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+            :"IsUserMask",
+            :"IsAdminMask",
+            :"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName",
+			:"TotalRows"
+             DO SUSPEND;
+			 END
+    else
+        FOR select FIRST 1
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+            a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME,
+			(SELECT 1 FROM RDB$DATABASE) as TotalRows			 
+        from 
+            {objectQualifier}ACCESSMASK a 
+        WHERE
+            a.BOARDID = :I_BOARDID and
+            a.ACCESSMASKID = :I_ACCESSMASKID
+        order by 
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID",
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+            :"IsUserMask",
+            :"IsAdminMask",
+            :"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName",
+			:"TotalRows"
+            DO SUSPEND;
+end
+--GO
+CREATE PROCEDURE  {objectQualifier}ACCESSMASK_PFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISCOMMONMASK BOOL) 
 RETURNS
 (
 "AccessMaskID" INTEGER,
@@ -376,7 +489,42 @@ RETURNS
 )
 as
 begin
-    if (I_ACCESSMASKID is null) THEN
+    if (:I_ACCESSMASKID is null) THEN
+	if (:I_ISCOMMONMASK = 1) THEN
+	        FOR select 
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+			a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME
+        from 
+            {objectQualifier}ACCESSMASK a 
+        WHERE
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0 
+            AND ((:I_ISUSERMASK = 0 OR (a.CREATEDBYUSERID = :I_PAGEUSERID and a.ISUSERMASK = 1))
+			OR  (:I_ISCOMMONMASK = 0 OR (a.ISADMINMASK = 0 and a.ISUSERMASK = 0))) 
+        order by 
+            a.ISUSERMASK DESC,
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID" ,
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+            :"IsUserMask",
+            :"IsAdminMask",
+			:"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
+             DO SUSPEND;
+	else
         FOR select 
             a.ACCESSMASKID,
             a.BOARDID,
@@ -392,10 +540,9 @@ begin
             {objectQualifier}ACCESSMASK a 
         WHERE
             a.BOARDID = :I_BOARDID and
-            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
-            AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
-            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0)
-        order by 
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0        
+            AND (:I_ISUSERMASK = 1 AND (a.CREATEDBYUSERID = :I_PAGEUSERID and a.ISUSERMASK = 1))
+			order by 
             a.ISUSERMASK DESC,
             a.SORTORDER ASC
             INTO
@@ -426,9 +573,7 @@ begin
             {objectQualifier}ACCESSMASK a 
         WHERE
             a.BOARDID = :I_BOARDID and
-            a.ACCESSMASKID = :I_ACCESSMASKID
-            AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
-            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0)       
+            a.ACCESSMASKID = :I_ACCESSMASKID           		
             INTO
             :"AccessMaskID",
             :"BoardID",
@@ -444,9 +589,8 @@ begin
 end
 --GO
 
-
 CREATE PROCEDURE  {objectQualifier}ACCESSMASK_AFORUMLIST(
-I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISADMINMASK BOOL, I_ISCOMMONMASK BOOL) 
 RETURNS
 (
 "AccessMaskID" INTEGER,
@@ -479,7 +623,8 @@ begin
         WHERE
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
-            and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+            AND ((:I_ISADMINMASK = 1 AND a.ISADMINMASK = 1)
+			OR  (:I_ISCOMMONMASK = 1 and (a.ISADMINMASK = 0 and a.ISUSERMASK = 0))) 
         order by 
             a.SORTORDER ASC
             INTO
@@ -511,7 +656,8 @@ begin
         WHERE
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
-            and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+            AND ((:I_ISADMINMASK = 1 AND a.ISADMINMASK = 1)
+			OR  (:I_ISCOMMONMASK = 1 and (a.ISADMINMASK = 0 and a.ISUSERMASK = 0))) 
         order by 
             a.SORTORDER ASC
             INTO
@@ -528,6 +674,7 @@ begin
             DO SUSPEND;
 end
 --GO
+
 
 
 CREATE PROCEDURE  {objectQualifier}ACCESSMASK_SAVE(
@@ -2952,50 +3099,43 @@ AS
 
 
 CREATE  PROCEDURE {objectQualifier}FORUMACCESS_LIST(
-                I_FORUMID INTEGER, I_USERID INTEGER, I_INCLUDEUSERMASKS BOOL)
+                I_FORUMID INTEGER, I_PERSONALGROUPUSERID INTEGER, I_INCLUDEUSERGROUPS BOOL, I_INCLUDECOMMONGROUPS BOOL, I_INCLUDEADMINGROUPS BOOL)
  RETURNS
   (
 "GroupID" integer,
 "ForumID" integer,
 "AccessMaskID" integer,
-"GroupName"  VARCHAR(128)
+"GroupName"  VARCHAR(128),
+"IsUserGroup" smallint,
+"IsAdminGroup" smallint 
   )
 AS                
-BEGIN
-     IF (:I_INCLUDEUSERMASKS = 1) THEN
-      FOR  SELECT a.GROUPID,
-                  a.FORUMID,
-                  a.ACCESSMASKID,
-               b.NAME AS "GroupName"
+BEGIN     
+      FOR  SELECT 
+	           a.GROUPID,
+               a.FORUMID,
+               a.ACCESSMASKID,
+               b.NAME,
+			   b.ISUSERGROUP,
+			   b.ISADMINGROUP
         FROM   {objectQualifier}FORUMACCESS a
                INNER JOIN {objectQualifier}GROUP b 
                ON b.GROUPID=a.GROUPID
-        WHERE  a.FORUMID = :I_FORUMID AND (b.ISUSERGROUP = 0 OR (b.ISUSERGROUP = 1 AND b.CREATEDBYUSERID = :I_USERID))
+        WHERE  a.FORUMID = :I_FORUMID AND  
+		b.ISUSERGROUP = (case when :I_INCLUDEUSERGROUPS = 1 and :I_INCLUDECOMMONGROUPS = 0 AND b.CREATEDBYUSERID = :I_PERSONALGROUPUSERID then 1
+		else 0 end)
+		AND 
+		b.ISHIDDEN = (case when :I_INCLUDEADMINGROUPS = 1 and :I_INCLUDECOMMONGROUPS = 0 then 1 else 0 end)   
         INTO 
         :"GroupID",
         :"ForumID",
         :"AccessMaskID",
-        :"GroupName"
-        DO SUSPEND; 
-        ELSE
-             FOR  SELECT a.GROUPID,
-                  a.FORUMID,
-                  a.ACCESSMASKID,
-               b.NAME AS "GroupName"
-        FROM   {objectQualifier}FORUMACCESS a
-               INNER JOIN {objectQualifier}GROUP b 
-               ON b.GROUPID=a.GROUPID
-        WHERE  a.FORUMID = :I_FORUMID AND b.ISUSERGROUP = 0
-        INTO 
-        :"GroupID",
-        :"ForumID",
-        :"AccessMaskID",
-        :"GroupName"
-        DO SUSPEND; 
-            
+        :"GroupName",
+		:"IsUserGroup",
+		:"IsAdminGroup"
+        DO SUSPEND;            
 END;
 --GO
-
 
 CREATE  PROCEDURE {objectQualifier}FORUMACCESS_SAVE(
                 I_FORUMID      INTEGER,
@@ -13294,8 +13434,8 @@ BEGIN
     
 	-- last message id was nulled to update forum stats
 	UPDATE  {objectQualifier}TOPIC 
-	SET LASTMESSAGEID = (SELECT m.MESSAGEID from  {objectQualifier}MESSAGE m
-    where m.TOPICID = :I_TOPICID and BIN_AND(m.Flags,8) != 8 ORDER BY m.POSTED desc LIMIT 1)
+	SET LASTMESSAGEID = (SELECT FIRST 1 m.MESSAGEID from  {objectQualifier}MESSAGE m
+    where m.TOPICID = :I_TOPICID and BIN_AND(m.Flags,8) != 8 ORDER BY m.POSTED desc)
     where TOPICID = :I_TOPICID;   
 
 	SELECT FORUMID FROM {objectQualifier}TOPIC WHERE TOPICID = :I_TOPICID INTO :ici_ForumID;
