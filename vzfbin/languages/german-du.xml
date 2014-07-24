@@ -146,6 +146,11 @@
     <Resource tag="USERNAME">Benutzername</Resource>
   </page>
   <page name="ADMIN_ACCESSMASKS">
+    <Resource tag="ACCESSMASKTYPE_ADMIN">Admin mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_ALL">All</Resource>
+    <Resource tag="ACCESSMASKTYPE_PERSONAL">Personal Mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_SELECT">Access Mask Type</Resource>
+    <Resource tag="ACCESSMASKTYPE_SHARED">Shared Mask</Resource>
     <Resource tag="CONFIRM_DELETE">Diese Zugangsmaske löschen?</Resource>
     <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Löschen</Resource>
@@ -162,8 +167,10 @@
     <Resource tag="PRIORITY">Priorität</Resource>
     <Resource tag="READ">Lesen</Resource>
     <Resource tag="REPLY">Antworten</Resource>
+    <Resource tag="RESET">Reset</Resource>
     <Resource tag="TITLE">Zugangsmasken</Resource>
     <Resource tag="UPLOAD">Hochladen</Resource>
+    <Resource tag="USER">Find User:</Resource>
     <Resource tag="VOTE">Abstimmen</Resource>
   </page>
   <page name="ADMIN_ADMIN">
@@ -339,6 +346,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Personal forums in categories:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
+    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
     <Resource tag="TITLE">Boardeinstellungen</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -408,6 +419,7 @@
     <Resource tag="MODERATOR_ACCESS">Morderator Access</Resource>
     <Resource tag="MODERATOR_ACCESS_HELP">Allows Users to Edit/Delete all Posts and Topics in a Forum.</Resource>
     <Resource tag="MSG_MASK_NAME">Sie müssen einen Namen für diese Maske eingeben.</Resource>
+    <Resource tag="MSG_NOUSERANDADMIN">You can't set user and admin masks at the same time.</Resource>
     <Resource tag="MSG_NUMBER_SORT">Sie müssen eine Zahl zwischen 0 und 32767 eingeben.</Resource>
     <Resource tag="MSG_POSITIVE_SORT">Der Reihenfolge Wert sollte eine Zahl zwischen 0 und 32767 sein.</Resource>
     <Resource tag="POLL_ACCESS">Poll Access</Resource>
@@ -1357,6 +1369,8 @@
     <Resource tag="SHOW_DEL_MESSAGES_HELP">Wenn aktiviert werden Beiträge die Gelöscht wurden mit einer Nachricht hinterlassen</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">Alle Gelöschte Nachrichten zeigen:</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">Wenn "Gelöschte Beiträge zeigen" aktivieren ist, wird diese Option, wenn aktiviert allen Benutzern die gelöschten Beiträge zeigen.&lt;br /&gt; Ansonsten werden die Gelöschten Beiträge nur den Administratoren, Moderatoren und dem Autor des Beitrags gezeigt.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">Gehe zu Forum Box Anzeigen:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">Aktivieren oder deaktivieren der Anzeige Gehe zu Forum Box im Forum.</Resource>
     <Resource tag="SHOW_FORUM_STATS">Forum Statistiken anzeigen:</Resource>
@@ -2010,6 +2024,7 @@
     <Resource tag="DISALLOWED">Nicht erlaubt</Resource>
     <Resource tag="DOWNLOAD">Herunterladen</Resource>
     <Resource tag="EDIT">Bearbeiten</Resource>
+    <Resource tag="EDITACCESS">Edit Access</Resource>
     <Resource tag="EMAILVERIFICATION_SUBJECT">{0} E-Mail Verifizierung</Resource>
     <Resource tag="EXTERNALUSER">(Externer Benutzer)</Resource>
     <Resource tag="FONT_COLOR">Schriftfarbe:</Resource>
@@ -4086,6 +4101,7 @@ Spoiler Content
     <Resource tag="INVALID">Du hast einen ungültigen Wert eingestellt.</Resource>
     <Resource tag="MODERATED">Da du in einem moderierten Forum einen Beitrag geschrieben hast, muss zuerst ein Moderator deinen Beitrag bestätigen, damit dieser sichtbar wird.</Resource>
     <Resource tag="REGISTRATION">Eine E-Mail wurde an die angegebene Adresse geschickt. Bitte lies die darin enthaltenen Informationen, um Dich einzuloggen.</Resource>
+    <Resource tag="SHOULDALLOWPERSORCOMMONMASKS">Admin should set allowed access masks for you - common or personal.</Resource>
     <Resource tag="SUSPENDED">Dein Benutzerkonto wurde temporär gesperrt. Die Sperrung wird am {0} enden.</Resource>
     <Resource tag="TITLE_ACCESSDENIED">Zugriff verweigert</Resource>
     <Resource tag="TITLE_COOKIES">Cookies benötigt</Resource>
@@ -4098,6 +4114,7 @@ Spoiler Content
     <Resource tag="TITLE_INVALID">Ungültig</Resource>
     <Resource tag="TITLE_MODERATED">Information</Resource>
     <Resource tag="TITLE_REGISTRATION">Danke</Resource>
+    <Resource tag="TITLE_SHOULDALLOWPERSORCOMMONMASKS">Admin should allow any access masks!</Resource>
     <Resource tag="TITLE_SUSPENDED">Gesperrt</Resource>
   </page>
   <page name="LANGUAGE">

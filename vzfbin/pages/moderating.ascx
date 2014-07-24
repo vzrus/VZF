@@ -1,6 +1,8 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.moderating" CodeBehind="moderating.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Classes" %>
+<%@ Import Namespace="VZF.Controls" %>
+<%@ Register TagPrefix="VZF" Namespace="VZF.Controls" Assembly="VZF.Controls" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <%@ Register TagPrefix="VZF" TagName="TopicLine" Src="../controls/TopicLine.ascx" %>
 <table class="content" cellspacing="1" cellpadding="0" width="100%">
@@ -60,6 +62,45 @@
 <VZF:ThemeButton ID="EraseTopic" runat="server" CssClass="yafcssbigbutton rightItem"
     TextLocalizedTag="BUTTON_ERASETOPIC" TitleLocalizedTag="BUTTON_ERASETOPIC_TT"
     OnLoad="Erase_Load" OnClick="EraseTopics_Click" Visible="false" />
+<table class="content" width="100%">
+    <asp:Repeater ID="Announcements" runat="server">
+        <HeaderTemplate>
+            <tr class="topicTitle">
+                <th class="header1" colspan="6">
+                    <VZF:ThemeImage ID="ai" ThemePage="ICONS" ThemeTag="ANOUNCEMENT_T_SICON" LocalizedTitlePage="TOPICS" LocalizedTitleTag="ANNOUNCEMENTS_TITLE"  runat="server"/>
+                    <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="ANNOUNCEMENTS_TITLE" />
+                </th>
+            </tr>
+            <tr class="topicSubTitle">
+                <th class="header2" width="1%">
+                    &nbsp;
+                </th>
+                <th class="header2 headerTopic" align="left">
+                    <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="topics" />
+                </th>
+                <th class="header2 headerReplies" align="right" width="7%">
+                    <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="replies" />
+                </th>
+                <th class="header2 headerViews" align="right" width="7%">
+                    <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="views" />
+                </th>
+                <th class="header2 headerLastPost" align="left" width="15%">
+                    <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="lastpost" />
+                </th>
+            </tr>
+        </HeaderTemplate>
+        <ItemTemplate>
+             <VZF:TopicLine runat="server" DataRow="<%# Container.DataItem %>" AllowSelection="true" />
+        </ItemTemplate>
+       <FooterTemplate>
+           <tfoot visible="false">
+               <tr>
+                   <td colspan="6" class="header2"></td>
+               </tr>
+           </tfoot>
+       </FooterTemplate>
+    </asp:Repeater>
+</table>
 <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" UsePostBack="True" />
 <table class="content" cellspacing="1" cellpadding="0" width="100%">
     <tr>

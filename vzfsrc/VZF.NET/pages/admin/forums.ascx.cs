@@ -171,22 +171,35 @@ namespace YAF.Pages.Admin
       
                 this.divactive.Visible = Config.LargeForumTree;
                     tviewcontainer.Visible = true;
-                    YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");
-                    YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
-                    YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                  //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");
+                  //  YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
+                  //  YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                    YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree.min.js");
+                    YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin-win8/ui.fancytree.min.css");
 
                     this.divactive.Visible = true;
 
+                /*    YafContext.Current.PageElements.RegisterJsBlock(
+                         "dynatreescr",
+                         JavaScriptBlocks.DynatreeGetNodesAdminLazyJS(
+                             "tree",
+                             PageContext.PageUserID,
+                             PageContext.PageBoardID,
+                             "echoActive",
+                             @"&v=2",
+                             @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
+                             "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); */
                     YafContext.Current.PageElements.RegisterJsBlock(
-                        "dynatreescr",
-                        JavaScriptBlocks.DynatreeGetNodesAdminLazyJS(
-                            "tree",
-                            PageContext.PageUserID,
-                            PageContext.PageBoardID,
-                            "echoActive",
-                            @"&v=2",
-                            @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
-                            "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                           "fancytreescr",
+                           JavaScriptBlocks.FancytreeGetNodesAdminLazyJS(
+                               "ftree3",
+                               PageContext.PageUserID,
+                               PageContext.PageBoardID,
+                               "echoActive",
+                               @"&v=2",
+                               @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
+                               "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); 
+
             }
 
             if (this.IsPostBack)

@@ -1671,6 +1671,7 @@ Spoiler Content
       <Resource tag="DISALLOWED">Disallowed</Resource>
       <Resource tag="DELETE">Delete</Resource>
       <Resource tag="EDIT">Edit</Resource>
+     <Resource tag="EDITACCESS">Edit Access</Resource>
      <Resource tag="COPY">Copy</Resource>
       <Resource tag="BACK">Back</Resource>
     <Resource tag="MOBILE_FULLSITE">View Full Site</Resource>
@@ -2390,6 +2391,8 @@ Spoiler Content
       <Resource tag="TITLE_ECMAVERSION">JavaScript version</Resource>
       <Resource tag="TITLE_HOSTADMINPERMISSIONSREQUIRED">Host Admin permissions reqired!</Resource>
       <Resource tag="TITLE_HOSTADMINSETALLOWEDPFORUMS">Admin should set allowed forums or categories!</Resource>
+      <Resource tag="TITLE_SHOULDALLOWPERSORCOMMONMASKS">Admin should allow any access masks!</Resource>
+      <Resource tag="SHOULDALLOWPERSORCOMMONMASKS">Admin should set allowed access masks for you - common or personal.</Resource>
    </page>
    <page name="LANGUAGE">
       <Resource tag="CHARSET">#ABCDEFGHIJKLMNOPQRSTUVWXYZ</Resource>
@@ -4043,6 +4046,10 @@ Visit {forumname} at {forumlink}
       <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
       <Resource tag="PERSONALFORUMSASSUBFORUMS">Personal forums as subforums:</Resource>
       <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
+      <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
+      <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
+      <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
+      <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
       <Resource tag="BOARD_THREADED">Allow Threaded:</Resource>
       <Resource tag="BOARD_THREADED_HELP">Allow threaded view for posts.</Resource>
       <Resource tag="BOARD_THEME">Theme:</Resource>
@@ -4376,17 +4383,24 @@ Visit {forumname} at {forumlink}
       <Resource tag="CONFIRM_DELETE">Delete this access mask?</Resource>
       <Resource tag="MSG_NOT_DELETE">You cannot delete this access mask because it is in use.</Resource>
       <Resource tag="NAME">Name</Resource>
+      <Resource tag="ACCESSMASKTYPE_SELECT">Access Mask Type</Resource>
+      <Resource tag="ACCESSMASKTYPE_ALL">All</Resource>
+      <Resource tag="ACCESSMASKTYPE_ADMIN">Admin mask</Resource>
+      <Resource tag="ACCESSMASKTYPE_PERSONAL">Personal Mask</Resource>
+      <Resource tag="ACCESSMASKTYPE_SHARED">Shared Mask</Resource>
       <Resource tag="READ">Read</Resource>
       <Resource tag="POST">Post</Resource>
       <Resource tag="REPLY">Reply</Resource>
       <Resource tag="PRIORITY">Priority</Resource>
       <Resource tag="POLL">Poll</Resource>
+      <Resource tag="RESET">Reset</Resource>
       <Resource tag="VOTE">Vote</Resource>
       <Resource tag="MODERATOR">Moderate</Resource>
       <Resource tag="EDIT">Edit</Resource>
       <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
       <Resource tag="DELETE">Delete</Resource>
       <Resource tag="UPLOAD">Upload</Resource>
+      <Resource tag="USER">Find User:</Resource>
       <Resource tag="DOWNLOAD">Download</Resource>
     </page>
     <page name="ADMIN_EDITACCESSMASKS">
@@ -4397,6 +4411,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="MASK_ORDER_HELP">Sort order for this access mask.</Resource>
       <Resource tag="ACCESS">Access</Resource>
       <Resource tag="MSG_MASK_NAME">You must enter a name for the Access Mask.</Resource>
+      <Resource tag="MSG_NOUSERANDADMIN">You can't set user and admin masks at the same time.</Resource>
       <Resource tag="MSG_POSITIVE_SORT">The Sort Order value should be a positive integer from 0 to 32767.</Resource>
       <Resource tag="MSG_NUMBER_SORT">You must enter a number value from 0 to 32767 for sort order.</Resource>
       <Resource tag="READ_ACCESS">Read Access</Resource>
@@ -5040,6 +5055,8 @@ Visit {forumname} at {forumlink}
        <Resource tag="ACTIVE_USERTIME_HELP">Number of minutes to display users in Active Users list.</Resource>
      <Resource tag="SHOW_AVATARS_TOPICLISTS">Show Avatars in Topic Listing:</Resource>
        <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">If this is checked, the topic pages will show avatar graphics.</Resource>
+     <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+       <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
      <Resource tag="SHOW_MOVED_TOPICS">Show Moved Topics:</Resource>
        <Resource tag="SHOW_MOVED_TOPICS_HELP">If this is checked, topics that are moved will leave behind a pointer to the new topic.</Resource>
      <Resource tag="SHOW_MODLIST">Show Moderator List:</Resource>

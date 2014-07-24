@@ -575,7 +575,9 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forumaccess_list_return_type AS
 "GroupID" integer,
 "ForumID" integer,
 "AccessMaskID" integer,
-"GroupName"  varchar(128)
+"GroupName"  varchar(128),
+"IsUserGroup" boolean,
+"IsAdminGroup" boolean
 );
 --GO
 

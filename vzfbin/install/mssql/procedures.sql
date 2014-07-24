@@ -141,6 +141,10 @@ IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{data
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}accessmask_list]
 GO
 
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}accessmask_searchlist]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}accessmask_searchlist]
+GO
+
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}accessmask_aforumlist]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}accessmask_aforumlist]
 GO
@@ -1671,7 +1675,7 @@ begin
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}accessmask_list](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit, @PageIndex int, @PageSize int) as
+create procedure [{databaseSchema}].[{objectQualifier}accessmask_list](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit, @IsCommonMask bit, @PageIndex int, @PageSize int) as
 begin
 declare @TotalRows int;
 declare @FirstSelectRowNumber int;
@@ -1686,27 +1690,31 @@ declare @LastSelectRowNumber int;
             [{databaseSchema}].[{objectQualifier}AccessMask] a 
           where
             a.BoardID = @BoardID and
-            (a.Flags & @ExcludeFlags) = 0   and (@IsUserMask = 0 or a.IsUserMask = 1)
-            -- and (i_IsAdminMask = 0 or IsAdminMask = 1)
-            and (@PageUserID is null  or CreatedByUserID = @PageUserID);
+            (a.Flags & @ExcludeFlags) = 0 
+			and (@IsCommonMask = 0 or (a.IsUserMask = 0 and a.IsAdminMask = 0))
+			and (@IsUserMask = 0 or a.IsUserMask = 1)
+            and (@IsAdminMask = 0 or a.IsAdminMask = 1)
+            and (@PageUserID is null  or a.CreatedByUserID = @PageUserID);
            select @FirstSelectRowNumber = (@PageIndex - 1) * @PageSize + 1;
            select @LastSelectRowNumber = (@PageIndex - 1) * @PageSize + @PageSize;
 
-		    with GroupIds as
+		    with MaskIds as
            (
              select ROW_NUMBER() over (order by SortOrder) as RowNum, AccessMaskID
             from 
             [{databaseSchema}].[{objectQualifier}AccessMask]   where
             BoardID = @BoardID and
-            (Flags & @ExcludeFlags) = 0   and (@IsUserMask = 0 or IsUserMask = 1)
-            -- and (i_IsAdminMask = 0 or IsAdminMask = 1)
+            (Flags & @ExcludeFlags) = 0 
+			and (@IsCommonMask = 0 or (IsUserMask = 0 and IsAdminMask = 0))
+			and (@IsUserMask = 0 or IsUserMask = 1)
+            and (@IsAdminMask = 0 or IsAdminMask = 1)
             and (@PageUserID is null  or CreatedByUserID = @PageUserID)
            )
            select
             a.*,
             @TotalRows as TotalRows
             from
-            GroupIds c
+            MaskIds c
             inner join  [{databaseSchema}].[{objectQualifier}AccessMask] a 	
             on c.AccessMaskID = a.AccessMaskID	
             where c.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
@@ -1725,7 +1733,65 @@ declare @LastSelectRowNumber int;
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}accessmask_aforumlist](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit) as
+create procedure [{databaseSchema}].[{objectQualifier}accessmask_searchlist](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit, @IsCommonMask bit, @PageIndex int, @PageSize int) as
+begin
+declare @TotalRows int;
+declare @FirstSelectRowNumber int;
+declare @LastSelectRowNumber int;
+        if @AccessMaskID is null
+		begin       set @PageIndex = @PageIndex + 1;
+           set @FirstSelectRowNumber = 0;
+           set @LastSelectRowNumber = 0;
+           set @TotalRows = 0;
+           
+           select @TotalRows = count(1) from   
+            [{databaseSchema}].[{objectQualifier}AccessMask] a 
+          where
+            a.BoardID = @BoardID and
+            (a.Flags & @ExcludeFlags) = 0 
+			and (@IsCommonMask = 0 or (a.IsUserMask = 0 and a.IsAdminMask = 0))
+			and (@IsUserMask = 0 or a.IsUserMask = 1)
+            and (@IsAdminMask = 0 or IsAdminMask = 1)
+            and (@PageUserID is null  or CreatedByUserID = @PageUserID);
+           select @FirstSelectRowNumber = (@PageIndex - 1) * @PageSize + 1;
+           select @LastSelectRowNumber = (@PageIndex - 1) * @PageSize + @PageSize;
+
+		    with MaskIds as
+           (
+             select ROW_NUMBER() over (order by SortOrder) as RowNum, AccessMaskID
+            from 
+            [{databaseSchema}].[{objectQualifier}AccessMask]   where
+            BoardID = @BoardID and
+            (Flags & @ExcludeFlags) = 0 
+			and (@IsCommonMask = 0 or (IsUserMask = 0 and IsAdminMask = 0))
+			and (@IsUserMask = 0 or IsUserMask = 1)
+            and (@IsAdminMask = 0 or IsAdminMask = 1)
+            and (@PageUserID is null  or CreatedByUserID = @PageUserID)
+           )
+           select
+            a.*,
+            @TotalRows as TotalRows
+            from
+            MaskIds c
+            inner join  [{databaseSchema}].[{objectQualifier}AccessMask] a 	
+            on c.AccessMaskID = a.AccessMaskID	
+            where c.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
+            order by c.RowNum asc;   
+	end
+    else
+        select 
+            a.* 
+        from 
+            [{databaseSchema}].[{objectQualifier}AccessMask] a 
+        where
+            a.BoardID = @BoardID and
+            a.AccessMaskID = @AccessMaskID
+        order by 
+            a.SortOrder;
+end
+GO
+
+create procedure [{databaseSchema}].[{objectQualifier}accessmask_aforumlist](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsAdminMask  bit, @IsCommonMask bit) as
 begin
         if @AccessMaskID is null
         select 
@@ -1735,8 +1801,8 @@ begin
         where
             a.BoardID = @BoardID and
             (a.Flags & @ExcludeFlags) = 0 
-			 and (@IsAdminMask = 1 or a.IsAdminMask = 0)
-            and (@IsUserMask = 1 or a.IsUserMask = 0)		
+			 and ((@IsAdminMask = 1 and a.IsAdminMask = 1)
+             or (@IsCommonMask = 1 and (a.IsAdminMask = 0 and a.IsUserMask = 0)))  
         order by 
             a.SortOrder
     else
@@ -1747,16 +1813,17 @@ begin
         where
             a.BoardID = @BoardID and
             a.AccessMaskID = @AccessMaskID
-		and (@IsAdminMask = 1 or a.IsAdminMask = 0)	
-and (@IsUserMask = 1 or a.IsUserMask = 0)
+		 and ((@IsAdminMask = 1 and a.IsAdminMask = 1)
+         or (@IsCommonMask = 1 and (a.IsAdminMask = 0 and a.IsUserMask = 0)))  
         order by 
             a.SortOrder
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}accessmask_pforumlist](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit) as
+create procedure [{databaseSchema}].[{objectQualifier}accessmask_pforumlist](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsCommonMask  bit) as
 begin
         if @AccessMaskID is null
+		if @IsCommonMask = 1
         select 
             a.* 
         from 
@@ -1764,8 +1831,20 @@ begin
         where
             a.BoardID = @BoardID and
             (a.Flags & @ExcludeFlags) = 0 
-			and (@IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((@IsUserMask = 1 and a.CreatedByUserID = @PageUserID) or a.IsUserMask = 0)	
+			and ((@IsUserMask = 0 or (a.CreatedByUserID = @PageUserID and a.IsUserMask = 1)) 
+		    or (@IsCommonMask = 0 or (a.IsAdminMask = 0 and a.IsUserMask = 0))) 		
+        order by
+		    a.IsUserMask, 
+            a.SortOrder
+			else
+			 select 
+            a.* 
+        from 
+            [{databaseSchema}].[{objectQualifier}AccessMask] a 
+        where
+            a.BoardID = @BoardID and
+            (a.Flags & @ExcludeFlags) = 0 
+			and (@IsUserMask = 1 and (a.CreatedByUserID = @PageUserID and a.IsUserMask = 1)) 		    		
         order by
 		    a.IsUserMask, 
             a.SortOrder
@@ -1776,12 +1855,7 @@ begin
             [{databaseSchema}].[{objectQualifier}AccessMask] a 
         where
             a.BoardID = @BoardID and
-            a.AccessMaskID = @AccessMaskID
-			and (@IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((@IsUserMask = 1 and a.CreatedByUserID = @PageUserID) or a.IsUserMask = 0)
-        order by 
-		    a.IsUserMask, 
-            a.SortOrder
+            a.AccessMaskID = @AccessMaskID 
 end
 GO
 
@@ -3792,10 +3866,8 @@ begin
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}forumaccess_list](@ForumID int, @UserID int, @IncludeUserGroups bit) as
-begin
-    IF (@IncludeUserGroups = 1)
-    begin
+create procedure [{databaseSchema}].[{objectQualifier}forumaccess_list](@ForumID int, @PersonalGroupUserID int, @IncludeUserGroups bit, @IncludeCommonGroups bit, @IncludeAdminGroups bit) as
+begin   
         select 
         a.*,
         GroupName=b.Name 
@@ -3803,19 +3875,11 @@ begin
         [{databaseSchema}].[{objectQualifier}ForumAccess] a 
         inner join [{databaseSchema}].[{objectQualifier}Group] b on b.GroupID=a.GroupID
     where 
-        a.ForumID = @ForumID AND (b.IsUserGroup = 0 OR (b.IsUserGroup = 1 AND b.CreatedByUserID = @UserID)); 
-	end
-	 else
-	begin 
-		   select 
-        a.*,
-        GroupName=b.Name 
-        from 
-        [{databaseSchema}].[{objectQualifier}ForumAccess] a 
-        inner join [{databaseSchema}].[{objectQualifier}Group] b on b.GroupID=a.GroupID
-        where 
-        a.ForumID = @ForumID AND b.IsUserGroup = 0; 
-	end
+        a.ForumID = @ForumID AND 
+		b.IsUserGroup = (case when @IncludeUserGroups = 1 and @IncludeCommonGroups = 0 AND b.CreatedByUserID = @PersonalGroupUserID then 1
+		else 0 end)
+		AND 
+		b.IsHidden = (case when @IncludeAdminGroups = 1 and @IncludeCommonGroups = 0 then 1  else 0 end);	
 end
 GO
 
@@ -12405,6 +12469,11 @@ declare @ForumID int;
         UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET Flags = Flags ^ 8 WHERE  TopicID = @TopicID and (Flags & 8) = 8;
 		UPDATE [{databaseSchema}].[{objectQualifier}Topic] SET Flags = Flags ^ 8 WHERE  TopicMovedID = @TopicID and (Flags & 8) = 8;
 		UPDATE [{databaseSchema}].[{objectQualifier}Message] SET Flags = Flags ^ 8 WHERE  TopicID = @TopicID and (Flags & 8) = 8;
+        UPDATE  [{databaseSchema}].[{objectQualifier}Topic] 
+		SET LastMessageID = (SELECT TOP 1 m.MessageID from  [{databaseSchema}].[{objectQualifier}Message] m
+            where m.TopicID = @TopicID and (m.Flags & 8) != 8 ORDER BY m.Posted desc)
+        where TopicID = @TopicID; 		
+		
 		SELECT @ForumID = ForumID FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID;
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatelastpost] @ForumID    
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatestats] @ForumID

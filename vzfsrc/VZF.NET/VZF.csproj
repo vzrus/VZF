@@ -1509,6 +1509,7 @@
     <Content Include="editors\yafEditor\yafEditor.js" />
     <Content Include="error.aspx" />
     <Content Include="forumlogo.jpg" />
+    <Content Include="install\pgsql\forum_ns_old.sql" />
     <Content Include="images\avatars\Common\SampleAvatar.gif" />
     <Content Include="images\avatars\readme.txt" />
     <Content Include="images\blank.gif" />
@@ -3204,6 +3205,7 @@
     <Content Include="resources\js\jquery.blockUI.js" />
     <Content Include="resources\js\jquery.ceebox.js" />
     <Content Include="resources\js\jquery.dynatree.min.js" />
+    <Content Include="resources\js\jquery.fancytree.min.js" />
     <Content Include="resources\js\jquery.hovercard.js" />
     <Content Include="resources\js\jquery.min.js" />
     <Content Include="resources\js\jquery.msDropDown.js" />
@@ -3884,14 +3886,14 @@
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web.config">
+    <Content Include="web_my.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="app.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app_my.config" />
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="web_pg.config">
+    <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />

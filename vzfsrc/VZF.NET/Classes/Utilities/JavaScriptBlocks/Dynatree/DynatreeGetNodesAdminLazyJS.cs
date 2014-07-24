@@ -83,6 +83,44 @@ namespace VZF.Utilities
                         }} );
 
               }});", treeId, jsonData, boardId, arguments, echoActive, forumPath, Config.JQueryAlias);
+
+        }
+        public static string FancytreeGetNodesAdminLazyJS(string treeId, int userId, int boardId, string echoActive, string arguments, string jsonData, string forumPath)
+        {
+            // treeId = "tree";
+
+            /*  return String.Format(
+                    @"$(function() 
+                    {{
+                      DynatreeGetNodesAdminLazyJS('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');}});", 
+                                                                                          treeId, 
+                                                                                          jsonData, 
+                                                                                          boardId, 
+                                                                                          arguments, 
+                                                                                          echoActive, 
+                                                                                          forumPath, 
+                                                                                          Config.JQueryAlias); */
+
+            
+            return String.Format(@"$(function() 
+                {{
+                $('#{0}').fancytree(
+                        {{
+source: {{
+        url: '{1}' + '?tjls={2}{5}' 
+        }},
+lazyLoad: function(event, data){{
+        // we can't return values from an event handler, so we
+        // pass the result as `data`attribute.
+        data.result = $.ajax({{
+          url: '{1}' + '?tjl=' + node.data.key + '{3}{5}',
+          dataType: 'json'
+                             }});
+                             }}
+                       }}         );                      
+
+              }});", treeId, jsonData, boardId, arguments, echoActive, forumPath, Config.JQueryAlias);
+
         }
     }
 }

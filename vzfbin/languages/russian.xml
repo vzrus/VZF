@@ -146,6 +146,11 @@
     <Resource tag="USERNAME">Отображаемое имя</Resource>
   </page>
   <page name="ADMIN_ACCESSMASKS">
+    <Resource tag="ACCESSMASKTYPE_ADMIN">Admin mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_ALL">All</Resource>
+    <Resource tag="ACCESSMASKTYPE_PERSONAL">Personal Mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_SELECT">Access Mask Type</Resource>
+    <Resource tag="ACCESSMASKTYPE_SHARED">Shared Mask</Resource>
     <Resource tag="CONFIRM_DELETE">Удалить эту маску доступа?</Resource>
     <Resource tag="CREATEUSERFORUM">Персональный форум</Resource>
     <Resource tag="DELETE">Удаление</Resource>
@@ -162,8 +167,10 @@
     <Resource tag="PRIORITY">Приоритет</Resource>
     <Resource tag="READ">Чтение</Resource>
     <Resource tag="REPLY">Ответы</Resource>
+    <Resource tag="RESET">Reset</Resource>
     <Resource tag="TITLE">Маски доступа</Resource>
     <Resource tag="UPLOAD">Аплоад</Resource>
+    <Resource tag="USER">Find User:</Resource>
     <Resource tag="VOTE">Голосование</Resource>
   </page>
   <page name="ADMIN_ADMIN">
@@ -339,6 +346,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Пользователи могут создавать персональные форумы(блоги) как подфорумы. Разрешение должно быть установлено администратором для форума.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Персональные форумы в категориях:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Пользователи могут создавать персональные форумы(блоги) прямо в категориях.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
+    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
     <Resource tag="TITLE">Настройки конференции</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -408,6 +419,7 @@
     <Resource tag="MODERATOR_ACCESS">Модерирование</Resource>
     <Resource tag="MODERATOR_ACCESS_HELP">Пользователи могут редактировать или удалять все сообщения и темы фоурма.</Resource>
     <Resource tag="MSG_MASK_NAME">Вы должны ввести название для этой маски доступа.</Resource>
+    <Resource tag="MSG_NOUSERANDADMIN">You can't set user and admin masks at the same time.</Resource>
     <Resource tag="MSG_NUMBER_SORT">Вы должны ввести значение от 0 до 32767 для порядкового номера сортировки.</Resource>
     <Resource tag="MSG_POSITIVE_SORT">Порядковый номер должен быть между 0 и 32767.</Resource>
     <Resource tag="POLL_ACCESS">Создание опросов</Resource>
@@ -1349,6 +1361,8 @@
     <Resource tag="SHOW_DEL_MESSAGES_HELP">Удалённые сообщения(пустые) будут видны с уведомлением. Не включайте обе опции одновременно.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">Показывать удалённые сообщения для всех:</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">Это покажет пустое сообщение с уведомлением всем пользователям.&lt;br /&gt; Если не выбрано, то администраторы, модераторы и автор будут видеть это сообщение.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">Показывать список быстрого перехода:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">Показывать список быстрого перехода в разных местах форума.</Resource>
     <Resource tag="SHOW_FORUM_STATS">Показывать статистику конференции:</Resource>
@@ -1564,15 +1578,15 @@
     <Resource tag="MSG_TASK">Задача очистки в очереди</Resource>
     <Resource tag="PRUNE_DAYS">Введите минимальное кол-во дней:</Resource>
     <Resource tag="PRUNE_DAYS_HELP">Темы с последним сообщением старше указанного лимита будут удалены.</Resource>
-    <Resource tag="PRUNE_DELETED">Prune deleted only:</Resource>
-    <Resource tag="PRUNE_DELETED_HELP">Prune deleted topics only:</Resource>
+    <Resource tag="PRUNE_DELETED">Почистить только удалённые:</Resource>
+    <Resource tag="PRUNE_DELETED_HELP">Будут удалены только удалённые темы</Resource>
     <Resource tag="PRUNE_FORUM">Форум:</Resource>
     <Resource tag="PRUNE_FORUM_HELP">Выполнить форум.</Resource>
     <Resource tag="PRUNE_INFO">ВНИМАНИЕ! Задача очистки уже выполняется. Нельзя запланировать новую задачу до окончания текущей.</Resource>
     <Resource tag="PRUNE_PERMANENT">Навсегда удалить из базы данных:</Resource>
     <Resource tag="PRUNE_PERMANENT_HELP">Все темы с помеченные как удалённые будут удалены.</Resource>
-    <Resource tag="PRUNE_PERMANENT1">Permanently remove from DB:</Resource>
-    <Resource tag="PRUNE_PERMANENT1_HELP">All topics that were not marked as undeletable will be deleted.</Resource>
+    <Resource tag="PRUNE_PERMANENT1">Навсегда удалить темы</Resource>
+    <Resource tag="PRUNE_PERMANENT1_HELP">Все темы не помеченные как неудаляемые будут удалены с диска.</Resource>
     <Resource tag="PRUNE_START">Начать задачу очистки</Resource>
     <Resource tag="TITLE">Почистить темы</Resource>
   </page>
@@ -1915,8 +1929,8 @@
     <Resource tag="BUTTON_EDIT">Изменить</Resource>
     <Resource tag="BUTTON_EDIT_TT">Изменить это сообщение</Resource>
     <Resource tag="BUTTON_EDITALBUMIMAGES">Загрузить/Удалить изображения</Resource>
-    <Resource tag="BUTTON_ERASETOPIC">Erase Topic</Resource>
-    <Resource tag="BUTTON_ERASETOPIC_TT">Erase this topic</Resource>
+    <Resource tag="BUTTON_ERASETOPIC">Удалить полностью</Resource>
+    <Resource tag="BUTTON_ERASETOPIC_TT">Полностью удалить эту тему</Resource>
     <Resource tag="BUTTON_LOCKTOPIC">Закрыть Тему</Resource>
     <Resource tag="BUTTON_LOCKTOPIC_TT">Закрыть эту тему</Resource>
     <Resource tag="BUTTON_MODERATE">Модерировать</Resource>
@@ -1938,8 +1952,8 @@
     <Resource tag="BUTTON_REPLY">Ответить</Resource>
     <Resource tag="BUTTON_REPLY_TT">Ответить на сообщение</Resource>
     <Resource tag="BUTTON_RESETCOVER">Удалить обложку</Resource>
-    <Resource tag="BUTTON_RESTORETOPIC">Restore Topic</Resource>
-    <Resource tag="BUTTON_RESTORETOPIC_TT">Restore this topic</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC">Восстановить тему</Resource>
+    <Resource tag="BUTTON_RESTORETOPIC_TT">Восстановить эту тему</Resource>
     <Resource tag="BUTTON_RETWEET">Ретвит</Resource>
     <Resource tag="BUTTON_RETWEET_TT">Выполнить ретвит сообщения</Resource>
     <Resource tag="BUTTON_SETCOVER">Использовать как обложку</Resource>
@@ -1999,6 +2013,7 @@
     <Resource tag="DISALLOWED">Запрещено</Resource>
     <Resource tag="DOWNLOAD">Загрузка</Resource>
     <Resource tag="EDIT">Редактировать</Resource>
+    <Resource tag="EDITACCESS">Edit Access</Resource>
     <Resource tag="EMAILVERIFICATION_SUBJECT">Проверка Email {0}  </Resource>
     <Resource tag="EXTERNALUSER">(Внешний пользователь)</Resource>
     <Resource tag="FONT_COLOR">Цвет шрифта:</Resource>
@@ -4118,6 +4133,7 @@ Spoiler Content
     <Resource tag="INVALID">Вы передали неверное значение форуму.</Resource>
     <Resource tag="MODERATED">Вы оставили сообщение в модерируемом форуме и поэтому модератор форума должен одобрить его перед тем как он станет видимым другим пользователям.</Resource>
     <Resource tag="REGISTRATION">Сообщение было послано на адрес электронной почты, который вы сообщили при регистрации. Пожалуйста, прочитайте инструкции в сообщении, чтобы войти на сайт.</Resource>
+    <Resource tag="SHOULDALLOWPERSORCOMMONMASKS">Admin should set allowed access masks for you - common or personal.</Resource>
     <Resource tag="SUSPENDED">Ваша учётная запись временно отключена. Она будет вновь активирована {0}.</Resource>
     <Resource tag="TITLE_ACCESSDENIED">Доступ запрещён</Resource>
     <Resource tag="TITLE_COOKIES">Включите куки</Resource>
@@ -4130,6 +4146,7 @@ Spoiler Content
     <Resource tag="TITLE_INVALID">Недействительно</Resource>
     <Resource tag="TITLE_MODERATED">Информация</Resource>
     <Resource tag="TITLE_REGISTRATION">Спасибо</Resource>
+    <Resource tag="TITLE_SHOULDALLOWPERSORCOMMONMASKS">Admin should allow any access masks!</Resource>
     <Resource tag="TITLE_SUSPENDED">Временно отключено</Resource>
   </page>
   <page name="LANGUAGE">

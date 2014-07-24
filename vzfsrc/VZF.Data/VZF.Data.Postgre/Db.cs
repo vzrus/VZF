@@ -195,7 +195,8 @@ namespace VZF.Data.Postgre
                 "pgsql/providers/types.sql",
                 "pgsql/providers/procedures.sql", 
                // "pgsql/nestedsets.sql", 
-              //  "pgsql/nestedsets_sp.sql",
+               // "pgsql/nestedsets_sp.sql",
+                "pgsql/forum_ns_old.sql",
                 "pgsql/triggers.sql", 
                 "pgsql/postinstall.sql"
               //  "pgsql/fulltext_ru.sql"

@@ -146,6 +146,11 @@
     <Resource tag="USERNAME">نام کاربری</Resource>
   </page>
   <page name="ADMIN_ACCESSMASKS">
+    <Resource tag="ACCESSMASKTYPE_ADMIN">Admin mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_ALL">All</Resource>
+    <Resource tag="ACCESSMASKTYPE_PERSONAL">Personal Mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_SELECT">Access Mask Type</Resource>
+    <Resource tag="ACCESSMASKTYPE_SHARED">Shared Mask</Resource>
     <Resource tag="CONFIRM_DELETE">حذف قالب دسترسی؟</Resource>
     <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">حذف</Resource>
@@ -162,8 +167,10 @@
     <Resource tag="PRIORITY">اولویت</Resource>
     <Resource tag="READ">خواندن</Resource>
     <Resource tag="REPLY">پاسخ</Resource>
+    <Resource tag="RESET">Reset</Resource>
     <Resource tag="TITLE">قالب های دسترسی</Resource>
     <Resource tag="UPLOAD">بارگذاری</Resource>
+    <Resource tag="USER">Find User:</Resource>
     <Resource tag="VOTE">رای دادن</Resource>
   </page>
   <page name="ADMIN_ADMIN">
@@ -339,6 +346,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Personal forums in categories:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
+    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
     <Resource tag="TITLE">تنظیمات تابلو</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -408,6 +419,7 @@
     <Resource tag="MODERATOR_ACCESS">Morderator Access</Resource>
     <Resource tag="MODERATOR_ACCESS_HELP">Allows Users to Edit/Delete all Posts and Topics in a Forum.</Resource>
     <Resource tag="MSG_MASK_NAME">شما می بایست نامی برای قالب دسترسی وارد کنید.</Resource>
+    <Resource tag="MSG_NOUSERANDADMIN">You can't set user and admin masks at the same time.</Resource>
     <Resource tag="MSG_NUMBER_SORT">شما می بایست عددی بین 0 تا 32767 برای ترتیب مرتب سازی وارد کنید.</Resource>
     <Resource tag="MSG_POSITIVE_SORT">ترتیب مرتب سازی می بایست بین 0 تا 32767 و عددی صحیح و مثبت باشد..</Resource>
     <Resource tag="POLL_ACCESS">Poll Access</Resource>
@@ -1365,6 +1377,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_HELP">با انتخاب این گزینه، پیام های حذف شدهبا یادداشتی رها می شوند.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">نمایش پیام های حذف شده به همه :</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">در صورت علامت زدن این گزینه همه کاربران پیام های حذف شده را خواهند دید. در غیر اینصورت فقط مدیران ، محدودکننده ها و صاحب پیام آنرا خواهند دید.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">نمایش کادر پرش انجمن:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">نمایش یا عدم نمایش کادر پرش در میان انجمن.</Resource>
     <Resource tag="SHOW_FORUM_STATS">نمایش آمار انجمن :</Resource>
@@ -2033,6 +2047,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="DISALLOWED">غیرمجاز</Resource>
     <Resource tag="DOWNLOAD">دریافت</Resource>
     <Resource tag="EDIT">ویرایش</Resource>
+    <Resource tag="EDITACCESS">Edit Access</Resource>
     <Resource tag="EMAILVERIFICATION_SUBJECT">{0} تصدیق پست الکترونیک</Resource>
     <Resource tag="EXTERNALUSER">(External User)</Resource>
     <Resource tag="FONT_COLOR">رنگ فونت</Resource>
@@ -4142,6 +4157,7 @@ Spoiler Content
     <Resource tag="INVALID">مقدار غیر معتبری را به انجمن ارسال کردید.</Resource>
     <Resource tag="MODERATED">با توجه به اینکه به یک انجمن تحت نظارت مطلب ارسال کرده اید , مطلب شما باید توسط مدیران انجمن برای ارسال نهایی مورد تائید قرار بکیرد .</Resource>
     <Resource tag="REGISTRATION">ایمیلی حاوی دستورالعمل های لازم برای ورود به انجمن برای شما ارسال شد.لطفاً به دقت آنرا مطالعه فرمایید.</Resource>
+    <Resource tag="SHOULDALLOWPERSORCOMMONMASKS">Admin should set allowed access masks for you - common or personal.</Resource>
     <Resource tag="SUSPENDED">حساب شما موقتاً غیر فعال شده است.تعلیق در تاریخ {0} پایان می پذیرد.</Resource>
     <Resource tag="TITLE_ACCESSDENIED">دسترسی ممکن نمی باشد</Resource>
     <Resource tag="TITLE_COOKIES">کوکی مورد نیاز است</Resource>
@@ -4154,6 +4170,7 @@ Spoiler Content
     <Resource tag="TITLE_INVALID">نا معتبر</Resource>
     <Resource tag="TITLE_MODERATED">اطلاعات</Resource>
     <Resource tag="TITLE_REGISTRATION">تشکر</Resource>
+    <Resource tag="TITLE_SHOULDALLOWPERSORCOMMONMASKS">Admin should allow any access masks!</Resource>
     <Resource tag="TITLE_SUSPENDED">معلق شده</Resource>
   </page>
   <page name="IRKOO">

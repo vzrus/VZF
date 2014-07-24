@@ -265,6 +265,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}accessmask_list
                            i_pageuserid integer,
                            i_isusermask boolean,
                            i_isadminmask boolean,
+						   i_iscommonmask boolean,
 						   i_pageindex integer,
 						   i_pagesize integer
                            )
@@ -283,8 +284,9 @@ BEGIN
         FROM      {databaseSchema}.{objectQualifier}accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
-            and (not i_isusermask or isusermask) 
-            -- and (not i_isadminmask or isadminmask) 
+			and (not i_iscommonmask or (not a.isusermask and not a.isadminmask)) 
+            and (not i_isusermask or a.isusermask) 
+            and (not i_isadminmask or a.isadminmask) 
             and (i_pageuserid is null or createdbyuserid = i_pageuserid);         
             
         ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize;  
@@ -304,8 +306,9 @@ BEGIN
           FROM      {databaseSchema}.{objectQualifier}accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
-            and (not i_isusermask or isusermask) 
-            -- and (not i_isadminmask or isadminmask) 
+			and (not i_iscommonmask or ( not a.isusermask and not a.isadminmask)) 
+            and (not i_isusermask or a.isusermask) 
+            and (not i_isadminmask or a.isadminmask) 
             and (i_pageuserid is null or createdbyuserid = i_pageuserid) 
            ORDER BY a.sortorder OFFSET ici_firstselectrownumber LIMIT i_pagesize
        LOOP
@@ -336,21 +339,40 @@ END;$BODY$
     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;   
 --GO
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}accessmask_pforumlist
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}accessmask_searchlist
                            (
                            i_boardid integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
                            i_pageuserid integer,
                            i_isusermask boolean,
-                           i_isadminmask boolean
+                           i_isadminmask boolean,
+						   i_iscommonmask boolean,
+						   i_pageindex integer,
+						   i_pagesize integer
                            )
                   RETURNS SETOF {databaseSchema}.{objectQualifier}accessmask_list_return_type AS
 $BODY$
 DECLARE
        _rec {databaseSchema}.{objectQualifier}accessmask_list_return_type%ROWTYPE;
+	   ici_totalrows int = 0;
+	   ici_firstselectrownumber int = 0;
 BEGIN
  IF i_accessmaskid IS NULL THEN
+
+        i_pageindex := i_pageindex + 1;
+         
+        select count(1) into ici_totalrows 
+        FROM      {databaseSchema}.{objectQualifier}accessmask a
+          WHERE    a.boardid = i_boardid  and
+            (a.flags & i_excludeflags) = 0
+			and (not i_iscommonmask or (not a.isusermask and not a.isadminmask)) 
+            and (not i_isusermask or a.isusermask) 
+            and (not i_isadminmask or a.isadminmask) 
+            and (i_pageuserid is null or createdbyuserid = i_pageuserid);         
+            
+        ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize;  
      FOR _rec IN
         SELECT
               a.accessmaskid,
@@ -362,14 +384,16 @@ BEGIN
               a.isadminmask,
               a.createdbyuserid,
               a.createdbyusername,
-              a.createdbyuserdisplayname,
-			  0 as TotalRows
-         FROM      {databaseSchema}.{objectQualifier}accessmask a
+              a.createdbyuserdisplayname, 
+			  ici_totalrows as TotalRows      
+          FROM      {databaseSchema}.{objectQualifier}accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
-            and (i_isadminmask or not a.isadminmask)
-            and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
-            ORDER BY a.isusermask, a.sortorder
+			and (not i_iscommonmask or ( not a.isusermask and not a.isadminmask)) 
+            and (not i_isusermask or a.isusermask) 
+            and (not i_isadminmask or a.isadminmask) 
+            and (i_pageuserid is null or createdbyuserid = i_pageuserid) 
+           ORDER BY a.sortorder OFFSET ici_firstselectrownumber LIMIT i_pagesize
        LOOP
              RETURN NEXT _rec;
        END LOOP;
@@ -386,13 +410,10 @@ BEGIN
               a.createdbyuserid,
               a.createdbyusername,
               a.createdbyuserdisplayname,
-			  0 as TotalRows
+			  ici_totalrows as TotalRows
         FROM      {databaseSchema}.{objectQualifier}accessmask a
          WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
-            and (i_isadminmask or not a.isadminmask)
-            and ((i_isusermask and a.createdbyuserid = i_pageuserid)  or not a.isusermask)
-            LIMIT 1
       LOOP
              RETURN NEXT _rec;
       END LOOP;
@@ -401,14 +422,103 @@ END;$BODY$
     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;   
 --GO
 
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}accessmask_pforumlist (integer,integer,integer,integer,boolean,boolean);
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}accessmask_pforumlist(i_boardid integer, i_accessmaskid integer, i_excludeflags integer, i_pageuserid integer, i_isusermask boolean, i_iscommonmask boolean)
+  RETURNS SETOF {databaseSchema}.{objectQualifier}accessmask_list_return_type AS
+$BODY$
+DECLARE
+       _rec {databaseSchema}.{objectQualifier}accessmask_list_return_type%ROWTYPE;
+BEGIN
+ IF i_accessmaskid IS NULL THEN
+ -- we select common masks if no personal masks are spoted.
+ IF (i_iscommonmask) THEN
+FOR _rec IN
+        SELECT
+              a.accessmaskid,
+              a.boardid,
+              a.name,
+              a.flags,
+              a.sortorder,
+              a.isusermask,
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
+         FROM  {databaseSchema}.{objectQualifier}accessmask a
+         WHERE a.boardid = i_boardid 
+		       and (a.flags & i_excludeflags) = 0
+               and (( not i_isusermask or (a.createdbyuserid = i_pageuserid and a.isusermask)) 
+		       or (not i_iscommonmask or (a.isadminmask = false and a.isusermask = false)))
+            ORDER BY a.isusermask, a.sortorder
+       LOOP
+             RETURN NEXT _rec;
+END LOOP;
+ELSE
+FOR _rec IN
+        SELECT
+              a.accessmaskid,
+              a.boardid,
+              a.name,
+              a.flags,
+              a.sortorder,
+              a.isusermask,
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
+         FROM  {databaseSchema}.{objectQualifier}accessmask a
+         WHERE a.boardid = i_boardid 
+		       and (a.flags & i_excludeflags) = 0
+                 and (i_isusermask and (a.createdbyuserid = i_pageuserid and a.isusermask))
+            ORDER BY a.isusermask, a.sortorder
+       LOOP
+             RETURN NEXT _rec;
+END LOOP;
+END IF;
+ELSE
+    FOR _rec IN
+       SELECT
+              a.accessmaskid,
+              a.boardid,
+              a.name,
+              a.flags,
+              a.sortorder,
+              a.isusermask,
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
+        FROM      {databaseSchema}.{objectQualifier}accessmask a
+         WHERE    a.boardid = i_boardid
+          AND a.accessmaskid = i_accessmaskid
+            LIMIT 1
+      LOOP
+             RETURN NEXT _rec;
+END LOOP;
+END IF;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
+--GO
+
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}accessmask_aforumlist (integer,integer,integer,integer,boolean,boolean);
+--GO
+
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}accessmask_aforumlist
                            (
                            i_boardid integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
                            i_pageuserid integer,
-                           i_isusermask boolean,
-                           i_isadminmask boolean
+                           i_isadminmask boolean,
+                           i_iscommonmask boolean
                            )
                   RETURNS SETOF {databaseSchema}.{objectQualifier}accessmask_list_return_type AS
 $BODY$
@@ -416,6 +526,10 @@ DECLARE
        _rec {databaseSchema}.{objectQualifier}accessmask_list_return_type%ROWTYPE;
 BEGIN
  IF i_accessmaskid IS NULL THEN
+ -- we select common masks if no admin masks are spotted.
+ IF (not exists (select 1 from {databaseSchema}.{objectQualifier}accessmask where isadminmask limit 1)) THEN
+ i_isadminmask := false;
+ END IF;
      FOR _rec IN
         SELECT
               a.accessmaskid,
@@ -432,7 +546,8 @@ BEGIN
          FROM      {databaseSchema}.{objectQualifier}accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0		
-            and (i_isadminmask or not a.isadminmask)
+           and ((i_isadminmask and a.isadminmask)
+             or (i_iscommonMask and (not a.isadminmask and not a.isusermask)))
            ORDER BY a.sortorder
        LOOP
              RETURN NEXT _rec;
@@ -453,8 +568,8 @@ BEGIN
 			  0 as TotalRows
         FROM      {databaseSchema}.{objectQualifier}accessmask a
          WHERE    a.boardid = i_boardid
-          AND a.accessmaskid = i_accessmaskid
-            and (i_isadminmask or not a.isadminmask)
+             and ((i_isadminmask and a.isadminmask)
+             or (i_iscommonMask and (not a.isadminmask and not a.isusermask)))
       LIMIT 1
       LOOP
              RETURN NEXT _rec;
@@ -3897,7 +4012,11 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_listread(
                            i_categoryid integer,
                            i_parentid integer,
                            i_stylednicks boolean,
-                           i_findlastunread boolean)
+                           i_findlastunread boolean,
+						   i_showcommonforums boolean,
+                           i_showpersonalforums boolean,
+                           i_forumcreatedbyuserid integer,
+                           i_UTCTIMESTAMP timestamp)
                   RETURNS SETOF {databaseSchema}.{objectQualifier}forum_listread_return_type AS
 $BODY$DECLARE
 ici_lasttopicid integer;
@@ -5087,39 +5206,30 @@ $BODY$
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}forumaccess_list(integer);
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forumaccess_list(
-                  i_forumid integer, i_userid integer, i_includeusergroups boolean)
+                  i_forumid integer, i_personalgroupuserid integer, i_includeusergroups boolean, i_includecommongroups boolean, i_includeadmingroups boolean)
                   RETURNS SETOF {databaseSchema}.{objectQualifier}forumaccess_list_return_type AS
 $BODY$DECLARE
              _rec {databaseSchema}.{objectQualifier}forumaccess_list_return_type%ROWTYPE;
 BEGIN
-IF i_includeusergroups  THEN
 FOR _rec IN
         SELECT 
                a.groupid,
                a.forumid,
                a.accessmaskid,
-               b.name AS GroupName
+               b.name AS GroupName,
+			   b.isusergroup,
+			   b.isadmingroup			   
         FROM   {databaseSchema}.{objectQualifier}forumaccess a
                INNER JOIN {databaseSchema}.{objectQualifier}group b ON b.groupid=a.groupid
         WHERE  a.forumid = i_forumid   
-        AND (NOT b.isusergroup  OR (b.isusergroup  AND b.createdbyuserid = i_userid)) 
+       AND 
+		b.IsUserGroup = (case when i_includeusergroups and not i_includecommongroups AND b.CreatedByUserID = i_personalgroupuserid then true
+		else false end)
+		AND 
+		b.IsHidden = (case when i_includeadmingroups and not i_includecommongroups then true else false end) 
        LOOP
     RETURN NEXT _rec;
-    END LOOP;
-    ELSE
-    FOR _rec IN
-    SELECT 
-               a.groupid,
-               a.forumid,
-               a.accessmaskid,
-               b.name AS GroupName
-        FROM   {databaseSchema}.{objectQualifier}forumaccess a
-               INNER JOIN {databaseSchema}.{objectQualifier}group b ON b.groupid=a.groupid
-        WHERE  a.forumid = i_forumid  AND NOT b.isusergroup 
-       LOOP
-    RETURN NEXT _rec;
-    END LOOP;
-    END IF; 
+    END LOOP;   
 END;
 $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
@@ -10003,7 +10113,7 @@ $BODY$DECLARE
  
     IF ici_topicid IS NULL OR ici_topicid = 0 THEN
     
-    IF i_showdeleted IS TRUE THEN
+    IF i_showdeleted THEN
 FOR _rec IN
             SELECT
                   t.topicid,
@@ -17162,14 +17272,19 @@ $BODY$
 DECLARE ici_forumid integer;
 BEGIN   
         UPDATE {databaseSchema}.{objectQualifier}topic 
-        SET flags = flags # 8
+        SET flags = flags # 8 
         WHERE topicid = i_topicid and (flags & 8) = 8; 
 		  UPDATE {databaseSchema}.{objectQualifier}topic 
         SET flags = flags # 8
         WHERE topicmovedid = i_topicid and (flags & 8) = 8; 
 		UPDATE {databaseSchema}.{objectQualifier}message 
         SET flags = flags # 8
-        WHERE topicid = i_topicid and (flags & 8) = 8;  
+        WHERE topicid = i_topicid and (flags & 8) = 8;
+
+		UPDATE  {databaseSchema}.{objectQualifier}topic 
+		SET lastmessageid = (SELECT m.messageid from  {databaseSchema}.{objectQualifier}message m
+           where m.topicid = i_topicid and (m.Flags & 8) != 8 ORDER BY m.posted desc LIMIT 1)
+        where topicid = i_topicid;   
 
 		select forumid into ici_forumid from {databaseSchema}.{objectQualifier}topic where topicid = i_topicid;
         PERFORM  {databaseSchema}.{objectQualifier}forum_updatelastpost (ici_forumid);  

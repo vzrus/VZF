@@ -146,6 +146,11 @@
     <Resource tag="USERNAME">名称</Resource>
   </page>
   <page name="ADMIN_ACCESSMASKS">
+    <Resource tag="ACCESSMASKTYPE_ADMIN">Admin mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_ALL">All</Resource>
+    <Resource tag="ACCESSMASKTYPE_PERSONAL">Personal Mask</Resource>
+    <Resource tag="ACCESSMASKTYPE_SELECT">Access Mask Type</Resource>
+    <Resource tag="ACCESSMASKTYPE_SHARED">Shared Mask</Resource>
     <Resource tag="CONFIRM_DELETE">Delete this access mask?</Resource>
     <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Delete</Resource>
@@ -162,8 +167,10 @@
     <Resource tag="PRIORITY">Priority</Resource>
     <Resource tag="READ">Read</Resource>
     <Resource tag="REPLY">Reply</Resource>
+    <Resource tag="RESET">Reset</Resource>
     <Resource tag="TITLE">Access Masks</Resource>
     <Resource tag="UPLOAD">Upload</Resource>
+    <Resource tag="USER">Find User:</Resource>
     <Resource tag="VOTE">Vote</Resource>
   </page>
   <page name="ADMIN_ADMIN">
@@ -339,6 +346,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Personal forums in categories:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
+    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
     <Resource tag="TITLE">Board Settings</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -408,6 +419,7 @@
     <Resource tag="MODERATOR_ACCESS">Morderator Access</Resource>
     <Resource tag="MODERATOR_ACCESS_HELP">Allows Users to Edit/Delete all Posts and Topics in a Forum.</Resource>
     <Resource tag="MSG_MASK_NAME">You must enter a name for the Access Mask.</Resource>
+    <Resource tag="MSG_NOUSERANDADMIN">You can't set user and admin masks at the same time.</Resource>
     <Resource tag="MSG_NUMBER_SORT">You must enter a number value from 0 to 32767 for sort order.</Resource>
     <Resource tag="MSG_POSITIVE_SORT">The Sort Order value should be a positive integer from 0 to 32767.</Resource>
     <Resource tag="POLL_ACCESS">Poll Access</Resource>
@@ -1364,6 +1376,8 @@
     <Resource tag="SHOW_DEL_MESSAGES_HELP">If this is checked, messages that are deleted will leave with some notes</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">Show Deleted Messages to All:</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">If Show Deleted Messages is checked above, checking this will force showing the delete message stub to all users.&lt;br /&gt; If it remains unchecked, the deleted message stub will only show to administrators, moderators, and the owner of the deleted message.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">Show Forum Jump Box:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">Enable or disable display of the Forum Jump Box throughout the forum.</Resource>
     <Resource tag="SHOW_FORUM_STATS">Show Forum Statistics:</Resource>
@@ -2028,6 +2042,7 @@
     <Resource tag="DISALLOWED">Disallowed</Resource>
     <Resource tag="DOWNLOAD">Download</Resource>
     <Resource tag="EDIT">Edit</Resource>
+    <Resource tag="EDITACCESS">Edit Access</Resource>
     <Resource tag="EMAILVERIFICATION_SUBJECT">{0} Email Verification</Resource>
     <Resource tag="EXTERNALUSER">(External User)</Resource>
     <Resource tag="FONT_COLOR">Font Color:</Resource>
@@ -4154,6 +4169,7 @@ Spoiler Content
     <Resource tag="INVALID">You've passed an invalid value to the forum.</Resource>
     <Resource tag="MODERATED">由于您在一个需审核的论坛发贴，在发布之前，需要版主审核.</Resource>
     <Resource tag="REGISTRATION">An email has been sent to the email address you supplied. Please read the instructions in the email to log in.</Resource>
+    <Resource tag="SHOULDALLOWPERSORCOMMONMASKS">Admin should set allowed access masks for you - common or personal.</Resource>
     <Resource tag="SUSPENDED">您的帐号已经被暂停使用. 暂停期将在 {0} 结束.</Resource>
     <Resource tag="TITLE_ACCESSDENIED">Access Denied</Resource>
     <Resource tag="TITLE_COOKIES">Requires cookies</Resource>
@@ -4166,6 +4182,7 @@ Spoiler Content
     <Resource tag="TITLE_INVALID">Invalid</Resource>
     <Resource tag="TITLE_MODERATED">Information</Resource>
     <Resource tag="TITLE_REGISTRATION">Thanks</Resource>
+    <Resource tag="TITLE_SHOULDALLOWPERSORCOMMONMASKS">Admin should allow any access masks!</Resource>
     <Resource tag="TITLE_SUSPENDED">Suspended</Resource>
   </page>
   <page name="IRKOO">

@@ -97,6 +97,24 @@
         </tr>
         <tr>
             <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel7" runat="server" LocalizedTag="PERSONALMASKSONLY"
+                    LocalizedPage="ADMIN_BOARDSETTINGS" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="AllowPersonalMasksOnlyForPersonalForums" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
+        <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel8" runat="server" LocalizedTag="PERSONALGROUPSONLY"
+                    LocalizedPage="ADMIN_BOARDSETTINGS" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="AllowPersonalGroupsOnlyForPersonalForums" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
+        <tr>
+            <td class="postheader">
                 <VZF:HelpLabel ID="LocalizedLabel8" runat="server" LocalizedTag="BOARD_JQ_THEME"
                     LocalizedPage="ADMIN_BOARDSETTINGS" />
             </td>

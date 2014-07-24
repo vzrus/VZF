@@ -4012,7 +4012,11 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_listread(
                            i_categoryid integer,
                            i_parentid integer,
                            i_stylednicks boolean,
-                           i_findlastunread boolean)
+                           i_findlastunread boolean,
+						   i_showcommonforums boolean,
+                           i_showpersonalforums boolean,
+                           i_forumcreatedbyuserid integer,
+                           i_UTCTIMESTAMP timestamp)
                   RETURNS SETOF {databaseSchema}.{objectQualifier}forum_listread_return_type AS
 $BODY$DECLARE
 ici_lasttopicid integer;

@@ -15,6 +15,7 @@
     </Resource>
   </page>
   <page name="ICONS">
+    <Resource tag="ACCESS_ICON">~/images/icon_key.png</Resource>
     <Resource tag="SAVE_ICON">~/images/disk-black.png</Resource>
     <Resource tag="FORUMS_ICON">~/images/tables.png</Resource>
     <Resource tag="TICK_YES_ICON">~/images/tick.png</Resource>
@@ -54,6 +55,7 @@
     <Resource tag="TOPIC">~/images/topic.png</Resource>
     <Resource tag="TOPIC_ANNOUNCEMENT">~/images/topic_announce.png</Resource>
     <Resource tag="TOPIC_ANNOUNCEMENT_NEW">~/images/topic_announce_new.png</Resource>
+    <Resource tag="TOPIC_DELETED">~/images/topic_deleted.gif</Resource>
     <Resource tag="TOPIC_NEW_LOCKED">~/images/topic_lock_new.png</Resource>
     <Resource tag="TOPIC_LOCKED">~/images/topic_lock.png</Resource>
     <Resource tag="TOPIC_STICKY">~/images/topic_sticky.png</Resource>

@@ -194,17 +194,20 @@ END; $BODY$
   COST 100 ROWS 1000;
   --GO
 
-
+DO $$ 
+BEGIN  
+ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns disable trigger user;
+END$$;
+--GO
+DROP TRIGGER IF EXISTS {databaseSchema}_{objectQualifier}_forum_ns_before_insert_tr ON {databaseSchema}.{objectQualifier}forum_ns;
+--GO
 
 -- Initialize all this
-
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_recreate()
 				  RETURNS void AS
 $BODY$
 BEGIN
-EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns disable trigger user;';
 PERFORM {databaseSchema}.{objectQualifier}create_or_check_ns_tables();
-EXECUTE 'ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns enable trigger user;';
 PERFORM {databaseSchema}.{objectQualifier}fillin_or_check_ns_tables();
 END;
 $BODY$
@@ -213,3 +216,14 @@ $BODY$
 	--GO 
 SELECT {databaseSchema}.{objectQualifier}forum_ns_recreate();
 -- GO
+CREATE TRIGGER {databaseSchema}_{objectQualifier}_forum_ns_before_insert_tr
+  BEFORE INSERT
+  ON {databaseSchema}.{objectQualifier}forum_ns
+  FOR EACH ROW
+  EXECUTE PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_before_insert_func();
+--GO
+
+DO $$ 
+BEGIN  
+ALTER TABLE {databaseSchema}.{objectQualifier}forum_ns enable trigger user;
+END$$;
