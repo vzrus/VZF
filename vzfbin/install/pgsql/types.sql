@@ -993,6 +993,7 @@ CREATE TYPE {databaseSchema}.{objectQualifier}post_list_type AS
 		"RankStyle"  varchar(1024),
 		"Style"  varchar(1024),
 		"Edited" timestamp,
+		"EditedBy" integer,
 		"HasAttachments" integer,
 		"HasAvatarImage" integer,
 		"TotalRows" integer,

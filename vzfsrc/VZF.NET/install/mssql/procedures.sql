@@ -4743,8 +4743,8 @@ BEGIN
     SET @OverrideDisplayName = 1
     end
     SET @ReplaceName = (CASE WHEN @OverrideDisplayName = 1 THEN @UserName ELSE (SELECT DisplayName FROM [{databaseSchema}].[{objectQualifier}User] WHERE UserID = @UserID) END);
-    INSERT [{databaseSchema}].[{objectQualifier}Message] ( UserID, [Message],[Description], TopicID, Posted, UserName, UserDisplayName, IP, ReplyTo, Position, Indent, Flags, BlogPostID, ExternalMessageId, ReferenceMessageId)
-    VALUES ( @UserID, @Message,@MessageDescription, @TopicID, @Posted, @UserName,@ReplaceName, @IP, @ReplyTo, @Position, @Indent, @Flags & ~16, @BlogPostID, @ExternalMessageId, @ReferenceMessageId)	
+    INSERT [{databaseSchema}].[{objectQualifier}Message] ( UserID, [Message],[Description], TopicID, Posted, Edited,UserName, UserDisplayName, IP, ReplyTo, Position, Indent, Flags, BlogPostID, ExternalMessageId, ReferenceMessageId)
+    VALUES ( @UserID, @Message,@MessageDescription, @TopicID, @Posted, @Posted, @UserName,@ReplaceName, @IP, @ReplyTo, @Position, @Indent, @Flags & ~16, @BlogPostID, @ExternalMessageId, @ReferenceMessageId)	
     
     SET @MessageID = SCOPE_IDENTITY()
 
@@ -6193,6 +6193,7 @@ begin
             when 1 then  b.UserStyle
             else ''	 end, 
         Edited = IsNull(m.Edited,m.Posted),
+		m.EditedBy,
         HasAttachments	= ISNULL((select top 1 1 from [{databaseSchema}].[{objectQualifier}Attachment] x where x.MessageID=m.MessageID),0),
         HasAvatarImage = ISNULL((select top 1 1 from [{databaseSchema}].[{objectQualifier}User] x where x.UserID=b.UserID and AvatarImage is not null),0),
         TotalRows = @post_totalrowsnumber,
@@ -8268,7 +8269,7 @@ begin
         return
     end
 
-    update [{databaseSchema}].[{objectQualifier}Message] set UserName=@UserName,UserDisplayName=@UserDisplayName,UserID=@GuestUserID where UserID=@UserID
+    update [{databaseSchema}].[{objectQualifier}Message] set UserName=@UserName,UserDisplayName=@UserDisplayName,UserID=@GuestUserID,EditedBy=@GuestUserID where UserID=@UserID
     update [{databaseSchema}].[{objectQualifier}Topic] set UserName=@UserName,UserDisplayName=@UserDisplayName,UserID=@GuestUserID where UserID=@UserID
     update [{databaseSchema}].[{objectQualifier}Topic] set LastUserName=@UserName,LastUserDisplayName=@UserDisplayName,LastUserID=@GuestUserID where LastUserID=@UserID
     update [{databaseSchema}].[{objectQualifier}Forum] set LastUserName=@UserName,LastUserDisplayName=@UserDisplayName,LastUserID=@GuestUserID where LastUserID=@UserID
@@ -9484,7 +9485,7 @@ end
 GO
 
 
-CREATE procedure [{databaseSchema}].[{objectQualifier}message_deleteundelete](@MessageID int, @isModeratorChanged bit, @DeleteReason nvarchar(100), @isDeleteAction int) as
+CREATE procedure [{databaseSchema}].[{objectQualifier}message_deleteundelete](@MessageID int, @isModeratorChanged bit, @DeleteReason nvarchar(100), @isDeleteAction INTEGER) as
 begin
     
     declare @TopicID		int

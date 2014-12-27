@@ -86,7 +86,8 @@ CKEDITOR.dialog.add('syntaxhighlight', function(editor)
             var editor = this.getParentEditor();
             var selection = editor.getSelection();
             var element = selection.getStartElement();
-            var preElement = element && element.getAscendant('code', true);
+			
+			var preElement = element && element.getAscendant('code', true);
             
             // Set the content for the textarea
             var text = '';
@@ -104,6 +105,7 @@ CKEDITOR.dialog.add('syntaxhighlight', function(editor)
             var editor = this.getParentEditor();
             var selection = editor.getSelection();
             var element = selection.getStartElement();
+			
             var preElement = element && element.getAscendant('code', true);
             var data = getDefaultOptions();
             this.commitContent(data);
@@ -111,14 +113,14 @@ CKEDITOR.dialog.add('syntaxhighlight', function(editor)
             
             if (preElement) {
                 //preElement.setAttribute('title', optionsString);
+				
                 preElement.setText(data.code);
             } else {
                 /*var newElement = new CKEDITOR.dom.element('code');
                 newElement.setAttribute('title', optionsString);
                 newElement.setText(data.code);
                 editor.insertElement(newElement);*/
-				
-				editor.insertHtml("[code=" + optionsString + "]" + data.code + "[/code]");
+				editor.insertText("[code=" + optionsString + "]" + data.code + "[/code]");
             }
         },
         contents : [
@@ -139,29 +141,16 @@ CKEDITOR.dialog.add('syntaxhighlight', function(editor)
                               'default': 'plain',
                               widths : [ '25%','75%' ],
                               items: [
-                                      ['Plain (Text)', 'plain'],
-									  ['ActionScript3', 'as3'],
-									  ['Bash(shell)', 'bash'],
-									  ['ColdFusion', 'coldfusion'], 
-									  ['C#', 'csharp'],
-									  ['C++', 'cpp'], 
+                                      ['Plain (Text)', 'markup'],
+									  ['HTML', 'markup'],
 									  ['CSS', 'css'],
-									  ['Delphi', 'delphi'], 
-									  ['Diff', 'diff'], 
-									  ['Erlang', 'erlang'], 
-									  ['Groovy', 'groovy'], 
-									  ['JavaScript', 'jscript'],
-									  ['Java', 'java'],
-									  ['JavaFX', 'javafx'], 
-									  ['Perl', 'perl'], 
-									  ['PHP', 'php'],
-									  ['PowerShell', 'powershell'], 
-									  ['Pyton', 'python'], 
-									  ['Ruby', 'ruby'],
-									  ['Scala', 'scala'],
+									  ['JavaScript', 'javascript'],
+									  ['C', 'c'],
+									  ['C++', 'cpp'], 
+									  ['C#', 'csharp'],
 									  ['SQL', 'sql'], 
-									  ['Visual Basic', 'vb'], 
-									  ['XML/XHTML', 'xml'],
+									  ['Git', 'git'], 
+									  ['XML/XHTML', 'markup']
                               ],
                               setup: function(data) {
                                   if (data.lang)

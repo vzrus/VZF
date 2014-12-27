@@ -37,7 +37,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>vzf2015.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="vzf14.pfx" />
+    <None Include="vzf2015.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

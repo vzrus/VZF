@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
+    <Node Id="VZF.Classes.Config" Label="VZF.Classes.Config" Category="Project" />
+    <Node Id="Autofac 3.5.2" Label="Autofac 3.5.2" Category="Package" />
     <Node Id="VZF" Label="VZF" Category="Project" />
-    <Node Id="Autofac 3.4.0" Label="Autofac 3.4.0" Category="Package" />
+    <Node Id="Autofac 3.5.2" Label="Autofac 3.5.2" Category="Package" />
     <Node Id="VZF.Core" Label="VZF.Core" Category="Project" />
-    <Node Id="Autofac 3.4.0" Label="Autofac 3.4.0" Category="Package" />
+    <Node Id="Autofac 3.5.2" Label="Autofac 3.5.2" Category="Package" />
+    <Node Id="VZF.Utils" Label="VZF.Utils" Category="Project" />
+    <Node Id="Autofac 3.5.2" Label="Autofac 3.5.2" Category="Package" />
   </Nodes>
   <Links>
-    <Link Source="VZF" Target="Autofac 3.4.0" Category="Installed Package" />
-    <Link Source="VZF.Core" Target="Autofac 3.4.0" Category="Installed Package" />
+    <Link Source="VZF.Classes.Config" Target="Autofac 3.5.2" Category="Installed Package" />
+    <Link Source="VZF" Target="Autofac 3.5.2" Category="Installed Package" />
+    <Link Source="VZF.Core" Target="Autofac 3.5.2" Category="Installed Package" />
+    <Link Source="VZF.Utils" Target="Autofac 3.5.2" Category="Installed Package" />
   </Links>
   <Categories>
     <Category Id="Project" />

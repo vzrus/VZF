@@ -111,9 +111,9 @@ namespace YAF.Pages
                 this.AccessMaskID.DataSource = CommonDb.accessmask_aforumlist(
            mid: PageContext.PageModuleID,
            boardId: this.PageContext.PageBoardID,
-           accessMaskID: null,
+           accessMaskId: null,
            excludeFlags: 0,
-           pageUserID: userId,
+           pageUserId: userId,
            isAdminMask: isAdminMask,
            isCommonMask: isCommonMask);
             }
@@ -129,9 +129,9 @@ namespace YAF.Pages
                     this.AccessMaskID.DataSource = CommonDb.accessmask_pforumlist(
             mid: PageContext.PageModuleID,
             boardId: this.PageContext.PageBoardID,
-            accessMaskID: null,
+            accessMaskId: null,
             excludeFlags: 0,
-            pageUserID: userId,
+            pageUserId: userId,
             isUserMask: isUserMask,
             isCommonMask: isCommonMask);
                 }
@@ -144,9 +144,9 @@ namespace YAF.Pages
                     this.AccessMaskID.DataSource = CommonDb.accessmask_aforumlist(
            mid: PageContext.PageModuleID,
            boardId: this.PageContext.PageBoardID,
-           accessMaskID: null,
+           accessMaskId: null,
            excludeFlags: 0,
-           pageUserID: userId,
+           pageUserId: userId,
            isAdminMask: isAdminMask,
            isCommonMask: isCommonMask);
                 }

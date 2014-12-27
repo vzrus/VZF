@@ -207,9 +207,9 @@ namespace YAF.pages
                     var dd = CommonDb.accessmask_pforumlist(
               mid: PageContext.PageModuleID,
               boardId: this.PageContext.PageBoardID,
-              accessMaskID: null,
+              accessMaskId: null,
               excludeFlags: AccessFlags.Flags.None.ToInt(),
-              pageUserID: null,
+              pageUserId: null,
               isUserMask: false,           
               isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums
              );

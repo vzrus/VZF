@@ -16,7 +16,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>vzf2015.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -61,6 +61,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -108,7 +111,9 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="vzf14.pfx" />
+    <None Include="vzf2015.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">

@@ -22,6 +22,8 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
+using YAF.Types.Flags;
+
 namespace VZF.Data.Common
 {
     using System;
@@ -60,17 +62,17 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module id.
         /// </param>
-        /// <param name="accessMaskID">
+        /// <param name="accessMaskId">
         /// The access mask id. 
         /// </param>
         /// <returns> 
         /// A <see cref="T:System.Boolean"/> with true if access mask was deleted and false if deletion failed.
         /// </returns>
-        public static bool accessmask_delete(int? mid, object accessMaskID)
+        public static bool accessmask_delete(int? mid, object accessMaskId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {   
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
               
                 sc.CommandText.AppendObjectQuery("accessmask_delete", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
@@ -86,13 +88,13 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="accessMaskID">
+        /// <param name="accessMaskId">
         /// The access mask id.
         /// </param>
         /// <param name="excludeFlags">
         /// The exclude flags.
         /// </param>
-        /// <param name="pageUserID">
+        /// <param name="pageUserId">
         /// The page user id.
         /// </param>
         /// <param name="isUserMask">
@@ -116,9 +118,9 @@ namespace VZF.Data.Common
         public static DataTable accessmask_list(
             int? mid,
             object boardId,
-            object accessMaskID,
+            object accessMaskId,
             object excludeFlags,
-            object pageUserID,
+            object pageUserId,
             bool isUserMask,
             bool isAdminMask,
             bool isCommonMask,
@@ -128,9 +130,9 @@ namespace VZF.Data.Common
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
@@ -151,13 +153,13 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="accessMaskID">
+        /// <param name="accessMaskId">
         /// The access mask id.
         /// </param>
         /// <param name="excludeFlags">
         /// The exclude flags.
         /// </param>
-        /// <param name="pageUserID">
+        /// <param name="pageUserId">
         /// The page user id.
         /// </param>
         /// <param name="isUserMask">
@@ -181,9 +183,9 @@ namespace VZF.Data.Common
         public static DataTable accessmask_searchlist(
             int? mid,
             object boardId,
-            object accessMaskID,
+            object accessMaskId,
             object excludeFlags,
-            object pageUserID,
+            object pageUserId,
             bool isUserMask,
             bool isAdminMask,
             bool isCommonMask,
@@ -193,9 +195,9 @@ namespace VZF.Data.Common
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
@@ -217,20 +219,20 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="accessMaskID">
+        /// <param name="accessMaskId">
         /// The access mask id.
         /// </param>
         /// <param name="excludeFlags">
         /// The exclude flags.
         /// </param>
-        /// <param name="pageUserID">
+        /// <param name="pageUserId">
         /// The page user id.
         /// </param>
         /// <param name="isUserMask">
         /// The is user mask.
         /// </param>
-        /// <param name="isAdminMask">
-        /// The is admin mask.
+        /// <param name="isCommonMask">
+        /// The is common mask.
         /// </param>
         /// <returns>
         ///  A <see cref="T:System.Data.DataTable"/> of Access Masks.
@@ -238,18 +240,18 @@ namespace VZF.Data.Common
         public static DataTable accessmask_pforumlist(
             int? mid,
             object boardId,
-            object accessMaskID,
+            object accessMaskId,
             object excludeFlags,
-            object pageUserID,
+            object pageUserId,
             bool isUserMask,
             bool isCommonMask)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
 
@@ -267,20 +269,20 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="accessMaskID">
+        /// <param name="accessMaskId">
         /// The access mask id.
         /// </param>
         /// <param name="excludeFlags">
         /// The exclude flags.
         /// </param>
-        /// <param name="pageUserID">
+        /// <param name="pageUserId">
         /// The page user id.
-        /// </param>
-        /// <param name="isUserMask">
-        /// The is user mask.
         /// </param>
         /// <param name="isAdminMask">
         /// The is admin mask.
+        /// </param>
+        /// <param name="isCommonMask">
+        /// The is common mask.
         /// </param>
         /// <returns>
         /// The <see cref="T:System.Data.DataTable"/>.
@@ -288,18 +290,18 @@ namespace VZF.Data.Common
         public static DataTable accessmask_aforumlist(
             int? mid,
             object boardId,
-            object accessMaskID,
+            object accessMaskId,
             object excludeFlags,
-            object pageUserID,
+            object pageUserId,
             bool isAdminMask,
             bool isCommonMask)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCommonMask", isCommonMask));
 
@@ -476,7 +478,7 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The Board ID.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user ID.
         /// </param>
         /// <param name="guests">
@@ -495,7 +497,7 @@ namespace VZF.Data.Common
         public static DataTable active_list_user(
             int? mid,
             object boardId,
-            object userID,
+            object userId,
             object guests,
             object showCrawlers,
             int activeTime,
@@ -504,7 +506,7 @@ namespace VZF.Data.Common
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Guests", guests ?? false));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowCrawlers", showCrawlers));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ActiveTime", activeTime));
@@ -522,7 +524,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="forumID">
+        /// <param name="forumId">
         /// The forum ID.
         /// </param>
         /// <param name="styledNicks">
@@ -531,11 +533,14 @@ namespace VZF.Data.Common
         /// <returns> 
         /// A <see cref="T:System.Data.DataTable"/> with list of active users for a forum.
         /// </returns>
-        public static DataTable active_listforum(int? mid, object forumID, object styledNicks)
+        public static DataTable active_listforum(
+            int? mid, 
+            object forumId, 
+            object styledNicks)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
 
                 sc.CommandText.AppendObjectQuery("active_listforum", mid);
@@ -549,7 +554,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="topicID">
+        /// <param name="topicId">
         /// The topic ID.
         /// </param>
         /// <param name="styledNicks">
@@ -558,11 +563,14 @@ namespace VZF.Data.Common
         /// <returns>
         /// Returns a <see cref="T:System.Data.DataTable"/> with a users which are currently active in a topic.
         /// </returns>
-        public static DataTable active_listtopic(int? mid, object topicID, object styledNicks)
+        public static DataTable active_listtopic(
+            int? mid, 
+            object topicId, 
+            object styledNicks)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
 
                 sc.CommandText.AppendObjectQuery("active_listtopic", mid);
@@ -623,7 +631,10 @@ namespace VZF.Data.Common
         /// <returns>
         /// Returns a <see cref="T:System.Data.DataTable"/> with today's birdays list.
         /// </returns>
-        public static DataTable User_ListTodaysBirthdays(int? mid, object boardId, object useStyledNicks)
+        public static DataTable User_ListTodaysBirthdays(
+            int? mid, 
+            object boardId, 
+            object useStyledNicks)
         {
             try
             {
@@ -671,7 +682,10 @@ namespace VZF.Data.Common
         /// <returns>
         /// Returns a <see cref="T:System.Data.DataTable"/> with list of a board admins.
         /// </returns>
-        public static DataTable admin_list(int? mid, object boardId, object useStyledNicks)
+        public static DataTable admin_list(
+            int? mid, 
+            object boardId, 
+            object useStyledNicks)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -730,7 +744,10 @@ namespace VZF.Data.Common
         /// <returns>
         /// Returns a <see cref="T:System.Data.DataTable"/> with list page access for admins.
         /// </returns>
-        public static DataTable adminpageaccess_list(int? mid, [CanBeNull] object userId, [CanBeNull] object pageName)
+        public static DataTable adminpageaccess_list(
+            int? mid, 
+            [CanBeNull] object userId, 
+            [CanBeNull] object pageName)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -756,7 +773,10 @@ namespace VZF.Data.Common
         /// <param name="pageName">
         /// The page name to check for access.
         /// </param>
-        public static void adminpageaccess_delete(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
+        public static void adminpageaccess_delete(
+            int? mid,
+            [NotNull] object userId, 
+            [CanBeNull] object pageName)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -782,7 +802,10 @@ namespace VZF.Data.Common
         /// <param name="pageName">
         /// The page name to check for access.
         /// </param>
-        public static void adminpageaccess_save(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
+        public static void adminpageaccess_save(
+            int? mid, 
+            [NotNull] object userId, 
+            [CanBeNull] object pageName)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -802,14 +825,16 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="AlbumID">
+        /// <param name="albumId">
         /// The album Id.
         /// </param>
-        public static void album_delete(int? mid, object AlbumID)
+        public static void album_delete(
+            int? mid, 
+            object albumId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", albumId));
 
                 sc.CommandText.AppendObjectQuery("album_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -822,16 +847,19 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="UserID">
+        /// <param name="userId">
         /// The user ID.
         /// </param>
-        /// <param name="AlbumID">
+        /// <param name="albumId">
         /// The album Id.
         /// </param>
         /// <returns>
         /// Returns a <see cref="T:System.Int32"/> array with stats row.
         /// </returns>
-        public static int[] album_getstats(int? mid, object UserID, object AlbumID)
+        public static int[] album_getstats(
+            int? mid, 
+            object userId, 
+            object albumId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -839,12 +867,12 @@ namespace VZF.Data.Common
                     sc.CreateParameter(
                         DbType.Int32,
                         "i_UserID",
-                        (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                        (userId == null || userId.ToString() == "0") ? null : userId));
                 sc.Parameters.Add(
                     sc.CreateParameter(
                         DbType.Int32,
                         "i_AlbumID",
-                        (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
+                        (albumId == null || albumId.ToString() == "0") ? null : albumId));
 
                 sc.CommandText.AppendObjectQuery("album_getstats", mid);
                 var strow =
@@ -950,25 +978,28 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="AlbumID">
+        /// <param name="albumId">
         /// The album Id.
         /// </param>
-        /// <param name="ImageID">
+        /// <param name="imageId">
         /// The image ID.
         /// </param>
         /// <returns>
         /// Returns a <see cref="T:System.Data.DataTable"/> with album images for an album.
         /// </returns>
-        public static DataTable album_image_list(int? mid, object AlbumID, object ImageID)
+        public static DataTable album_image_list(
+            int? mid, 
+            object albumId, 
+            object imageId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", albumId));
                 sc.Parameters.Add(
                     sc.CreateParameter(
                         DbType.Int32,
                         "i_ImageID",
-                        (ImageID == null || ImageID.ToString() == "0") ? null : ImageID));
+                        (imageId == null || imageId.ToString() == "0") ? null : imageId));
 
                 sc.CommandText.AppendObjectQuery("album_image_list", mid);
                 DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -998,29 +1029,29 @@ namespace VZF.Data.Common
         /// <param name="imageId">
         /// The image Id.
         /// </param>
-        /// <param name="AlbumID">
+        /// <param name="albumId">
         /// The album Id.
         /// </param>
-        /// <param name="Caption">
+        /// <param name="caption">
         /// The album caption.
         /// </param>
-        /// <param name="FileName">
+        /// <param name="fileName">
         /// The image file name.
         /// </param>
-        /// <param name="Bytes">
+        /// <param name="bytes">
         /// Image size in bytes.
         /// </param>
-        /// <param name="ContentType">
+        /// <param name="contentType">
         /// The content type.
         /// </param>
         public static void album_image_save(
             int? mid,
             object imageId,
-            object AlbumID,
-            object Caption,
-            object FileName,
-            object Bytes,
-            object ContentType)
+            object albumId,
+            object caption,
+            object fileName,
+            object bytes,
+            object contentType)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -1033,11 +1064,11 @@ namespace VZF.Data.Common
                     sc.CreateParameter(
                         DbType.Int32,
                         "i_AlbumID",
-                        (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Caption", Caption));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", FileName));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", Bytes));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", ContentType));
+                        (albumId == null || albumId.ToString() == "0") ? null : albumId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Caption", caption));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", fileName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", bytes));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", contentType));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("album_image_save", mid);
@@ -5490,6 +5521,7 @@ namespace VZF.Data.Common
                         boardId,
                         maxResults,
                         useFullText,
+                        categoriesIds,
                         forumIDs,
                         forumIdToStartAt);
                     break;
@@ -5505,6 +5537,7 @@ namespace VZF.Data.Common
                         boardId,
                         maxResults,
                         useFullText,
+                        categoriesIds,
                         forumIDs,
                         forumIdToStartAt);
                     break;
@@ -6544,29 +6577,18 @@ namespace VZF.Data.Common
                             eraseMessages);
                     }
                 }
-            }
+            }           
 
             // If the files are actually saved in the Hard Drive
             if (!useFileTable)
             {
-                using (var sc = new VzfSqlCommand(mid))
-                {
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", null));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", null));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", 0));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", 1000000));
-
-                    sc.CommandText.AppendObjectQuery("attachment_list", mid);
-                    DataTable tbAttachments = sc.ExecuteDataTableFromReader(
-                        CommandBehavior.Default,
-                        CommandType.StoredProcedure,
-                        true);
-                    string uploadDir =
+                DataTable tbAttachments = attachment_list(mid, messageID, null, null, 0, 1000000);               
+                string uploadDir =
                         HostingEnvironmentUtil.MapPath(
                             String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.TopicAttachments));
-                    foreach (DataRow row in tbAttachments.Rows)
-                    {
+                   
+                foreach (DataRow row in tbAttachments.Rows)
+                {
                         try
                         {
                             string fileName = String.Format(
@@ -6583,14 +6605,13 @@ namespace VZF.Data.Common
                         {
                             // error deleting that file... 
                         }
-                    }
-                }
+                    }                
             }
-
+           
             if (eraseMessages)
             {
                 using (var sc = new VzfSqlCommand(mid))
-                {
+                {                  
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
                     sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_EraseMessage", eraseMessages));
 
@@ -6604,8 +6625,8 @@ namespace VZF.Data.Common
                 {
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
                     sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_isModeratorChanged", isModeratorChanged));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeleteReason", deleteReason));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsDeleteAction", isDeleteAction));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DeleteReason", deleteReason));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_IsDeleteAction", isDeleteAction));
 
                     sc.CommandText.AppendObjectQuery("message_deleteundelete", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -6871,6 +6892,20 @@ namespace VZF.Data.Common
         /// </param>
         public static void message_move(int? mid, object messageID, object moveToTopic, bool moveAll)
         {
+            // If the message was deleted we should undelete it first.
+            var msg = MessageList(mid, messageID.ToType<int>()).FirstOrDefault();
+            if (msg.Flags.IsDeleted)
+            {
+                CommonDb.message_delete(
+                mid,
+                messageID,
+                (bool) msg.IsModeratorChanged,
+                msg.DeleteReason,
+                1,
+                false,
+                false);
+            }
+
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));

@@ -439,7 +439,7 @@ namespace YAF.Pages.Admin
             // TODO: here should be a swithch between common forums and personal forums
             this.AccessMasksList = 
                 CommonDb.accessmask_aforumlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, 
-                accessMaskID: null, excludeFlags: 0, pageUserID: null,
+                accessMaskId: null, excludeFlags: 0, pageUserId: null,
                 isAdminMask: true, isCommonMask: true);
             // bind data to controls
             this.DataBind();

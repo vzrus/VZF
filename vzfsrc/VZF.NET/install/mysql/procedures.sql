@@ -5186,7 +5186,7 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}message_deleteundelete
 (i_MessageID INT, 
 i_isModeratorChanged TINYINT(1), 
 i_DeleteReason VARCHAR(128), 
-i_isDeleteAction TINYINT(1)) 
+i_isDeleteAction INTEGER) 
 BEGIN
     DECLARE ici_TopicID		INT;
     DECLARE ici_ForumID		INT;
@@ -5791,8 +5791,8 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}message_reportresolve(i_Messa
     SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseSchema}.{objectQualifier}User WHERE UserID = i_UserID AND Name != i_UserName;	
    -- Add points to Users total points 
     UPDATE {databaseSchema}.{objectQualifier}User SET Points = Points + 3  WHERE UserID = i_UserID;       
-    INSERT {databaseSchema}.{objectQualifier}Message ( UserID, Message, Description, TopicID, Posted, UserName,UserDisplayName, IP, ReplyTo, `Position`, Indent, Flags, BlogPostID, ExternalMessageId, ReferenceMessageId)
-    VALUES ( i_UserID, CONVERT(i_Message USING {databaseEncoding}),i_MessageDescription, i_TopicID, i_Posted,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT Name FROM {databaseSchema}.{objectQualifier}User WHERE UserID = i_UserID) END),(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseSchema}.{objectQualifier}User WHERE UserID = i_UserID) END) ,i_IP, i_ReplyTo, ici_Position, ici_Indent, i_Flags & ~16, i_BlogPostID, i_ExternalMessageId, i_ReferenceMessageId);
+    INSERT {databaseSchema}.{objectQualifier}Message ( UserID, Message, Description, TopicID, Posted, Edited, UserName,UserDisplayName, IP, ReplyTo, `Position`, Indent, Flags, BlogPostID, ExternalMessageId, ReferenceMessageId)
+    VALUES ( i_UserID, CONVERT(i_Message USING {databaseEncoding}),i_MessageDescription, i_TopicID, i_Posted, i_Posted,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT Name FROM {databaseSchema}.{objectQualifier}User WHERE UserID = i_UserID) END),(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseSchema}.{objectQualifier}User WHERE UserID = i_UserID) END) ,i_IP, i_ReplyTo, ici_Position, ici_Indent, i_Flags & ~16, i_BlogPostID, i_ExternalMessageId, i_ReferenceMessageId);
 
     SET i_MessageID = LAST_INSERT_ID();
 
@@ -7293,6 +7293,7 @@ INTO  	@PostTotalRowsNumber,
             b.UserStyle 
             else '''' end) as Style, 
         IFNULL(m.Edited,m.Posted) AS Edited,
+		m.EditedBy,
         IFNULL((select 1 from {databaseSchema}.{objectQualifier}Attachment x 
         where x.MessageID=m.MessageID LIMIT 1),0) AS HasAttachments,
         IFNULL((select  1 from {databaseSchema}.{objectQualifier}User x 
@@ -9507,7 +9508,7 @@ BEGIN
     IF NOT (ici_GuestUserID=i_UserID AND ici_GuestCount=1) THEN
 
 
-    UPDATE {databaseSchema}.{objectQualifier}Message SET UserName=ici_UserName,UserDisplayName = ici_UserDisplayName,UserID=ici_GuestUserID WHERE UserID=i_UserID;
+    UPDATE {databaseSchema}.{objectQualifier}Message SET UserName=ici_UserName,UserDisplayName = ici_UserDisplayName,UserID=ici_GuestUserID,EditedBy=ici_GuestUserID WHERE UserID=i_UserID;
     UPDATE {databaseSchema}.{objectQualifier}Topic SET UserName=ici_UserName,UserDisplayName = ici_UserDisplayName,UserID=ici_GuestUserID WHERE UserID=i_UserID;
     UPDATE {databaseSchema}.{objectQualifier}Topic SET LastUserName=ici_UserName,LastUserDisplayName = ici_UserDisplayName,LastUserID=ici_GuestUserID WHERE LastUserID=i_UserID;
     UPDATE {databaseSchema}.{objectQualifier}Forum SET LastUserName=ici_UserName,LastUserDisplayName = ici_UserDisplayName,LastUserID=ici_GuestUserID WHERE LastUserID=i_UserID;

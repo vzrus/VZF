@@ -339,9 +339,9 @@ namespace YAF.Pages.Admin
               accessMaskListId = CommonDb.accessmask_pforumlist(
       mid: PageContext.PageModuleID,
       boardId: this.PageContext.PageBoardID,
-      accessMaskID: null,
+      accessMaskId: null,
       excludeFlags: 0,
-      pageUserID: UsrId,
+      pageUserId: UsrId,
       isUserMask: true,
       isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums);
               
@@ -355,9 +355,9 @@ namespace YAF.Pages.Admin
               accessMaskListId = CommonDb.accessmask_aforumlist(
       mid: PageContext.PageModuleID,
       boardId: this.PageContext.PageBoardID,
-      accessMaskID: null,
+      accessMaskId: null,
       excludeFlags: 0,
-      pageUserID: null,
+      pageUserId: null,
       isAdminMask: true,
       isCommonMask: true);
           }
@@ -400,9 +400,9 @@ namespace YAF.Pages.Admin
           accessMaskListId = CommonDb.accessmask_aforumlist(
       mid: PageContext.PageModuleID,
       boardId: this.PageContext.PageBoardID,
-      accessMaskID: null,
+      accessMaskId: null,
       excludeFlags: 0,
-      pageUserID: null,
+      pageUserId: null,
       isAdminMask: true,
       isCommonMask: true);
 

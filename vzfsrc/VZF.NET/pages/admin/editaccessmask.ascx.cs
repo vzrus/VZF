@@ -190,7 +190,7 @@ namespace YAF.Pages.Admin
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_searchlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: AccessFlags.Flags.None.ToInt(), pageUserID: null, isUserMask: false, isAdminMask: false, isCommonMask: false, pageIndex: 0, pageSize: 1000000))
+                    var dt = CommonDb.accessmask_searchlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskId: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: AccessFlags.Flags.None.ToInt(), pageUserId: null, isUserMask: false, isAdminMask: false, isCommonMask: false, pageIndex: 0, pageSize: 1000000))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

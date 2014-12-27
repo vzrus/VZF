@@ -122,7 +122,7 @@ namespace YAF.Pages.Admin
                 case "delete":
 
                     // attmempt to delete access masks
-                    if (CommonDb.accessmask_delete(mid: this.PageContext.PageModuleID, accessMaskID: e.CommandArgument))
+                    if (CommonDb.accessmask_delete(mid: this.PageContext.PageModuleID, accessMaskId: e.CommandArgument))
                     {
                         // remove cache of forum moderators
                         this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
@@ -336,9 +336,9 @@ namespace YAF.Pages.Admin
             DataTable dt = CommonDb.accessmask_searchlist(
                  mid: this.PageContext.PageModuleID,
                  boardId: this.PageContext.PageBoardID,
-                 accessMaskID: null,
+                 accessMaskId: null,
                  excludeFlags: 0,
-                 pageUserID: selectedUserId,
+                 pageUserId: selectedUserId,
                  isUserMask: isUserMask,
                  isAdminMask: isAdminMask,
                  isCommonMask: isCommonMask,

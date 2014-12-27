@@ -47,7 +47,7 @@ namespace VZF.Data.DAL
         /// <summary>
         /// The _dataSourceDictionary object.
         /// </summary>
-        private static readonly Dictionary<string, DataSource>
+        private static readonly IDictionary<string, DataSource>
                 _dataSourceDictionary = new Dictionary<string, DataSource>();
 
         /// <summary>

@@ -219,7 +219,7 @@ namespace YAF.pages
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_pforumlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isCommonMask: false))
+                    var dt = CommonDb.accessmask_pforumlist(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskId: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserId: this.PageContext.PageUserID, isUserMask: true, isCommonMask: false))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

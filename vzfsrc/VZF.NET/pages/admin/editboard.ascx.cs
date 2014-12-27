@@ -88,9 +88,9 @@ namespace YAF.Pages.Admin
             ((DropDownList)sender).DataSource = CommonDb.accessmask_aforumlist(
                 mid: this.PageContext.PageModuleID,
                 boardId: this.PageContext.PageBoardID,
-                accessMaskID: null,
+                accessMaskId: null,
                 excludeFlags: AccessFlags.Flags.None.ToInt(),
-                pageUserID: null,            
+                pageUserId: null,            
                 isAdminMask: true,
                 isCommonMask: true);
             ((DropDownList)sender).DataValueField = "AccessMaskID";

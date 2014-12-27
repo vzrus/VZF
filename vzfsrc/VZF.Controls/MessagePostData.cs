@@ -323,7 +323,7 @@ namespace VZF.Controls
                 return;
             }
 
-            if (this.MessageFlags.IsDeleted && !this.ShowDeleted)
+            if (this.MessageFlags.IsDeleted && this.ShowDeleted)
             {
                 if (this.DataRow.Table.Columns.Contains("IsModeratorChanged"))
                 {
@@ -344,7 +344,7 @@ namespace VZF.Controls
                 // just write out the message with no formatting...
                 writer.Write(this.Message);
             }
-            else if (this.DataRow.Table.Columns.Contains("Edited"))
+            else if (this.DataRow.Table.Columns.Contains("Edited") && this.DataRow.Table.Columns.Contains("EditedBy"))
             {
                 if (this.DataRow.Table.Columns.Contains("IsModeratorChanged"))
                 {
@@ -354,7 +354,7 @@ namespace VZF.Controls
                 // handle a message that's been edited...
                 var editedMessageDateTime = this.Posted;
 
-                if (this.Edited > this.Posted)
+                if (this.Edited > this.Posted && this.DataRow["EditedBy"] != DBNull.Value)
                 {
                     editedMessageDateTime = this.Edited;
                     this.IsModeratorChanged = this.DataRow["IsModeratorChanged"].ToType<bool>();
@@ -376,7 +376,9 @@ namespace VZF.Controls
               //  }
 
                 // Render Edit Message
-                if (this.ShowEditMessage && this.Edited > this.Posted.AddSeconds(this.Get<YafBoardSettings>().EditTimeOut))
+                if (this.ShowEditMessage
+                    && this.Edited > this.Posted.AddSeconds(this.Get<YafBoardSettings>().EditTimeOut) 
+                    && this.DataRow["EditedBy"] != DBNull.Value)
                 {
                     this.RenderEditedMessage(
                         writer, this.Edited, Convert.ToString(this.DataRow["EditReason"]), this.MessageId);

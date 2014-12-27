@@ -2390,7 +2390,6 @@ begin
 end
 GO
 
-
 if exists(select top 1 1 from sys.objects where name=N'PK_{objectQualifier}ForumReadTracking')
 	alter table [{databaseSchema}].[{objectQualifier}ForumReadTracking] drop constraint [PK_{objectQualifier}ForumReadTracking] 
 GO 
@@ -2497,7 +2496,7 @@ create procedure [{databaseSchema}].[{objectQualifier}forum_initdisplayname] as
  
 begin 
      update d
-      set d.LastUserDisplayName = ISNULL((select top 1 f.LastUserDisplayName FROM [{databaseSchema}].[{objectQualifier}Forum] f
+       set d.LastUserDisplayName = ISNULL((select top 1 f.LastUserDisplayName FROM [{databaseSchema}].[{objectQualifier}Forum] f
           join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.LastUserID where u.UserID = d.LastUserID),
            (select top 1 f.LastUserName FROM [{databaseSchema}].[{objectQualifier}Forum] f
           join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.LastUserID where u.UserID = d.LastUserID ))
@@ -2544,4 +2543,11 @@ GO
 
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}UserProfile]') and name=N'Birthday')
 	alter table [{databaseSchema}].[{objectQualifier}UserProfile] add Birthday datetime NULL
+GO
+
+if exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Message]') and name=N'Edited')
+begin
+	grant update on [{databaseSchema}].[{objectQualifier}Message] to public
+	exec('update [{databaseSchema}].[{objectQualifier}Message] set Edited = Posted where Edited is null')	
+end
 GO

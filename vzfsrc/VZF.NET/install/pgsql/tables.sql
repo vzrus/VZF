@@ -1339,6 +1339,7 @@ BEGIN
      UPDATE {databaseSchema}.{objectQualifier}group set style = null where style is not null and char_length(style) <= 2;
      UPDATE {databaseSchema}.{objectQualifier}rank set style = null where style is not null and char_length(style) <= 2;
      UPDATE {databaseSchema}.{objectQualifier}rank set flags = flags | 4 where name like 'Guest';
+	 UPDATE {databaseSchema}.{objectQualifier}message set edited = posted where edited is null;
     END;	
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT

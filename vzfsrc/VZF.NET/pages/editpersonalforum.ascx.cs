@@ -249,9 +249,9 @@ namespace YAF.pages
             accessMaskListId = CommonDb.accessmask_pforumlist(
               mid: PageContext.PageModuleID,
               boardId: this.PageContext.PageBoardID,
-              accessMaskID: null,
+              accessMaskId: null,
               excludeFlags: 0,
-              pageUserID: this.PageContext.PageUserID,
+              pageUserId: this.PageContext.PageUserID,
               isUserMask: true,             
               isCommonMask: !this.Get<YafBoardSettings>().AllowPersonalMasksOnlyForPersonalForums);
            

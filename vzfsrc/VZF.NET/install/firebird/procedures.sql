@@ -5210,22 +5210,15 @@ CREATE PROCEDURE  {objectQualifier}MESSAGE_SAVE(
     SELECT SIGN(COUNT(Name)) FROM {objectQualifier}User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
        -- Here we set bit flag to 0
     SELECT NEXT VALUE FOR SEQ_{objectQualifier}MESSAGE_MESSAGEID FROM RDB$DATABASE INTO :I_MESSAGEID;
-    INSERT INTO {objectQualifier}MESSAGE ( MESSAGEID,USERID, MESSAGE,DESCRIPTION, TOPICID, POSTED, USERNAME, USERDISPLAYNAME, IP, REPLYTO, "POSITION", INDENT, FLAGS, BLOGPOSTID, EXTERNALMESSAGEID, REFERENCEMESSAGEID)
-    VALUES ( :I_MESSAGEID, :I_USERID, :I_MESSAGE,:I_MESSAGEDESCRIPTION, :I_TOPICID, :I_POSTED,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT Name FROM {objectQualifier}User WHERE UserID = :i_UserID) END),(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DisplayName FROM {objectQualifier}User WHERE UserID = :i_UserID) END), :I_IP, :I_REPLYTO, :ici_Position, :ici_Indent, BIN_AND(:I_FLAGS,BIN_XOR(16,-1)), :I_BLOGPOSTID,:I_EXTERNALMESSAGEID,
+    INSERT INTO {objectQualifier}MESSAGE ( MESSAGEID,USERID, MESSAGE,DESCRIPTION, TOPICID, POSTED, EDITED, USERNAME, USERDISPLAYNAME, IP, REPLYTO, "POSITION", INDENT, FLAGS, BLOGPOSTID, EXTERNALMESSAGEID, REFERENCEMESSAGEID)
+    VALUES ( :I_MESSAGEID, :I_USERID, :I_MESSAGE,:I_MESSAGEDESCRIPTION, :I_TOPICID, :I_POSTED, :I_POSTED,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT Name FROM {objectQualifier}User WHERE UserID = :i_UserID) END),(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DisplayName FROM {objectQualifier}User WHERE UserID = :i_UserID) END), :I_IP, :I_REPLYTO, :ici_Position, :ici_Indent, BIN_AND(:I_FLAGS,BIN_XOR(16,-1)), :I_BLOGPOSTID,:I_EXTERNALMESSAGEID,
     :I_REFERENCEMESSAGEID );    
 
     IF ((BIN_AND(:I_FLAGS, 16) = 16)) THEN
       EXECUTE PROCEDURE {objectQualifier}MESSAGE_APPROVE (:I_MESSAGEID); 
           SUSPEND;
-      END;	
-    
-    
+      END;	  
 --GO
-
-
-
-
-
 
 CREATE PROCEDURE  {objectQualifier}MESSAGE_SIMPLELIST(
                 I_STARTID INTEGER,
@@ -6688,6 +6681,7 @@ RETURNS
         "RankStyle" varchar(255),
         "Style" varchar(255),
         "Edited" timestamp,
+		"EditedBy" integer,
         "HasAttachments" integer,
         "HasAvatarImage" integer,
         "TotalRows" integer,
@@ -6863,6 +6857,7 @@ ici_pageindex = :I_PAGEINDEX;
             then b.USERSTYLE
             else ''	 end), 
         COALESCE(m.EDITED,m.POSTED) AS "Edited",
+		m.EDITEDBY,
         COALESCE((SELECT 1 FROM RDB$DATABASE WHERE EXISTS (SELECT FIRST 1 * FROM {objectQualifier}ATTACHMENT x 
         WHERE x.MESSAGEID=m.MESSAGEID)),0) AS "HasAttachments",
         COALESCE((SELECT 1 FROM RDB$DATABASE WHERE EXISTS (SELECT FIRST 1 * FROM {objectQualifier}USER x 
@@ -6956,6 +6951,7 @@ ici_pageindex = :I_PAGEINDEX;
         :"RankStyle",		
         :"Style",
         :"Edited",
+		:"EditedBy",
         :"HasAttachments",
         :"HasAvatarImage",
         :"TotalRows",
@@ -8864,7 +8860,8 @@ BEGIN
     UPDATE {objectQualifier}MESSAGE 
     SET USERNAME=:ici_UserName,
         USERDISPLAYNAME=:ici_UserDisplayName,
-        USERID=:ici_GuestUserID 
+        USERID=:ici_GuestUserID,
+		EDITEDBY=:ici_GuestUserID 
     WHERE USERID=:I_USERID;
     
     UPDATE {objectQualifier}TOPIC 

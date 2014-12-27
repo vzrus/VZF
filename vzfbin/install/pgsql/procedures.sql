@@ -6895,6 +6895,7 @@ $BODY$DECLARE
 			 ici_username varchar(255);
 			 ici_userdisplayname varchar(255);
 			 ici_eraseoldtopic boolean :=false;
+			 ici_lastmessageflags integer :=22;
 BEGIN   
 
 SELECT    forumid INTO ici_NewForumID
@@ -6938,7 +6939,7 @@ IF ici_Position IS NULL THEN  ici_Position := 0; END IF;
     UPDATE {databaseSchema}.{objectQualifier}topic set
         lastposted = NULL,
         lastmessageid = NULL,
-        lastuserid = NULL,
+        lastuserid = NULL,	
         lastusername = NULL,
         lastuserdisplayname = NULL
     WHERE lastmessageid = i_messageid;
@@ -6969,7 +6970,7 @@ IF ici_Position IS NULL THEN  ici_Position := 0; END IF;
  UPDATE {databaseSchema}.{objectQualifier}topic SET
     userid = ici_userid,
     username = ici_username,
-	userdisplayname = ici_userdisplayname  
+	userdisplayname = ici_userdisplayname
  WHERE  topicid = i_movetotopic;
  IF NOT EXISTS (SELECT 1 
     FROM {databaseSchema}.{objectQualifier}message 
@@ -6987,12 +6988,12 @@ IF ici_Position IS NULL THEN  ici_Position := 0; END IF;
     UPDATE {databaseSchema}.{objectQualifier}topic SET
         numposts = (SELECT count(1) from {databaseSchema}.{objectQualifier}message x 
                       WHERE x.topicid={databaseSchema}.{objectQualifier}topic.topicid 
-                      and x.isapproved IS TRUE and x.isdeleted IS NOT TRUE)
+                      and x.isapproved IS TRUE and not x.isdeleted)
     WHERE topicid = ici_OldTopicID;
     UPDATE {databaseSchema}.{objectQualifier}topic set
         numposts = (SELECT count(1) from {databaseSchema}.{objectQualifier}message x 
                        WHERE x.topicid={databaseSchema}.{objectQualifier}topic.topicid
-                         and x.isapproved IS TRUE and x.isdeleted IS NOT TRUE)
+                         and x.isapproved IS TRUE and not x.isdeleted)
     WHERE topicid = i_MoveToTopic;
     
     PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_OldForumID);
@@ -7281,6 +7282,7 @@ BEGIN
 				description,
                 topicid, 
                 posted,
+				edited,
                 username,
                 userdisplayname, 
                 ip, 
@@ -7295,7 +7297,8 @@ BEGIN
                 i_message,
 				i_messagedescription,
                 i_topicid,
-                ici_Posted,
+                ici_posted,
+				ici_posted,
                 (CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM {databaseSchema}.{objectQualifier}user WHERE userid = i_userid) END),
                 (CASE WHEN ici_OverrideDisplayName is true THEN i_username 
                     ELSE (SELECT displayname FROM {databaseSchema}.{objectQualifier}user WHERE userid = i_userid) END), 
@@ -8750,6 +8753,7 @@ END IF;
             when true THEN  b.userstyle
             else ''	 end), 
         COALESCE(m.edited,m.posted) AS Edited,
+		m.editedby,
         COALESCE((SELECT 1 FROM {databaseSchema}.{objectQualifier}attachment x 
         WHERE x.messageid=m.messageid LIMIT 1),0) AS HasAttachments,
         COALESCE((SELECT 1 FROM {databaseSchema}.{objectQualifier}user x 
@@ -9765,11 +9769,11 @@ $BODY$DECLARE
              ici_userid integer;
              ici_Posted timestamp ;
              ici_topicid integer;
-             varcharnull varchar;
+             varcharnull varchar;			
  BEGIN    
 
-   SELECT userid,posted  
-   INTO ici_userid,ici_Posted   
+   SELECT userid,posted
+   INTO ici_userid,ici_Posted  
    FROM {databaseSchema}.{objectQualifier}message 
    WHERE messageid =  i_messageid;
    
@@ -9777,8 +9781,8 @@ $BODY$DECLARE
 
     IF ici_Posted IS NULL THEN ici_Posted = i_utctimestamp; END IF;
 
-    INSERT INTO {databaseSchema}.{objectQualifier}topic(forumid,topic,userid,posted,views,priority,pollid,username,numposts)
-    VALUES(i_forumid,i_subject,ici_userid,ici_Posted,0,0,null,varcharnull,0);
+    INSERT INTO {databaseSchema}.{objectQualifier}topic(forumid,topic,userid,posted,views,priority,pollid,username,numposts,lastmessageflags)
+    VALUES(i_forumid,i_subject,ici_userid,ici_Posted,0,0,null,varcharnull,0,22);
     SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}topic','topicid')) INTO ici_topicid;  	
 
     -- PERFORM {databaseSchema}.{objectQualifier}message_save(i_TopicID,ici_userid,i_Message,i_UserName,i_IP,ici_Posted,i_ReplyToNull,BlogPostIDNull,i_Flags);
@@ -11684,8 +11688,7 @@ BEGIN
 
     IF NOT (ici_GuestUserID = i_userid AND ici_GuestCount = 1) THEN
 
-
-    UPDATE {databaseSchema}.{objectQualifier}message SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID WHERE userid = i_userid;
+    UPDATE {databaseSchema}.{objectQualifier}message SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID,editedby = ici_GuestUserID WHERE userid = i_userid;
     UPDATE {databaseSchema}.{objectQualifier}topic SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID WHERE userid = i_userid;
     UPDATE {databaseSchema}.{objectQualifier}topic SET lastusername=ici_UserName,userdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
     UPDATE {databaseSchema}.{objectQualifier}forum SET lastusername=ici_UserName,lastuserdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;

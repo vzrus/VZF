@@ -256,9 +256,9 @@ namespace YAF.Pages.Admin
             this.ForumsStartMask.DataSource = CommonDb.accessmask_aforumlist(
                    mid: this.PageContext.PageModuleID,
                    boardId: this.PageContext.PageBoardID,
-                   accessMaskID: null,
+                   accessMaskId: null,
                    excludeFlags: 0,
-                   pageUserID: null,               
+                   pageUserId: null,               
                    isAdminMask: true,
                    isCommonMask: true);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;

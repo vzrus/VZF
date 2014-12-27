@@ -91,6 +91,7 @@ namespace VZF.Data.Firebird.Search
             int boardId,
             int maxResults,
             bool useFullText,
+            string categoriesIds,
             string ids,
             [NotNull] IEnumerable<int> forumIdToStartAt)
         {
@@ -129,101 +130,14 @@ namespace VZF.Data.Firebird.Search
             orderString += @" ORDER BY a.FORUMID ";
 
 
-            string[] words;
+            
             bool bFirst;
 
             if (!string.IsNullOrEmpty(toSearchFromWho))
             {
                 searchSql += "AND (";
-                bFirst = true;
 
-                // generate user search sql...
-                switch (searchFromWhoMethod)
-                {
-                    case SearchWhatFlags.AllWords:
-                        words = toSearchFromWho.Split(' ');
-                        foreach (string word in words)
-                        {
-                            if (!bFirst)
-                            {
-                                searchSql += " AND ";
-                            }
-                            else
-                            {
-                                bFirst = false;
-                            }
-
-                            searchSql +=
-                                string.Format(
-                                    @" ((c.USERNAME IS NULL AND b.NAME LIKE '%{0}%') OR (c.USERNAME LIKE '%{0}%'))",
-                                    word);
-                            if (int.TryParse(word, out userId))
-                            {
-                                searchSql += string.Format(" (c.UserID IN ({0}))", userId);
-                            }
-                            else
-                            {
-                                if (searchDisplayName)
-                                {
-                                    searchSql +=
-                                        string.Format(
-                                            " ((c.Username IS NULL AND b.DisplayName LIKE '%{0}%') OR (c.Username LIKE '%{0}%'))",
-                                            word);
-                                }
-                                else
-                                {
-                                    searchSql +=
-                                        string.Format(
-                                            " ((c.Username IS NULL AND b.Name LIKE '%{0}%') OR (c.Username LIKE '%{0}%'))",
-                                            word);
-                                }
-                            }
-                        }
-
-                        break;
-                    case SearchWhatFlags.AnyWords:
-                        words = toSearchFromWho.Split(' ');
-                        foreach (string word in words)
-                        {
-                            if (!bFirst)
-                            {
-                                searchSql += " OR ";
-                            }
-                            else
-                            {
-                                if (searchDisplayName)
-                                {
-                                    searchSql +=
-                                        string.Format(
-                                            " ((c.USERNAME IS NULL AND b.DISPLAYNAME = '{0}') OR (c.Username = '{0}')",
-                                            toSearchFromWho);
-                                }
-                                else
-                                {
-                                    searchSql +=
-                                        string.Format(
-                                            @" ((c.USERNAME IS NULL AND b.NAME LIKE '%{0}%') OR (c.USERNAME LIKE '%{0}%'))",
-                                            word);
-                                }
-                            }
-                        }
-
-                        break;
-                    case SearchWhatFlags.ExactMatch:
-                        if (int.TryParse(toSearchFromWho, out userId))
-                        {
-                            searchSql += string.Format(" (c.UserID IN ({0}))", userId);
-                        }
-                        else
-                        {
-                            searchSql +=
-                                string.Format(
-                                    @" ((c.USERNAME IS NULL AND b.NAME = '{0}' ) OR (c.USERNAME = '{0}' ))",
-                                    toSearchFromWho);
-                        }
-
-                        break;
-                }
+                searchSql += new SearchFromWho().Build(searchSql, searchFromWhoMethod, toSearchFromWho, useFullText, searchDisplayName);
 
                 searchSql += ") ";
             }
@@ -231,104 +145,15 @@ namespace VZF.Data.Firebird.Search
             if (!string.IsNullOrEmpty(toSearchWhat))
             {
                 searchSql += "AND (";
-                bFirst = true;
 
-                // generate message and topic search sql...
-                switch (searchWhatMethod)
-                {
-                    case SearchWhatFlags.AllWords:
-                        words = toSearchWhat.Split(' ');
-                        if (useFullText)
-                        {
-                            string ftInner = string.Empty;
-
-                            // make the inner FULLTEXT search
-                            foreach (string word in words)
-                            {
-                                if (!bFirst)
-                                {
-                                    ftInner += " AND ";
-                                }
-                                else
-                                {
-                                    bFirst = false;
-                                }
-
-                                ftInner += string.Format(@"""{0}""", word);
-                            }
-
-                            // make final string...
-                            searchSql +=
-                                string.Format(
-                                    @"( CONTAINS (c.MESSAGE, ' {0} ') OR CONTAINS (a.TOPIC, ' {0} ' ) )",
-                                    ftInner);
-                        }
-                        else
-                        {
-                            foreach (string word in words)
-                            {
-                                if (!bFirst) searchSql += " AND ";
-                                else bFirst = false;
-                                searchSql += string.Format(@"(c.MESSAGE like '%{0}%' OR a.TOPIC LIKE '%{0}%' )", word);
-                            }
-                        }
-
-                        break;
-                    case SearchWhatFlags.AnyWords:
-                        words = toSearchWhat.Split(' ');
-
-                        if (useFullText)
-                        {
-                            string ftInner = string.Empty;
-
-                            // make the inner FULLTEXT search
-                            foreach (string word in words)
-                            {
-                                if (!bFirst)
-                                {
-                                    ftInner += " OR ";
-                                }
-                                else
-                                {
-                                    bFirst = false;
-                                }
-
-                                ftInner += string.Format(@"""{0}""", word);
-                            }
-
-                            // make final string...
-                            searchSql +=
-                                string.Format(
-                                    @"( CONTAINS (c.MESSAGE, ' {0} ' ) OR CONTAINS (a.TOPIC, ' {0} ' ) )",
-                                    ftInner);
-                        }
-                        else
-                        {
-                            foreach (string word in words)
-                            {
-                                if (!bFirst) searchSql += " OR ";
-                                else bFirst = false;
-                                searchSql += string.Format(@"c.MESSAGE LIKE '%{0}%'  OR a.TOPIC LIKE '%{0}%' ", word);
-                            }
-                        }
-
-                        break;
-                    case SearchWhatFlags.ExactMatch:
-                        if (useFullText)
-                        {
-                            // searchSql += string.Format(@"( CONTAINS (c.MESSAGE, ' \"{0}\" ' ) OR CONTAINS (a.Topic, ' \"{0}\" '  )", toSearchWhat);
-                        }
-                        else
-                        {
-                            searchSql += string.Format(
-                                @"c.MESSAGE LIKE '%{0}%'  OR a.TOPIC LIKE '%{0}%'  ",
-                                toSearchWhat);
-                        }
-
-                        break;
-                }
+                searchSql += new SearchWhat().Build(searchSql, searchWhatMethod, toSearchWhat, useFullText); 
 
                 searchSql += ") ";
+            }
+
+            if (categoriesIds.IsSet())
+            {
+                searchSql +=string.Format(" AND f.categoryid IN ({0})", categoriesIds);
             }
 
             // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering

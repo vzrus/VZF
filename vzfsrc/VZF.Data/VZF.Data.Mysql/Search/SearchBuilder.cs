@@ -100,6 +100,7 @@ namespace VZF.Data.MySql.Search
             int boardId,
             int maxResults,
             bool useFullText,
+            string categoriesIds,
             string ids,
             [NotNull] IEnumerable<int> forumIdToStartAt)
         {
@@ -405,6 +406,11 @@ namespace VZF.Data.MySql.Search
                 }
 
                 searchSql += ") ";
+            }
+
+            if (categoriesIds.IsSet())
+            {
+                searchSql += string.Format(" AND f.categoryid IN ({0})", categoriesIds);
             }
 
             // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering

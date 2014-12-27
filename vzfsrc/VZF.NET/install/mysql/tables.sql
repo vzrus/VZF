@@ -2061,3 +2061,13 @@ CALL {databaseSchema}.{objectQualifier}tmp_updatevalues();
 --GO
   DROP PROCEDURE  IF EXISTS {databaseSchema}.{objectQualifier}tmp_updatevalues;
   --GO 
+
+   CREATE PROCEDURE {databaseSchema}.{objectQualifier}tmp_updatemessage1()
+BEGIN
+UPDATE {databaseSchema}.{objectQualifier}Message SET Edited = Posted where Edited IS NULL;
+END;
+--GO
+CALL {databaseSchema}.{objectQualifier}tmp_updatemessage1();
+--GO
+  DROP PROCEDURE  IF EXISTS {databaseSchema}.{objectQualifier}tmp_updatemessage1;
+  --GO 
