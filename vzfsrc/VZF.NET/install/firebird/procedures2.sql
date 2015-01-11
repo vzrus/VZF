@@ -401,20 +401,20 @@ RETURNS (
     "LinkTopicID" integer,
     "TopicMovedID" integer,
     "FavoriteCount" integer,
-    "Subject" varchar(128),
+    "Subject" varchar(255),
     "Status" varchar(255),
     "Styles" varchar(255),
     "Description" varchar(255),
     "UserID" integer,
-    "Starter" varchar(128),
-    "StarterDisplay" varchar(128),
+    "Starter" varchar(255),
+    "StarterDisplay" varchar(255),
     "Replies" integer,
     "NumPostsDeleted" integer,
     "Views" integer,
     "LastPosted" timestamp,
     "LastUserID" integer,
-    "LastUserName" varchar(128),
-    "LastUserDisplayName" varchar(128),
+    "LastUserName" varchar(255),
+    "LastUserDisplayName" varchar(255),
     "LastMessageID" integer,
     "LastTopicID" integer,
     "LinkDate" timestamp,
@@ -439,9 +439,9 @@ AS
  DECLARE VARIABLE cnt INTEGER DEFAULT 1; 
  DECLARE VARIABLE ici_shiftsticky INTEGER DEFAULT 0;
  DECLARE VARIABLE ici_post_totalrowsnumber INTEGER DEFAULT 0; 
- DECLARE VARIABLE ici_post_priorityrowsnumber_pages INTEGER DEFAULT 0;
+ DECLARE VARIABLE ici_p_pr_rnumber_pages INTEGER DEFAULT 0;
  DECLARE VARIABLE ici_post_priorityrowsnumber INTEGER DEFAULT 0;
- DECLARE VARIABLE ici_post_priorityrowsnumber_shift INTEGER DEFAULT 0;
+ DECLARE VARIABLE ici_p_pr_rnumber_shift INTEGER DEFAULT 0;
  DECLARE VARIABLE ici_firstselectrownum INTEGER DEFAULT 0; 
  DECLARE VARIABLE ici_sortsincelatest INTEGER DEFAULT 0;  
  DECLARE VARIABLE ici_firstselectposted timestamp; 
@@ -468,7 +468,7 @@ SELECT
         (:I_SHOWMOVED <> 1 AND  t.TOPICMOVEDID IS NULL))	
 		
           INTO :ici_post_priorityrowsnumber;
-        ici_post_priorityrowsnumber_pages = CEILING(CAST(:ici_post_priorityrowsnumber AS decimal)/:I_PAGESIZE); 		 
+        ici_p_pr_rnumber_pages = CEILING(CAST(:ici_post_priorityrowsnumber AS decimal)/:I_PAGESIZE); 		 
       
         
     -- find total returned count
@@ -491,13 +491,13 @@ SELECT
      -- ici_firstselectrownum = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1 ;
       ici_firstselectrownum = ((:I_PAGEINDEX-1)*:i_pagesize) + 1;
     
-     if (:ici_post_priorityrowsnumber_pages <= :I_PAGEINDEX) then
+     if (:ici_p_pr_rnumber_pages <= :I_PAGEINDEX) then
      begin	
      ici_firstselectrownum = :ici_firstselectrownum - :ici_post_priorityrowsnumber;
      end
      else
      begin
-     ici_post_priorityrowsnumber_shift = :ici_post_priorityrowsnumber;
+     ici_p_pr_rnumber_shift = :ici_post_priorityrowsnumber;
      ici_shiftsticky = 1;
      if (:ici_firstselectrownum > 0) then
      begin

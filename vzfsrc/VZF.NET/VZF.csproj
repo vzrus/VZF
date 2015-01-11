@@ -1002,7 +1002,7 @@
     <Content Include="App_Data\vzf_log.ldf">
       <DependentUpon>vzf.mdf</DependentUpon>
     </Content>
-    <Content Include="app_fb.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="auth.aspx" />
@@ -1601,6 +1601,8 @@
     <Content Include="editors\yafEditor\yafEditor.js" />
     <Content Include="error.aspx" />
     <Content Include="forumlogo.jpg" />
+    <Content Include="install\Background.png" />
+    <Content Include="install\HeaderBack.png" />
     <Content Include="install\pgsql\forum_ns_old.sql" />
     <Content Include="images\avatars\Common\SampleAvatar.gif" />
     <Content Include="images\avatars\readme.txt" />
@@ -1794,6 +1796,7 @@
     <Content Include="install\pgsql\views.sql" />
     <Content Include="install\TopicStatusList.xml" />
     <Content Include="install\wizard.css" />
+    <Content Include="install\wizard_src.css" />
     <Content Include="languages\arabic.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -2538,7 +2541,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -4765,16 +4768,16 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="web_fb.config" />
     <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
+    <Content Include="web_ms.config" />
+    <None Include="web_ms.Debug.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
-    <None Include="web.Deploy.config">
-      <DependentUpon>web.config</DependentUpon>
+    <None Include="web_ms.Deploy.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
+    <None Include="web_ms.Release.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
