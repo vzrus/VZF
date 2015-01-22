@@ -158,7 +158,7 @@ namespace VZF.Data.Mysql
         {
             get
             {
-                return false;
+                return true;
             }
         }
 

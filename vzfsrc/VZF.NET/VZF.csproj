@@ -1002,7 +1002,7 @@
     <Content Include="App_Data\vzf_log.ldf">
       <DependentUpon>vzf.mdf</DependentUpon>
     </Content>
-    <Content Include="app.config">
+    <Content Include="app_fb.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="auth.aspx" />
@@ -3985,10 +3985,10 @@
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web_my.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="app_my.config" />
+    <Content Include="app.config" />
     <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4768,7 +4768,7 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="web.config" />
+    <Content Include="web_fb.config" />
     <Content Include="web_ms.config" />
     <None Include="web_ms.Debug.config">
       <DependentUpon>web_ms.config</DependentUpon>

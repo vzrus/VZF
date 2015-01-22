@@ -310,12 +310,15 @@ namespace VZF.Data.MySql.Search
 
                             // make final string...
                             searchSql = searchSql.Replace(
-                              "{FTS}",
-                              string.Format(
-                                  ", MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE), MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) ",
-                                  ftInner,
-                                  !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
-                            searchSql += "(MessageScore = 1 OR TopicScore = 1) ";
+                                "{FTS}",
+                                string.Format(
+                                    ", MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE), MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) ",
+                                    ftInner,
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
+                            searchSql += string.Format(
+                                "(MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) > 0 OR MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) > 0) ",
+                                ftInner,
+                                !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
                         }
                         else
                         {
@@ -359,11 +362,14 @@ namespace VZF.Data.MySql.Search
                             // make final string...
                             searchSql = searchSql.Replace(
                                 "{FTS}",
-                                string.Format(
+                                string.Format(            
                                     ", MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE), MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) ",
                                     ftInner,
                                     !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
-                            searchSql += "(MessageScore = 1 OR TopicScore = 1) ";
+                            searchSql += string.Format(
+                                "(MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) > 0 OR MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) > 0) ",
+                                ftInner,
+                                !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
                         }
                         else
                         {
@@ -385,13 +391,17 @@ namespace VZF.Data.MySql.Search
                     case SearchWhatFlags.ExactMatch:
                         if (useFullText)
                         {
+                            // make final string...
                             searchSql = searchSql.Replace(
-                            "{FTS}",
-                            string.Format(
-                                " MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN BOOLEAN MODE) as MessageScore, MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN BOOLEAN MODE) as TopicScore",
+                                "{FTS}",
+                                string.Format(
+                                    ", MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE), MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) ",
+                                    toSearchWhat,
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
+                            searchSql += string.Format(
+                                "(MATCH (c.Message, c.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) > 0 OR MATCH (a.Topic, a.Description) AGAINST (CONVERT('{0}' USING {1}) IN NATURAL LANGUAGE MODE) > 0) ",
                                 toSearchWhat,
-                                !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8"));
-                            searchSql += "(MessageScore = 1 OR TopicScore = 1) ";
+                                !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
                         }
                         else
                         {
