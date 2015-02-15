@@ -786,7 +786,7 @@ namespace VZF.Kernel
             }
             else
             {
-                var ss = CommonDb.forum_ns_getchildren_activeuser(
+                var ss = CommonDb.forum_ns_getch_actuser(
                     YafContext.Current.PageModuleID,
                     boardId,
                     categoryId,

@@ -266,8 +266,8 @@ namespace VZF.Data.Firebird
                 "firebird/procedures.sql", 
                 "firebird/procedures1.sql",
                 "firebird/procedures2.sql",
-                // "firebird/nestedsets.sql", 
-                // "firebird/nestedsets_sp.sql", 
+                "firebird/nestedsets.sql", 
+                "firebird/nestedsets_sp.sql", 
                 "firebird/postinstall.sql"
             };
 

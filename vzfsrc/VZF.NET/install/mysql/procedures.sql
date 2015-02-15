@@ -160,7 +160,11 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listallmymodera
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listpath;
 --GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_listpath;
+--GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listread;
+--GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_listread;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listreadpersonal;
 --GO
@@ -3397,6 +3401,24 @@ BEGIN
 END;
 --GO
 
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_listpath(
+						   i_ForumID integer)
+BEGIN				 
+DECLARE ici_left_key integer;
+DECLARE ici_right_key integer;
+
+SELECT left_key,right_key INTO ici_left_key, ici_right_key 
+FROM {databaseSchema}.{objectQualifier}forum_ns where forumid = i_ForumID;
+SELECT f.forumid,
+	   f.name,
+	   -- we don't return board and category nodes here
+	   (ns.`level` - 2) as `Level` 
+	   FROM {databaseSchema}.{objectQualifier}forum_ns ns 
+	   JOIN {databaseSchema}.{objectQualifier}forum f on f.forumid = ns.forumid
+	   WHERE ns.left_key <= ici_left_key AND ns.right_key >= ici_right_key ORDER BY ns.left_key;					 
+END;
+--GO
+
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_listread(
  i_BoardID INT,
@@ -3560,6 +3582,184 @@ select * FROM tbl;
          DROP TEMPORARY TABLE IF EXISTS tmp_flr;
 END;
 --GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+ CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_listread(
+ i_BoardID INT,
+ i_UserID INT,
+ i_CategoryID INT,
+ i_ParentID INT, 
+ i_StyledNicks TINYINT(1),
+ i_FindLastRead TINYINT(1), 
+ i_ShowCommonForums TINYINT(1), 
+ i_ShowPersonalForums  TINYINT(1), 
+ i_ForumCreatedByUserId INT, 
+ i_UTCTIMESTAMP DATETIME
+ ) 
+ BEGIN
+ DECLARE lvl INT DEFAULT 0;
+ IF i_ParentID IS NOT NULL THEN
+ SELECT n.`level` into lvl from {databaseSchema}.{objectQualifier}forum_ns n 
+ join {databaseSchema}.{objectQualifier}forum f
+ on (f.forumid = n.forumid and n.forumid > 0)
+ where f.ParentID = i_ParentID limit 1;
+ END IF;
+ IF i_ParentID IS NULL AND i_CategoryID > 0 THEN
+ SELECT n.`level` into lvl from {databaseSchema}.{objectQualifier}forum_ns n where n.categoryid = i_CategoryID and n.ForumID = 0;
+ END IF;
+ IF i_ParentID IS NULL AND i_CategoryID IS NULL THEN
+ SELECT n.`level` into lvl from {databaseSchema}.{objectQualifier}forum_ns n where n.boardid = i_BoardID and n.categoryid = 0 and n.ForumID = 0;
+ END IF;
+ -- set lvl = lvl + 1;
+ DROP TEMPORARY TABLE IF EXISTS tbl_1;
+ DROP TEMPORARY TABLE IF EXISTS tbl;
+ 
+ -- get parent forums list first
+ CREATE TEMPORARY TABLE IF NOT EXISTS  tbl_1
+ select 	
+        b.ForumID,
+        b.ParentID		
+    from 
+        {databaseSchema}.{objectQualifier}Category a  
+        join {databaseSchema}.{objectQualifier}Forum b  on b.CategoryID=a.CategoryID
+        join {databaseSchema}.{objectQualifier}ActiveAccess x  on x.ForumID=b.ForumID	
+    where 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and
+        (i_CategoryID is null or a.CategoryID=i_CategoryID) and
+        ((i_ParentID is null and b.ParentID is null) or b.ParentID=i_ParentID) and
+        x.UserID = i_UserID
+    order by
+        a.SortOrder,
+        b.SortOrder;
+-- child forums
+CREATE TEMPORARY TABLE IF NOT EXISTS  tbl
+select 	
+        b.ForumID,
+        b.ParentID		
+    from 
+        {databaseSchema}.{objectQualifier}Category a  
+        join {databaseSchema}.{objectQualifier}Forum b   on b.CategoryID=a.CategoryID
+        join {databaseSchema}.{objectQualifier}ActiveAccess x   on x.ForumID=b.ForumID		
+    where 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and
+        (i_CategoryID is null or a.CategoryID=i_CategoryID) and
+        (b.ParentID IN (SELECT ForumID FROM tbl_1)) and
+        x.UserID = i_UserID
+    order by
+        a.SortOrder,
+        b.SortOrder;
+
+insert into tbl_1(ForumID,ParentID)
+select * FROM tbl;
+ -- more childrens can be added to display as a tree
+
+
+   CREATE TEMPORARY TABLE IF NOT EXISTS  tmp_flr
+    SELECT 
+        a.CategoryID, 
+        a.Name AS Category, 
+        b.ForumID AS ForumID,
+        b.Name AS Forum, 
+        b.Description,
+        b.ImageURL AS ImageUrl,
+        b.Styles, 
+        b.ParentID,
+        b.PollGroupID,  
+        b.IsUserForum,        
+        b.Flags,
+    (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseSchema}.{objectQualifier}Active a1 
+    JOIN {databaseSchema}.{objectQualifier}User usr 
+    ON a1.UserID = usr.UserID     
+    WHERE a1.ForumID=b.ForumID    
+    AND SIGN(usr.Flags & 16) = 0)  AS Viewing,   
+        b.RemoteURL, 		
+        {databaseSchema}.{objectQualifier}forum_topics(b.ForumID) AS Topics,
+        {databaseSchema}.{objectQualifier}forum_posts(b.ForumID) AS Posts, 				
+        CAST(x.ReadAccess AS signed) AS ReadAccess,
+        b.LastTopicID AS LTID,
+        b.LastPosted AS LP,		
+        {databaseSchema}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+        a.SortOrder AS CategoryOrder,
+        b.SortOrder AS ForumOrder  
+        /* {databaseSchema}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+        (SELECT t.LastPosted  FROM 
+        {databaseSchema}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastPosted, 
+         (SELECT t.LastMessageID  FROM 
+        {databaseSchema}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastMessageID,
+         (SELECT t.LastUserID  FROM 
+        {databaseSchema}.{objectQualifier}Topic t
+        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastUserID, 	 
+        (SELECT t.Topic  FROM 
+        {databaseSchema}.{objectQualifier}Topic t
+        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastTopicName,
+        COALESCE((SELECT t.LastUserName FROM 
+        {databaseSchema}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1),(SELECT u2.Name
+             FROM   {databaseSchema}.{objectQualifier}User u2
+             WHERE  u2.UserID = b.LastUserID LIMIT 1)) AS LastUser */
+    FROM 
+        {databaseSchema}.{objectQualifier}Category a
+        JOIN {databaseSchema}.{objectQualifier}Forum b 
+        ON b.CategoryID=a.CategoryID 
+        JOIN {databaseSchema}.{objectQualifier}ActiveAccess x 
+        ON x.ForumID=b.ForumID
+		join {databaseSchema}.{objectQualifier}forum_ns fns
+		ON (fns.ForumID = b.ForumID and fns.ForumID > 0 and fns.`level` >= lvl and fns.`level` > 0)
+    WHERE 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and 
+        a.BoardID = i_BoardID
+        AND
+        (i_CategoryID IS NULL OR a.CategoryID=i_CategoryID) AND 
+        --	(b.ForumID IN (SELECT aa.ForumID FROM tbl aa  UNION SELECT ab.ForumID FROM tbl_1 ab)) and		
+     --  ((i_ParentID is null and b.ParentID is null) or b.ParentID=i_ParentID ) and
+	-- ((i_ParentID is null) or b.ParentID=i_ParentID) and
+        x.UserID = i_UserID
+    ORDER BY
+	    fns.left_key,  
+        a.SortOrder,
+        b.SortOrder;		
+
+            DROP TEMPORARY TABLE IF EXISTS tbl_1;
+    DROP TEMPORARY TABLE IF EXISTS tbl;
+        
+        SELECT tf.*, 		
+        t.LastPosted AS LastPosted,
+        t.LastMessageID AS LastMessageID,
+        t.LastMessageFlags,
+        t.TopicMovedID,
+        t.LastUserID AS LastUserID,		
+        t.Topic AS LastTopicName,
+        t.Status AS LastTopicStatus,
+        t.Styles AS LastTopicStyles,
+                (case(i_StyledNicks)
+            when 1 then (select usr.UserStyle from {databaseSchema}.{objectQualifier}User usr where usr.UserID = t.LastUserID LIMIT 1)
+            else ''	 end)  AS 	Style,		
+        COALESCE(t.LastUserName,(SELECT u2.Name
+             FROM   {databaseSchema}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUser,
+        COALESCE(t.LastUserDisplayName,(SELECT u2.DisplayName
+             FROM   {databaseSchema}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUserDisplayName,
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}ForumReadTracking y WHERE y.ForumID=t.ForumID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastForumAccess,  
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess    
+         FROM tmp_flr tf 		 
+         LEFT JOIN {databaseSchema}.{objectQualifier}Topic t 
+         ON t.TopicID = tf.LastTopicID;
+		 DROP TEMPORARY TABLE IF EXISTS tmp_flr;
+END;
+--GO
+
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_listreadpersonal(

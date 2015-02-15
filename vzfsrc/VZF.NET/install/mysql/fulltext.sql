@@ -8,7 +8,7 @@ select cast(substring(version(),1,cast( LOCATE('.',version()) -1 as char)) as si
 select cast(substring(version(), cast( LOCATE('.',version()) + 1 as signed),cast( LOCATE('.',version()) -1 as char)) as signed) into minorV;
 if majorV > 4 and minorV > 5  then
 SET foreign_key_checks=0; 
--- requires super or a process privileges in the current version
+-- requires super or a process privileges in the current version. Gives an error if the check is commented. Can't be resolved in the current mysql.
 -- if not exists (SELECT t.name, i.index_id, i.table_id, i.name FROM INFORMATION_SCHEMA.INNODB_SYS_INDEXES i,INFORMATION_SCHEMA.INNODB_SYS_TABLES t  WHERE t.name like '%{objectQualifier}Message' and i.name like 'fts_doc_id_index%')
 -- then 
 alter table {databaseSchema}.{objectQualifier}Message ADD FULLTEXT KEY {objectQualifier}fts_messagekey (`Message`,`Description`);

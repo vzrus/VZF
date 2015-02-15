@@ -57,8 +57,8 @@ namespace VZF.Data.MsSql
             "mssql/providers/tables.sql",
             "mssql/providers/indexes.sql",
             "mssql/providers/procedures.sql",
-            // "mssql/nestedsets.sql", 
-            // "mssql/nestedsets_sp.sql", 
+            "mssql/nestedsets.sql", 
+            "mssql/nestedsets_sp.sql", 
             "mssql/postinstall.sql"
         };
 

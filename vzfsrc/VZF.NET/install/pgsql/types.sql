@@ -407,7 +407,8 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_listallmymoderated_return_ty
 CREATE TYPE {databaseSchema}.{objectQualifier}forum_listpath_return_type AS
 (
 "ForumID" integer,
-"Name" varchar(255)
+"Name" varchar(255),
+"Level" integer
 );
 
 CREATE TYPE {databaseSchema}.{objectQualifier}forumid_return_type AS

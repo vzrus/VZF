@@ -1602,7 +1602,14 @@
     <Content Include="error.aspx" />
     <Content Include="forumlogo.jpg" />
     <Content Include="install\Background.png" />
+    <Content Include="install\firebird\nestedsets.sql" />
+    <Content Include="install\firebird\nestedsets_todo.sql" />
     <Content Include="install\HeaderBack.png" />
+    <Content Include="install\mssql\nestedsets.sql" />
+    <Content Include="install\mssql\nestedsets_sp.sql" />
+    <Content Include="install\mssql\nestedsets_todo.sql" />
+    <Content Include="install\mysql\nestedsets_sp.sql" />
+    <Content Include="install\mysql\nestedsets_todo.sql" />
     <Content Include="install\pgsql\forum_ns_old.sql" />
     <Content Include="images\avatars\Common\SampleAvatar.gif" />
     <Content Include="images\avatars\readme.txt" />
@@ -1733,7 +1740,6 @@
     <Content Include="install\firebird\views.sql" />
     <Content Include="install\firebird\views_drop.sql" />
     <Content Include="install\mssql\constraints.sql" />
-    <Content Include="install\mssql\forum_ns.sql" />
     <Content Include="install\mssql\fulltext.sql" />
     <Content Include="install\mssql\functions.sql" />
     <Content Include="install\mssql\indexes.sql" />
@@ -2541,7 +2547,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app_ms.config" />
+    <Content Include="app.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3985,10 +3991,10 @@
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web.config">
+    <Content Include="web_my.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="app.config" />
+    <Content Include="app_my.config" />
     <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4769,15 +4775,15 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web_ms.config" />
-    <None Include="web_ms.Debug.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="web_ms.Deploy.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <None Include="web.Deploy.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="web_ms.Release.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

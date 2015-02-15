@@ -3857,7 +3857,7 @@ namespace VZF.Data.Common
         {
             return !Config.LargeForumTree
                        ? forum_listall_sorted(mid, boardId, userId, null, false, new [] { 0 }, false)
-                       : forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
+                       : forum_ns_getch_actuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
         }
 
         /// <summary>
@@ -3882,11 +3882,11 @@ namespace VZF.Data.Common
         {
             return !Config.LargeForumTree
                        ? forum_listall_sorted(mid, boardId, userId, null, false, new [] { 0 }, returnAll)
-                       : forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
+                       : forum_ns_getch_actuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
         }
 
         /// <summary>
-        /// The forum_ns_getchildren_activeuser.
+        /// The forum_ns_getch_actuser.
         /// </summary>
         /// <param name="mid">
         /// The mid.
@@ -3915,7 +3915,7 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
-        public static DataTable forum_ns_getchildren_activeuser(
+        public static DataTable forum_ns_getch_actuser(
             int? mid,
             int? boardid,
             int? categoryid,
@@ -3935,7 +3935,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_NotIncluded", notincluded));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ImmediateOnly", immediateonly));
 
-                sc.CommandText.AppendObjectQuery("forum_ns_getchildren_activeuser", mid);
+                sc.CommandText.AppendObjectQuery("forum_ns_getch_actuser", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -5445,7 +5445,7 @@ namespace VZF.Data.Common
                 {
                     foreach (int frms in forumIdToStartAt)
                     {
-                        var d1 = CommonDb.forum_ns_getchildren_activeuser(
+                        var d1 = CommonDb.forum_ns_getch_actuser(
                             mid,
                             boardId,
                             0,
