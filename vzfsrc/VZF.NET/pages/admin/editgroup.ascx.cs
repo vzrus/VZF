@@ -40,6 +40,9 @@ namespace YAF.Pages.Admin
     using VZF.Utils;
     using VZF.Utils.Helpers;
     using System.Collections.Generic;
+    using YAF.Classes;
+    using VZF.Utilities;
+    using System.Web;
  
 
     #endregion
@@ -144,6 +147,34 @@ namespace YAF.Pages.Admin
 
             this.Save.Text = this.GetText("COMMON", "SAVE");
             this.Cancel.Text = this.GetText("COMMON", "CANCEL");
+
+            if (Config.LargeForumTree && this.Request.QueryString.GetFirstOrDefault("i") != null)
+            {
+                string args = "&links=1";
+                int? groupId = null;
+                if (this.Request.QueryString.GetFirstOrDefault("i") !=null)
+                {
+                    groupId = this.Request.QueryString.GetFirstOrDefault("i").ToType<int>();
+                    args = args + "&amdd={0}".FormatWith(groupId);
+                }
+
+                this.treeRow.Visible = true;
+                YafContext.Current.PageElements.RegisterJQueryUI();
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
+
+                YafContext.Current.PageElements.RegisterJsBlock(
+                    "fancytreegroupscr",
+                    JavaScriptBlocks.FancyTreeGetNodesGroupAccessLazyJS(
+                        "treegroupaccess",
+                        PageContext.PageUserID,
+                        PageContext.PageBoardID,
+                        groupId,                                        
+                        args,
+                        string.Empty,
+                        "{0}resource.ashx?".FormatWith(YafForumInfo.ForumClientFileRoot),
+                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+            }
 
 
             // bind data
@@ -431,7 +462,7 @@ namespace YAF.Pages.Admin
         private void BindData()
         {
             // set datasource of access list (list of forums and role's access masks) if we are editing existing mask
-            if (this.Request.QueryString.GetFirstOrDefault("i") != null)
+            if (!Config.LargeForumTree && this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
                 this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, false);
             }

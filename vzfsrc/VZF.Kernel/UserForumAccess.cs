@@ -296,6 +296,27 @@ namespace VZF.Kernel
             }
             return sb.ToString();
         }
+
+
+        public static string AddGroupAccessDdl(DataTable accessMaskList, string nodeKey, object accessMaskID)
+        {   
+            var sb = new StringBuilder(" <select id=\"selectaccessddl\" name=\"selectaccessddl\"  value=\"{0}\">".FormatWith(nodeKey));
+            foreach (DataRow mask in accessMaskList.Rows)
+            {               
+                sb.Append("<option value=\"{0}\"".FormatWith(mask["AccessMaskID"]));
+                if(mask["AccessMaskID"].ToType<int>() == accessMaskID.ToType<int>())
+                {
+                     sb.Append(" selected");
+                }
+
+                sb.Append(">{0}</option>".FormatWith(mask["Name"]));
+             
+            }
+            sb.Append("</select>");
+            return sb.ToString();
+        }
+
+
         public static int DashCounter(string title)
         {
             int dashCounter = 0;

@@ -341,7 +341,7 @@ namespace YAF.Pages.Admin
             }
             else
             {
-                string args = "&v=3";
+                string args = "&links=0";
                 if (this.forumId > 0)
                 {
                     args +=
@@ -351,12 +351,12 @@ namespace YAF.Pages.Admin
                 }
 
                 this.divactive.Visible = true;
-                YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
 
                 YafContext.Current.PageElements.RegisterJsBlock(
-                    "dynatreescr",
-                    JavaScriptBlocks.DynatreeSelectSingleNodeLazyJS(
+                    "fancytreescr",
+                    JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJS(
                         "tree",
                         PageContext.PageUserID,
                         PageContext.PageBoardID,

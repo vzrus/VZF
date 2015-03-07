@@ -45,6 +45,8 @@ DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}biginttobool;
 --GO
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}biginttoint;
 --GO
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}inttobool;
+--GO
 -- vaccess functions drops 
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_readaccess_combo;
 --GO
@@ -899,6 +901,17 @@ END;
 	toconv BIGINT
  )
    RETURNS INT
+   NO SQL
+ BEGIN
+ RETURN toconv; 
+ END;
+  --GO
+
+   CREATE FUNCTION {databaseSchema}.{objectQualifier}inttobool
+ (
+	toconv INT
+ )
+   RETURNS TINYINT(1)
    NO SQL
  BEGIN
  RETURN toconv; 

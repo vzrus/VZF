@@ -163,39 +163,27 @@ namespace YAF.Pages.Admin
             {
                 this.Get<IYafSession>().ForumTreeChangerActiveTargetNode = null;
             }
-           
+            
+            this.NewForum.Visible = this.NewCategory.Visible = !Config.LargeForumTree;
+
             if (Config.LargeForumTree)
-            {
-                this.ActionTipLbl2.Text = this.Get<ILocalization>()
-                                                    .GetText("ADMIN_FORUMS", "FORUM_SELECTEDNODE_MSG");
-      
-                this.divactive.Visible = Config.LargeForumTree;
-                    tviewcontainer.Visible = true;
-                  //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");
-                  //  YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
-                  //  YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
-                    YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree.min.js");
-                    YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin-win8/ui.fancytree.min.css");
-
-                    this.divactive.Visible = true;
-
-                /*    YafContext.Current.PageElements.RegisterJsBlock(
-                         "dynatreescr",
-                         JavaScriptBlocks.DynatreeGetNodesAdminLazyJS(
-                             "tree",
-                             PageContext.PageUserID,
-                             PageContext.PageBoardID,
-                             "echoActive",
-                             @"&v=2",
-                             @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
-                             "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); */
+            {      
+                    tviewcontainer.Visible = true;                    
+                    this.TreeMenuTip.LocalizedPage = "ADMIN_FORUMS";
+                    this.TreeMenuTip.LocalizedTag = "TREEVIEW_MENUTIPS";
+                    //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");
+                   
+                    YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                    YafContext.Current.PageElements.RegisterJsResourceInclude("contextmenu", "js/jquery.ui-contextmenu.min.js");
+                    YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.min.css");                    
+        
                     YafContext.Current.PageElements.RegisterJsBlock(
                            "fancytreescr",
                            JavaScriptBlocks.FancytreeGetNodesAdminLazyJS(
                                "ftree3",
                                PageContext.PageUserID,
                                PageContext.PageBoardID,
-                               "echoActive",
+                               this.GetText("COMMON", "IMPOSSIBLE_ACTION"),
                                @"&v=2",
                                @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
                                "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); 
@@ -207,11 +195,7 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            if (Config.LargeForumTree)
-            {
-                this.ActionTipLbl.Text = this.Get<ILocalization>().GetText("ADMIN_FORUMS", "FORUM_SELECTANODE_MSG");
-            }
-
+         
             this.NewCategory.Text = this.GetText("ADMIN_FORUMS", "NEW_CATEGORY");
             this.NewForum.Text = this.GetText("ADMIN_FORUMS", "NEW_FORUM"); 
           
@@ -256,7 +240,7 @@ namespace YAF.Pages.Admin
                     YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", e.CommandArgument);
                     break;
                 case "delete":
-                    if (CommonDb.category_delete(PageContext.PageModuleID, e.CommandArgument))
+                    if (CommonDb.category_delete(PageContext.PageModuleID, e.CommandArgument, null))
                     {
                         this.BindData();
                         this.ClearCaches();
@@ -314,7 +298,7 @@ namespace YAF.Pages.Admin
             switch (this.Get<IYafSession>().ForumTreeChangerActiveNode.Split('_').Length)
             {
                 case 1:
-                    if (CommonDb.category_delete(PageContext.PageModuleID, this.Get<IYafSession>().ForumTreeChangerActiveNode))
+                    if (CommonDb.category_delete(PageContext.PageModuleID, this.Get<IYafSession>().ForumTreeChangerActiveNode, null))
                     {
                         this.BindData();
                         this.ClearCaches();

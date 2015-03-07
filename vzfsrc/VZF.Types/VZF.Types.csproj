@@ -70,6 +70,7 @@
     <Compile Include="Constants\Providers.cs" />
     <Compile Include="Constants\SearchFieldFlags.cs" />
     <Compile Include="Constants\SearchWhatFlags.cs" />
+    <Compile Include="Constants\TreeNodeInsertAction.cs" />
     <Compile Include="Constants\UserNotificationSetting.cs" />
     <Compile Include="Constants\ViewPermissions.cs" />
     <Compile Include="Constants\YafRssFeeds.cs" />

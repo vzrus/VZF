@@ -1334,12 +1334,15 @@ BEGIN
     END IF;
      IF (NOT column_exists('{databaseSchema}.{objectQualifier}activeaccess','userforumaccess')) THEN
          ALTER TABLE {databaseSchema}.{objectQualifier}activeaccess ADD COLUMN userforumaccess  boolean  DEFAULT false NOT NULL ;
-     END IF;
+     END IF;	
 
      UPDATE {databaseSchema}.{objectQualifier}group set style = null where style is not null and char_length(style) <= 2;
      UPDATE {databaseSchema}.{objectQualifier}rank set style = null where style is not null and char_length(style) <= 2;
      UPDATE {databaseSchema}.{objectQualifier}rank set flags = flags | 4 where name like 'Guest';
 	 UPDATE {databaseSchema}.{objectQualifier}message set edited = posted where edited is null;
+
+	
+
     END;	
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
@@ -1432,3 +1435,5 @@ BEGIN
     END LOOP;
 END$$;
 --GO
+
+

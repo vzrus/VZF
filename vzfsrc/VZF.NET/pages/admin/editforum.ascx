@@ -14,31 +14,17 @@
             <td class="header2" height="30" colspan="2">
             </td>
         </tr>
-        <tr>
+        <tr id ="rowCategoryList" runat="server">
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="CATEGORY" LocalizedPage="ADMIN_EDITFORUM" />
             </td>
             <td class="post">
                 <asp:DropDownList Width="250" ID="CategoryList" runat="server" OnSelectedIndexChanged="Category_Change"
                     DataValueField="CategoryID" DataTextField="Name">
-                </asp:DropDownList>
-                     <div class="container" ID="tviewcontainer" runat="server">
-            <asp:Label ID="ActionTipLbl" runat="server"></asp:Label>
-            <asp:Label ID="ActionTipLbl2" runat="server"></asp:Label>
-            <VZF:PageLinks runat="server" ID="PageLinks1" />
-                  <div id="divactive" class="active" Visible="false" runat="server">
-            <VZF:LocalizedLabel ID="ActiveNodeLbl" runat="server" LocalizedTag="FORUM_SELECTEDNODE_MSG" LocalizedPage="FORUMS_ADMIN" /><b><span id="echoActive">-</span></b><div id="treebuttons">
-            <VZF:ThemeButton ID="MoveForumAfterBtn" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_MOVEAFTER" ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_AFTER_SMALL_ICON" OnClick="MoveForumAfterBtn_Click"  runat="server"/>
-            <VZF:ThemeButton ID="AddChildrenTo" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_ADDASCHILD" ImageThemePage="ICONS" ImageThemeTag="FORUM_ADDCHILDENTO_SMALL_ICON" OnClick="AddChildrenTo_Click"  runat="server"/>
-                                                          </div></div>
-             <br />
-        
-    <div id="tree">
-    </div>
-    </div>
+                </asp:DropDownList>                  
             </td>
         </tr>
-        <tr>
+        <tr id="rowParentList" runat="server">
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="PARENT_FORUM" LocalizedPage="ADMIN_EDITFORUM" />
                 <strong></strong>
@@ -84,7 +70,7 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr>
+        <tr id="sortOrderRow" runat="server">
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel12" runat="server" LocalizedTag="SORT_ORDER" LocalizedPage="ADMIN_EDITFORUM" />
             </td>
@@ -155,7 +141,7 @@
             </td>
             <td class="post">
                 <asp:DropDownList Width="250" ID="ForumImages" runat="server" />
-                <img align="middle" runat="server" id="Preview" alt="" />
+                <img  align="middle" runat="server" id="Preview" alt="" />
             </td>
         </tr>
         <tr visible="false" runat="server">

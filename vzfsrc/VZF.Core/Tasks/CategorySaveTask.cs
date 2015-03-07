@@ -133,6 +133,63 @@ namespace YAF.Core.Tasks
       }
 
 
+      private object _adjacentCategoryId;
+
+      /// <summary>
+      /// Gets or sets AdjacentCategoryId.
+      /// </summary>
+      public object AdjacentCategoryId
+      {
+          get
+          {
+              return this._adjacentCategoryId;
+              ;
+          }
+
+          set
+          {
+              this._adjacentCategoryId = value;
+          }
+      }
+
+      private object _adjacentCategoryMode;
+
+      /// <summary>
+      /// Gets or sets AdjacentCategoryMode.
+      /// </summary>
+      public object AdjacentCategoryMode
+      {
+          get
+          {
+              return this._adjacentCategoryMode;
+              ;
+          }
+
+          set
+          {
+              this._adjacentCategoryMode = value;
+          }
+      }
+
+      private int? _mid;
+
+      /// <summary>
+      /// Gets or sets Mid.
+      /// </summary>
+      public int? Mid
+      {
+          get
+          {
+              return this._mid;
+              ;
+          }
+
+          set
+          {
+              this._mid = value;
+          }
+      }
+
       private object _canHavePersonalForums;
 
       /// <summary>
@@ -212,7 +269,7 @@ namespace YAF.Core.Tasks
       /// <returns>
       ///  The start.
       ///  </returns>
-    public static void Start(object boardId, object categoryId, object categoryName, object categoryImage, object sortOrder, out string failureMessage, object canHavePersonalForums)
+    public static void Start(int? mid, object boardId, object categoryId, object categoryName, object categoryImage, object sortOrder, object canHavePersonalForums, object adjacentCategoryId, object adjacentCategoryMode, out string failureMessage)
       {
 
       failureMessage = String.Empty;
@@ -226,12 +283,15 @@ namespace YAF.Core.Tasks
           YafContext.Current.Get<ITaskModuleManager>().StartTask(
               TaskName, () => new CategorySaveTask
                                   {
+                                      Mid = mid,
                                       BoardIdToSave = boardId,
                                       CategoryId = categoryId,
                                       CategoryName = categoryName,
                                       CategoryImage = categoryImage,
                                       SortOrder = sortOrder,
-                                      CanHavePersonalForums = canHavePersonalForums
+                                      CanHavePersonalForums = canHavePersonalForums,
+                                      AdjacentCategoryId = adjacentCategoryId,
+                                      AdjacentCategoryMode = adjacentCategoryMode
                                   });
       }
       else
@@ -249,7 +309,7 @@ namespace YAF.Core.Tasks
         try
         {
             this.Logger.Info("Starting Category Save Task for CategoryID {0}.",this.CategoryId);
-            CommonDb.category_save(YafContext.Current.PageModuleID, this.BoardIdToSave, this.CategoryId, this.CategoryName, this.CategoryImage, this.SortOrder, this.CanHavePersonalForums); 
+            CommonDb.category_save(this.Mid, this.BoardIdToSave, this.CategoryId, this.CategoryName, this.CategoryImage, this.SortOrder, this.CanHavePersonalForums, this.AdjacentCategoryId, this.AdjacentCategoryMode); 
             this.Logger.Info("Category Save Task for CategoryID {0} is completed.", CategoryId);
         }
         catch (Exception x)

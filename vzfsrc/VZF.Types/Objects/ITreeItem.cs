@@ -53,21 +53,25 @@ namespace VZF.Types.Objects
         /// <summary>
         /// Gets the Data.
         /// </summary>
-        public string addClass;
+        public string extraClasses;
 
         /// <summary>
         /// Gets the rel attr.
         /// </summary>
-        // public string rel;
+        // public string rel;    
 
         /// <summary>
-        /// Gets if is folder.
+        /// Gets if is folder. 
         /// </summary>
-        public bool isFolder;
+        public bool folder;   
 
         /// <summary>
         /// Gets if lazy loading.
         /// </summary>
-        public bool isLazy;
+        public bool lazy;
+
+        public bool expanded;
+
+        public bool selected;
     }
 }

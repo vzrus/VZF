@@ -40,22 +40,13 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tviewcontainer;
         
         /// <summary>
-        /// ActionTipLbl control.
+        /// TreeMenuTip control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ActionTipLbl;
-        
-        /// <summary>
-        /// ActionTipLbl2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ActionTipLbl2;
+        protected global::VZF.Controls.LocalizedLabel TreeMenuTip;
         
         /// <summary>
         /// PageLinks1 control.
@@ -65,51 +56,6 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.PageLinks PageLinks1;
-        
-        /// <summary>
-        /// divactive control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divactive;
-        
-        /// <summary>
-        /// ActiveNodeLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.LocalizedLabel ActiveNodeLbl;
-        
-        /// <summary>
-        /// DeleteForumBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.ThemeButton DeleteForumBtn;
-        
-        /// <summary>
-        /// CopyForumBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.ThemeButton CopyForumBtn;
-        
-        /// <summary>
-        /// EditForumBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.ThemeButton EditForumBtn;
         
         /// <summary>
         /// CategoryList control.

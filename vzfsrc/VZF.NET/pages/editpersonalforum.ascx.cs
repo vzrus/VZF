@@ -32,13 +32,12 @@ namespace YAF.pages
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI.WebControls;
-
     using VZF.Data.Common;
     using VZF.Utils;
     using VZF.Utils.Helpers;
-
     using YAF.Classes;
     using YAF.Core;
+    using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Flags;
@@ -678,7 +677,8 @@ namespace YAF.pages
                 themeUrl = this.ThemeList.SelectedValue;
             }
 
-            var newForumId = CommonDb.forum_save(
+            string errorMessage;
+            var newForumId = ForumSaveTask.Start(
                 PageContext.PageModuleID,
                 forumId,
                 categoryId,
@@ -699,7 +699,10 @@ namespace YAF.pages
               false,
               PageContext.PageUserID,
               true,
-              this.CanHavePersForums.Checked);
+              this.CanHavePersForums.Checked,
+              null,
+              null,
+              out errorMessage);
 
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
 

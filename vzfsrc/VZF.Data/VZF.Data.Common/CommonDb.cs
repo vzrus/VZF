@@ -1677,7 +1677,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));                
 
                 sc.CommandText.AppendObjectQuery("board_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -2055,18 +2055,20 @@ namespace VZF.Data.Common
         /// <returns>
         /// The<see cref="bool"/>.
         /// </returns>
-        public static bool category_delete(int? mid, object CategoryID)
+        public static bool category_delete(int? mid, object CategoryID, int? newCategoryID)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", CategoryID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NewCategoryID", newCategoryID));
+
 
                 sc.CommandText.AppendObjectQuery("category_delete", mid);
                 var res = Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure)) != 0;
-                if (Config.LargeForumTree)
+              /*  if (Config.LargeForumTree)
                 {
                     forum_ns_recreate(mid);
-                }
+                } */
 
                 return res;
             }
@@ -2248,7 +2250,9 @@ namespace VZF.Data.Common
             object name,
             object categoryImage,
             object sortOrder,
-            object canHavePersForums)
+            object canHavePersForums,
+            object adjacentCategoryId,
+            object adjacentCategoryMode)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -2258,6 +2262,8 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortOrder", sortOrder));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_CategoryImage", categoryImage));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_CanHavePersForums", canHavePersForums));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AdjacentCategoryID", adjacentCategoryId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AdjacentCategoryMode", adjacentCategoryMode));
 
                 sc.CommandText.AppendObjectQuery("category_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -3011,9 +3017,9 @@ namespace VZF.Data.Common
             // TODO: Implement the object existance as it throws errors during install
             if (GetIsForumInstalled(mid))
             {
-#if !DEBUG
+// #if !DEBUG
                 try{
-#endif
+// #endif
 
                 using (var sc = new VzfSqlCommand(mid))
                 {
@@ -3026,13 +3032,13 @@ namespace VZF.Data.Common
                     sc.CommandText.AppendObjectQuery("eventlog_create", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
                 }
-#if !DEBUG
+// #if !DEBUG
                 }
                 catch(Exception e)
                 {
                   throw;
                 }
-#endif
+// #endif
             }
         }
 
@@ -3408,7 +3414,7 @@ namespace VZF.Data.Common
                 sc.CommandText.AppendObjectQuery("extension_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
-        }
+        }        
 
         /// <summary>
         /// The forum_byuserlist.
@@ -3451,7 +3457,7 @@ namespace VZF.Data.Common
         }
 
         /// <summary>
-        /// The forum_categoryaccess_activeuser.
+        /// The forum_cataccess_actuser.
         /// </summary>
         /// <param name="mid">
         /// The mid.
@@ -3465,14 +3471,14 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>        
-        public static DataTable forum_categoryaccess_activeuser(int? mid, object boardId, object userId)
+        public static DataTable forum_cataccess_actuser(int? mid, object boardId, object userId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
 
-                sc.CommandText.AppendObjectQuery("forum_categoryaccess_activeuser", mid);
+                sc.CommandText.AppendObjectQuery("forum_cataccess_actuser", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -3489,18 +3495,16 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static bool forum_delete(int? mid, object forumID)
+        public static bool forum_delete(int? mid, object forumID, object moveChildren)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_MoveChildren", moveChildren));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_RebuildTree", Config.LargeForumTree));
 
                 sc.CommandText.AppendObjectQuery("forum_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-                if (Config.LargeForumTree)
-                {
-                    forum_ns_recreate(mid);
-                }
 
                 return true;
             }
@@ -3545,10 +3549,10 @@ namespace VZF.Data.Common
                 // TODO: command timeout should be very large here
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
 
-                if (Config.LargeForumTree)
+               /* if (Config.LargeForumTree)
                 {
                     forum_ns_recreate(mid);
-                }
+                } */
 
                 return true;
             }
@@ -3998,6 +4002,30 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ImmediateOnly", immediateonly));
 
                 sc.CommandText.AppendObjectQuery("forum_ns_getchildren", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }
+        }
+
+        public static DataTable forum_ns_getch_accgroup(
+          int? mid,
+          int? boardid,
+          int? categoryid,
+          int? forumid,
+          int? groupId, 
+          bool notincluded,
+          bool immediateonly,
+          string indentchars)
+        {
+            using (var sc = new VzfSqlCommand(mid))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardid ?? 0));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryid ?? 0));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumid ?? 0));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", groupId ?? 0));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_NotIncluded", notincluded));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ImmediateOnly", immediateonly));
+
+                sc.CommandText.AppendObjectQuery("forum_ns_getch_accgroup", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -4712,7 +4740,9 @@ namespace VZF.Data.Common
             bool dummy,
             object userId,
             bool isUserForum,
-            bool canhavepersforums)
+            bool canhavepersforums,
+            object adjacentForumId,
+            object adjacentForumMode)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
@@ -4744,6 +4774,8 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", isUserForum));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_CanHavePersForums", canhavepersforums));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AdjacentForumID", adjacentForumId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AdjacentForumMode", adjacentForumMode));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("forum_save", mid);
@@ -4755,10 +4787,10 @@ namespace VZF.Data.Common
                     return 0;
                 }
 
-                if (Config.LargeForumTree)
+             /*   if (Config.LargeForumTree)
                 {
                     forum_ns_recreate(mid);
-                }
+                } */
                 return long.Parse(resultop.ToString());
             }
         }
@@ -5389,7 +5421,7 @@ namespace VZF.Data.Common
             {
                 if (Config.LargeForumTree)
                 {
-                    DataTable dt1 = CommonDb.forum_categoryaccess_activeuser(mid, boardId, userId);
+                    DataTable dt1 = CommonDb.forum_cataccess_actuser(mid, boardId, userId);
                     foreach (DataRow c in dt1.Rows)
                     {
                         foreach (int c1 in categoryId)

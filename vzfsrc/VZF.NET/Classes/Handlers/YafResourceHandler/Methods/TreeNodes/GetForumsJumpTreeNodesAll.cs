@@ -47,7 +47,7 @@
                 context.Response.Cache.SetExpires(
                     DateTime.UtcNow.AddMinutes(5));
                 context.Response.Cache.SetLastModified(DateTime.UtcNow);
-                context.Response.Write(Dynatree.GetAllUserAccessJumpTree(userId));
+                context.Response.Write(FancyTree.GetAllUserAccessJumpTree(userId));
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }

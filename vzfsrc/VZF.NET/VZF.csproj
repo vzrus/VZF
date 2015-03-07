@@ -189,6 +189,7 @@
     <Compile Include="Classes\ForumPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\TreeNodes\SetGroupAccess.cs" />
     <Compile Include="Classes\LatestInformationTask.cs" />
     <Compile Include="Classes\Handlers\SitemapHandler .cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\AddFavoriteTopicJs.cs" />
@@ -197,19 +198,20 @@
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\AlbumEventsJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\AsynchCallFailedJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\BlockUIExecuteJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\ButtonShowForumInNNTPTree.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\ButtonShowForumInNNTPTree.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\CeeBoxLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\ChangeAlbumTitleJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\ChangeImageCaptionJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DatePickerLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DisablePageManagerScrollJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DropDownLoadJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesAdminLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesAllJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesJumpAllJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesJumpLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesSearchLazyCheckBoxesJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeSelectSingleNodeLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesAdminLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesGroupAccessLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesProfileLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesJumpLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesSearchLazyCheckBoxesJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectCategories.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectSingleNodeLazyJS.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookInitJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookLoginJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookPostJs.cs" />
@@ -459,6 +461,13 @@
     </Compile>
     <Compile Include="pages\admin\boardsettings.ascx.designer.cs">
       <DependentUpon>boardsettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\admin\deletecategory.ascx.cs">
+      <DependentUpon>deletecategory.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\admin\deletecategory.ascx.designer.cs">
+      <DependentUpon>deletecategory.ascx</DependentUpon>
     </Compile>
     <Compile Include="pages\admin\editforum.ascx.cs">
       <DependentUpon>editforum.ascx</DependentUpon>
@@ -1603,13 +1612,10 @@
     <Content Include="forumlogo.jpg" />
     <Content Include="install\Background.png" />
     <Content Include="install\firebird\nestedsets.sql" />
-    <Content Include="install\firebird\nestedsets_todo.sql" />
     <Content Include="install\HeaderBack.png" />
     <Content Include="install\mssql\nestedsets.sql" />
     <Content Include="install\mssql\nestedsets_sp.sql" />
-    <Content Include="install\mssql\nestedsets_todo.sql" />
     <Content Include="install\mysql\nestedsets_sp.sql" />
-    <Content Include="install\mysql\nestedsets_todo.sql" />
     <Content Include="install\pgsql\forum_ns_old.sql" />
     <Content Include="images\avatars\Common\SampleAvatar.gif" />
     <Content Include="images\avatars\readme.txt" />
@@ -1809,6 +1815,7 @@
     <Content Include="languages\estonian.xml" />
     <Content Include="LICENSES.txt" />
     <Content Include="MANYDATABASES_HOWTO.txt" />
+    <Content Include="pages\admin\deletecategory.ascx" />
     <Content Include="pages\admin\editforum.ascx" />
     <Content Include="pages\admin\eventloggroupaccess.ascx" />
     <Content Include="pages\admin\eventloggroups.ascx" />
@@ -2558,7 +2565,20 @@
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="resources\css\fancytree\skin-lion\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-lion\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.min.css" />
     <Content Include="resources\css\forum.css" />
+    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="resources\css\jquery-ui-themes\base\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\base\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\base\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-bg_diagonals-thick_8_333333_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-bg_flat_65_ffffff_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-bg_glass_40_111111_1x400.png" />
@@ -2575,6 +2595,8 @@
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-icons_ffcf29_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\black-tie\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\black-tie\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\blitzer\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\blitzer\images\ui-bg_dots-small_65_a6a6a6_2x2.png" />
     <Content Include="resources\css\jquery-ui-themes\blitzer\images\ui-bg_flat_0_333333_40x100.png" />
@@ -2588,8 +2610,9 @@
     <Content Include="resources\css\jquery-ui-themes\blitzer\images\ui-icons_cc0000_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\blitzer\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\blitzer\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\blitzer\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\blitzer\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
-    <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
@@ -2603,6 +2626,8 @@
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-icons_72a7cf_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\cupertino\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\cupertino\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\dark-hive\images\ui-bg_flat_30_cccccc_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\dark-hive\images\ui-bg_flat_50_5c5c5c_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\dark-hive\images\ui-bg_glass_40_ffc73d_1x400.png" />
@@ -2618,6 +2643,8 @@
     <Content Include="resources\css\jquery-ui-themes\dark-hive\images\ui-icons_cccccc_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\dark-hive\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\dark-hive\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\dark-hive\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\dark-hive\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\dot-luv\images\ui-bg_diagonals-thick_15_0b3e6f_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\dot-luv\images\ui-bg_dots-medium_30_0b58a2_4x4.png" />
     <Content Include="resources\css\jquery-ui-themes\dot-luv\images\ui-bg_dots-small_20_333333_2x2.png" />
@@ -2631,6 +2658,8 @@
     <Content Include="resources\css\jquery-ui-themes\dot-luv\images\ui-icons_9ccdfc_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\dot-luv\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\dot-luv\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\dot-luv\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\dot-luv\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\eggplant\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\eggplant\images\ui-bg_flat_0_eeeeee_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\eggplant\images\ui-bg_flat_55_994d53_40x100.png" />
@@ -2647,6 +2676,8 @@
     <Content Include="resources\css\jquery-ui-themes\eggplant\images\ui-icons_ebccce_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\eggplant\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\eggplant\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\eggplant\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\eggplant\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\excite-bike\images\ui-bg_diagonals-small_25_c5ddfc_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\excite-bike\images\ui-bg_diagonals-thick_20_e69700_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\excite-bike\images\ui-bg_diagonals-thick_22_1484e6_40x40.png" />
@@ -2661,6 +2692,8 @@
     <Content Include="resources\css\jquery-ui-themes\excite-bike\images\ui-icons_fcdd4a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\excite-bike\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\excite-bike\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\excite-bike\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\excite-bike\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\flick\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\flick\images\ui-bg_flat_0_eeeeee_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\flick\images\ui-bg_flat_55_ffffff_40x100.png" />
@@ -2675,6 +2708,8 @@
     <Content Include="resources\css\jquery-ui-themes\flick\images\ui-icons_ff0084_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\flick\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\flick\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\flick\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\flick\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\hot-sneaks\images\ui-bg_diagonals-small_40_db4865_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\hot-sneaks\images\ui-bg_diagonals-small_50_93c3cd_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\hot-sneaks\images\ui-bg_diagonals-small_50_ff3853_40x40.png" />
@@ -2691,6 +2726,8 @@
     <Content Include="resources\css\jquery-ui-themes\hot-sneaks\images\ui-icons_ffeb33_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\hot-sneaks\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\hot-sneaks\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\hot-sneaks\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\hot-sneaks\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\humanity\images\ui-bg_flat_75_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\humanity\images\ui-bg_glass_100_f5f0e5_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\humanity\images\ui-bg_glass_25_cb842e_1x400.png" />
@@ -2706,6 +2743,8 @@
     <Content Include="resources\css\jquery-ui-themes\humanity\images\ui-icons_ff7519_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\humanity\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\humanity\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\humanity\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\humanity\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\le-frog\images\ui-bg_diagonals-small_0_aaaaaa_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\le-frog\images\ui-bg_diagonals-thick_15_444444_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\le-frog\images\ui-bg_diagonals-thick_95_ffdc2e_40x40.png" />
@@ -2720,6 +2759,8 @@
     <Content Include="resources\css\jquery-ui-themes\le-frog\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\le-frog\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\le-frog\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\le-frog\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\le-frog\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\mint-choc\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\mint-choc\images\ui-bg_glass_15_5f391b_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\mint-choc\images\ui-bg_gloss-wave_20_1c160d_500x100.png" />
@@ -2735,6 +2776,8 @@
     <Content Include="resources\css\jquery-ui-themes\mint-choc\images\ui-icons_f1fd86_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\mint-choc\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\mint-choc\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\mint-choc\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\mint-choc\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\overcast\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\overcast\images\ui-bg_flat_0_eeeeee_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\overcast\images\ui-bg_flat_55_c0402a_40x100.png" />
@@ -2750,6 +2793,8 @@
     <Content Include="resources\css\jquery-ui-themes\overcast\images\ui-icons_999999_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\overcast\images\ui-icons_fbc856_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\overcast\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\overcast\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\overcast\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\pepper-grinder\images\ui-bg_diagonal-maze_20_6e4f1c_10x10.png" />
     <Content Include="resources\css\jquery-ui-themes\pepper-grinder\images\ui-bg_diagonal-maze_40_000000_10x10.png" />
     <Content Include="resources\css\jquery-ui-themes\pepper-grinder\images\ui-bg_fine-grain_10_eceadf_60x60.png" />
@@ -2766,6 +2811,8 @@
     <Content Include="resources\css\jquery-ui-themes\pepper-grinder\images\ui-icons_fbdb93_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\pepper-grinder\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\pepper-grinder\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\pepper-grinder\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\pepper-grinder\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
@@ -2782,6 +2829,8 @@
     <Content Include="resources\css\jquery-ui-themes\redmond\images\ui-icons_d8e7f3_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\redmond\images\ui-icons_f9bd01_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\redmond\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\redmond\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\redmond\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\smoothness\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -2796,6 +2845,8 @@
     <Content Include="resources\css\jquery-ui-themes\smoothness\images\ui-icons_888888_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\smoothness\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\smoothness\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\smoothness\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\smoothness\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\south-street\images\ui-bg_glass_55_fcf0ba_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\south-street\images\ui-bg_gloss-wave_100_ece8da_500x100.png" />
     <Content Include="resources\css\jquery-ui-themes\south-street\images\ui-bg_highlight-hard_100_f5f3e5_1x100.png" />
@@ -2812,6 +2863,8 @@
     <Content Include="resources\css\jquery-ui-themes\south-street\images\ui-icons_eeeeee_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\south-street\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\south-street\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\south-street\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\south-street\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\start\images\ui-bg_flat_55_999999_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\start\images\ui-bg_flat_75_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\start\images\ui-bg_glass_45_0078ae_1x400.png" />
@@ -2829,6 +2882,8 @@
     <Content Include="resources\css\jquery-ui-themes\start\images\ui-icons_f7a50d_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\start\images\ui-icons_fcd113_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\start\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\start\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\start\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\sunny\images\ui-bg_diagonals-medium_20_d34d17_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\sunny\images\ui-bg_flat_30_cccccc_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\sunny\images\ui-bg_flat_50_5c5c5c_40x100.png" />
@@ -2846,6 +2901,8 @@
     <Content Include="resources\css\jquery-ui-themes\sunny\images\ui-icons_fadc7a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\sunny\images\ui-icons_ffe180_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\sunny\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\sunny\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\sunny\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\swanky-purse\images\ui-bg_diamond_10_4f4221_10x8.png" />
     <Content Include="resources\css\jquery-ui-themes\swanky-purse\images\ui-bg_diamond_20_372806_10x8.png" />
     <Content Include="resources\css\jquery-ui-themes\swanky-purse\images\ui-bg_diamond_25_675423_10x8.png" />
@@ -2862,6 +2919,8 @@
     <Content Include="resources\css\jquery-ui-themes\swanky-purse\images\ui-icons_f9f2bd_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\swanky-purse\images\ui-icons_ff7519_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\swanky-purse\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\swanky-purse\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\swanky-purse\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\trontastic\images\ui-bg_diagonals-small_50_262626_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\trontastic\images\ui-bg_flat_0_303030_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\trontastic\images\ui-bg_flat_0_4c4c4c_40x100.png" />
@@ -2878,6 +2937,8 @@
     <Content Include="resources\css\jquery-ui-themes\trontastic\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\trontastic\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\trontastic\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\trontastic\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\trontastic\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\images\ui-bg_flat_30_cccccc_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\images\ui-bg_flat_50_5c5c5c_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\images\ui-bg_glass_20_555555_1x400.png" />
@@ -2893,6 +2954,8 @@
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\images\ui-icons_cccccc_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\images\ui-icons_ffffff_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\ui-darkness\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\ui-darkness\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\animated-overlay.gif" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -2908,9 +2971,9 @@
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-icons_ef8c08_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-icons_ffd27a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\ui-lightness\jquery-ui-1.10.4.css" />
-    <Content Include="resources\css\jquery-ui-themes\ui-lightness\jquery-ui-1.10.4.min.css" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\ui-lightness\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\ui-lightness\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\vader\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\vader\images\ui-bg_glass_95_fef1ec_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\vader\images\ui-bg_gloss-wave_16_121212_500x100.png" />
@@ -2927,6 +2990,8 @@
     <Content Include="resources\css\jquery-ui-themes\vader\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\vader\images\ui-icons_f29a00_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\vader\jquery-ui.css" />
+    <Content Include="resources\css\jquery-ui-themes\vader\jquery-ui.min.css" />
+    <Content Include="resources\css\jquery-ui-themes\vader\theme.css" />
     <Content Include="resources\css\jquery.ceebox.css" />
     <Content Include="resources\css\jquery.css" />
     <Content Include="resources\css\jquery.hovercard.css" />
@@ -2935,7 +3000,6 @@
     <Content Include="resources\css\jquery.spellchecker.css" />
     <Content Include="resources\css\jquery.syntaxhighligher.css" />
     <Content Include="resources\css\jquery.yafmodaldialog.css" />
-    <Content Include="resources\css\ui.dynatree.css" />
     <Content Include="resources\css\_src\forum.css" />
     <Content Include="resources\css\_src\jquery.ceebox.css" />
     <Content Include="resources\HelpMenuList.xml" />
@@ -3309,8 +3373,7 @@
     <Content Include="resources\js\jquery-ui.min.js" />
     <Content Include="resources\js\jquery.blockUI.js" />
     <Content Include="resources\js\jquery.ceebox.js" />
-    <Content Include="resources\js\jquery.dynatree.min.js" />
-    <Content Include="resources\js\jquery.fancytree.min.js" />
+    <Content Include="resources\js\jquery.fancytree-all.min.js" />
     <Content Include="resources\js\jquery.hovercard.js" />
     <Content Include="resources\js\jquery.min.js" />
     <Content Include="resources\js\jquery.msDropDown.js" />
@@ -3322,57 +3385,9 @@
     <Content Include="resources\js\jquery.syntaxhighligher.js" />
     <Content Include="resources\js\jquery.tablesorter.js" />
     <Content Include="resources\js\jquery.timeago.js" />
+    <Content Include="resources\js\jquery.ui-contextmenu.min.js" />
     <Content Include="resources\js\jquery.ui.datepicker-farsi.js" />
     <Content Include="resources\js\jquery.yafmodaldialog.js" />
-    <Content Include="resources\js\skin1\cbChecked.gif" />
-    <Content Include="resources\js\skin1\cbChecked_hover.gif" />
-    <Content Include="resources\js\skin1\cbIntermediate.gif" />
-    <Content Include="resources\js\skin1\cbIntermediate_hover.gif" />
-    <Content Include="resources\js\skin1\cbUnchecked.gif" />
-    <Content Include="resources\js\skin1\cbUnchecked_hover.gif" />
-    <Content Include="resources\js\skin1\collapsed.gif" />
-    <Content Include="resources\js\skin1\collapsed_hover.gif" />
-    <Content Include="resources\js\skin1\customDoc1.gif" />
-    <Content Include="resources\js\skin1\customFolder1.gif" />
-    <Content Include="resources\js\skin1\document.gif" />
-    <Content Include="resources\js\skin1\doc_with_children.gif" />
-    <Content Include="resources\js\skin1\empty.gif" />
-    <Content Include="resources\js\skin1\expanded.gif" />
-    <Content Include="resources\js\skin1\expanded_hover.gif" />
-    <Content Include="resources\js\skin1\folder.gif" />
-    <Content Include="resources\js\skin1\folder_docs.gif" />
-    <Content Include="resources\js\skin1\folder_images.gif" />
-    <Content Include="resources\js\skin1\folder_page.gif" />
-    <Content Include="resources\js\skin1\ltDoc.gif" />
-    <Content Include="resources\js\skin1\ltD_ne.gif" />
-    <Content Include="resources\js\skin1\ltD_nes.gif" />
-    <Content Include="resources\js\skin1\ltError.gif" />
-    <Content Include="resources\js\skin1\ltFld.gif" />
-    <Content Include="resources\js\skin1\ltFld_o.gif" />
-    <Content Include="resources\js\skin1\ltL_.gif" />
-    <Content Include="resources\js\skin1\ltL_ne.gif" />
-    <Content Include="resources\js\skin1\ltL_nes.gif" />
-    <Content Include="resources\js\skin1\ltL_ns.gif" />
-    <Content Include="resources\js\skin1\ltM_ne.gif" />
-    <Content Include="resources\js\skin1\ltM_nes.gif" />
-    <Content Include="resources\js\skin1\ltP_ne.gif" />
-    <Content Include="resources\js\skin1\ltP_nes.gif" />
-    <Content Include="resources\js\skin1\ltWait.gif" />
-    <Content Include="resources\js\skin1\rbChecked.gif" />
-    <Content Include="resources\js\skin1\rbChecked_hover.gif" />
-    <Content Include="resources\js\skin1\rbIntermediate.gif" />
-    <Content Include="resources\js\skin1\rbIntermediate_hover.gif" />
-    <Content Include="resources\js\skin1\rbUnchecked.gif" />
-    <Content Include="resources\js\skin1\rbUnchecked_hover.gif" />
-    <Content Include="resources\js\skin1\ui.dynatree.css" />
-    <Content Include="resources\js\skin\icons-rtl.gif" />
-    <Content Include="resources\js\skin\icons.gif" />
-    <Content Include="resources\js\skin\jquery.css" />
-    <Content Include="resources\js\skin\loading.gif" />
-    <Content Include="resources\js\skin\ui.dynatree.css" />
-    <Content Include="resources\js\skin\vline-rtl.gif" />
-    <Content Include="resources\js\skin\vline.gif" />
-    <Content Include="resources\js\ui.core.js" />
     <Content Include="resources\js\vzfDynatree.js" />
     <Content Include="resources\js\yaf.js" />
     <Content Include="resources\js\_src\jquery.dynatree-1.2.3.js" />
@@ -4020,6 +4035,7 @@
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.json" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.less" />
     <None Include="web_pg.config">
       <SubType>Designer</SubType>
     </None>

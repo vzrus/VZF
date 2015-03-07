@@ -160,7 +160,8 @@ namespace VZF.Controls
                     x => x.ForumPage.Equals(currentPage) || 
                     x.SubForumPage_0 != null && x.SubForumPage_0.Equals(currentPage) ||
                     x.SubForumPage_1 != null && x.SubForumPage_1.Equals(currentPage) ||
-                    x.SubForumPage_2 != null && x.SubForumPage_2.Equals(currentPage))).Count();
+                    x.SubForumPage_2 != null && x.SubForumPage_2.Equals(currentPage) ||
+                    x.SubForumPage_3 != null && x.SubForumPage_3.Equals(currentPage))).Count();
 
       // setup jQuery
       this.PageContext.PageElements.RegisterJQuery();

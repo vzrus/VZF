@@ -2456,11 +2456,40 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getsubtree_rt AS
 (
 "ForumID"  integer,
 "ParentID" integer,
-"Level" integer 
+"Level" integer
+);
+--GO
+
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getch_accgroup_rt AS
+(
+"BoardID" integer,
+"BoardName" varchar(255),
+"CategoryID" integer,
+"CategoryName" varchar(255),
+"Title" varchar(255),
+"ForumID"  integer,
+"AccessMaskID" integer,
+"ParentID" integer,
+"Level" integer,
+"HasChildren"  boolean
 );
 --GO
 
 CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt AS
+(
+"BoardID" integer,
+"BoardName" varchar(255),
+"CategoryID"  integer,
+"CategoryName" varchar(255),
+"Title" varchar(255),
+"ForumID"  integer,
+"ParentID" integer,
+"Level" integer,
+"HasChildren" boolean 
+);
+--GO
+
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getch_user_rt AS
 (
 "BoardID" integer,
 "BoardName" varchar(255),
@@ -2475,7 +2504,7 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt AS
 );
 --GO
 
-CREATE TYPE {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser_rt AS
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_cataccess_actuser_rt AS
 (
 "CategoryID"  integer,
 "CategoryName" varchar(255)

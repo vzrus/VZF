@@ -49,6 +49,7 @@ namespace YAF.Pages.Admin
     using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
+    using YAF.Core.Tasks;
 
     #endregion
 
@@ -680,7 +681,8 @@ namespace YAF.Pages.Admin
                         string catName = this.CategoryPrefixTB.Text.Trim() + Guid.NewGuid();
 
                         // TODO: should return number of categories created 
-                        CommonDb.category_save(PageContext.PageModuleID, boardID, 0, catName, null, 100,true);
+                        string failureMassage;
+                        CategorySaveTask.Start(PageContext.PageModuleID, boardID, 0, catName, null, 100,true, null, null, out failureMassage);
                         DataTable dt = CommonDb.category_simplelist(PageContext.PageModuleID, 0, 10000);
 
                         foreach (DataRow dr in dt.Rows.Cast<DataRow>().Where(dr => dr["Name"].ToString() == catName))
@@ -799,7 +801,8 @@ namespace YAF.Pages.Admin
                     forumId, 
                     null, 
                     false, true, true);
-                forumId = CommonDb.forum_save(
+                string errorMessage;
+                forumId = ForumSaveTask.Start(
                     PageContext.PageModuleID,
                     forumId,
                     categoryID,
@@ -819,7 +822,10 @@ namespace YAF.Pages.Admin
                     false,
                     PageContext.PageUserID,
                     false,
-                    true);
+                    true,
+                    null,
+                    null,
+                    out errorMessage);
 
                 if (forumId <= 0)
                 {

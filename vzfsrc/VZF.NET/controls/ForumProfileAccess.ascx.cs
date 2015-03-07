@@ -80,13 +80,14 @@ namespace VZF.Controls
             
             if (Config.LargeForumTree)
             {
-                YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
                 YafContext.Current.PageElements.RegisterJsBlock(
-                    "dynatreescr",
-                    JavaScriptBlocks.DynatreeGetNodesJumpLazyJS("tree",PageContext.PageUserID,
+                    "fancytreescr",
+                    JavaScriptBlocks.FancyTreeGetNodesProfileLazyJS("treetable",PageContext.PageUserID,
                         PageContext.PageBoardID,
-                        "&v=1",
+                        "echoActive",
+                        "&v=1&links=1",
                         "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
                         "&root=0",
                         "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));

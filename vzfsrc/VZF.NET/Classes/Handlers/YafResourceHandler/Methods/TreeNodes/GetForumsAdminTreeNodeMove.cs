@@ -15,6 +15,8 @@
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using VZF.Utils;
+    using VZF.Kernel;
+    using VZF.Types.Constants;
 
 
     #endregion
@@ -34,7 +36,7 @@
         /// <param name="context">
         /// The context.
         /// </param>
-        private void GetForumsAdminTreeNodeMove([NotNull] HttpContext context)
+        private void GetForumsAdminTreeNodeMoveOld([NotNull] HttpContext context)
         {
             try
             {
@@ -61,6 +63,41 @@
                         this.Get<IYafSession>().ForumTreeChangerActiveTargetNode =
                            context.Request.QueryString.GetFirstOrDefault("tnm");
                     }
+                }
+
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception x)
+            {
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+
+                context.Response.Write(
+                    "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+            }
+        }
+
+        private void GetForumsAdminTreeNodeMove([NotNull] HttpContext context)
+        {
+            try
+            {
+                var userId = YafContext.Current.CurrentUserData.UserID;
+
+                context.Response.Clear();
+
+                context.Response.ContentType = "text/plain";
+                context.Response.ContentEncoding = Encoding.UTF8;
+                context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+
+                if (context.Request.QueryString.GetFirstOrDefault("trno") != null)
+                {     
+
+                    // tnm - is the node position that is being moved, tnp - node to move, action = before, after, over 
+                    FancyTree.SetTreeNodesAdminForumMove(
+                        context.Request.QueryString.GetFirstOrDefault("trno"),
+                        context.Request.QueryString.GetFirstOrDefault("trn"),
+                        context.Request.QueryString.GetFirstOrDefault("trnp"),
+                        context.Request.QueryString.GetFirstOrDefault("trnop"),
+                        context.Request.QueryString.GetFirstOrDefault("trna"));                    
                 }
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();

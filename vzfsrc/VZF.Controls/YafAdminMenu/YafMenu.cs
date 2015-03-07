@@ -229,6 +229,10 @@ public class YafMenuYafMenuSectionYafMenuItem
   /// </summary>
   private string subForumPageField_2;
 
+  /// <summary>
+  /// The sub forum page field 3.
+  /// </summary>
+  private string subForumPageField_3;
 
   /// <summary>
   /// The image field.
@@ -339,6 +343,26 @@ public class YafMenuYafMenuSectionYafMenuItem
           this.subForumPageField_2 = value;
       }
   }
+
+  /// <summary>
+  /// The sub forum page 3.
+  /// </summary>
+  /// <remarks>
+  /// </remarks>
+  [XmlElement(Form = XmlSchemaForm.Unqualified)]
+  public string SubForumPage_3
+  {
+      get
+      {
+          return this.subForumPageField_3;
+      }
+
+      set
+      {
+          this.subForumPageField_3 = value;
+      }
+  }
+
 
   /// <summary>
   /// The image.

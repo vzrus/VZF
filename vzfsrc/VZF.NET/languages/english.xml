@@ -1487,6 +1487,7 @@ Spoiler Content
       <Resource tag="ADMIN_EDITCATEGORY">Edits categories</Resource>
       <Resource tag="ADMIN_EDITFORUM">Edits forums</Resource>
       <Resource tag="ADMIN_DELETEFORUM">Delete forums</Resource> 
+      <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource> 
       <Resource tag="ADMIN_EDITGROUP">Edits groups</Resource>
       <Resource tag="ADMIN_EDITMEDAL">Edits medals</Resource>
       <Resource tag="ADMIN_EDITNNTPFORUM">Edits NNTP Forum</Resource>
@@ -1722,6 +1723,7 @@ Spoiler Content
       <Resource tag="FORUM_JUMP">Forum Jump</Resource>
       <Resource tag="GENERATED">This page was generated in {0:N3} seconds.</Resource>
       <Resource tag="GO">GO</Resource>
+      <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
      <Resource tag="YES">Yes</Resource>
      <Resource tag="NO">No</Resource>
     <Resource tag="VIEW_CATEGORY">View category</Resource>
@@ -4092,7 +4094,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="CATEGORY_CANTADDFORUMBEFORE_MSG">You can't add a forum directly before a category, select a category to add after or a forum.</Resource> 
       <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
       <Resource tag="CONFIRM_DELETE">Permanently delete this Forum including ALL topics, polls, attachments and messages associated with it?</Resource>
-      <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>
+      <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>    
       <Resource tag="MSG_NOT_DELETE">You cannot delete this Category as it has at least one forum assigned to it.\nTo move forums click on "Edit" and change the category the forum is assigned to.</Resource>
       <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
       <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
@@ -4119,6 +4121,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="ISGENERALFORUM">General forum</Resource>
       <Resource tag="FORUMAUTHOR">Created by </Resource>
       <Resource tag="CREATEDDATE">Created on </Resource>
+      <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
     </page>
     <page name="ADMIN_EDITCATEGORY">
       <Resource tag="TITLE">Add/Edit Category</Resource>
@@ -4207,6 +4210,16 @@ Visit {forumname} at {forumlink}
       <Resource tag="NEW_FORUM_HELP">Select the new Forum for the Topics.</Resource>
       <Resource tag="DELETE_TITLE">Deleting Forum</Resource>
       <Resource tag="DELETE_MOVE_TITLE">Deleting Forum and Moving Topics</Resource>
+      <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    </page>
+    <page name="ADMIN_DELETECATEGORY">
+      <Resource tag="TITLE">Delete category</Resource>
+      <Resource tag="HEADER1">Delete the category:</Resource>    
+      <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+      <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+      <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>  
+      <Resource tag="DELETE_TITLE">Deleting category</Resource>
+      <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
       <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     </page>
     <page name="ADMIN_BOARDS">

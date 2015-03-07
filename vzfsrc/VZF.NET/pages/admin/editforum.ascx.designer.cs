@@ -49,6 +49,15 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.Label ForumNameTitle;
         
         /// <summary>
+        /// rowCategoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow rowCategoryList;
+        
+        /// <summary>
         /// HelpLabel1 control.
         /// </summary>
         /// <remarks>
@@ -67,76 +76,13 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.DropDownList CategoryList;
         
         /// <summary>
-        /// tviewcontainer control.
+        /// rowParentList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tviewcontainer;
-        
-        /// <summary>
-        /// ActionTipLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ActionTipLbl;
-        
-        /// <summary>
-        /// ActionTipLbl2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ActionTipLbl2;
-        
-        /// <summary>
-        /// PageLinks1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.PageLinks PageLinks1;
-        
-        /// <summary>
-        /// divactive control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divactive;
-        
-        /// <summary>
-        /// ActiveNodeLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.LocalizedLabel ActiveNodeLbl;
-        
-        /// <summary>
-        /// MoveForumAfterBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.ThemeButton MoveForumAfterBtn;
-        
-        /// <summary>
-        /// AddChildrenTo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.ThemeButton AddChildrenTo;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow rowParentList;
         
         /// <summary>
         /// HelpLabel2 control.
@@ -227,6 +173,15 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ThemeList;
+        
+        /// <summary>
+        /// sortOrderRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow sortOrderRow;
         
         /// <summary>
         /// HelpLabel12 control.

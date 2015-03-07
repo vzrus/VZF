@@ -262,12 +262,12 @@ namespace VZF.Data.Firebird
                 "firebird/providers/tables.sql", 
                 "firebird/providers/pkeys.sql",
                 "firebird/providers/indexes.sql",
-                "firebird/providers/procedures.sql",                                                    
+                "firebird/providers/procedures.sql",
+                "firebird/nestedsets.sql", 
+                "firebird/nestedsets_sp.sql",                        
                 "firebird/procedures.sql", 
                 "firebird/procedures1.sql",
-                "firebird/procedures2.sql",
-                "firebird/nestedsets.sql", 
-                "firebird/nestedsets_sp.sql", 
+                "firebird/procedures2.sql",               
                 "firebird/postinstall.sql"
             };
 

@@ -136,7 +136,15 @@
                 }
                 else if (context.Request.QueryString.GetFirstOrDefault("tnm") != null)
                 {
+                    GetForumsAdminTreeNodeMoveOld(context);
+                }
+                else if (context.Request.QueryString.GetFirstOrDefault("trno") != null)
+                {
                     GetForumsAdminTreeNodeMove(context);
+                }
+                else if (context.Request.QueryString.GetFirstOrDefault("fgacc") != null)
+                {
+                    SetGroupAccess(context);
                 }
                 else if (context.Request.QueryString.GetFirstOrDefault("fp") != null)
                 {

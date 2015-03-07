@@ -320,6 +320,7 @@ CREATE PROCEDURE {objectQualifier}BOARD_CREATE(
   INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID) VALUES(:L_GROUPIDMEMBER,:l_ForumID,:L_ACCESSMASKIDMEMBER);
   SELECT :L_BOARDID FROM RDB$DATABASE INTO :OUT_BOARDID ;
   SUSPEND;
+  EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
   END;
 --GO
 
@@ -1790,11 +1791,10 @@ select
     from 
         {objectQualifier}CATEGORY a
         join {objectQualifier}FORUM b on b.CATEGORYID=a.CATEGORYID
-        join {objectQualifier}ACTIVEACCESS x on x.FORUMID=b.FORUMID
+        join {objectQualifier}ACTIVEACCESS x on (x.FORUMID=b.FORUMID and x.USERID = :I_USERID)
         left outer join {objectQualifier}TOPIC t ON t.TopicID = (select * from {objectQualifier}FORUM_LASTTOPIC(b.ForumID, :I_USERID,b.LastTopicID,b.LastPosted))
     where 		
-        (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and		
-         x.USERID = :I_USERID and		
+        (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and      		
         (b.FORUMID IN (SELECT FORUMID FROM {objectQualifier}TBL) )
     order by
         a.SORTORDER,
@@ -1839,6 +1839,191 @@ select
          END
 END;
 --GO
+
+create procedure {objectQualifier}FORUM_NS_LISTREAD(
+I_BOARDID INTEGER,
+I_USERID INTEGER,
+I_CATEGORYID INTEGER,
+I_PARENTID INTEGER,
+I_STYLEDNICKS INTEGER,
+I_FINDLASTUNREAD BOOL,
+I_SHOWCOMMONFORUMS BOOL,
+I_SHOWPERSONALFORUMS BOOL,
+I_FORUMCREATEDBYUSERID INTEGER,
+I_UTCTIMESTAMP TIMESTAMP) 
+RETURNS
+(
+"CategoryID" INTEGER,
+"Category" varchar(255) CHARACTER SET UTF8,
+"ForumID" INTEGER,
+"Forum" varchar(255) CHARACTER SET UTF8,
+"Description" varchar(255) CHARACTER SET UTF8,
+"ImageUrl" varchar(128),
+"Styles" varchar(255),
+"ParentID" INTEGER,
+"PollGroupID" INTEGER,
+"IsUserForum" BOOL,
+"Topics" INTEGER,
+"Posts" INTEGER,
+"Flags" INTEGER,
+"Viewing" INTEGER,
+"RemoteURL" varchar(255) CHARACTER SET UTF8,
+"ReadAccess" INTEGER,
+"LastTopicID" INTEGER,
+"LastPosted" timestamp,
+"LastMessageID" INTEGER,
+"LastMessageFlags" INTEGER,
+"LastTopicName" varchar(255) CHARACTER SET UTF8,
+"LastTopicStatus" varchar(255) CHARACTER SET UTF8,
+"LastTopicStyles" varchar(255),
+"TopicMovedID" INTEGER,
+"LastUserID" INTEGER, 
+"LastUser" varchar(128) CHARACTER SET UTF8,
+"LastUserDisplayName" varchar(128) CHARACTER SET UTF8,
+"Style" varchar(255) CHARACTER SET UTF8,
+"LastForumAccess" timestamp,
+"LastTopicAccess" timestamp
+)
+as
+DECLARE VARIABLE ici_LastPosted timestamp;
+DECLARE VARIABLE ici_LastMessageID integer default 2;
+DECLARE VARIABLE ici_LastMessageFlags integer default 23;
+DECLARE VARIABLE ici_LastTopicName varchar(128) default '';
+DECLARE VARIABLE ici_LastUserID integer default 2; 
+DECLARE VARIABLE ici_LastTopicID integer default 2;
+DECLARE VARIABLE ici_LastUserName varchar(128) default '';
+DECLARE VARIABLE ici_LastUserDisplayName varchar(128) default '';
+DECLARE VARIABLE ici_TopicMovedID integer default 0;
+DECLARE ici_lvl INT DEFAULT 0; 
+DECLARE ici_rk INT; 
+DECLARE ici_lk INT; 
+begin
+ici_LastPosted = :I_UTCTIMESTAMP;
+
+ -- these are a forum subforums from a forum topics
+ IF (:I_PARENTID IS NOT NULL) THEN
+ begin
+ SELECT n."LEVEL", n.left_key + 1, n.right_key - 1 
+ from {objectQualifier}forum_ns n 
+ where n.ForumID = :I_PARENTID
+ INTO :ici_lvl, :ici_lk, :ici_rk;
+ end
+ -- thiese are forums from a category
+ IF (:I_PARENTID IS NULL AND :I_CATEGORYID > 0) THEN
+ begin
+ SELECT 0, min(n.left_key), max(n.right_key) 
+ from {objectQualifier}forum_ns n 
+ where n.tree = :I_CATEGORYID
+  INTO :ici_lvl, :ici_lk, :ici_rk;
+ end
+ -- this is a board view
+ IF (:I_PARENTID IS NULL AND :I_CATEGORYID IS NULL) THEN
+ begin 
+  SELECT 0, min(n.left_key), max(n.right_key)
+  from {objectQualifier}forum_ns n 
+  where n.BoardID = :I_BOARDID
+  INTO :ici_lvl, :ici_lk, :ici_rk;
+ end
+
+    for	select 
+        a.CategoryID, 
+        a.NAME AS Category, 
+        b.ForumID AS ForumID,
+        b.NAME AS Forum, 
+        b.Description,
+        b.ImageUrl,
+        b.Styles,
+        b.ParentID,
+        b.PollGroupID,
+        b.IsUserForum,
+        (SELECT I_NUMTOPICS FROM {objectQualifier}FORUM_TOPICS(b.FORUMID)),
+        (SELECT I_NUMPOSTS FROM {objectQualifier}FORUM_POSTS(b.FORUMID)),			
+        t.LastPosted AS LastPosted,
+        t.LastMessageID AS LastMessageID,
+        t.LASTMESSAGEFLAGS AS LastMessageFlags,
+        t.LASTUSERID AS LastUserID,
+        b.LastUserName,
+        b.LastUserDisplayName,
+        t.TOPICID AS LastTopicID,
+        t.TOPICMOVEDID AS TopicMovedID,
+        t.TOPIC AS LastTopicName,
+        t.STATUS,
+        t.STYLES,
+        b.FLAGS,
+        (select count(1) from {objectQualifier}ACTIVE x JOIN {objectQualifier}USER usr ON x.USERID = usr.USERID where x.FORUMID=b.FORUMID AND usr.ISACTIVEEXCLUDED = 0) AS Viewing,
+        b.REMOTEURL,		
+        (CAST(x.READACCESS as INTEGER)),
+        (case(:I_STYLEDNICKS)
+            when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM {objectQualifier}USER usr WHERE usr.USERID = t.LASTUSERID)  
+            else (select '' from rdb$database)	 END),
+        (case(:I_FINDLASTUNREAD)
+             when 1 then
+               (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}FORUMREADTRACKING x WHERE x.FORUMID=b.FORUMID AND x.USERID = x.USERID)
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE) END) AS "LastForumAccess",
+        (case(:I_FINDLASTUNREAD)
+             when 1 then
+               (SELECT FIRST 1 LASTACCESSDATE FROM {objectQualifier}TOPICREADTRACKING y WHERE y.TOPICID=t.TOPICID AND y.USERID = x.USERID)
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE)  END) AS  "LastTopicAccess"    				
+    from 
+        {objectQualifier}CATEGORY a
+        join {objectQualifier}FORUM b 
+		on b.CATEGORYID=a.CATEGORYID
+		join {objectQualifier}forum_ns fns	
+		on (fns.forumid = b.FORUMID and fns."LEVEL" >= :ici_lvl - 1)
+        join {objectQualifier}ACTIVEACCESS x 
+		on (x.FORUMID=b.FORUMID and x.USERID = :I_USERID)
+        left outer join {objectQualifier}TOPIC t 
+		ON t.TopicID = (select * from {objectQualifier}FORUM_LASTTOPIC(b.ForumID, :I_USERID,b.LastTopicID,b.LastPosted))
+    where 		
+        (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and
+		(:I_CATEGORYID is null or fns.tree = :I_CATEGORYID) and
+		(BIN_AND(b.FLAGS,2)=0 OR x.READACCESS = 1) and 
+		fns.left_key >= :ici_lk and fns.right_key <= :ici_rk 
+		order by
+	    fns.left_key,  
+        a.SORTORDER,
+        b.SORTORDER
+        INTO		
+         :"CategoryID",
+         :"Category",
+         :"ForumID",
+         :"Forum",
+         :"Description",		
+         :"ImageUrl",
+         :"Styles",
+         :"ParentID",
+         :"PollGroupID",
+         :"IsUserForum",
+         :"Topics",
+         :"Posts", 
+         :"LastPosted",
+         :"LastMessageID",
+         :"LastMessageFlags",
+         :"LastUserID",
+         :"LastUser",
+         :"LastUserDisplayName",
+         :"LastTopicID",
+         :"TopicMovedID",
+         :"LastTopicName",
+         :"LastTopicStatus",
+         :"LastTopicStyles",
+         :"Flags",
+         :"Viewing",
+         :"RemoteURL",
+         :"ReadAccess",
+         :"Style",
+         :"LastForumAccess",
+         :"LastTopicAccess"
+         DO 
+         BEGIN
+         IF (:"LastUser" IS NULL OR CHAR_LENGTH(:"LastUser") < 2) THEN
+         select x.NAME, x.DISPLAYNAME from {objectQualifier}USER x 
+         where x.USERID=:"LastUserID" INTO :"LastUser",:"LastUserDisplayName";		
+         SUSPEND; 
+         END
+END;
+--GO
+
 
 create procedure {objectQualifier}FORUM_LISTREADPERSONAL(
 I_BOARDID INTEGER,

@@ -45,7 +45,8 @@ namespace YAF.Classes
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
+    using VZF.Utils;    
+    using VZF.Kernel;
 
     #endregion
 
@@ -283,7 +284,7 @@ namespace YAF.Classes
         /// </returns>
         [WebMethod]
         public int RefreshShoutBox(int boardId)
-        {
+        {           
             var messages = this.Get<IDataCache>().GetOrSet(
                 "{0}_basic".FormatWith(Constants.Cache.Shoutbox),
                 () => CommonDb.shoutbox_getmessages(YafContext.Current.PageModuleID, boardId, 1, false).AsEnumerable(),
@@ -406,6 +407,85 @@ namespace YAF.Classes
 
        
         #endregion
+
+
+        [CanBeNull]
+        [WebMethod(EnableSession = true)]
+        public string FancyTreeGetNodes([NotNull] object nodeId, object view, object access, object active, object boardFirst, object forumUrl, object showLinks, object showAccessRow)
+        {
+          /*
+            // show access masks list
+            int? amdd = null;
+            // var userId = YafContext.Current.CurrentUserData.UserID;
+            if (context.Request.QueryString.GetFirstOrDefault("tjls") != null)
+            {
+                access = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
+            }
+
+            if (actiive != null)
+            {
+                this.Get<IYafSession>().NntpTreeActiveNode = active.ToString();
+            }
+
+            if (selected != null)
+            {
+                this.Get<IYafSession>().SearchTreeSelectedNodes = selected.ToString().Split('!');
+            }
+
+            if (view != null)
+            {
+                view = view.ToType<int>();
+                if (view == 0)
+                {
+                    access = 1;
+                }
+            }
+
+            if (boardFirst != null)
+            {
+                if (boardFirst.ToType<int>() == 0)
+                {
+                    boardFirst = true;
+                }
+            }
+
+            if (showLinks != null)
+            {
+                if (showLinks.ToType<int>() == 0)
+                {
+                    showLinks = false;
+                }
+                else
+                {
+                    showLinks = true;
+                }
+            }
+            else
+            {
+                showLinks = false;
+            }
+
+            if (showAccessRow != null)
+            {
+                showAccessRow = showAccessRow.ToType<int>();
+
+            }
+
+            if (nodeId != "-100")
+            {               
+                return FancyTree.GetForumsJumpTreeNodesLevel(
+                                nodeId.ToString,
+                                view,
+                                access,
+                                active,
+                                boardFirst,
+                                forumUrl,
+                                showLinks,
+                                showAccessRow).ToJson();
+            } */
+
+            return null;
+        }
 
         #endregion
 

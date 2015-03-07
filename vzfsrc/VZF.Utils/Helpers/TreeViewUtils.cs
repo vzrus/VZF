@@ -21,6 +21,7 @@
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------
+using System;
 namespace VZF.Utils.Helpers
 {
     /// <summary>
@@ -66,6 +67,29 @@ namespace VZF.Utils.Helpers
                     forumId = nodeId[2].ToType<int>();
                     break;
             }
+        }
+
+        public static Tuple<int?, int?, int?> GetParcedTreeNodeId(string stringToParce)
+        {
+            Tuple<int?, int?, int?> s = null;
+            string delimiter = "_";
+            if (stringToParce.IsSet())
+            {
+                string[] nodePId = stringToParce.Split(delimiter.ToCharArray());
+                switch (nodePId.LongLength)
+                {
+                    case 1:
+                        return new Tuple<int?, int?, int?>(nodePId[0].ToType<int>(), null, null);
+                        break;
+                    case 2:
+                        return new Tuple<int?, int?, int?>(nodePId[0].ToType<int>(), nodePId[1].ToType<int>(), null);
+                        break;
+                    case 3:
+                        return new Tuple<int?, int?, int?>(nodePId[0].ToType<int>(), nodePId[1].ToType<int>(), nodePId[2].ToType<int>());
+                        break;
+                }
+            }
+            return s;
         }
     }
 }

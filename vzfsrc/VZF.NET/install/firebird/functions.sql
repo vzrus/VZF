@@ -218,7 +218,7 @@ BEGIN
 
 	-- look for newer topic/message in subforums
 	if (exists(select FIRST 1 1 from {objectQualifier}FORUM 
-	where PARENTID=:I_FORUMID)) THEN
+	where PARENTID=:I_FORUMID)) THEN	
 	BEGIN			
 		FOR
 		SELECT 

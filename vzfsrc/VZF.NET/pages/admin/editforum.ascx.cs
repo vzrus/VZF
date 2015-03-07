@@ -40,6 +40,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Interfaces;
     using VZF.Utils;
     using VZF.Utils.Helpers;
+    using YAF.Core.Tasks;
     
     #endregion
 
@@ -141,18 +142,45 @@ namespace YAF.Pages.Admin
     /// </param>
     /// <returns>
     /// </returns>
-    protected int? GetQueryStringAsInt([NotNull] string name)
+    protected int? GetQueryStringForumIdAsInt([NotNull] string name)
     {
-      int value;
+        int value;
 
-      if (this.Request.QueryString.GetFirstOrDefault(name) != null &&
-          int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
-      {
-        return value;
-      }
+        if (this.Request.QueryString.GetFirstOrDefault(name) != null)
+        {
+            if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
+            {
+                return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item3;
+            }
 
-      return null;
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+            {
+                return value;
+            }
+        }
+
+        return null;
     }
+
+    protected int? GetQueryStringCategoryIdAsInt([NotNull] string name)
+    {
+        int value;
+
+        if (this.Request.QueryString.GetFirstOrDefault(name) != null)
+        {
+            if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
+            {
+                return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item3;
+            }
+
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+            {
+                return value;
+            }
+        }
+
+        return null;
+    }   
 
     /// <summary>
     /// The on init.
@@ -183,7 +211,7 @@ namespace YAF.Pages.Admin
       {
         return;
       }
-       var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");     
+       var forumId = this.GetQueryStringForumIdAsInt("fa") ?? this.GetQueryStringForumIdAsInt("copy");     
      
 
       this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
@@ -207,6 +235,12 @@ namespace YAF.Pages.Admin
       this.ForumImages.Attributes["onchange"] =
         "getElementById('{1}').src='{0}{2}/' + this.value".FormatWith(
           YafForumInfo.ForumClientFileRoot, this.Preview.ClientID, YafBoardFolders.Current.Forums);
+      if (Config.LargeForumTree)
+      {
+          rowCategoryList.Visible = false;
+          rowParentList.Visible = false;
+          sortOrderRow.Visible = false;
+      }
 
       this.BindData();
 
@@ -216,27 +250,31 @@ namespace YAF.Pages.Admin
         {
             this.CreatedByTr.Visible = false;
 
-          // Currently creating a New Forum, and auto fill the Forum Sort Order + 1
-          using (
-          DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
-          {
-              int sortOrder = 1;
+            if (!Config.LargeForumTree)
+            {
+                // Currently creating a New Forum, and auto fill the Forum Sort Order + 1
+                using (
+                DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+                {
+                    int sortOrder = 1;
 
-              try
-              {
-                  DataRow highestRow = dt.Rows[dt.Rows.Count - 1];
+                    try
+                    {
+                        DataRow highestRow = dt.Rows[dt.Rows.Count - 1];
 
-                  sortOrder = highestRow["SortOrder"].ToType<int>() + sortOrder;
-              }
-              catch
-              {
-                  sortOrder = 1;
-              }
+                        sortOrder = highestRow["SortOrder"].ToType<int>() + sortOrder;
+                    }
+                    catch
+                    {
+                        sortOrder = 1;
+                    }
 
-              this.SortOrder.Text = sortOrder.ToString();
+                    this.SortOrder.Text = sortOrder.ToString();
+                   
+                }
+            }
 
-              return;
-          }
+            return;
         }
 
       using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
@@ -254,7 +292,12 @@ namespace YAF.Pages.Admin
         this.Moderated.Checked = flags.IsModerated;
         this.Styles.Text = row["Styles"].ToString();
         this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
-        this.CategoryList.SelectedValue = row["CategoryID"].ToString();
+
+        if (!Config.LargeForumTree)
+        {
+            this.CategoryList.SelectedValue = row["CategoryID"].ToString();
+        }
+
         this.UserID.Value = row["CreatedByUserID"].ToString();
         this.UserLinkCreated.UserID = row["CreatedByUserID"].ToType<int>();
         this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
@@ -270,9 +313,12 @@ namespace YAF.Pages.Admin
         // populate parent forums list with forums according to selected category
         this.BindParentList();
 
-        if (!row.IsNull("ParentID"))
+        if (!Config.LargeForumTree)
         {
-          this.ParentList.SelectedValue = row["ParentID"].ToString();
+            if (!row.IsNull("ParentID"))
+            {
+                this.ParentList.SelectedValue = row["ParentID"].ToString();
+            }
         }
 
         if (!row.IsNull("ThemeURL"))
@@ -312,10 +358,13 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");
+      var forumId = this.GetQueryStringForumIdAsInt("fa") ?? this.GetQueryStringForumIdAsInt("copy");
 
-      this.CategoryList.DataSource = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
-      this.CategoryList.DataBind();
+      if (!Config.LargeForumTree)
+      {
+          this.CategoryList.DataSource = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+          this.CategoryList.DataBind();
+      }
 
       if (forumId.HasValue)
       {         
@@ -425,10 +474,14 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindParentList()
     {
-      this.ParentList.DataSource = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue, false);
-      this.ParentList.DataValueField = "ForumID";
-      this.ParentList.DataTextField = "Title";
-      this.ParentList.DataBind();
+
+        if (!Config.LargeForumTree)
+        {
+            this.ParentList.DataSource = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue, false);
+            this.ParentList.DataValueField = "ForumID";
+            this.ParentList.DataTextField = "Title";
+            this.ParentList.DataBind();
+        }
     }
 
     /// <summary>
@@ -468,591 +521,339 @@ namespace YAF.Pages.Admin
     /// </param>
     private void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
-      if (this.CategoryList.SelectedValue.Trim().Length == 0)
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CATEGORY"));
-        return;
-      }
 
-      if (this.Name.Text.Trim().Length == 0)
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_NAME_FORUM"));
-        return;
-      }
-
-      if (!this.Get<YafBoardSettings>().ForumDescriptionCanBeNull && this.Description.Text.Trim().Length == 0)
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_DESCRIPTION"));
-        return;
-      }
-
-      if (this.SortOrder.Text.Trim().Length == 0)
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_VALUE"));
-        return;
-      }
-
-      short sortOrder;
-
-      if (!ValidationHelper.IsValidPosShort(this.SortOrder.Text.Trim()))
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_POSITIVE_VALUE"));
-        return;
-      }
-
-      if (!short.TryParse(this.SortOrder.Text.Trim(), out sortOrder))
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_NUMBER"));
-        return;
-      }
-
-      if (this.remoteurl.Text.IsSet())
-      {
-        // add http:// by default
-        if (!Regex.IsMatch(this.remoteurl.Text.Trim(), @"^(http|https|ftp|ftps|git|svn|news)\://.*"))
+        if (!Config.LargeForumTree)
         {
-          this.remoteurl.Text = "http://" + this.remoteurl.Text.Trim();
+            if (this.CategoryList.SelectedValue.Trim().Length == 0)
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CATEGORY"));
+                return;
+            }
         }
 
-        if (!ValidationHelper.IsValidURL(this.remoteurl.Text))
+        if (this.Name.Text.Trim().Length == 0)
         {
-          this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_INVALID_URL"));
-          return;
+            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_NAME_FORUM"));
+            return;
         }
-      }
 
-      // Forum
-      // vzrus: it's stored in the DB as int
-      int? forumId = this.GetQueryStringAsInt("fa");
-      int? forumCopyId = this.GetQueryStringAsInt("copy");
-
-      object parentID = null;
-
-      if (this.ParentList.SelectedValue.Length > 0)
-      {
-        parentID = this.ParentList.SelectedValue;
-      }
-
-      // parent selection check.
-      if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("fa"))
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_PARENT_SELF"));
-        return;
-      }
-
-      // The picked forum cannot be a child forum as it's a parent
-      // If we update a forum ForumID > 0 
-      if (forumId.HasValue && parentID != null)
-      {
-        int dependency = CommonDb.forum_save_parentschecker(PageContext.PageModuleID, forumId.Value, parentID);
-        if (dependency > 0)
+        if (!this.Get<YafBoardSettings>().ForumDescriptionCanBeNull && this.Description.Text.Trim().Length == 0)
         {
-          this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CHILD_PARENT"));
-          return;
+            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_DESCRIPTION"));
+            return;
         }
-      }
 
-      // inital access mask
-      if (!forumId.HasValue && !forumCopyId.HasValue)
-      {
-        if (this.AccessMaskID.SelectedValue.Length == 0)
+        if (!Config.LargeForumTree)
         {
-          this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_INITAL_MASK"));
-          return;
+            if (this.SortOrder.Text.Trim().Length == 0)
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_VALUE"));
+                return;
+            }
         }
-      }
 
-      // duplicate name checking...
-      if (!forumId.HasValue)
-      {
-        var forumList = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).AsEnumerable();
+        short sortOrder = 0;
 
-        if (forumList.Any() && !this.Get<YafBoardSettings>().AllowForumsWithSameName &&
-            forumList.Any(dr => dr.Field<string>("Name") == this.Name.Text.Trim()))
+        if (!ValidationHelper.IsValidPosShort(this.SortOrder.Text.Trim()))
         {
-          this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_FORUMNAME_EXISTS"));
-          return;
+            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_POSITIVE_VALUE"));
+            return;
         }
-      }
 
-      object themeUrl = null;
+        if (!Config.LargeForumTree && !short.TryParse(this.SortOrder.Text.Trim(), out sortOrder))
+        {
+            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_NUMBER"));
+            return;
+        }
 
-      if (this.ThemeList.SelectedValue.Length > 0)
-      {
-        themeUrl = this.ThemeList.SelectedValue;
-      }
+        if (this.remoteurl.Text.IsSet())
+        {
+            // add http:// by default
+            if (!Regex.IsMatch(this.remoteurl.Text.Trim(), @"^(http|https|ftp|ftps|git|svn|news)\://.*"))
+            {
+                this.remoteurl.Text = "http://" + this.remoteurl.Text.Trim();
+            }
 
-      var newForumId = CommonDb.forum_save(PageContext.PageModuleID, forumId, 
-        this.CategoryList.SelectedValue, 
-        parentID, 
+            if (!ValidationHelper.IsValidURL(this.remoteurl.Text))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_INVALID_URL"));
+                return;
+            }
+        }
+
+        // Forum
+        // vzrus: it's stored in the DB as int
+        int? forumId = this.GetQueryStringForumIdAsInt("fa");
+        int? forumCopyId = this.GetQueryStringForumIdAsInt("copy");
+
+        string categoryId = null;
+        object parentID = null;
+
+        if (!Config.LargeForumTree)
+        {
+            if (this.ParentList.SelectedValue.Length > 0)
+            {
+                parentID = this.ParentList.SelectedValue;
+            }
+        }
+        else
+        {
+            if (forumId.HasValue 
+                &&  this.Request.QueryString.GetFirstOrDefault("fa") != null 
+                &&  this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
+            {
+                    var parcedNode1 = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("fa"));
+                    categoryId = parcedNode1.Item2.ToString();
+                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
+                    {
+                        parentID = dt.Rows[0]["ParentID"];                     
+                    }                
+            } 
+        }
+
+        // parent selection check.
+        if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("fa"))
+        {
+            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_PARENT_SELF"));
+            return;
+        }
+
+        // The picked forum cannot be a child forum as it's a parent
+        // If we update a forum ForumID > 0 
+        if (forumId.HasValue && parentID != null)
+        {
+            int dependency = CommonDb.forum_save_parentschecker(PageContext.PageModuleID, forumId.Value, parentID);
+            if (dependency > 0)
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CHILD_PARENT"));
+                return;
+            }
+        }
+
+        // inital access mask
+        if (!forumId.HasValue && !forumCopyId.HasValue)
+        {
+            if (this.AccessMaskID.SelectedValue.Length == 0)
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_INITAL_MASK"));
+                return;
+            }
+        }
+
+        // duplicate name checking...
+        if (!forumId.HasValue)
+        {
+            var forumList = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).AsEnumerable();
+
+            if (forumList.Any() && !this.Get<YafBoardSettings>().AllowForumsWithSameName &&
+                forumList.Any(dr => dr.Field<string>("Name") == this.Name.Text.Trim()))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_FORUMNAME_EXISTS"));
+                return;
+            }
+        }
+
+        object themeUrl = null;
+
+        if (this.ThemeList.SelectedValue.Length > 0)
+        {
+            themeUrl = this.ThemeList.SelectedValue;
+        }
+
+        int? adjacentForumId = null;
+        int? adjacentForumPosition = null;
+        string message;
+
+        Tuple<int?, int?, int?> parcedNode = null;       
+
+        if (!Config.LargeForumTree)
+        {
+            categoryId = this.CategoryList.SelectedValue;
+        }
+        else
+        {
+            if (this.Request.QueryString.GetFirstOrDefault("fa") != null)
+            {
+                if (this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
+                {
+                    parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("fa"));                
+                    categoryId = parcedNode.Item2.ToString();
+                    if (Config.LargeForumTree)
+                    {
+                        adjacentForumPosition = -1;
+                    }
+                }
+            }
+        }
+
+        if (this.Request.QueryString.GetFirstOrDefault("before") != null)
+        {
+            if (this.Request.QueryString.GetFirstOrDefault("before").Contains("_"))
+            {
+                parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("before"));
+                if (parcedNode.Item3.HasValue)
+                {
+                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, parcedNode.Item3))
+                    {
+                        parentID = dt.Rows[0]["ParentID"];
+                    }
+
+                    adjacentForumId = parcedNode.Item3;
+                    categoryId = parcedNode.Item2.ToString();
+                }    
+              
+                adjacentForumPosition = 1;
+            }
+        }
+
+        if (this.Request.QueryString.GetFirstOrDefault("after") != null)
+        {
+            if (this.Request.QueryString.GetFirstOrDefault("after").Contains("_"))
+            {
+
+               
+                parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("after"));
+               
+                if (parcedNode.Item3.HasValue)
+                {
+                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, parcedNode.Item3))
+                    {
+                        parentID = dt.Rows[0]["ParentID"];
+                    }
+
+                    adjacentForumId = parcedNode.Item3;
+                    adjacentForumPosition = 2;                   
+                }
+
+                categoryId = parcedNode.Item2.ToString();
+              
+            }
+        }
+
+        if (this.Request.QueryString.GetFirstOrDefault("over") != null)
+        {
+            if (this.Request.QueryString.GetFirstOrDefault("over").Contains("_"))
+            {
+                parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("over"));
+                if (parcedNode.Item3.HasValue)
+                {
+                    adjacentForumId = parcedNode.Item3;
+                    adjacentForumPosition = 3;
+                    parentID = adjacentForumId;
+                }
+                else
+                {
+                    // this is a category                  
+                   
+                }
+                
+                categoryId = parcedNode.Item2.ToString();            
+            }
+
+        }
+
+        var newForumId = CommonDb.forum_save(PageContext.PageModuleID, forumId,
+        categoryId,
+        parentID,
         this.Name.Text.Trim(),
-        this.Description.Text.Trim().IsSet() ? this.Description.Text.RemoveDoubleWhiteSpaces() : null, 
-        sortOrder, 
-        this.Locked.Checked, 
-        this.HideNoAccess.Checked, 
-        this.IsTest.Checked, 
-        this.Moderated.Checked, 
-        this.AccessMaskID.SelectedValue, 
-        IsNull(this.remoteurl.Text), 
-        themeUrl, 
-        this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : null, 
+        this.Description.Text.Trim().IsSet() ? this.Description.Text.RemoveDoubleWhiteSpaces() : null,
+        sortOrder,
+        this.Locked.Checked,
+        this.HideNoAccess.Checked,
+        this.IsTest.Checked,
+        this.Moderated.Checked,
+        this.AccessMaskID.SelectedValue,
+        IsNull(this.remoteurl.Text),
+        themeUrl,
+        this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : null,
         this.Styles.Text.RemoveDoubleWhiteSpaces(),
         false,
-        this.UserID.Value.IsSet() ? this.UserID.Value.ToType<int>() : PageContext.PageUserID,
+        (this.UserID.Value.IsSet() ? this.UserID.Value.ToType<int>() : PageContext.PageUserID),
         this.IsUserForum.Checked,
-        this.CanHavePersForums.Checked);
+        this.CanHavePersForums.Checked,
+        adjacentForumId,
+        adjacentForumPosition);
 
-      CommonDb.activeaccess_reset(PageContext.PageModuleID);
+        CommonDb.activeaccess_reset(PageContext.PageModuleID);
 
-      // Access
-      if (forumId.HasValue || forumCopyId.HasValue)
-      {
-        foreach (var item in this.AccessList.Items.OfType<RepeaterItem>())
+        // Access
+        if (forumId.HasValue || forumCopyId.HasValue)
         {
-          int groupId = int.Parse(item.FindControlAs<Label>("GroupID").Text);
+            foreach (var item in this.AccessList.Items.OfType<RepeaterItem>())
+            {
+                int groupId = int.Parse(item.FindControlAs<Label>("GroupID").Text);
 
-          CommonDb.forumaccess_save(PageContext.PageModuleID, newForumId, groupId, item.FindControlAs<DropDownList>("AccessmaskID").SelectedValue);
+                CommonDb.forumaccess_save(PageContext.PageModuleID, newForumId, groupId, item.FindControlAs<DropDownList>("AccessmaskID").SelectedValue);
+            }
         }
-      }
 
-      this.ClearCaches();
+        this.ClearCaches();
 
-      if (forumId.HasValue)
-      {
-        YafBuildLink.Redirect(ForumPages.admin_forums);
-      }
-      else
-      {
-        YafBuildLink.Redirect(ForumPages.admin_editforum, "fa={0}", newForumId);
-      }
+        if (forumId.HasValue)
+        {
+            YafBuildLink.Redirect(ForumPages.admin_forums);
+        }
+        else
+        {
+            string s = string.Empty;
+            string a = string.Empty;
+
+            if (this.Request.QueryString.GetFirstOrDefault("before") != null)
+            {
+                a = "before";
+                if (this.Request.QueryString.GetFirstOrDefault(a).Contains("_"))
+                {
+                    s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNodeId(
+                        this.Request.QueryString.GetFirstOrDefault("before")).Item1, 
+                        categoryId, 
+                        newForumId);
+                }
+            }
+
+            else if (this.Request.QueryString.GetFirstOrDefault("after") != null)
+            {
+                if (this.Request.QueryString.GetFirstOrDefault("after").Contains("_"))
+                {
+                    a = "after";
+                    if (this.Request.QueryString.GetFirstOrDefault(a).Contains("_"))
+                    {
+                        s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNodeId(
+                            this.Request.QueryString.GetFirstOrDefault("after")).Item1, 
+                            categoryId, 
+                            newForumId);
+                    }
+                }
+            }
+
+            else if (this.Request.QueryString.GetFirstOrDefault("over") != null)
+            {
+                if (this.Request.QueryString.GetFirstOrDefault("over").Contains("_"))
+                {
+                    a = "over";
+                    if (this.Request.QueryString.GetFirstOrDefault(a).Contains("_"))
+                    {
+                        s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNodeId(
+                            this.Request.QueryString.GetFirstOrDefault("over")).Item1, 
+                            categoryId, newForumId);
+                    }
+                }
+            }
+            else
+            {
+               s = "{0}_{1}_{2}".FormatWith(PageContext.PageBoardID, categoryId, newForumId);               
+            }
+
+            YafBuildLink.Redirect(ForumPages.admin_editforum, "fa={0}".FormatWith(s));
+        }
     }
-
-      private string GetAncorNodeData(out int boardId, out int categoryId, out object parentId, out int sortOrder, out bool isNew)
-      {
-          boardId = PageContext.PageBoardID;
-          categoryId = 0;
-          sortOrder = 0;
-          parentId = null;
-          isNew = false;
-          if (this.Request.QueryString.GetFirstOrDefault("after") != null)
-          {
-              int afterBoardId;
-              int afterCategoryId;
-              int afterForumId;
-              TreeViewUtils.TreeNodeIdParser(
-                  this.Request.QueryString.GetFirstOrDefault("after"),
-                  out afterForumId,
-                  out afterCategoryId,
-                  out afterBoardId);
-
-              // Insert after a forum
-              if (afterForumId > 0)
-              {
-                  using (
-                      DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, afterForumId))
-                  {
-                      sortOrder = 1;
-
-                      if (dt.Rows.Count > 0)
-                      {
-                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
-                          sortOrder = sortOrder + 1;
-                      }
-                      else
-                      {
-                          return "Incorrect parameters!"; 
-                      }
-
-                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
-                      this.SortOrder.Enabled = false;
-                      parentId = afterForumId;
-                      return string.Empty;
-                  }
-              }
-
-              // Insert after a category
-              if (categoryId > 0)
-              {
-                  using (
-                      DataTable dt = CommonDb.category_getadjacentforum(PageContext.PageModuleID, this.PageContext.PageBoardID,categoryId, PageContext.PageUserID,true))
-                  {
-                      sortOrder = 1;
-
-                      if (dt.Rows.Count > 0)
-                      {
-                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
-                          sortOrder = sortOrder + 1;
-                      }
-
-                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
-                      this.SortOrder.Enabled = false;
-                      return string.Empty;
-                  }
-              }
-          }
-
-          if (this.Request.QueryString.GetFirstOrDefault("before") != null)
-          {
-              int beforeBoardId;
-              int beforeCategoryId;
-              int beforeForumId;
-              TreeViewUtils.TreeNodeIdParser(
-                  this.Request.QueryString.GetFirstOrDefault("before"),
-                  out beforeForumId,
-                  out beforeCategoryId,
-                  out beforeBoardId);
-
-              // Insert after a forum
-              if (beforeForumId > 0)
-              {
-                  using (
-                      var dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, beforeForumId))
-                  {
-                      sortOrder = 1;
-
-                      if (dt.Rows.Count > 0)
-                      {
-                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
-                          if (sortOrder > 0)
-                          {
-                              sortOrder = sortOrder + 1;
-                          }
-                          else
-                          {
-                              sortOrder = 0;
-                          }
-                      }
-
-                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
-                      this.SortOrder.Enabled = false;
-                      return string.Empty;  
-                  }
-              }
-
-              // Insert after a category
-              if (beforeCategoryId > 0)
-              {
-                  using (
-                      DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, beforeCategoryId))
-                  {
-                      sortOrder = 1;
-
-                      if (dt.Rows.Count > 0)
-                      {
-                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
-                          sortOrder = sortOrder + 1;
-                      }
-
-                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
-                      this.SortOrder.Enabled = false;
-                      return string.Empty ;
-                  }
-              }
-          }
-
-          if (this.Request.QueryString.GetFirstOrDefault("addchild") != null)
-          {
-              int addchildBoardId;
-              int addchildCategoryId;
-              int addchildForumId;
-              TreeViewUtils.TreeNodeIdParser(
-                  this.Request.QueryString.GetFirstOrDefault("addchild"),
-                  out addchildForumId,
-                  out addchildCategoryId,
-                  out addchildBoardId);
-          }
-
-          if (this.Request.QueryString.GetFirstOrDefault("new") != null)
-          {
-              isNew = this.Request.QueryString.GetFirstOrDefault("new") == "1";
-          }
-
-          return null;
-      }
-
-      /// <summary>
-      /// The split node to objects.
-      /// </summary>
-      /// <param name="mode">
-      /// The mode.
-      /// </param>
-      private void SplitNodeToObjects(string mode)
-      {
-          var nodeIds = this.Get<IYafSession>().ForumTreeChangerActiveNode;
-          string targetIds = this.Get<IYafSession>().ForumTreeChangerActiveTargetNode;
-
-          if (nodeIds.IsNotSet())
-          {
-              this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MSG_NOT_DELETE"));
-          }
-
-          int boardId;
-          int categoryId;
-          int forumId;
-
-          int boardIdTarget;
-          int categoryIdTarget;
-          int forumIdTarget;
-
-          string addnew = null;
-          if (this.Get<IYafSession>().ForumAdminTreeAddForum == 1)
-          {
-              addnew = "&new=1";
-              targetIds = nodeIds;
-          }
-
-          TreeViewUtils.TreeNodeIdParser(nodeIds, out forumId, out categoryId, out boardId);
-          TreeViewUtils.TreeNodeIdParser(targetIds, out forumIdTarget, out categoryIdTarget, out boardIdTarget);
-
-
-          switch (mode)
-          {
-              case "delete":
-                  if (forumId > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_deleteforum, "f={0}", forumId);
-                  }
-
-                  if (categoryId > 0)
-                  {
-                      if (CommonDb.category_delete(PageContext.PageModuleID, categoryId))
-                      {
-                          this.ResetSession();
-                          this.BindData();
-                          this.ClearCaches();
-                      }
-                      else
-                      {
-                          this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MSG_NOT_DELETE"));
-                      }
-                      return;
-                  }
-
-                  if (boardId > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_boards);
-                  }
-
-                  break;
-              case "add":
-                  if (forumId > 0)
-                  {
-                      this.Get<IYafSession>().ForumAdminTreeAddForum = 1;
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (categoryId > 0)
-                  {
-                      this.Get<IYafSession>().ForumAdminTreeAddForum = 1;
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (boardId > 0)
-                  {
-                      this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MESSAGE_CANTADDTOBOARD"));
-                  }
-
-                  break;
-
-              case "copy":
-                  if (forumId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_editforum, "{0}={1}", mode, forumId);
-                  }
-
-                  if (categoryId > 0 || boardId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums);
-                  }
-
-                  break;
-              case "edit":
-                  if (forumId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_editforum, "f={0}", forumId);
-                  }
-
-                  if (categoryId > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", categoryId);
-                  }
-
-                  if (boardId > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  break;
-              case "movebefore":
-                  if (forumIdTarget > 0)
-                  {
-                      // move forumId before a forum with path targetIds
-                      this.ResetSession();
-                      YafBuildLink.Redirect(
-                          ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, targetIds, mode, addnew);
-                  }
-
-                  // a category was selected as a destination
-                  if (categoryIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      if (forumId > 0)
-                      {
-                          // we can't move forum before a category, return back
-                          YafBuildLink.Redirect(ForumPages.admin_forums);
-                      }
-                      else
-                      {
-                          // a category was selected as a target and a category as a destination 
-                          // we change a category sort order here
-                          YafBuildLink.Redirect(
-                          ForumPages.admin_editcategory, "c={0}&{1}={2}", categoryIdTarget, mode, nodeIds);
-                      }
-                  }
-
-                  if (boardIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  if (forumId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (categoryId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (boardId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  break;
-              case "moveafter":
-                  if (forumIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(
-                          ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, mode, targetIds, addnew);
-                  }
-
-                  if (categoryIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      if (forumId > 0)
-                      {
-                          YafBuildLink.Redirect(
-                             ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, mode, targetIds, addnew);
-                      }
-                      else
-                      {
-                          // a category was selected as a target and a category as a destination 
-                          // we change a category sort order here
-                          YafBuildLink.Redirect(
-                          ForumPages.admin_editcategory, "c={0}&{1}={2}", categoryIdTarget, mode, nodeIds);
-                      }
-                  }
-
-                  if (boardIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  if (forumId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (categoryId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (boardId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  break;
-
-              case "addchildren":
-                  if (forumIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(
-                          ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, mode, targetIds, addnew);
-                  }
-
-                  if (categoryIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      if (forumId > 0)
-                      {
-                          YafBuildLink.Redirect(
-                             ForumPages.admin_editforum, "c={0}&{1}={2}&child=1", forumId, mode, targetIds);
-                      }
-                      else
-                      {
-                          // we can't add a category as a child of other category
-                          YafBuildLink.Redirect(ForumPages.admin_forums);
-                      }
-                  }
-
-                  if (boardIdTarget > 0)
-                  {
-                      this.ResetSession();
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  if (forumId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (categoryId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
-                  }
-
-                  if (boardId > 0)
-                  {
-                      YafBuildLink.Redirect(ForumPages.admin_editboard);
-                  }
-
-                  break;
-          }
-
-      }
 
       /// <summary>
       /// The reset session.
       /// </summary>
       private void ResetSession()
-      {
-          this.Get<IYafSession>().ForumTreeChangerActiveNode = null;
-          this.Get<IYafSession>().ForumTreeChangerActiveTargetNode = null;
-          this.Get<IYafSession>().ForumAdminTreeAddForum = null;
+      {       
       }
 
     #endregion
-
-      protected void MoveForumAfterBtn_Click(object sender, EventArgs e)
-      {
-          throw new NotImplementedException();
-      }
-
-      protected void AddChildrenTo_Click(object sender, EventArgs e)
-      {
-          throw new NotImplementedException();
-      }
   }
 }

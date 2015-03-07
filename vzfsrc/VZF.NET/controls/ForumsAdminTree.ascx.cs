@@ -162,12 +162,12 @@
 
             if (Config.LargeForumTree)
             {
-                YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
                 this.divactive.Visible = true;
                 YafContext.Current.PageElements.RegisterJsBlock(
-                    "dynatreescr",
-                    JavaScriptBlocks.DynatreeGetNodesAdminLazyJS(
+                    "fancytreescr",
+                    JavaScriptBlocks.FancytreeGetNodesAdminLazyJS(
                         "tree",
                         PageContext.PageUserID,
                         PageContext.PageBoardID,
@@ -220,7 +220,7 @@
                     YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", e.CommandArgument);
                     break;
                 case "delete":
-                    if (CommonDb.category_delete(PageContext.PageModuleID, e.CommandArgument))
+                    if (CommonDb.category_delete(PageContext.PageModuleID, e.CommandArgument, null))
                     {
                         this.BindData();
                         this.ClearCaches();
@@ -405,7 +405,7 @@
 
                     if (categoryId > 0)
                     {
-                        if (CommonDb.category_delete(PageContext.PageModuleID, categoryId))
+                        if (CommonDb.category_delete(PageContext.PageModuleID, categoryId, null))
                         {
                             this.BindData();
                             this.ClearCaches();

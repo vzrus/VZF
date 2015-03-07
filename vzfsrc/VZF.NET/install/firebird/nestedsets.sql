@@ -160,6 +160,287 @@ IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN
 END;
 --GO
 
+-- here we don't delete children but move them one level higher and remove keys gap.
+CREATE PROCEDURE {objectQualifier}forum_ns_after_del2_func
+(i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER, i_old_level INTEGER, i_old_parentid INTEGER
+)
+AS
+DECLARE i_is_locked SMALLINT = 1;
+BEGIN
+-- here we should lock table
+--	EXECUTE {databaseSchema}.{objectQualifier}lock_ns_tree i_old_tree, i_is_locked;
+-- remove break in keys and shift child nodes
+   UPDATE {objectQualifier}forum_ns
+		SET left_key = (CASE WHEN left_key < :i_old_left_key
+							THEN left_key
+							ELSE (CASE WHEN right_key < :i_old_right_key
+									  THEN left_key - 1 
+									  ELSE left_key - 2
+								 END)
+					   END),
+			"LEVEL" = CASE WHEN right_key < :i_old_right_key
+						   THEN "LEVEL" - 1 
+						   ELSE "LEVEL"
+					  END,
+			parentid = CASE WHEN right_key < :i_old_right_key AND "LEVEL" = :i_old_level + 1
+						   THEN :i_old_parentid
+						   ELSE parentid
+						END,
+			right_key = CASE WHEN right_key < :i_old_right_key
+							 THEN right_key - 1 
+							 ELSE right_key - 2
+						END,
+			trigger_lock_update = 1
+		WHERE (right_key > :i_old_right_key OR
+			(left_key > :i_old_left_key AND right_key < :i_old_right_key)) AND
+			tree = :i_old_tree;	
+END;
+--GO
+
+
+-- Here we delete subtrees no need here 
+CREATE PROCEDURE {objectQualifier}forum_ns_after_delete_func(i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER, i_old_level INTEGER, i_old_parentid INTEGER)
+AS
+DECLARE	i_ici_skew_tree INTEGER;
+BEGIN
+
+--	EXECUTE [{databaseSchema}].[{objectQualifier}lock_ns_tree] i_old_tree;
+-- Should we to make it:
+--	IF old_trigger_for_delete = 1 THEN LEAVE proc_label; END IF;
+-- tick children nodes to delete:
+	UPDATE {objectQualifier}forum_ns
+		SET trigger_for_delete = 1,
+			trigger_lock_update = 1
+		WHERE
+			tree = :i_old_tree AND
+			left_key > :i_old_left_key AND
+			right_key < :i_old_right_key;
+-- remove ticked nodes:
+	DELETE FROM {objectQualifier}forum_ns
+		WHERE
+			tree = :i_old_tree AND
+			left_key > :i_old_left_key AND
+			right_key < :i_old_right_key;
+-- remove key gap:
+	i_ici_skew_tree = :i_old_right_key - :i_old_left_key + 1;
+	UPDATE {objectQualifier}forum_ns
+		SET left_key = (CASE WHEN left_key > :i_old_left_key
+							THEN left_key - :i_ici_skew_tree
+							ELSE left_key
+					   END),
+			right_key = right_key - :i_ici_skew_tree,
+			trigger_lock_update = 1
+		WHERE right_key > :i_old_right_key AND
+			tree = :i_old_tree;
+END;
+--go 
+
+CREATE PROCEDURE {objectQualifier}forum_ns_before_update_func(i_new_nid INTEGER, 
+i_new_tree INTEGER, i_new_left_key INTEGER, i_new_right_key INTEGER,i_new_level INTEGER, i_new_parentid INTEGER, i_new_trigger_lock_update smallint, 
+i_new_trigger_for_delete smallint, i_old_nid INTEGER, i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER,i_old_level INTEGER, i_old_parentid INTEGER
+)
+AS
+DECLARE	ici_left_key       INTEGER;
+DECLARE	ici_level          INTEGER;
+DECLARE	ici_skew_tree      INTEGER;
+DECLARE	ici_skew_level     INTEGER;
+DECLARE	ici_skew_edit      INTEGER;
+DECLARE	ici_tmp_left_key   INTEGER;
+DECLARE	ici_tmp_right_key  INTEGER;
+DECLARE	ici_tmp_level      INTEGER;
+DECLARE	ici_tmp_id         INTEGER;
+DECLARE	ici_tmp_parent_id  INTEGER;
+BEGIN    
+
+	-- execute [{databaseSchema}].[{objectQualifier}lock_ns_tree] i_old_tree;
+    -- maybe we should do nothing	
+/*	IF i_new_trigger_lock_update = 1 BEGIN
+		select i_new_trigger_lock_update = 0;
+		IF i_new_trigger_for_delete = 1 BEGIN
+			-- NEW = OLD;
+			select i_new_tree =  i_old_tree;
+			select i_new_left_key = i_old_left_key; 
+			select i_new_right_key = i_old_right_key;
+			select i_new_level = i_old_level; 
+			select i_new_parentid = i_old_parentid;   
+
+			select i_new_trigger_for_delete = 1;
+			RETURN;
+		END;
+		RETURN;
+	END; */
+
+-- reset field values that can't be changed by user
+/*	select i_new_trigger_for_delete = 0;
+	select i_new_tree = i_old_tree;
+	select i_new_right_key = i_old_right_key;
+	select i_new_level = i_old_level; */
+
+	IF (:i_new_parentid IS NULL) THEN 
+	i_new_parentid = 0; 
+	
+
+-- Check if there are changes related to the tree structure. 
+	IF (:i_new_parentid = :i_old_parentid AND :i_new_left_key = :i_old_left_key) THEN	
+		EXIT;
+	
+	-- Alas we should rebuild it, let's begin 
+
+	ici_left_key = 0;
+	ici_level = 0;
+	ici_skew_tree = :i_old_right_key - :i_old_left_key + 1;
+	-- where to move it? Let's guess.
+
+-- If parentid was changed
+	IF (:i_new_parentid != :i_old_parentid) THEN 
+	BEGIN
+-- if submission to other boss
+		IF (:i_new_parentid > 0) THEN
+			SELECT right_key, "LEVEL" + 1				
+				FROM {objectQualifier}forum_ns
+				WHERE nid = :i_new_parentid AND tree = :i_new_tree
+				INTO :ici_left_key, :ici_level;
+				-- otherwise move it to tree root 
+		ELSE
+		BEGIN
+			SELECT MAX(right_key) + 1 				
+				FROM {objectQualifier}forum_ns
+				WHERE tree = :i_new_tree
+				INTO :ici_left_key;
+			ici_level = 0;
+		END
+		
+		-- check if the parent is in the scope of the node being moved
+		IF (:ici_left_key IS NOT NULL AND 
+		   :ici_left_key > 0 AND
+		   :ici_left_key > :i_old_left_key AND
+		   :ici_left_key <= :i_old_right_key) THEN 
+		BEGIN
+		 i_new_parentid = :i_old_parentid;
+		 i_new_left_key = :i_old_left_key;
+		 UPDATE {objectQualifier}forum_ns
+		   SET
+				parentid = :i_new_parentid,
+				left_key = :i_new_left_key
+			WHERE tree = :i_old_tree;
+		   EXIT;
+		END
+	END
+	-- left key was supplied, but parentid not 
+   IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN 
+   BEGIN
+		SELECT first 1 nid, left_key, right_key, "LEVEL", parentid 
+			FROM {objectQualifier}forum_ns
+			WHERE tree = :i_new_tree AND (right_key = :i_new_left_key OR right_key = :i_new_left_key - 1)
+			INTO :ici_tmp_id, :ici_tmp_left_key, 
+			:ici_tmp_right_key, :ici_tmp_level, :ici_tmp_parent_id;
+
+		IF (:ici_tmp_left_key IS NOT NULL AND :ici_tmp_left_key > 0 AND (:i_new_left_key - 1 = :ici_tmp_right_key)) THEN 
+		BEGIN
+			i_new_parentid = :ici_tmp_parent_id;
+			ici_left_key = :i_new_left_key;
+			ici_level = :ici_tmp_level;
+		END
+		ELSE IF (:ici_tmp_left_key IS NOT NULL AND :ici_tmp_left_key > 0 AND :i_new_left_key = :ici_tmp_right_key) THEN 
+		BEGIN
+			i_new_parentid = :ici_tmp_id;
+			ici_left_key = :i_new_left_key;
+			ici_level = :ici_tmp_level + 1;
+		END
+		ELSE IF (:i_new_left_key = 1) THEN
+		BEGIN
+			i_new_parentid = 0;
+			ici_left_key = :i_new_left_key;
+			ici_level = 0;
+		END
+		ELSE
+		  BEGIN
+		  i_new_parentid = :i_old_parentid;
+		  i_new_left_key = :i_old_left_key;
+		   UPDATE {objectQualifier}forum_ns
+			SET
+				parentid = :i_new_parentid,
+				left_key = :i_new_left_key
+			WHERE tree = :i_old_tree;
+		   EXIT;	
+		  END		 	
+	END
+	-- we know now where to move the tree
+	ici_skew_level = :ici_level - :i_old_level;
+	IF (:ici_left_key > :i_old_left_key) THEN
+	BEGIN
+	-- move up the tree
+	 ici_skew_edit = :ici_left_key - :i_old_left_key - :ici_skew_tree;
+		UPDATE {objectQualifier}forum_ns
+			SET left_key =  (CASE WHEN right_key <= :i_old_right_key
+								 THEN left_key + :ici_skew_edit
+								 ELSE (CASE WHEN left_key > :i_old_right_key
+										   THEN left_key - :ici_skew_tree
+										   ELSE left_key
+									  END)
+							END),
+				"LEVEL" =   (CASE WHEN right_key <= :i_old_right_key 
+								 THEN "LEVEL" + :ici_skew_level
+								 ELSE "LEVEL"
+							END),
+				right_key = (CASE WHEN right_key <= :i_old_right_key 
+								 THEN right_key + :ici_skew_edit
+								 ELSE (CASE WHEN right_key < :ici_left_key
+										   THEN right_key - :ici_skew_tree
+										   ELSE right_key
+									  END)
+							END),
+				trigger_lock_update = 1
+			WHERE tree = :i_old_tree AND
+				  right_key > :i_old_left_key AND
+				  left_key < :ici_left_key AND
+				  nid <> :i_old_nid;
+		ici_left_key = :ici_left_key - :ici_skew_tree;
+		END
+	ELSE
+	BEGIN
+	-- moving it down the tree
+		ici_skew_edit = :ici_left_key - :i_old_left_key;
+		UPDATE {objectQualifier}forum_ns
+			SET
+				right_key = (CASE WHEN left_key >= :i_old_left_key
+								 THEN right_key + :ici_skew_edit
+								 ELSE (CASE WHEN right_key < :i_old_left_key
+										   THEN right_key + :ici_skew_tree
+										   ELSE right_key
+									  END)
+							END),
+				"LEVEL" =   (CASE WHEN left_key >= :i_old_left_key
+								 THEN "LEVEL" + :ici_skew_level
+								 ELSE "LEVEL"
+							END),
+				left_key =  (CASE WHEN left_key >= :i_old_left_key
+								 THEN left_key + :ici_skew_edit
+								 ELSE (CASE WHEN left_key >= :ici_left_key
+										   THEN left_key + :ici_skew_tree
+										   ELSE left_key
+									  END)
+							END),
+				 trigger_lock_update = 1
+			WHERE tree = :i_old_tree AND
+				  right_key >= :ici_left_key AND
+				  left_key < :i_old_right_key AND
+				  nid <> :i_old_nid;
+	END
+-- the tree was rebuilt now we heave only our current node to handle
+	i_new_left_key = :ici_left_key;
+	i_new_level = :ici_level;
+	i_new_right_key = :ici_left_key + :ici_skew_tree - 1;	
+		UPDATE {objectQualifier}forum_ns
+			SET
+				right_key = :i_new_right_key,
+				"LEVEL" =   :i_new_level,
+				left_key =  :i_new_left_key,
+				trigger_lock_update = 1
+			WHERE tree = :i_old_tree AND
+			 nid = :i_old_nid;
+END;
+--GO
 
 
 /* ******************************************************************************************************************************
@@ -191,8 +472,8 @@ FOR SELECT boardid
 		   ORDER by boardid
 		   INTO :ici_bid
 	   DO BEGIN
-	   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func :ici_bid , 0, 0,
- 0, null, null,null, null, 0,null, null RETURNING_VALUES :brdTmp;
+	--   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func :ici_bid , 0, 0,
+-- 0, null, null,null, null, 0,null, null RETURNING_VALUES :brdTmp;
 	   -- fill in categories as level = 1 nodes
 		 FOR SELECT c.categoryid, c.sortorder
 				from  {objectQualifier}category c  
@@ -202,10 +483,10 @@ FOR SELECT boardid
 				ORDER by c.boardid,c.sortorder	
 				INTO :ici_cid,:ici_cs			
 		 DO BEGIN
-			   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func :ici_bid,:ici_cid,0,
- 0, null, null,null, :brdTmp, :ici_cs,null, null RETURNING_VALUES :catTmp;
+			--   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func :ici_bid,:ici_cid,0,
+-- 0, null, null,null, :brdTmp, :ici_cs,null, null RETURNING_VALUES :catTmp;
 
-					UPDATE {objectQualifier}forum_ns SET parentid  = :ici_bid where categoryid = :ici_cid;
+				--	UPDATE {objectQualifier}forum_ns SET parentid  = :ici_bid where categoryid = :ici_cid;
 			 
 				 -- loop through forums
 					   FOR  SELECT f.forumid, f.parentid,coalesce(f.parentid, 0) parent0 ,f.categoryid, f.sortorder 
@@ -217,14 +498,14 @@ FOR SELECT boardid
 							  INTO :fc_fid,:fc_pid,:fc_p,:fc_cid,:fc_s						
 				 DO BEGIN				  
 											
-					IF (:fc_p IS NULL) THEN
-					SELECT nid FROM {objectQualifier}forum_ns WHERE categoryid = :fc_cid and forumid = 0  into :ndfpTmp;
-						ELSE
+					IF (:fc_pid IS NOT NULL) THEN
+				--	SELECT nid FROM {objectQualifier}forum_ns WHERE categoryid = :fc_cid and forumid = 0  into :ndfpTmp;
+					--	ELSE
 					SELECT nid  FROM {objectQualifier}forum_ns WHERE forumid = :fc_pid into  :ndfpTmp;
 										
 						   -- it's a forum						  
 						   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func :ici_bid,:ici_cid,COALESCE(:fc_fid,0),
- 0, null, null,null, :catTmp, :fc_s,null, null RETURNING_VALUES :frmTmp;
+:ici_cid, null, null,null, :ndfpTmp, :fc_s,null, null RETURNING_VALUES :frmTmp;
 		-- end of forum loop 					
 		END	
 	-- end of category loop

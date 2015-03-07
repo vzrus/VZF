@@ -39,6 +39,7 @@ namespace YAF.Pages.Admin
   using YAF.Types.Interfaces;
   using VZF.Utils;
   using VZF.Utils.Helpers;
+    using YAF.Core.Tasks;
 
   #endregion
 
@@ -144,6 +145,7 @@ namespace YAF.Pages.Admin
         this.CategoryImages.Attributes["onchange"] =
             "getElementById('{1}').src='{0}{2}/' + this.value".FormatWith(
                 YafForumInfo.ForumClientFileRoot, this.Preview.ClientID, YafBoardFolders.Current.Categories);
+        this.rowSortOrder.Visible = !Config.LargeForumTree;
 
         this.BindData();
     }
@@ -159,50 +161,75 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
-      int categoryID = 0;
+        int? categoryID = null;
+        int? adjacentCategoryId = null;
+        int? adjacentCategoryMode = null;
+        if (this.Request.QueryString.GetFirstOrDefault("c") != null)
+        {
+            categoryID = GetQueryStringAsInt("c");
+        }
 
-      if (this.Request.QueryString.GetFirstOrDefault("c") != null)
-      {
-        categoryID = int.Parse(this.Request.QueryString.GetFirstOrDefault("c"));
-      }
+        if (categoryID.HasValue && Config.LargeForumTree)
+        {
+            adjacentCategoryMode = -1;
+        }
 
-      short sortOrder;
-      string name = this.Name.Text.Trim();
-      object categoryImage = null;
+        if (this.Request.QueryString.GetFirstOrDefault("before") != null)
+        {
+            adjacentCategoryMode = 1;
+            adjacentCategoryId = GetQueryStringAsInt("before");
+        }
+        if (this.Request.QueryString.GetFirstOrDefault("after") != null)
+        {
+            adjacentCategoryMode = 2;
+            adjacentCategoryId = GetQueryStringAsInt("after");
+        }
 
-      if (this.CategoryImages.SelectedIndex > 0)
-      {
-        categoryImage = this.CategoryImages.SelectedValue;
-      }
+        short sortOrder = 0;
+        string name = this.Name.Text.Trim();
+        object categoryImage = null;
 
-      if (!ValidationHelper.IsValidPosShort(this.SortOrder.Text.Trim()))
-      {
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITCATEGORY", "MSG_POSITIVE_VALUE"));
-        return;
-      }
+        if (this.CategoryImages.SelectedIndex > 0)
+        {
+            categoryImage = this.CategoryImages.SelectedValue;
+        }
 
-      if (!short.TryParse(this.SortOrder.Text.Trim(), out sortOrder))
-      {
-        // error...
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITCATEGORY", "MSG_NUMBER"));
-        return;
-      }
+        if (!Config.LargeForumTree)
+        {
+            if (!ValidationHelper.IsValidPosShort(this.SortOrder.Text.Trim()))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITCATEGORY", "MSG_POSITIVE_VALUE"));
+                return;
+            }
+        }
 
-      if (string.IsNullOrEmpty(name))
-      {
-        // error...
-        this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITCATEGORY", "MSG_VALUE"));
-        return;
-      }
+        if (!Config.LargeForumTree)
+        {
+            if (!short.TryParse(this.SortOrder.Text.Trim(), out sortOrder))
+            {
+                // error...
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITCATEGORY", "MSG_NUMBER"));
+                return;
+            }
+        }
 
-      // save category
-      CommonDb.category_save(PageContext.PageModuleID, this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder, this.CanHavePersForums.Checked);
+        if (string.IsNullOrEmpty(name))
+        {
+            // error...
+            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITCATEGORY", "MSG_VALUE"));
+            return;
+        }
 
-      // remove category cache...
-      this.Get<IDataCache>().Remove(Constants.Cache.ForumCategory);
 
-      // redirect
-      YafBuildLink.Redirect(ForumPages.admin_forums);
+        string failureMessage;
+        // save category
+        CategorySaveTask.Start(PageContext.PageModuleID, this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder, this.CanHavePersForums.Checked, adjacentCategoryId, adjacentCategoryMode, out failureMessage);
+
+        // remove category cache...
+        this.Get<IDataCache>().Remove(Constants.Cache.ForumCategory);
+
+        // redirect
+        YafBuildLink.Redirect(ForumPages.admin_forums);
     }
 
     /// <summary>
@@ -212,53 +239,93 @@ namespace YAF.Pages.Admin
     {
       this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
 
-        if (this.Request.QueryString.GetFirstOrDefault("c") == null)
-        {
-            // Currently creating a New Category, and auto fill the Category Sort Order + 1
-            using (
-            DataTable dt = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
-            {
-                int sortOrder = 1;
+      if (this.Request.QueryString.GetFirstOrDefault("c") == null)
+      {
+          if (!Config.LargeForumTree)
+          {
+              // Currently creating a New Category, and auto fill the Category Sort Order + 1
+              using (
+              DataTable dt = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+              {
+                  int sortOrder = 1;
 
-                try
-                {
-                    DataRow highestRow = dt.Rows[dt.Rows.Count - 1];
+                  try
+                  {
+                      DataRow highestRow = dt.Rows[dt.Rows.Count - 1];
 
-                    sortOrder = (short)highestRow["SortOrder"] + sortOrder;
-                }
-                catch
-                {
-                    sortOrder = 1;
-                }
+                      sortOrder = (short)highestRow["SortOrder"] + sortOrder;
+                  }
+                  catch
+                  {
+                      sortOrder = 1;
+                  }
 
-                this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
+                  this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
 
-                return;
-            }
-        }
+                  return;
+              }
+          }
+      }
+      else
+      {
 
-        using (
-            DataTable dt = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("c")))
-        {
-            DataRow row = dt.Rows[0];
-            this.Name.Text = (string)row["Name"];
-            this.SortOrder.Text = row["SortOrder"].ToString();
-            this.CategoryNameTitle.Text = this.Name.Text;
-            this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
-            ListItem item = this.CategoryImages.Items.FindByText(row["CategoryImage"].ToString());
+          using (
+              DataTable dt = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.GetQueryStringAsInt("c")))
+          {
+              DataRow row = dt.Rows[0];
+              this.Name.Text = (string)row["Name"];
+              if (!Config.LargeForumTree)
+              {
+                  this.SortOrder.Text = row["SortOrder"].ToString();
+              }
+              this.CategoryNameTitle.Text = this.Name.Text;
+              this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
+              ListItem item = this.CategoryImages.Items.FindByText(row["CategoryImage"].ToString());
 
-            if (item == null)
-            {
-                return;
-            }
+              if (item == null)
+              {
+                  return;
+              }
 
-            item.Selected = true;
-            this.Preview.Src = "{0}{2}/{1}".FormatWith(
-                YafForumInfo.ForumClientFileRoot, row["CategoryImage"], YafBoardFolders.Current.Categories);
-            
-            // path corrected
-        }
+              item.Selected = true;
+              this.Preview.Src = "{0}{2}/{1}".FormatWith(
+                  YafForumInfo.ForumClientFileRoot, row["CategoryImage"], YafBoardFolders.Current.Categories);
+
+              // path corrected
+          }
+      }
     }
+
+    /// <summary>
+    /// Get query string as int.
+    /// </summary>
+    /// <param name="name">
+    /// The name.
+    /// </param>
+    /// <returns>
+    /// The get query string as int.
+    /// </returns>
+    protected int? GetQueryStringAsInt([NotNull] string name)
+    {
+        int value;
+
+        if (this.Request.QueryString.GetFirstOrDefault(name) != null)
+        {
+            if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
+            {
+
+                return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item2;
+
+            }
+
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+            {
+                return value;
+            }
+        }
+
+        return null;
+    }   
 
     #endregion
   }

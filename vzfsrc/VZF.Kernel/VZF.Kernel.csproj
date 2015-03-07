@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="CurrentModule.cs" />
     <Compile Include="DsProtocols.cs" />
-    <Compile Include="Dynatree.cs" />
+    <Compile Include="FancyTree.cs" />
     <Compile Include="DsAccountManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserAccessMasksResult.cs" />

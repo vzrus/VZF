@@ -8,6 +8,7 @@
             <td class="header1" colspan="2">
                 <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER1" LocalizedPage="ADMIN_DELETEFORUM" />
                 <asp:Label ID="ForumNameTitle" runat="server"></asp:Label>
+                  <asp:Label ID="Label1" Visible="false" runat="server"></asp:Label>
             </td>
         </tr>
         <tr>
@@ -18,7 +19,11 @@
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel11" runat="server" LocalizedTag="MOVE_TOPICS" LocalizedPage="ADMIN_DELETEFORUM" />
             </td>
+            
             <td class="post">
+           
+                  <input id="echoActive" name="echoActive" type="Hidden" 
+            runat="server" value="old value" />
                 <asp:CheckBox ID="MoveTopics" runat="server" AutoPostBack="true"></asp:CheckBox>
             </td>
         </tr>
@@ -29,6 +34,8 @@
                 <br />
             </td>
             <td class="post">
+           
+                <div id="jumpList" visible="false" runat="server"> <div id="treedelfrm" data-source="ajax"  ></div></div>
                 <asp:DropDownList Width="250" ID="ForumList" runat="server" Enabled="false">
                 </asp:DropDownList>
             </td>
@@ -37,6 +44,7 @@
             <td class="postfooter" align="center" colspan="2">
                 <asp:Button ID="Delete" runat="server" CssClass="pbutton"></asp:Button>&nbsp;
                 <asp:Button ID="Cancel" runat="server" CssClass="pbutton"></asp:Button>
+                   <asp:Button ID="Button1" runat="server" Visible="false" CssClass="pbutton"></asp:Button>&nbsp;
             </td>
         </tr>
     </table>

@@ -550,6 +550,11 @@ namespace YAF.Types.Constants
     admin_editforum,
 
     /// <summary>
+    /// The admin_deletecategory.
+    /// </summary>
+    admin_deletecategory, 
+
+    /// <summary>
     /// The admin_deleteforum.
     /// </summary>
     admin_deleteforum, 

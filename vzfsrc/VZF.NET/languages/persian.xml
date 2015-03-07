@@ -13,6 +13,7 @@
     <Resource tag="ADMIN_BBCODE_IMPORT">در حال وارد کردن BBCodes</Resource>
     <Resource tag="ADMIN_BOARDS">در حال مشاهده لیست بوردها </Resource>
     <Resource tag="ADMIN_BOARDSETTINGS">در حال مشاهده تنظیمات بورد</Resource>
+    <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource>
     <Resource tag="ADMIN_DELETEFORUM">Delete forums</Resource>
     <Resource tag="ADMIN_EDITACCESSMASK">در حال ویرایش سطوح دسترسی</Resource>
     <Resource tag="ADMIN_EDITBOARD">در حال ویرایش بردها</Resource>
@@ -359,6 +360,19 @@
     <Resource tag="NO">خیر</Resource>
     <Resource tag="SAVE">ذخیره</Resource>
     <Resource tag="YES">بلی</Resource>
+  </page>
+  <page name="ADMIN_DELETECATEGORY">
+    <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+    <Resource tag="DELETE_FORUM">Delete category</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
+    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    <Resource tag="DELETE_TITLE">Deleting category</Resource>
+    <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
+    <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
+    <Resource tag="NEW_FORUM">New Forum:</Resource>
+    <Resource tag="NEW_FORUM_HELP">Select the new category for the forums.</Resource>
+    <Resource tag="TITLE">Delete category</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Delete Forum</Resource>
@@ -912,6 +926,8 @@
     <Resource tag="NEW_CATEGORY">رده جدید</Resource>
     <Resource tag="NEW_FORUM">انجمن جدید</Resource>
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+    <Resource tag="TREEVIEW_MENUTIP">Created on </Resource>
+    <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">افزودن به YAF</Resource>
@@ -2071,6 +2087,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="HIDDEN">مخفی</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">داده های ورود شما نمی بایست دارای تگ HTML باشند.</Resource>
     <Resource tag="HTMLTAG_WRONG">داده های ورود شما شامل تگ های {0} غیر مجاز HTML  میباشد.</Resource>
+    <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
     <Resource tag="LOADING">در حال بارگذاری...</Resource>
     <Resource tag="MAX_ONLINE">بیشترین تعداد کاربرانی که بطور همزمان آنلاین بوده اند {0}, {1}.</Resource>
     <Resource tag="MESSAGE">پیام</Resource>

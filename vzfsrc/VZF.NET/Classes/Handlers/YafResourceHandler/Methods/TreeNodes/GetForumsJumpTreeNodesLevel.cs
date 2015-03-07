@@ -38,7 +38,9 @@
                 int access = 0;
                 int view = 0;
                 bool boardFirst = false;
-
+                bool links = true;
+                // show access masks list
+                int? amdd = null;
                 // var userId = YafContext.Current.CurrentUserData.UserID;
                 if (context.Request.QueryString.GetFirstOrDefault("tjls") != null)
                 {
@@ -72,6 +74,28 @@
                     }
                 }
 
+                if (context.Request.QueryString.GetFirstOrDefault("links") != null)
+                {
+                    if (context.Request.QueryString.GetFirstOrDefault("links").ToType<int>() == 0)
+                    {
+                        links = false;
+                    }
+                    else
+                    {
+                        links = true;
+                    }
+                }
+                else
+                {
+                    links = false;
+                }
+
+                if (context.Request.QueryString.GetFirstOrDefault("amdd") != null)
+                {
+                    amdd = context.Request.QueryString.GetFirstOrDefault("amdd").ToType<int>();               
+                   
+                }
+
                 context.Response.Clear();
                 context.Response.ContentType = "application/json";
                 context.Response.ContentEncoding = Encoding.UTF8;
@@ -79,15 +103,17 @@
 
                 if (context.Request.QueryString.GetFirstOrDefault("tjl") != "-100")
                 {
+
                     var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
-                    context.Response.Write(
-                        Dynatree.GetForumsJumpTreeNodesLevel(
+                    context.Response.Write(FancyTree.GetForumsJumpTreeNodesLevel(
                             context.Request.QueryString.GetFirstOrDefault("tjl"),
                             view,
                             access,
                             context.Request.QueryString.GetFirstOrDefault("active"),
                             boardFirst,
-                            forumUrl).ToJson());
+                            forumUrl,
+                            links,
+                            amdd).ToJson());
                 }
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -97,6 +123,7 @@
                 CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
 
                 context.Response.Write(
+
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
         }

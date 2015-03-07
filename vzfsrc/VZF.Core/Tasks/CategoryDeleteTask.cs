@@ -69,10 +69,20 @@ namespace YAF.Core.Tasks
 		/// </summary>
 		public int CategoryId { get; set; }
 
+        /// <summary>
+        /// Gets or sets NewCategoryId.
+        /// </summary>
+        public int? NewCategoryId { get; set; }
+
 		/// <summary>
 		/// Gets or sets Forum New Id.
 		/// </summary>
 		public int ForumNewId { get; set; }
+
+        /// <summary>
+        /// Gets or sets ModuleId.
+        /// </summary>      
+        public int ModuleId { get; set; }
 
 		#endregion
 
@@ -93,7 +103,7 @@ namespace YAF.Core.Tasks
 	    /// <returns>
 	    /// Returns if Task was Successfull
 	    /// </returns>
-	    public static bool Start(int categoryId, out string failureMessage)
+	    public static bool Start(int mid,int categoryId, int? newCategoryId,  out string failureMessage)
 		{
 
             failureMessage = string.Empty;
@@ -107,7 +117,9 @@ namespace YAF.Core.Tasks
                                                                        () =>
                                                                        new CategoryDeleteTask
                                                                            {
-                                                                               CategoryId = categoryId
+                                                                               ModuleId = mid,
+                                                                               CategoryId = categoryId,                                                                               
+                                                                               NewCategoryId = newCategoryId      
                                                                            });
             }
             else
@@ -127,9 +139,8 @@ namespace YAF.Core.Tasks
             try
             {
                 this.Logger.Info("Starting Category {0} delete task.",this.CategoryId);
-                CommonDb.category_delete(YafContext.Current.PageModuleID, this.CategoryId);
-                this.Logger.Info("Category (ID: {0}) Delete Task Complete.",this.CategoryId);
-				
+                CommonDb.category_delete(this.ModuleId, this.CategoryId, this.NewCategoryId);
+                this.Logger.Info("Category (ID: {0}) Delete Task Complete.",this.CategoryId);				
 			}
 			catch (Exception x)
 			{

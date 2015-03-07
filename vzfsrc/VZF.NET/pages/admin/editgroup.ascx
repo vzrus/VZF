@@ -217,6 +217,13 @@
                 </tr>
             </ItemTemplate>
         </asp:Repeater>
+        <tr id="treeRow" visible="false" runat="server">
+            <td colspan="2">                
+                <span id="treegroupaccess"></span>
+                <span id="echoActive">-</span>
+            </td>
+        </tr>
+           
         </tbody>
         <tfoot>
         <tr>

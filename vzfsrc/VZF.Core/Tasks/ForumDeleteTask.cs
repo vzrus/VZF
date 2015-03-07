@@ -153,7 +153,11 @@ namespace YAF.Core.Tasks
 
             if (!YafContext.Current.Get<ITaskModuleManager>().IsTaskRunning("ForumSaveTask"))
             {
-            YafContext.Current.Get<ITaskModuleManager>().StartTask(TaskName, () => new ForumDeleteTask { Data = boardId, Module = moduleId, ForumId = forumOldId, ForumNewId = forumNewId });
+            YafContext.Current.Get<ITaskModuleManager>().StartTask(TaskName, () => 
+                new ForumDeleteTask { Data = boardId, 
+                    Module = moduleId, 
+                    ForumId = forumOldId, 
+                    ForumNewId = forumNewId });
             }
             else
             {
@@ -173,7 +177,8 @@ namespace YAF.Core.Tasks
             {
                 if (this.ForumNewId.Equals(-1))
                 {
-                    CommonDb.forum_delete(YafContext.Current.PageModuleID, this.ForumId);
+                    // Move children will be implemented when all data layers will be ready for ns. 
+                    CommonDb.forum_delete(YafContext.Current.PageModuleID, this.ForumId, false);
                     this.Logger.Info("Forum (ID: {0}) Delete Task Complete.".FormatWith(this.ForumId));
                     CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Forum (ID: {0}) Delete Task Complete.".FormatWith(this.ForumId), EventLogTypes.Information);
                 }

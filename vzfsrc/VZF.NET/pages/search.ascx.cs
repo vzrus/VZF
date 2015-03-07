@@ -168,12 +168,14 @@ namespace YAF.Pages
             if (Config.LargeForumTree)
             {
                 forumTree.Visible = true;
-                PageContext.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
-                PageContext.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                YafContext.Current.PageElements.RegisterJQuery();
+                YafContext.Current.PageElements.RegisterJQueryUI();
+                PageContext.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                PageContext.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
                 // this.TreeTable.Visible = true;
-                PageContext.PageElements.RegisterJsBlock("dynatreescr",
-                    JavaScriptBlocks.DynatreeGetNodesSearchLazyCheckBoxesJS("tree",
-                    PageContext.PageUserID,PageContext.PageBoardID, "&v=4", "{0}resource.ashx?tjl".FormatWith(
+                PageContext.PageElements.RegisterJsBlock("fancytreescr",
+                    JavaScriptBlocks.FancyTreeGetNodesSearchLazyCheckBoxesJS("tree",
+                    PageContext.PageUserID,PageContext.PageBoardID, "&v=4&links=1", "{0}resource.ashx?tjl".FormatWith(
                     YafForumInfo.ForumClientFileRoot),
                     "&root=0".FormatWith(PageContext.PageBoardID),"&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
             }

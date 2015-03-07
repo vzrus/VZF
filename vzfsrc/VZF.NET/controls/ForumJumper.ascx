@@ -7,7 +7,6 @@
      <td><div><img id="imgJump" src="" alt='<%# PageContext.Get<ILocalization>().GetText("COMMON", "FORUM_JUMP") %>' title='<%# PageContext.Get<ILocalization>().GetText("COMMON", "FORUM_JUMP") %>'  runat="server"/></div></td>
  </tr>   
 </table>
-
     <asp:PlaceHolder ID="jholder" runat="server"></asp:PlaceHolder>
 
 

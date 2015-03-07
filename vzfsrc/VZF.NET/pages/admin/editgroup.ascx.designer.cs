@@ -335,7 +335,7 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.HelpLabel HelpLabel13;
-    
+        
         /// <summary>
         /// StyleTextBox control.
         /// </summary>
@@ -407,6 +407,15 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater AccessList;
+        
+        /// <summary>
+        /// treeRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow treeRow;
         
         /// <summary>
         /// Save control.

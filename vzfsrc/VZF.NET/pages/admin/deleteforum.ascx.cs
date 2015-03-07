@@ -36,6 +36,8 @@ namespace YAF.Pages.Admin
     using YAF.Types.Interfaces;
     using VZF.Utilities;
     using VZF.Utils;
+    using VZF.Utils.Helpers;
+    using System.Web;
 
     #endregion
 
@@ -59,14 +61,23 @@ namespace YAF.Pages.Admin
         {
             int value;
 
-            if (this.Request.QueryString.GetFirstOrDefault(name) != null
-                && int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+            if (this.Request.QueryString.GetFirstOrDefault(name) != null)
             {
-                return value;
+                if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
+                {
+
+                    return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item3;
+
+                }
+
+                if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+                {
+                    return value;
+                }
             }
 
             return null;
-        }
+        }   
 
         /// <summary>
         /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
@@ -81,15 +92,74 @@ namespace YAF.Pages.Admin
             base.OnInit(e);
         }
 
+          /// <summary>
+        /// The on pre render.
+        /// </summary>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected override void OnPreRender([NotNull] EventArgs e)
+        {
+            this.PageContext.PageElements.RegisterJQuery();
+            this.PageContext.PageElements.RegisterJQueryUI();
+           // this.PageContext.PageElements.RegisterCssIncludeResource("css/jquery-ui-themes/ui-lightness/jquery-ui.min.css")
+           // this.PageContext.PageElements.RegisterCssIncludeResource("css/jquery-ui-themes/ui-lightness/theme.css")
+
+           this.PageContext.PageElements.RegisterJsResourceInclude("blockUIJs", "js/jquery.blockUI.js");
+
+            if (Config.LargeForumTree)
+            {
+
+                this.ForumList.Visible = false;
+
+                this.jumpList.Visible = true;
+
+                //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");              
+
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.min.css");
+
+                var forumId = this.GetQueryStringAsInt("fa");
+
+                string value = null;               
+                if (this.Request.QueryString.GetFirstOrDefault("fa") != null)
+                {
+                    if (this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
+                    {
+                        value = this.Request.QueryString.GetFirstOrDefault("fa");
+                    }
+                }
+
+                string args = "&links=0";
+                if (value.IsSet())
+                {
+                    args +=
+                        "&active={0}".FormatWith(value);                                   
+                }
+
+                YafContext.Current.PageElements.RegisterJsBlock(
+                  "ftreedelfrm",
+                  JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJS(
+                      "treedelfrm",
+                      PageContext.PageUserID,
+                      PageContext.PageBoardID,
+                      "echoActive",
+                      string.Empty,
+                      args,
+                      "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+            }
+
+            base.OnPreRender(e);
+        }
+
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            this.PageContext.PageElements.RegisterJQuery();
-            this.PageContext.PageElements.RegisterJsResourceInclude("blockUIJs", "js/jquery.blockUI.js");
+        {        
 
             if (this.IsPostBack)
             {
@@ -119,7 +189,7 @@ namespace YAF.Pages.Admin
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
 
             this.BindData();
-
+  
             var forumId = this.GetQueryStringAsInt("fa");
 
             using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
@@ -164,9 +234,12 @@ namespace YAF.Pages.Admin
         /// Binds the data.
         /// </summary>
         private void BindData()
-        {
+        {   
             // Load forum's combo
-            this.BindParentList();
+            if (!Config.LargeForumTree)
+            {
+                this.BindParentList();
+            }
         }
 
         /// <summary>
@@ -200,7 +273,10 @@ namespace YAF.Pages.Admin
                         this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
             }
 
-            this.ForumList.Enabled = this.MoveTopics.Checked;
+            if (!Config.LargeForumTree)
+            {
+                this.ForumList.Enabled = this.MoveTopics.Checked;
+            }           
         }
 
         /// <summary>
@@ -236,15 +312,49 @@ namespace YAF.Pages.Admin
         private void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             var errorMessage = string.Empty;
-
+          
             if (this.MoveTopics.Checked)
             {
                 // Simply Delete the Forum with all of its Content
                 var forumId = this.GetQueryStringAsInt("fa");
+                int? selectedForum = 0;
+                
+                if (!Config.LargeForumTree)
+                {
+                    selectedForum = this.ForumList.SelectedValue.ToType<int>();
+                }
+                else
+                {
+                    string val = this.Get<IYafSession>().NntpTreeActiveNode;
+
+                    if (val.IsSet())
+                    {
+                        string[] valArr = val.Split('_');
+
+                        if (valArr.Length == 2)
+                        {
+                            this.PageContext.AddLoadMessage("You should select a forum, not a category");
+
+                            // this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITNNTPFORUM", "MSG_SELECT_FORUM"));
+                            return;
+                        }
+
+                        if (valArr.Length == 3)
+                        {
+                            selectedForum = valArr[2].ToType<int>();
+                        }
+                        else
+                        {
+                            this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITNNTPFORUM", "MSG_SELECT_FORUM"));
+                            return;
+                        }                       
+                    }
+
+                }
 
                 // schedule...
-                ForumDeleteTask.Start(
-                    this.PageContext.PageBoardID, forumId.Value, this.ForumList.SelectedValue.ToType<int>(), out errorMessage);
+                ForumDeleteTask.Start( this.PageContext.PageModuleID,
+                    this.PageContext.PageBoardID, forumId.Value, (int)selectedForum, out errorMessage);
 
                 // enable timer...
                 this.UpdateStatusTimer.Enabled = true;

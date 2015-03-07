@@ -13,6 +13,7 @@
     <Resource tag="ADMIN_BBCODE_IMPORT">أدخال  كود </Resource>
     <Resource tag="ADMIN_BOARDS">عرض قائمة اللوحات</Resource>
     <Resource tag="ADMIN_BOARDSETTINGS">عرض اعدادات اللوحة</Resource>
+    <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource>
     <Resource tag="ADMIN_DELETEFORUM">Delete forums</Resource>
     <Resource tag="ADMIN_EDITACCESSMASK">تعديل access masks</Resource>
     <Resource tag="ADMIN_EDITBOARD">عرض اللوائح</Resource>
@@ -359,6 +360,19 @@
     <Resource tag="NO">No</Resource>
     <Resource tag="SAVE">Save</Resource>
     <Resource tag="YES">Yes</Resource>
+  </page>
+  <page name="ADMIN_DELETECATEGORY">
+    <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+    <Resource tag="DELETE_FORUM">Delete category</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
+    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    <Resource tag="DELETE_TITLE">Deleting category</Resource>
+    <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
+    <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
+    <Resource tag="NEW_FORUM">New Forum:</Resource>
+    <Resource tag="NEW_FORUM_HELP">Select the new category for the forums.</Resource>
+    <Resource tag="TITLE">Delete category</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Delete Forum</Resource>
@@ -907,6 +921,8 @@
     <Resource tag="NEW_CATEGORY">New Category</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+    <Resource tag="TREEVIEW_MENUTIP">Created on </Resource>
+    <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Add to YAF</Resource>
@@ -2050,6 +2066,7 @@
     <Resource tag="HIDDEN">مخفي</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">البيانات المدخلة  يجب  ان لا تحتوي على( HTML tags). </Resource>
     <Resource tag="HTMLTAG_WRONG">لقد ادخلت   بيانات  خاطئا يرجى التاكد من  (html code) {0} .</Resource>
+    <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
     <Resource tag="LOADING">... تحميل   </Resource>
     <Resource tag="MAX_ONLINE">أكبر عدد تواجد كان {0}, {1}.</Resource>
     <Resource tag="MESSAGE">Message</Resource>

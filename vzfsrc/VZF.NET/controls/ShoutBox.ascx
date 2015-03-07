@@ -35,7 +35,7 @@
     function checkForNewMessages() {
         <%=YAF.Classes.Config.JQueryAlias %>.PageMethod('<%= YafForumInfo.ForumClientFileRoot %>YafAjax.asmx', 'RefreshShoutBox', refreshShoutBoxPanel, refreshShoutBoxFailed, 'boardId', <%=this.PageContext.PageBoardID %>);
 
-        setTimeout('checkForNewMessages()', 2000);
+        setTimeout('checkForNewMessages()', '<%= YafContext.Current.IsGuest ? 120000 : 10000 %>');
     }
 
     function refreshShoutBoxPanel(success) {

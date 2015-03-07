@@ -24,7 +24,6 @@ namespace YAF.Core.Tasks
   using System;
 
   using VZF.Data.Common;
-
   
   using YAF.Types.Interfaces;
   using VZF.Utils;
@@ -35,11 +34,52 @@ namespace YAF.Core.Tasks
   /// </summary>
     public class ForumSaveTask : LongBackgroundTask, ICriticalBackgroundTask
   {
+      /// <summary>
+      /// The _adjacent Forum Id.
+      /// </summary>
+      private object _adjacentForumId;
+
+      /// <summary>
+      /// Gets or sets Adjacent Forum Id.
+      /// </summary>
+      public object AdjacentForumId
+      {
+          get
+          {
+              return this._adjacentForumId;
+          }
+
+          set
+          {
+              this._adjacentForumId = value;
+          }
+      }
 
       /// <summary>
       /// The _forum id.
       /// </summary>
-        private object _forumId;
+      private object _adjacentForumPosition;
+
+      /// <summary>
+      /// Gets or sets AdjacentForumPosition.
+      /// </summary>
+      public object AdjacentForumPosition
+      {
+          get
+          {
+              return this._adjacentForumPosition;
+          }
+
+          set
+          {
+              this._adjacentForumPosition = value;
+          }
+      }
+
+      /// <summary>
+      /// The _forum id.
+      /// </summary>
+      private object _forumId;
 
       /// <summary>
       /// Gets or sets ForumId.
@@ -96,6 +136,24 @@ namespace YAF.Core.Tasks
           }
       }
 
+
+      private int? _mid;
+
+      /// <summary>
+      /// Gets or sets Mid.
+      /// </summary>
+      public int? Mid
+      {
+          get
+          {
+              return this._mid;
+          }
+
+          set
+          {
+              this._mid = value;
+          }
+      }
       private object _name;
 
       /// <summary>
@@ -329,6 +387,23 @@ namespace YAF.Core.Tasks
           }
       }
 
+      private object _userId;
+      /// <summary>
+      /// Gets or sets ForumOut.
+      /// </summary>
+      public object UserId
+      {
+          get
+          {
+              return _userId;
+          }
+
+          set
+          {
+              _userId = value;
+          }
+      }
+
       private bool _dummy;
       /// <summary>
       /// Gets or sets Dummy.
@@ -429,8 +504,8 @@ namespace YAF.Core.Tasks
       /// <returns>
       /// The start.
       /// </returns>
-    public static long Start(object forumId, object categoryId, object parentId, object name, object description, object sortOrder, object locked, object hidden, object isTest, object moderated, object accessMaskID, object remoteURL, object themeURL, object imageURL, object styles,
-          bool dummy, bool isUserForum, bool canHavePersonalForum, out string failureMessage)
+    public static long Start(int? mid, object forumId, object categoryId, object parentId, object name, object description, object sortOrder, object locked, object hidden, object isTest, object moderated, object accessMaskID, object remoteURL, object themeURL, object imageURL, object styles,
+          bool dummy, object userId, bool isUserForum, bool canHavePersonalForum, object adjacentForumId, object adjacentForumPosition, out string failureMessage)
       {
 
       failureMessage = String.Empty;
@@ -460,8 +535,12 @@ namespace YAF.Core.Tasks
                                       ImageURL = imageURL,
                                       Styles = styles,
                                       Dummy = dummy,
+                                      UserId = userId,
                                       IsUserForum = isUserForum,
-                                      CanHavePersonalForum = canHavePersonalForum
+                                      CanHavePersonalForum = canHavePersonalForum,
+                                      AdjacentForumId = adjacentForumId,
+                                      AdjacentForumPosition = adjacentForumPosition,
+                                      Mid = mid
                                   });
       }
       else
@@ -486,7 +565,7 @@ namespace YAF.Core.Tasks
                     this.CategoryId,
                     this.ParentId);
                 _forumOut = CommonDb.forum_save(
-                    YafContext.Current.PageModuleID,
+                    this.Mid,
                     this.ForumId,
                     this.CategoryId,
                     this.ParentId,
@@ -503,9 +582,11 @@ namespace YAF.Core.Tasks
                     this.ImageURL,
                     this.Styles,
                     this.Dummy,
-                    YafContext.Current.PageUserID,
+                    this.UserId,
                     this.IsUserForum,
-                    this.CanHavePersonalForum);
+                    this.CanHavePersonalForum,
+                    this.AdjacentForumId,
+                    this.AdjacentForumPosition);
                 this.Logger.Info("Forum Update||Add Task is completed. Handled forum {0}.", _forumOut);
             }
             catch (Exception x)
