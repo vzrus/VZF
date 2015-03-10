@@ -60,7 +60,7 @@ namespace YAF.Types
     /// <summary>
     /// Gets a value with a default value...
     /// </summary>
-    /// <param name="readValue">
+    /// <param name="readValue"> 
     /// </param>
     /// <param name="key">
     /// </param>

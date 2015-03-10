@@ -22,7 +22,7 @@ namespace YAF.Types.Constants
   /// The yaf rss feeds.
   /// </summary>
   public enum YafRssFeeds
-  {
+  {   
     /// <summary>
     ///   The latest posts.
     /// </summary>

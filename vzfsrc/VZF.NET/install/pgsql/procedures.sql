@@ -1855,9 +1855,9 @@ BEGIN
   l_CategoryID := (SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}category','categoryid')));	
 
  -- Forum
-  INSERT INTO {databaseSchema}.{objectQualifier}forum(categoryid,name,description,sortorder,numtopics,numposts,flags)
-  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4);
-  l_ForumID := (SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}forum','forumid')));	
+  INSERT INTO {databaseSchema}.{objectQualifier}forum(categoryid,name,description,sortorder,numtopics,numposts,flags, left_key, right_key,"level")
+  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4,1,2,0) returning forumid into l_ForumID; 
+
  --  ForumAccess 
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid) 
   VALUES(l_GroupIDAdmin,l_ForumID,l_AccessMaskIDAdmin);
@@ -1905,6 +1905,7 @@ END LOOP;
   FROM   {databaseSchema}.{objectQualifier}group x
   WHERE  x.GroupID = {databaseSchema}.{objectQualifier}forumaccess.groupid
   AND x.boardid = i_boardid);
+  -- a trigger works here to rebuild tree - double work
   DELETE FROM {databaseSchema}.{objectQualifier}forum
   WHERE       EXISTS (SELECT 1
   FROM   {databaseSchema}.{objectQualifier}category x
@@ -1950,7 +1951,7 @@ END LOOP;
   WHERE       boardid = i_boardid;
   DELETE FROM {databaseSchema}.{objectQualifier}board
   WHERE       boardid = i_boardid;
-   perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
+  perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
   RETURN;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
@@ -2254,13 +2255,14 @@ $BODY$DECLARE
 BEGIN
         if (i_newcategoryid is not null) then		  
 	         update {databaseSchema}.{objectQualifier}forum set categoryid = i_newcategoryid where categoryid = i_categoryid;
+			 perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
 		  end if;
         IF EXISTS (SELECT 1
                    FROM   {databaseSchema}.{objectQualifier}forum
                    WHERE  categoryid = i_categoryid) THEN       
             i_flag = 0;       
         ELSE
-		  perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
+		 
             DELETE FROM  {databaseSchema}.{objectQualifier}category
             WHERE       categoryid = i_categoryid;
             i_flag = 1;
@@ -2526,7 +2528,7 @@ BEGIN
             VALUES     (i_boardid,substr(i_name, 1, 255),i_categoryimage,i_sortorder,i_canhavepersforums)
             returning categoryid INTO i_categoryid; 
    END IF;
-   -- PERFORM  {databaseSchema}.{objectQualifier}forum_ns_recreate();
+  
    RETURN  i_categoryid;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
@@ -3091,16 +3093,18 @@ END LOOP;
         WHERE       forumid = i_forumid;
       
         -- Delete UserForums
-
+		-- a trigger works to rebuild tree
         DELETE FROM {databaseSchema}.{objectQualifier}userforum
         WHERE       forumid = i_forumid;
 
      --And after this we can delete Forum itself-
-
+	
         DELETE FROM {databaseSchema}.{objectQualifier}forum
         WHERE       forumid = i_forumid;
+
 		if (i_rebuildtree) then
-		perform {databaseSchema}.{objectQualifier}forum_ns_recreate();
+        i_forumid := i_forumid;
+		-- perform {databaseSchema}.{objectQualifier}forum_ns_recreate();
 		end if;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
@@ -3155,8 +3159,8 @@ END LOOP;
        DELETE FROM {databaseSchema}.{objectQualifier}userforum
        WHERE       forumid = i_forumoldid;
 
-     --And after this we can delete Forum itself-
-
+     -- And after this we can delete Forum itself-
+	 -- a trigger works here to rebuild tree
         DELETE FROM {databaseSchema}.{objectQualifier}forum
         WHERE       forumid = i_forumoldid;
 END;$BODY$
@@ -4068,19 +4072,20 @@ BEGIN
 
  IF i_parentid IS NOT NULL THEN
  SELECT "level",left_key + 1, right_key - 1 into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}forum_ns   
+ from {databaseSchema}.{objectQualifier}forum   
  where forumid = i_parentid limit 1;
  END IF;
  IF i_parentid IS NULL AND i_categoryid > 0 THEN
  SELECT 0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}forum_ns n
- where n.tree = i_categoryid;
- -- SELECT 0 , 0, 100000000 into lvl, lk, rk ; 
+ from {databaseSchema}.{objectQualifier}forum n
+ where n.categoryid = i_categoryid;; 
  END IF;
  IF i_parentid IS NULL AND i_categoryid IS NULL THEN
  SELECT 0, min(n.left_key), max(n.right_key) into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}forum_ns n 
- where n.boardid = i_boardid;
+ from {databaseSchema}.{objectQualifier}forum n 
+ join {databaseSchema}.{objectQualifier}category c
+ on c.categoryid = n.categoryid
+ where c.boardid = i_boardid;
  END IF;
  -- lvl := lvl -1;
 
@@ -4125,17 +4130,15 @@ FOR _rec IN
     FROM 
         {databaseSchema}.{objectQualifier}category a
         JOIN {databaseSchema}.{objectQualifier}forum b on (b.categoryid=a.categoryid and a.boardid = i_boardid)
-		join {databaseSchema}.{objectQualifier}forum_ns fns 
-		ON (fns.forumid = b.forumid and fns.level >= lvl-1)
-        JOIN {databaseSchema}.{objectQualifier}activeaccess x on (x.forumid=b.forumid and x.userid = i_userid) 
+		JOIN {databaseSchema}.{objectQualifier}activeaccess x on (x.forumid=b.forumid and x.userid = i_userid) 
     WHERE
         (i_categoryid IS NULL OR a.categoryid = i_categoryid) AND
-		(i_categoryid IS NULL OR  fns.tree= i_categoryid) AND		 
+		(b."level" >= lvl-1) and		 
 		((b.flags & 2)=0 OR x.readaccess) and         	
-        fns.left_key >= lk and fns.right_key <= rk 	
+        b.left_key >= lk and b.right_key <= rk 	
     ORDER BY
 	    a.sortorder,
-	    fns.left_key
+	    b.left_key
     LOOP 	 
                     IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL) THEN	 
                      _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_lasttopic(_rec."ForumID",i_userid,_rec."LastTopicID",_rec."LastPosted");
@@ -4679,6 +4682,7 @@ $BODY$DECLARE
       ici_cntr integer := 0;
       _rec RECORD;
       afterset bool;
+	  newlk integer;
 BEGIN
     IF i_parentid = 0 THEN 
 	   i_parentid = null;     
@@ -4740,6 +4744,17 @@ BEGIN
 
 
   IF ici_ForumID > 0 THEN
+   if (i_adjacentforumid is not null)  then  
+    if (i_adjacentforummode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;
+	end if;
+	-- after 
+	if (i_adjacentforummode = 2) then 
+	select right_key into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;	
+	end if;
+
+  end if;
+  
   UPDATE {databaseSchema}.{objectQualifier}forum
   SET
   parentid = i_parentid,
@@ -4753,14 +4768,30 @@ BEGIN
   imageurl = i_imageurl,
   styles = i_styles,
   isuserforum = i_isuserforum,
-  canhavepersforums = i_canhavepersforums
-  WHERE forumid=ici_ForumID;
+  canhavepersforums = i_canhavepersforums 
+  WHERE forumid=ici_ForumID; 
+  -- temporary total rebuilding
+  perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
   ELSE
+   -- tree rebuilding is being made by {databaseSchema}_{objectQualifier}forum_before_insert_tr, drop constraint first
+  -- alter table only {databaseSchema}.{objectQualifier}forum drop constraint fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid;
+  
+  if (i_adjacentforumid is not null)  then  
+    if (i_adjacentforummode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;
+	end if;
+	-- after 
+	if (i_adjacentforummode = 2) then 
+	select right_key+1 into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;	
+	end if;
+  end if;
   INSERT INTO {databaseSchema}.{objectQualifier}forum(categoryid,parentid,name,description,sortorder,
-  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhavepersforums)
+  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhavepersforums, left_key)
   VALUES(i_categoryid,i_parentid,i_name,i_description,
-  i_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_userdisplayname,i_utctimestamp,i_canhavepersforums) returning forumid INTO ici_ForumID; 
- 
+  i_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_userdisplayname,i_utctimestamp,i_canhavepersforums, newlk) returning forumid INTO ici_ForumID; 
+--   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum
+ --  ADD CONSTRAINT fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid FOREIGN KEY (parentid) REFERENCES {databaseSchema}.{objectQualifier}forum(forumid);
+  
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid)
   SELECT groupid,ici_ForumID,i_accessmaskid
   FROM {databaseSchema}.{objectQualifier}group
@@ -4770,7 +4801,7 @@ BEGIN
   -- move node to it's place by recreteating table. We make it only when the forum was already saved with access mask 
  -- if (i_accessmaskid > 0) then
 
- perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
+ -- perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
  -- end if;   
    
 
@@ -17044,11 +17075,13 @@ _rec {databaseSchema}.{objectQualifier}forum_cataccess_actuser_rt%ROWTYPE;
 _nid integer; 
 BEGIN
 
-FOR _rec IN SELECT DISTINCT(f.categoryid) as CategoryID, c.name as CategoryName 
+FOR _rec IN SELECT DISTINCT(f.categoryid) as CategoryID, c.name as CategoryName, c.sortorder 
 FROM {databaseSchema}.{objectQualifier}forum f 
 JOIN {databaseSchema}.{objectQualifier}category c on c.categoryid = f.categoryid
 JOIN {databaseSchema}.{objectQualifier}activeaccess access ON (f.forumid = access.forumid and access.userid = i_userid)  
-WHERE c.boardid = i_boardid and f.parentid IS NULL and  (access.readaccess is true or (access.readaccess is false and f.flags & 2 <> 2)) ORDER BY c.sortorder, f.categoryid, c.name
+WHERE c.boardid = i_boardid and f.parentid IS NULL 
+and  (access.readaccess is true or (access.readaccess is false and f.flags & 2 <> 2)) 
+ORDER BY c.sortorder, CategoryID, c.name
 LOOP
 RETURN NEXT _rec;
 END LOOP;

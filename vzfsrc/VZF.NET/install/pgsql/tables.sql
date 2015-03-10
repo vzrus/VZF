@@ -1178,9 +1178,27 @@ BEGIN
          ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN isuserforum  boolean  DEFAULT false NOT NULL ;
      END IF;
 
-         IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','canhavepersforums')) THEN
+     IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','canhavepersforums')) THEN
          ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
-     END IF;     
+     END IF;  
+	 
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','left_key')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN left_key  integer;
+     END IF;    
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','right_key')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN right_key  integer;
+     END IF;
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','level')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN "level"  integer;
+     END IF;
+
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','_trigger_for_delete')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN _trigger_for_delete  boolean  DEFAULT false NOT NULL ;
+     END IF; 
+	 
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','_trigger_lock_update')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN _trigger_lock_update  boolean  DEFAULT false NOT NULL ;
+     END IF;  
 
         if exists (select 1 from information_schema.columns where table_name='{objectQualifier}forum' 
         and table_schema='{databaseSchema}' and column_name ='description' and is_nullable='NO') then

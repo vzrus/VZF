@@ -159,10 +159,10 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (!Page.IsPostBack)
+           /* if (!Page.IsPostBack)
             {
                 this.Get<IYafSession>().ForumTreeChangerActiveTargetNode = null;
-            }
+            } */
             
             this.NewForum.Visible = this.NewCategory.Visible = !Config.LargeForumTree;
 

@@ -32,16 +32,16 @@ AS
 BEGIN 
 IF (NOT EXISTS (
 	SELECT 1 FROM RDB$INDICES I
-	WHERE (I.RDB$INDEX_NAME = 'IX_{objectQualifier}FORUM_NS_LK_RK_L_T') AND (I.RDB$RELATION_NAME = '{objectQualifier}FORUM_NS')
+	WHERE (I.RDB$INDEX_NAME = 'IX_{objectQualifier}FRM_NS_LK_RK_L_T') AND (I.RDB$RELATION_NAME = '{objectQualifier}FORUM')
    )) THEN
-EXECUTE STATEMENT 'CREATE INDEX IX_{objectQualifier}FORUM_NS_LK_RK_L_T ON {objectQualifier}FORUM_NS(LEFT_KEY, RIGHT_KEY, LEVEL, TREE);';
+EXECUTE STATEMENT 'CREATE INDEX IX_{objectQualifier}FRM_NS_LK_RK_L_T ON {objectQualifier}FORUM(CATEGORYID, LEFT_KEY, RIGHT_KEY, LEVEL);';
 
 
  IF (NOT EXISTS (
 	SELECT 1 FROM RDB$INDICES I
-	WHERE (I.RDB$INDEX_NAME = 'IX_{objectQualifier}FORUM_NS_PARENTID') AND (I.RDB$RELATION_NAME = '{objectQualifier}FORUM_NS')
+	WHERE (I.RDB$INDEX_NAME = 'IX_{objectQualifier}FRM_NS_PARENTID') AND (I.RDB$RELATION_NAME = '{objectQualifier}FORUM')
    )) THEN
-  EXECUTE STATEMENT 'CREATE INDEX IX_{objectQualifier}FORUM_NS_PARENTID ON {objectQualifier}FORUM_NS(PARENTID);';
+  EXECUTE STATEMENT 'CREATE INDEX IX_{objectQualifier}FRM_NS_PARENTID ON {objectQualifier}FORUM(PARENTID);';
 END;
 --GO 
 
@@ -160,8 +160,97 @@ IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN
 END;
 --GO
 
+CREATE PROCEDURE {objectQualifier}FORUM_BEFORE_INSERT_FUNC
+(new_categoryid integer, new_forumid integer,
+new_tree integer, new_left_key integer, 
+new_right_key integer, new_level integer,  
+new_parentid integer, new_sortorder integer,
+new_trigger_for_delete BOOL, new_trigger_lock_update BOOL
+)
+AS
+DECLARE	ici_left_key       INTEGER;
+DECLARE	ici_level          INTEGER;
+DECLARE ici_tmp_left_key   INTEGER;
+DECLARE	ici_tmp_right_key  INTEGER;
+DECLARE	ici_tmp_level      INTEGER;
+DECLARE	ici_tmp_id         INTEGER;
+DECLARE	ici_tmp_parent_id  INTEGER;
+BEGIN
+
+    -- CALL {objectQualifier}lock_ns_tree(new_tree);
+-- These fields should not be set by hand
+	new_trigger_for_delete = 0;
+	new_trigger_lock_update = 0;
+	ici_left_key = 0;
+	ici_level = 0;
+
+-- a parent was supplied
+	IF (:new_parentid IS NOT NULL AND :new_parentid > 0) THEN
+		 SELECT right_key,  "LEVEL" + 1			
+			FROM {objectQualifier}FORUM
+			WHERE FORUMID = :new_parentid AND
+				  CATEGORYID = :new_tree
+				  INTO :ici_left_key, :ici_level;
+
+-- a left key was supplied
+	IF ((:new_left_key IS NOT NULL AND
+	   :new_left_key > 0) AND 
+	   (:ici_left_key IS NULL OR :ici_left_key = 0)) THEN
+	   BEGIN
+		SELECT FORUMID, left_key, right_key,  "LEVEL", PARENTID 			
+			FROM {objectQualifier}FORUM
+			WHERE CATEGORYID = :new_tree AND (left_key = :new_left_key OR right_key = :new_left_key)
+			INTO :ici_tmp_id, :ici_tmp_left_key, :ici_tmp_right_key, :ici_tmp_level, :ici_tmp_parent_id;
+		IF (:ici_tmp_left_key IS NOT NULL AND :ici_tmp_left_key > 0 AND :new_left_key = :ici_tmp_left_key) THEN
+		BEGIN
+			new_parentid = :ici_tmp_parent_id;
+			ici_left_key = :new_left_key;
+			ici_level = :ici_tmp_level;
+        END
+		ELSE IF (:ici_tmp_left_key IS NOT NULL AND :ici_tmp_left_key > 0 AND :new_left_key = :ici_tmp_right_key) THEN
+		BEGIN
+			new_parentid = :ici_tmp_id;
+			ici_left_key = :new_left_key;
+			ici_level = :ici_tmp_level + 1;
+		END
+	END
+-- if a parent or a left key was not supplied, we found nothing
+IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN
+	BEGIN
+		SELECT MAX(right_key) + 1			
+			FROM {objectQualifier}FORUM
+			WHERE CATEGORYID = :new_tree
+			INTO :ici_left_key;
+		IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN
+			ici_left_key = 1;
+	
+		ici_level = 0;
+		new_parentid = 0; 
+	END
+-- setting figured out keys for the node
+	new_left_key = :ici_left_key;
+	new_right_key = :ici_left_key + 1;
+	new_level = :ici_level;
+-- creating gap in the tree where the new node was inserted
+	UPDATE {objectQualifier}FORUM
+		SET left_key = left_key + 
+			(CASE WHEN left_key >= :ici_left_key 
+			  THEN 2 
+			  ELSE 0 
+			END),
+			right_key = right_key + 2,
+			trigger_lock_update = 1
+		WHERE CATEGORYID = :new_tree AND right_key >= :ici_left_key;
+
+		-- update our forum
+		UPDATE {objectQualifier}FORUM
+		set left_key = :new_left_key, right_key = :new_right_key, "LEVEL" = :new_level 
+		where FORUMID = :new_forumid;		
+END;
+--GO
+
 -- here we don't delete children but move them one level higher and remove keys gap.
-CREATE PROCEDURE {objectQualifier}forum_ns_after_del2_func
+CREATE PROCEDURE {objectQualifier}FORUM_AFTER_DEL2_FUNC
 (i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER, i_old_level INTEGER, i_old_parentid INTEGER
 )
 AS
@@ -170,7 +259,7 @@ BEGIN
 -- here we should lock table
 --	EXECUTE {databaseSchema}.{objectQualifier}lock_ns_tree i_old_tree, i_is_locked;
 -- remove break in keys and shift child nodes
-   UPDATE {objectQualifier}forum_ns
+   UPDATE {objectQualifier}FORUM
 		SET left_key = (CASE WHEN left_key < :i_old_left_key
 							THEN left_key
 							ELSE (CASE WHEN right_key < :i_old_right_key
@@ -178,52 +267,52 @@ BEGIN
 									  ELSE left_key - 2
 								 END)
 					   END),
-			"LEVEL" = CASE WHEN right_key < :i_old_right_key
+			"LEVEL" = (CASE WHEN right_key < :i_old_right_key
 						   THEN "LEVEL" - 1 
 						   ELSE "LEVEL"
-					  END,
-			parentid = CASE WHEN right_key < :i_old_right_key AND "LEVEL" = :i_old_level + 1
+					  END),
+			PARENTID = (CASE WHEN right_key < :i_old_right_key AND "LEVEL" = :i_old_level + 1
 						   THEN :i_old_parentid
 						   ELSE parentid
-						END,
-			right_key = CASE WHEN right_key < :i_old_right_key
+						END),
+			right_key = (CASE WHEN right_key < :i_old_right_key
 							 THEN right_key - 1 
 							 ELSE right_key - 2
-						END,
+						END),
 			trigger_lock_update = 1
 		WHERE (right_key > :i_old_right_key OR
 			(left_key > :i_old_left_key AND right_key < :i_old_right_key)) AND
-			tree = :i_old_tree;	
+			CATEGORYID = :i_old_tree;	
 END;
 --GO
 
 
 -- Here we delete subtrees no need here 
-CREATE PROCEDURE {objectQualifier}forum_ns_after_delete_func(i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER, i_old_level INTEGER, i_old_parentid INTEGER)
+CREATE PROCEDURE {objectQualifier}FORUM_AFTER_DEL_FUNC(i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER, i_old_level INTEGER, i_old_parentid INTEGER)
 AS
 DECLARE	i_ici_skew_tree INTEGER;
 BEGIN
 
---	EXECUTE [{databaseSchema}].[{objectQualifier}lock_ns_tree] i_old_tree;
+--	EXECUTE PROCEDURE {objectQualifier}lock_ns_tree i_old_tree;
 -- Should we to make it:
 --	IF old_trigger_for_delete = 1 THEN LEAVE proc_label; END IF;
 -- tick children nodes to delete:
-	UPDATE {objectQualifier}forum_ns
+	UPDATE {objectQualifier}FORUM
 		SET trigger_for_delete = 1,
 			trigger_lock_update = 1
 		WHERE
-			tree = :i_old_tree AND
+			CATEGORYID = :i_old_tree AND
 			left_key > :i_old_left_key AND
 			right_key < :i_old_right_key;
 -- remove ticked nodes:
-	DELETE FROM {objectQualifier}forum_ns
+	DELETE FROM {objectQualifier}FORUM
 		WHERE
-			tree = :i_old_tree AND
+			CATEGORYID = :i_old_tree AND
 			left_key > :i_old_left_key AND
 			right_key < :i_old_right_key;
 -- remove key gap:
 	i_ici_skew_tree = :i_old_right_key - :i_old_left_key + 1;
-	UPDATE {objectQualifier}forum_ns
+	UPDATE {objectQualifier}FORUM
 		SET left_key = (CASE WHEN left_key > :i_old_left_key
 							THEN left_key - :i_ici_skew_tree
 							ELSE left_key
@@ -231,11 +320,17 @@ BEGIN
 			right_key = right_key - :i_ici_skew_tree,
 			trigger_lock_update = 1
 		WHERE right_key > :i_old_right_key AND
-			tree = :i_old_tree;
+			CATEGORYID = :i_old_tree;
+	-- reset triggers (extra add on)
+		UPDATE {objectQualifier}FORUM
+		SET trigger_for_delete = 0,
+			trigger_lock_update = 0
+		WHERE
+			CATEGORYID = :i_old_tree; 
 END;
 --go 
 
-CREATE PROCEDURE {objectQualifier}forum_ns_before_update_func(i_new_nid INTEGER, 
+CREATE PROCEDURE {objectQualifier}FORUM_BEFORE_UPDATE_FUNC(i_new_nid INTEGER, 
 i_new_tree INTEGER, i_new_left_key INTEGER, i_new_right_key INTEGER,i_new_level INTEGER, i_new_parentid INTEGER, i_new_trigger_lock_update smallint, 
 i_new_trigger_for_delete smallint, i_old_nid INTEGER, i_old_tree INTEGER, i_old_left_key INTEGER, i_old_right_key INTEGER,i_old_level INTEGER, i_old_parentid INTEGER
 )
@@ -274,17 +369,14 @@ BEGIN
 /*	select i_new_trigger_for_delete = 0;
 	select i_new_tree = i_old_tree;
 	select i_new_right_key = i_old_right_key;
-	select i_new_level = i_old_level; */
-
-	IF (:i_new_parentid IS NULL) THEN 
-	i_new_parentid = 0; 
+	select i_new_level = i_old_level; */	
 	
 
 -- Check if there are changes related to the tree structure. 
 	IF (:i_new_parentid = :i_old_parentid AND :i_new_left_key = :i_old_left_key) THEN	
 		EXIT;
 	
-	-- Alas we should rebuild it, let's begin 
+	-- Alas, we should rebuild it, let's begin 
 
 	ici_left_key = 0;
 	ici_level = 0;
@@ -297,15 +389,15 @@ BEGIN
 -- if submission to other boss
 		IF (:i_new_parentid > 0) THEN
 			SELECT right_key, "LEVEL" + 1				
-				FROM {objectQualifier}forum_ns
-				WHERE nid = :i_new_parentid AND tree = :i_new_tree
+				FROM {objectQualifier}FORUM
+				WHERE FORUMID = :i_new_parentid AND CATEGORYID = :i_new_tree
 				INTO :ici_left_key, :ici_level;
 				-- otherwise move it to tree root 
 		ELSE
 		BEGIN
 			SELECT MAX(right_key) + 1 				
-				FROM {objectQualifier}forum_ns
-				WHERE tree = :i_new_tree
+				FROM {objectQualifier}FORUM
+				WHERE CATEGORYID = :i_new_tree
 				INTO :ici_left_key;
 			ici_level = 0;
 		END
@@ -318,20 +410,20 @@ BEGIN
 		BEGIN
 		 i_new_parentid = :i_old_parentid;
 		 i_new_left_key = :i_old_left_key;
-		 UPDATE {objectQualifier}forum_ns
+		 /* UPDATE {objectQualifier}forum_ns
 		   SET
 				parentid = :i_new_parentid,
 				left_key = :i_new_left_key
-			WHERE tree = :i_old_tree;
-		   EXIT;
+			WHERE CATEGORYID = :i_old_tree;
+		   EXIT; */
 		END
 	END
 	-- left key was supplied, but parentid not 
    IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN 
    BEGIN
-		SELECT first 1 nid, left_key, right_key, "LEVEL", parentid 
-			FROM {objectQualifier}forum_ns
-			WHERE tree = :i_new_tree AND (right_key = :i_new_left_key OR right_key = :i_new_left_key - 1)
+		SELECT first 1 FORUMID, left_key, right_key, "LEVEL", PARENTID 
+			FROM {objectQualifier}FORUM
+			WHERE CATEGORYID = :i_new_tree AND (right_key = :i_new_left_key OR right_key = :i_new_left_key - 1)
 			INTO :ici_tmp_id, :ici_tmp_left_key, 
 			:ici_tmp_right_key, :ici_tmp_level, :ici_tmp_parent_id;
 
@@ -357,12 +449,12 @@ BEGIN
 		  BEGIN
 		  i_new_parentid = :i_old_parentid;
 		  i_new_left_key = :i_old_left_key;
-		   UPDATE {objectQualifier}forum_ns
+		  /* UPDATE {objectQualifier}FORUM
 			SET
 				parentid = :i_new_parentid,
 				left_key = :i_new_left_key
-			WHERE tree = :i_old_tree;
-		   EXIT;	
+			WHERE CATEGORYID = :i_old_tree;
+		   EXIT;	*/
 		  END		 	
 	END
 	-- we know now where to move the tree
@@ -371,7 +463,7 @@ BEGIN
 	BEGIN
 	-- move up the tree
 	 ici_skew_edit = :ici_left_key - :i_old_left_key - :ici_skew_tree;
-		UPDATE {objectQualifier}forum_ns
+		UPDATE {objectQualifier}FORUM
 			SET left_key =  (CASE WHEN right_key <= :i_old_right_key
 								 THEN left_key + :ici_skew_edit
 								 ELSE (CASE WHEN left_key > :i_old_right_key
@@ -391,17 +483,17 @@ BEGIN
 									  END)
 							END),
 				trigger_lock_update = 1
-			WHERE tree = :i_old_tree AND
+			WHERE CATEGORYID = :i_old_tree AND
 				  right_key > :i_old_left_key AND
 				  left_key < :ici_left_key AND
-				  nid <> :i_old_nid;
+				  FORUMID <> :i_old_nid;
 		ici_left_key = :ici_left_key - :ici_skew_tree;
 		END
 	ELSE
 	BEGIN
 	-- moving it down the tree
 		ici_skew_edit = :ici_left_key - :i_old_left_key;
-		UPDATE {objectQualifier}forum_ns
+		UPDATE {objectQualifier}FORUM
 			SET
 				right_key = (CASE WHEN left_key >= :i_old_left_key
 								 THEN right_key + :ici_skew_edit
@@ -422,23 +514,23 @@ BEGIN
 									  END)
 							END),
 				 trigger_lock_update = 1
-			WHERE tree = :i_old_tree AND
+			WHERE CATEGORYID = :i_old_tree AND
 				  right_key >= :ici_left_key AND
 				  left_key < :i_old_right_key AND
-				  nid <> :i_old_nid;
+				  FORUMID <> :i_old_nid;
 	END
 -- the tree was rebuilt now we heave only our current node to handle
 	i_new_left_key = :ici_left_key;
 	i_new_level = :ici_level;
 	i_new_right_key = :ici_left_key + :ici_skew_tree - 1;	
-		UPDATE {objectQualifier}forum_ns
+		UPDATE {objectQualifier}FORUM
 			SET
 				right_key = :i_new_right_key,
 				"LEVEL" =   :i_new_level,
 				left_key =  :i_new_left_key,
 				trigger_lock_update = 1
-			WHERE tree = :i_old_tree AND
-			 nid = :i_old_nid;
+			WHERE CATEGORYID = :i_old_tree AND
+			 FORUMID = :i_old_nid;
 END;
 --GO
 
@@ -449,7 +541,7 @@ HELER AND INITIALIZE FUNCTIONS
 *********************************************************************************************************************************
 ******************************************************************************************************************************** */
 
-CREATE PROCEDURE {objectQualifier}FILLIN_OR_CHECK_NS_TABLE			
+CREATE PROCEDURE {objectQualifier}FILLIN_OR_CHECK_NS_TABLE(I_BOARDID INTEGER, I_CATEGORYID INTEGER)			
 AS 
 DECLARE ici_bid INTEGER;
 DECLARE ici_cid INTEGER;
@@ -463,12 +555,18 @@ DECLARE ici_cs INTEGER;
  DECLARE  frmTmp integer DEFAULT 0; 
  DECLARE  brdTmp integer DEFAULT 0; 
  DECLARE  catTmp integer DEFAULT 0; 
+ DECLARE ici_fr int;
+ DECLARE ici_lkey int;
+ DECLARE ici_rkey int; 
+ DECLARE ici_lv int;
+ DECLARE ici_so int;
 BEGIN
 -- DELETE FROM {objectQualifier}forum_ns;
 -- if ((select count(nid) from {objectQualifier}forum_ns) = 0) THEN
 -- fill in boards as root (level = 0) nodes
 FOR SELECT boardid
 		   from  {objectQualifier}board 
+		   WHERE :I_BOARDID IS NULL OR BOARDID = :I_BOARDID
 		   ORDER by boardid
 		   INTO :ici_bid
 	   DO BEGIN
@@ -479,7 +577,7 @@ FOR SELECT boardid
 				from  {objectQualifier}category c  
 				JOIN {objectQualifier}board b 
 				on b.boardid = c.boardid 
-				WHERE c.boardid = :ici_bid
+				WHERE (:I_CATEGORYID IS NULL OR CATEGORYID = :I_CATEGORYID) AND c.BOARDID = :ici_bid
 				ORDER by c.boardid,c.sortorder	
 				INTO :ici_cid,:ici_cs			
 		 DO BEGIN
@@ -494,25 +592,64 @@ FOR SELECT boardid
 							JOIN {objectQualifier}category c on f.categoryid = c.categoryid
 							 JOIN {objectQualifier}board b on b.boardid = c.boardid
 							 WHERE f.categoryid = :ici_cid
-							  ORDER by c.boardid, f.categoryid, parent0,f.sortorder, f.forumid
+							  ORDER BY parent0, f.sortorder, f.forumid
 							  INTO :fc_fid,:fc_pid,:fc_p,:fc_cid,:fc_s						
 				 DO BEGIN				  
 											
-					IF (:fc_pid IS NOT NULL) THEN
-				--	SELECT nid FROM {objectQualifier}forum_ns WHERE categoryid = :fc_cid and forumid = 0  into :ndfpTmp;
-					--	ELSE
+					IF (:fc_pid IS NOT NULL) THEN				
 					SELECT nid  FROM {objectQualifier}forum_ns WHERE forumid = :fc_pid into  :ndfpTmp;
 										
 						   -- it's a forum						  
-						   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func :ici_bid,:ici_cid,COALESCE(:fc_fid,0),
-:ici_cid, null, null,null, :ndfpTmp, :fc_s,null, null RETURNING_VALUES :frmTmp;
+						   EXECUTE PROCEDURE {objectQualifier}forum_ns_before_insert_func 
+						   :ici_bid,:ici_cid,:fc_fid,:ici_cid, 
+						   null, null,null, :ndfpTmp, :fc_s,null, null RETURNING_VALUES :frmTmp;
+ndfpTmp = NULL;
 		-- end of forum loop 					
 		END	
 	-- end of category loop
    END
 	-- end of board loop
 END
+   -- update the real table
+   FOR  SELECT f.forumid, f.LEFT_KEY,f.right_key, f."LEVEL", f.sortorder 
+							from  {objectQualifier}forum_ns f 												
+							INTO :ici_fr,:ici_lkey,:ici_rkey,:ici_lv,:ici_so						
+				 DO 
+				 BEGIN	
+				 UPDATE {objectQualifier}Forum
+				 SET left_key = :ici_lkey,
+				     right_key = :ici_rkey,
+					 "LEVEL" = :ici_lv,
+					 SortOrder = :ici_so,
+					 trigger_for_delete = 0,
+					 trigger_lock_update = 0
+				 where forumid = :ici_fr;
+				 END
 END;
--- GO
+--GO
+
+-- Initialize all this
+CREATE PROCEDURE {objectQualifier}FORUM_NS_RECREATE(I_BOARDID INTEGER, I_CATEGORYID INTEGER)
+				AS				
+BEGIN
+
+EXECUTE PROCEDURE  {objectQualifier}CR_OR_CHCK_NS_TABLES;
+EXECUTE PROCEDURE  {objectQualifier}FILLIN_OR_CHECK_NS_TABLE :I_BOARDID, :I_CATEGORYID;
+EXECUTE PROCEDURE  {objectQualifier}CR_OR_CHCK_NS_TABLES;
+END;
+--GO 
+CREATE PROCEDURE {objectQualifier}FORUM_NS_RECREATE_INI
+				AS				
+BEGIN
+IF (EXISTS(SELECT 1 
+               FROM {objectQualifier}FORUM WHERE LEFT_KEY IS NULL OR LEFT_KEY <= 0
+               ROWS 1)) THEN 
+			   BEGIN		
+			   EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE NULL, NULL;
+			   END
+END;
+--GO
+EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE_INI;
+--GO
 
 

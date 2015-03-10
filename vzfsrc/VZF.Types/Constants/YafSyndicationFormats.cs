@@ -24,7 +24,7 @@ namespace YAF.Types.Constants
   public enum YafSyndicationFormats
   {
     /// <summary>
-    ///   The RSS format.
+    /// The RSS format.
     /// </summary>
     Rss, 
 

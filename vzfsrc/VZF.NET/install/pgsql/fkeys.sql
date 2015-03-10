@@ -135,10 +135,14 @@ ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum
     ADD CONSTRAINT fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_category_categoryid FOREIGN KEY (categoryid) REFERENCES {databaseSchema}.{objectQualifier}category(categoryid);
 END IF;
 
-IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid' LIMIT 1) THEN
+IF  EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid' LIMIT 1) THEN
+   alter table only {databaseSchema}.{objectQualifier}forum drop constraint fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid;
+END IF;
+
+/* IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid' LIMIT 1) THEN
 ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum
     ADD CONSTRAINT fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid FOREIGN KEY (parentid) REFERENCES {databaseSchema}.{objectQualifier}forum(forumid);
-END IF;
+END IF; */
 
 IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_message_lastmessageid' LIMIT 1) THEN
 ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum

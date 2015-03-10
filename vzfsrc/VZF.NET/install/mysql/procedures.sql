@@ -2195,17 +2195,15 @@ MODIFIES SQL DATA
   INSERT INTO {databaseSchema}.{objectQualifier}Category(BoardID,`Name`,SortOrder) VALUES(l_BoardID,'Test Category',1);
   set l_CategoryID = LAST_INSERT_ID();
 
-  /*Forum*/
-  INSERT INTO {databaseSchema}.{objectQualifier}Forum(CategoryID,`Name`,Description,SortOrder,NumTopics,NumPosts,Flags)
-  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4);
+  /* Forum */
+  INSERT INTO {databaseSchema}.{objectQualifier}Forum(CategoryID,`Name`,Description,SortOrder,NumTopics,NumPosts,Flags, left_key, right_key, `level`)
+  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4,1,2,0);
   SET l_ForumID = LAST_INSERT_ID();
   /* ForumAccess */
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID) VALUES(l_GroupIDAdmin,l_ForumID,l_AccessMaskIDAdmin);
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID) VALUES(l_GroupIDGuest,l_ForumID,l_AccessMaskIDReadOnly);
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID) VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember);
-  
-  call {databaseSchema}.{objectQualifier}forum_ns_recreate();
-  
+     
   SELECT l_BoardID;
   
   END;
@@ -2288,8 +2286,6 @@ MODIFIES SQL DATA
   DELETE FROM {databaseSchema}.{objectQualifier}Registry where BoardID= i_BoardID;
   DELETE FROM {databaseSchema}.{objectQualifier}Board
   WHERE       BoardID = i_BoardID;
-  -- rebuild tree
-  CALL {databaseSchema}.{objectQualifier}forum_ns_recreate();	
   END;
 --GO
 
@@ -2632,6 +2628,9 @@ BEGIN
 
 		 if (i_NewCategoryID is not null) then
 	         update {databaseSchema}.{objectQualifier}Forum set CategoryID = i_NewCategoryID where CategoryID = i_CategoryID;
+			 -- rebuild tree			
+            call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, i_CategoryID); 
+            call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, i_NewCategoryID);
 		 end if;
 
         IF EXISTS (SELECT 1
@@ -2641,9 +2640,7 @@ BEGIN
         ELSE
             DELETE FROM {databaseSchema}.{objectQualifier}Category
             WHERE       CategoryID = i_CategoryID;
-            SET iflag = 1;
-			-- rebuild tree	
-	        CALL {databaseSchema}.{objectQualifier}forum_ns_recreate();
+            SET iflag = 1;	      
         END IF;
 		
         SELECT iflag;
@@ -2813,12 +2810,6 @@ IF i_CategoryID > 0 THEN
 
          SELECT LAST_INSERT_ID() into i_CategoryID;
  END IF;
-	
-	if (ici_OldBoardID != i_BoardID OR i_SortOrder != ici_OldSortOrder OR i_OldCategoryID is null)
-	then
-	call {databaseSchema}.{objectQualifier}forum_ns_recreate();
-	end if;
-
 	SELECT  i_CategoryID AS CategoryID;
 END;
 --GO
@@ -3143,10 +3134,10 @@ WHERE ForumID = i_ForumID;
 
 	    if i_MoveChildren = 1 then	
 		-- move children 1 level higher before deleting a forum
-	       call  {databaseSchema}.{objectQualifier}forum_ns_after_delete2_func(old_tree, old_left_key, old_right_key, old_level, old_parentid);
+	       call  {databaseSchema}.{objectQualifier}forum_after_del2_func(old_tree, old_left_key, old_right_key, old_level, old_parentid);
 	    end	if;
 
-	    call  {databaseSchema}.{objectQualifier}forum_ns_after_delete_func(old_tree, old_left_key, old_right_key, old_level, old_parentid);
+	    call  {databaseSchema}.{objectQualifier}forum_after_del_func(old_tree, old_left_key, old_right_key, old_level, old_parentid);
 	    -- call {databaseSchema}.{objectQualifier}forum_ns_recreate();	
 	    end if;
     END;
@@ -3200,7 +3191,8 @@ DECLARE  itmpTopicID INT;
        /*And after this we can delete Forum itself*/
 
         DELETE FROM {databaseSchema}.{objectQualifier}Forum
-        WHERE       ForumID = i_ForumID;
+        WHERE       ForumID = i_ForumID;	
+        call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, null);
 
         /* Forum on update */
         SELECT ParentID INTO ici_ParentID FROM  {databaseSchema}.{objectQualifier}Forum
@@ -3678,18 +3670,19 @@ END;
 
  IF i_ParentID IS NOT NULL THEN
  SELECT `level`,left_key + 1, right_key - 1 into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}forum_ns   
+ from {databaseSchema}.{objectQualifier}Forum   
  where ForumID = i_ParentID;
  END IF;
  IF i_ParentID IS NULL AND i_CategoryID > 0 THEN
  SELECT 0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}forum_ns n
- where n.tree = i_CategoryID;
+ from {databaseSchema}.{objectQualifier}Forum n
+ where n.Category = i_CategoryID;
  END IF;
  IF i_ParentID IS NULL AND i_CategoryID IS NULL THEN
  SELECT  0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}forum_ns n 
- where n.boardid = i_BoardID;
+ from {databaseSchema}.{objectQualifier}Forum n 
+ join {databaseSchema}.{objectQualifier}Category c
+ where c.BoardID = i_BoardID;
  END IF;
  -- set lvl = lvl + 1;
 
@@ -3742,19 +3735,17 @@ END;
              else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess   	
     from 
         {databaseSchema}.{objectQualifier}Category a 
-        join {databaseSchema}.{objectQualifier}Forum b on b.CategoryID=a.CategoryID
-		join {databaseSchema}.{objectQualifier}forum_ns fns 
-		ON (fns.forumid = b.ForumID and fns.level >= lvl-1)
+        join {databaseSchema}.{objectQualifier}Forum b on b.CategoryID=a.CategoryID		
         join {databaseSchema}.{objectQualifier}ActiveAccess x  on (x.ForumID=b.ForumID and x.UserID = i_UserID) 
         left outer join {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = {databaseSchema}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted)
     where 		
        (i_CategoryID IS NULL OR a.CategoryID = i_CategoryID) AND
-		(i_CategoryID IS NULL OR  fns.tree= i_CategoryID) AND		 
+	   	(b.`level` >= lvl-1) and		 
 		((b.Flags & 2)=0 OR x.ReadAccess) and         	
-        fns.left_key >= lk and fns.right_key <= rk 		
+        b.left_key >= lk and b.right_key <= rk 		
     order by
 	    a.SortOrder,
-	    fns.left_key;  
+	    b.left_key;  
 END;
 --GO
 
@@ -4149,6 +4140,7 @@ BEGIN
 	declare parins int;
 	declare ici_ocat int;
 	declare afterset tinyint(1);
+	declare newlk int;
 
 	-- re-order forums removing gaps, create sort order gap for a forum.
 	declare c cursor for
@@ -4193,19 +4185,8 @@ BEGIN
 		
 		END LOOP;
         END;
-
 		close c;
-
-	end if;	
-
-   select f.ParentID, f.CategoryID, 
-   f.SortOrder, fn.left_key, 
-   fn.right_key, fn.`level`, fn.nid
-   INTO ici_OldParentID, ici_OldCategoryID, ici_OldSortOrder, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldNid
-   from {databaseSchema}.{objectQualifier}Forum  f 
-   join {databaseSchema}.{objectQualifier}forum_ns  fn 
-   on fn.ForumID = f.ForumID
-   where f.ForumID=i_ForumID;
+	end if;	  
 
      -- If this is a personal forum we should override SortOrder 
     -- if (i_IsUserForum = 1 OR ) THEN
@@ -4235,36 +4216,26 @@ BEGIN
 
   IF i_ForumID IS NOT NULL AND i_ForumID > 0 THEN 
   -- rebuild tree
+   select f.ParentID, f.CategoryID, 
+   f.SortOrder, f.left_key, 
+   f.right_key, f.`level`, f.CategoryID
+   INTO ici_OldParentID, ici_OldCategoryID, ici_OldSortOrder, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldNid
+   from {databaseSchema}.{objectQualifier}Forum  f 
+   where f.ForumID=i_ForumID;
 
- /* if (i_CategoryID != ici_OldCategoryID OR i_SortOrder != ici_OldSortOrder OR ici_OldParentID != i_ParentID)
-	then
-	set parins =  (SELECT nid from {databaseSchema}.{objectQualifier}forum_ns fn
-	join {databaseSchema}.{objectQualifier}forum f
-	on (f.ForumID = fn.ForumID and fn.ForumID > 0)
-	where f.ForumID = i_ParentID);
+  /*  if (i_CategoryID != ici_OldCategoryID OR i_SortOrder != ici_OldSortOrder OR ici_OldParentID != i_ParentID) then	
+	if (i_AdjacentForumID is not null)  then  
+    if (i_AdjacentForumMode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;
+	end if;
+	if (i_AdjacentForumMode = 2) then 
+	select right_key+1 into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;	
+	end if;
 
-	set ici_ocat = (SELECT nid from {databaseSchema}.{objectQualifier}forum_ns fn
-	join {databaseSchema}.{objectQualifier}forum f
-	on (f.ForumID = fn.ForumID and fn.ForumID > 0)
-	where f.ForumID = ici_OldParentID); */
-
-	-- call {databaseSchema}.{objectQualifier}forum_ns_before_update_func(
-	-- null, -- new_nid
-    -- i_CategoryID, -- new_tree
-	-- 0, --  new_left_key
-	-- null -- new_right_key,
-	-- null -- new_level,
-	-- parins -- new_parentid, 
-	-- null, -- new_trigger_lock_update
-	-- null, -- new_trigger_for_delete
-	-- ici_OldNid, -- old_nid
-	-- ici_OldCategoryID, -- old_tree
-	-- ici_OldLeftKey, -- old_left_key
-	-- ici_OldRightKey, -- old_right_key
-	-- ici_OldLevel, -- old_level
-	-- ici_ocat -- old_parentid
-	-- );
-	-- end if;
+    call	{databaseSchema}.{objectQualifier}forum_before_update_func(i_ForumID, i_CategoryID, newlk, null, null, i_ParentID,0,0, 
+            ici_ForumID, ici_OldCategoryID, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldParentID);
+	end if;
+	end if;  */
 	-- tree rebuilded
   UPDATE {databaseSchema}.{objectQualifier}Forum
   SET
@@ -4281,8 +4252,10 @@ BEGIN
   IsUserForum = i_IsUserForum,
   CanHavePersForums = i_CanHavePersForums
   WHERE ForumID=i_ForumID;
-
-  call {databaseSchema}.{objectQualifier}forum_ns_recreate();
+  if (i_CategoryID != ici_OldCategoryID) then
+  call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, ici_OldCategoryID);
+  end if;
+   call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, i_CategoryID);
   ELSE
   INSERT INTO {databaseSchema}.{objectQualifier}Forum(ParentID,`Name`,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,ImageURL,Styles,Flags,IsUserForum,CreatedByUserID,CreatedByUserName,CreatedByUserDisplayName,CreatedDate,CanHavePersForums)
   VALUES((CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),CONVERT(i_Name USING {databaseEncoding}),CONVERT(i_Description USING {databaseEncoding}),i_SortOrder,i_CategoryID,0,0,i_RemoteURL,i_ThemeURL,i_ImageURL,i_Styles,l_Flags,i_IsUserForum
@@ -4290,19 +4263,27 @@ BEGIN
   SET i_ForumID = LAST_INSERT_ID(); 
 
   -- rebuild tree 
-	call {databaseSchema}.{objectQualifier}forum_ns_recreate();	
-/*	set ici_nid = (COALESCE((SELECT nid from {databaseSchema}.{objectQualifier}forum_ns fn
-	join {databaseSchema}.{objectQualifier}Forum f
-	on (f.ForumID = fn.ForumID and fn.ForumID > 0)
-	where f.ForumID = i_ParentID),
-	(SELECT fn.nid from {databaseSchema}.{objectQualifier}forum_ns fn
-	where fn.CategoryID = i_CategoryID and fn.ForumID = 0)));
+	 select f.ParentID, f.CategoryID, 
+   f.SortOrder, f.left_key, 
+   f.right_key, f.`level`, f.CategoryID
+   INTO ici_OldParentID, ici_OldCategoryID, ici_OldSortOrder, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldNid
+   from {databaseSchema}.{objectQualifier}Forum  f 
+   where f.ForumID=i_ForumID;
 
-	set ici_newid = {databaseSchema}.{objectQualifier}forum_ns_before_insert_func(
-	l_BoardID, i_CategoryID, i_ForumID,
-    i_CategoryID, null, null, null, ici_nid, i_SortOrder,
-    null, null); */
-		-- tree rebuiled
+    if (i_CategoryID != ici_OldCategoryID OR i_SortOrder != ici_OldSortOrder OR ici_OldParentID != i_ParentID) then	
+	if (i_AdjacentForumID is not null)  then  
+    if (i_AdjacentForumMode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;
+	end if;
+	if (i_AdjacentForumMode = 2) then 
+	select right_key+1 into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;	
+	end if;
+
+   	call {databaseSchema}.{objectQualifier}forum_before_insert_func(ici_OldCategoryID, 
+	i_ForumID,ici_OldCategoryID, nlk, null, null, ici_OldParentID, i_SortOrder,0, 0);
+	end if;
+	end if;
+	-- tree rebuiled
   
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID)
   SELECT GroupID,i_ForumID,i_AccessMaskID

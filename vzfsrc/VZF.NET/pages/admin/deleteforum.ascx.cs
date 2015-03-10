@@ -356,6 +356,8 @@ namespace YAF.Pages.Admin
                 ForumDeleteTask.Start( this.PageContext.PageModuleID,
                     this.PageContext.PageBoardID, forumId.Value, (int)selectedForum, out errorMessage);
 
+                this.Get<IYafSession>().NntpTreeActiveNode = null;
+
                 // enable timer...
                 this.UpdateStatusTimer.Enabled = true;
 

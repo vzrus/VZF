@@ -1355,6 +1355,35 @@ begin
 end
 GO
 
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'left_key')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add [left_key] int NULL
+end
+GO
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'right_key')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add [right_key] int NULL
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'level')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add [level] int NULL
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'trigger_for_delete')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add trigger_for_delete int not null constraint [DF_{objectQualifier}Forum_TriggerDel] default (0)
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'trigger_lock_update')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add trigger_lock_update int not null constraint [DF_{objectQualifier}Forum_TriggerUpd] default (0)
+end
+GO
+
 if exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'Description')
 begin
 	ALTER TABLE [{databaseSchema}].[{objectQualifier}Forum]

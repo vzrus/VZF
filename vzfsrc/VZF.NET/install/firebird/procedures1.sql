@@ -312,15 +312,14 @@ CREATE PROCEDURE {objectQualifier}BOARD_CREATE(
  
   /*Forum*/
   SELECT NEXT VALUE FOR SEQ_{objectQualifier}FORUM_FORUMID FROM RDB$DATABASE INTO :l_ForumID;       
-  INSERT INTO {objectQualifier}FORUM(FORUMID,CATEGORYID,NAME,DESCRIPTION,SORTORDER,NUMTOPICS,NUMPOSTS,FLAGS)
-  VALUES(:l_ForumID,:l_CategoryID,'Test Forum','A test forum',1,0,0,4);
+  INSERT INTO {objectQualifier}FORUM(FORUMID,CATEGORYID,NAME,DESCRIPTION,SORTORDER,NUMTOPICS,NUMPOSTS,FLAGS,LEFT_KEY,RIGHT_KEY,"LEVEL")
+  VALUES(:l_ForumID,:l_CategoryID,'Test Forum','A test forum',1,0,0,4,1,2,0);
   /* ForumAccess */
   INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID) VALUES(:L_GROUPIDADMIN,:l_ForumID,:L_ACCESSMASKIDADMIN);
   INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID) VALUES(:L_GROUPIDGUEST,:l_ForumID,:L_ACCESSMASKIDREADONLY);
   INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID) VALUES(:L_GROUPIDMEMBER,:l_ForumID,:L_ACCESSMASKIDMEMBER);
   SELECT :L_BOARDID FROM RDB$DATABASE INTO :OUT_BOARDID ;
-  SUSPEND;
-  EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
+  SUSPEND; 
   END;
 --GO
 
@@ -1904,24 +1903,26 @@ ici_LastPosted = :I_UTCTIMESTAMP;
  IF (:I_PARENTID IS NOT NULL) THEN
  begin
  SELECT n."LEVEL", n.left_key + 1, n.right_key - 1 
- from {objectQualifier}forum_ns n 
- where n.ForumID = :I_PARENTID
+ from {objectQualifier}FORUM n 
+ where n.FORUMID = :I_PARENTID
  INTO :ici_lvl, :ici_lk, :ici_rk;
  end
  -- thiese are forums from a category
  IF (:I_PARENTID IS NULL AND :I_CATEGORYID > 0) THEN
  begin
  SELECT 0, min(n.left_key), max(n.right_key) 
- from {objectQualifier}forum_ns n 
- where n.tree = :I_CATEGORYID
+ from {objectQualifier}FORUM n 
+ where n.CATEGORYID = :I_CATEGORYID
   INTO :ici_lvl, :ici_lk, :ici_rk;
  end
  -- this is a board view
  IF (:I_PARENTID IS NULL AND :I_CATEGORYID IS NULL) THEN
  begin 
   SELECT 0, min(n.left_key), max(n.right_key)
-  from {objectQualifier}forum_ns n 
-  where n.BoardID = :I_BOARDID
+  from {objectQualifier}FORUM n 
+  join {objectQualifier}CATEGORY c 
+  on c.CATEGORYID = n.CATEGORYID
+  where c.BoardID = :I_BOARDID
   INTO :ici_lvl, :ici_lk, :ici_rk;
  end
 
@@ -1968,21 +1969,18 @@ ici_LastPosted = :I_UTCTIMESTAMP;
         {objectQualifier}CATEGORY a
         join {objectQualifier}FORUM b 
 		on b.CATEGORYID=a.CATEGORYID
-		join {objectQualifier}forum_ns fns	
-		on (fns.forumid = b.FORUMID and fns."LEVEL" >= :ici_lvl - 1)
-        join {objectQualifier}ACTIVEACCESS x 
+		join {objectQualifier}ACTIVEACCESS x 
 		on (x.FORUMID=b.FORUMID and x.USERID = :I_USERID)
         left outer join {objectQualifier}TOPIC t 
 		ON t.TopicID = (select * from {objectQualifier}FORUM_LASTTOPIC(b.ForumID, :I_USERID,b.LastTopicID,b.LastPosted))
     where 		
-        (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and
-		(:I_CATEGORYID is null or fns.tree = :I_CATEGORYID) and
+        (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and	
+		b."LEVEL" >= :ici_lvl - 1 and
 		(BIN_AND(b.FLAGS,2)=0 OR x.READACCESS = 1) and 
-		fns.left_key >= :ici_lk and fns.right_key <= :ici_rk 
+		b.left_key >= :ici_lk and b.right_key <= :ici_rk 		
 		order by
-	    fns.left_key,  
-        a.SORTORDER,
-        b.SORTORDER
+	    a.SortOrder,
+	    b.left_key  
         INTO		
          :"CategoryID",
          :"Category",

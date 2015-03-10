@@ -236,6 +236,8 @@ namespace YAF.Pages.Admin
 
             // clear active discussions cache..
             this.Get<IDataCache>().Remove(Constants.Cache.ForumActiveDiscussions);
+
+            this.Get<IYafSession>().NntpTreeActiveNode = null;
         }
 
         /// <summary>
@@ -247,7 +249,7 @@ namespace YAF.Pages.Admin
         {
                var errorMessage = string.Empty;
 
-               int? selectedForum = null;
+               int? categoryToMoveForums = null;
 
                if (Config.LargeForumTree)             
                {
@@ -264,7 +266,7 @@ namespace YAF.Pages.Admin
 
                        if (valArr.Length == 2)
                        {
-                           selectedForum = valArr[1].ToType<int>();
+                           categoryToMoveForums = valArr[1].ToType<int>();
                        }
                        else
                        {                           
@@ -276,7 +278,7 @@ namespace YAF.Pages.Admin
 
                 // Simply Delete the Category if it's empty.
                 var categoryId = this.GetQueryStringAsInt("fa");
-                if (CategoryDeleteTask.Start(YafContext.Current.PageModuleID, categoryId.Value, selectedForum, out errorMessage))
+                if (CategoryDeleteTask.Start(YafContext.Current.PageModuleID, categoryId.Value, categoryToMoveForums, out errorMessage))
                 {
                     this.ClearCaches();                       
                 }

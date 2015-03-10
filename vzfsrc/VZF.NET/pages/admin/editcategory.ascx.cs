@@ -226,7 +226,7 @@ namespace YAF.Pages.Admin
         CategorySaveTask.Start(PageContext.PageModuleID, this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder, this.CanHavePersForums.Checked, adjacentCategoryId, adjacentCategoryMode, out failureMessage);
 
         // remove category cache...
-        this.Get<IDataCache>().Remove(Constants.Cache.ForumCategory);
+        this.Get<IDataCache>().Remove(Constants.Cache.ForumCategory);     
 
         // redirect
         YafBuildLink.Redirect(ForumPages.admin_forums);

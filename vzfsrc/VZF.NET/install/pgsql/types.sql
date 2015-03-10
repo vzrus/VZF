@@ -2507,7 +2507,8 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getch_user_rt AS
 CREATE TYPE {databaseSchema}.{objectQualifier}forum_cataccess_actuser_rt AS
 (
 "CategoryID"  integer,
-"CategoryName" varchar(255)
+"CategoryName" varchar(255),
+"SortOrder" integer
 );
 --GO
 

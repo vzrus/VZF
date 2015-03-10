@@ -24,14 +24,6 @@ IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{data
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_getch_accgroup]
 GO
 
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_recreate]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_recreate]
-GO
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_recreate_ini]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_recreate_ini]
-GO
-
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_listpath]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_listpath]
 GO
@@ -121,7 +113,8 @@ FROM
 [{databaseSchema}].[{objectQualifier}board] b 
 join [{databaseSchema}].[{objectQualifier}category] c on b.boardid = c.boardid  
 JOIN [{databaseSchema}].[{objectQualifier}Forum]  f ON (c.CategoryID = f.CategoryID and f.CategoryID = @CategoryID and f.parentid is null)
-JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] access ON (f.forumid = access.forumid and access.userid =@userid)  
+JOIN [{databaseSchema}].[{objectQualifier}ActiveAccess] access ON (f.forumid = access.forumid and access.userid =@userid) 
+WHERE  (access.readaccess > 0 or (access.readaccess = 0 and (f.flags & 2) != 2))
 ORDER BY f.left_key;
 END;
 go
@@ -154,7 +147,8 @@ FROM
 [{databaseSchema}].[{objectQualifier}board] b 
 join [{databaseSchema}].[{objectQualifier}category] c on b.boardid = c.boardid  
 JOIN [{databaseSchema}].[{objectQualifier}Forum]  f ON (c.CategoryID = f.CategoryID and f.CategoryID = @CategoryID and f.parentid is null)
-JOIN [{databaseSchema}].[{objectQualifier}vaccess_combo] access ON (f.forumid = access.forumid and access.userid =@userid)  
+JOIN [{databaseSchema}].[{objectQualifier}vaccess_combo] access ON (f.forumid = access.forumid and access.userid =@userid)
+WHERE  (access.readaccess > 0 or (access.readaccess = 0 and (f.flags & 2) != 2))  
 ORDER BY f.left_key;
 END;
 go
@@ -171,7 +165,7 @@ WHERE forumid = @forumid;
  SELECT forumid, parentid, [level]
 FROM [{databaseSchema}].[{objectQualifier}Forum] 
 where CategoryID = @ici_categoryid 
-order by left_key,categoryid, sortorder;
+order by left_key,sortorder;
 END; 
 GO
 
@@ -191,60 +185,8 @@ SELECT forumid,
 	   ([level] - 2) as [Level] 
 	   FROM 
 	  [{databaseSchema}].[{objectQualifier}Forum]  
-	   WHERE CategoryID = @ici_categoryid and left_key <= @ici_left_key AND right_key >= @ici_right_key ORDER BY left_key;					 
+	   WHERE CategoryID = @ici_categoryid and left_key <= @ici_left_key AND right_key >= @ici_right_key 
+	   ORDER BY left_key;					 
 END;
 GO
 
--- Initialize all this
-CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_recreate]
-AS
-BEGIN
-exec [{databaseSchema}].[{objectQualifier}create_or_check_ns_tables];
-exec [{databaseSchema}].[{objectQualifier}fillin_or_check_ns_tables];
-END;  
-
-go 
-
-CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_recreate_ini]
-AS
-BEGIN
--- if  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns]') and type in (N'U'))
--- DROP TABLE [{databaseSchema}].[{objectQualifier}forum_ns];
-
-
--- if (select count(1) from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns]') 
--- and type in (N'U')) <= 0 or ( ( select count(1) from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns]') and type in (N'U')) > 0 and (select count(1) from [{databaseSchema}].[{objectQualifier}forum_ns]) < (select count(1) from [{databaseSchema}].[{objectQualifier}forum]))
-if exists (select top 1 1 from [{databaseSchema}].[{objectQualifier}Forum] where left_key is null or left_key= 0)
-exec ('[{databaseSchema}].[{objectQualifier}forum_ns_recreate]');
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}create_or_check_ns_tables]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}create_or_check_ns_tables]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}lock_ns_tree]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}lock_ns_tree]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_before_insert_func]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_before_insert_func]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_after_delete_2_func]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_after_delete_2_func]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_after_delete_func]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_after_delete_func]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_before_update_func]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_before_update_func]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}_tmp_ns_sort]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}_tmp_ns_sort]
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}fillin_or_check_ns_tables]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}fillin_or_check_ns_tables]
-
-if  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns]') and type in (N'U'))
-DROP TABLE [{databaseSchema}].[{objectQualifier}forum_ns];
-
-END;  
-go 
-
-exec [{databaseSchema}].[{objectQualifier}forum_ns_recreate_ini];

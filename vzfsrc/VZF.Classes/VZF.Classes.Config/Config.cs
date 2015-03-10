@@ -597,7 +597,7 @@ namespace YAF.Classes
         {
             get
             {
-                return GetConfigValueAsBool("VZF.LargeForumTree", false);
+                return GetConfigValueAsBool("VZF.LargeForumTree", true);
             }
         }
 

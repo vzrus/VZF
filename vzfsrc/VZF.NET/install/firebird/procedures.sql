@@ -732,7 +732,7 @@ begin
         values((SELECT NEXT VALUE FOR SEQ_{objectQualifier}ACCESSMASK_ACCESSMASKID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_FLAGS,:I_SORTORDER,:I_ISUSERMASK,:I_ISADMINMASK,:I_USERID,:ICI_USERNAME, :ICI_USERDISPLAYNAME,:I_UTCTIMESTAMP)
         RETURNING ACCESSMASKID INTO :I_ACCESSMASKID;
     else
-        update {objectQualifier}ACCESSMASK set
+        UPDATE {objectQualifier}ACCESSMASK set
             NAME			= :I_NAME,
             FLAGS			= :I_FLAGS,
             SORTORDER       = :I_SORTORDER,
@@ -878,7 +878,7 @@ CREATE PROCEDURE  {objectQualifier}ATTACHMENT_DELETE(I_ATTACHMENTID integer)
 CREATE PROCEDURE  {objectQualifier}ATTACHMENT_DOWNLOAD(I_ATTACHMENTID integer)
 as
 begin
-    update {objectQualifier}ATTACHMENT 
+    UPDATE {objectQualifier}ATTACHMENT 
     set DOWNLOADS=DOWNLOADS+1 
     WHERE ATTACHMENTID=:I_ATTACHMENTID;
 end;
@@ -1237,7 +1237,7 @@ END;
 --GO
 /* CREATE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST(I_FORUMID INTEGER) as
 begin
-    update {objectQualifier}FORUM set
+    UPDATE {objectQualifier}FORUM set
         LASTPOSTED = (select FIRST  1 y.POSTED 
         from {objectQualifier}TOPIC x 
         join {objectQualifier}MESSAGE y 
@@ -1649,15 +1649,14 @@ DECLARE ici_LastPosted TIMESTAMP;
 DECLARE ici_LastTopicID_Check INTEGER;
 DECLARE ici_LastMessageID_Check INTEGER;
 DECLARE itmpTopicID INTEGER;
-declare i_old_left_key INTEGER;
-DECLARE i_old_right_key INTEGER;
-DECLARE i_old_level INTEGER;
-DECLARE i_old_parentid INTEGER;
-
+DECLARE old_categoryid int; 
+DECLARE old_left_key int; 
+DECLARE old_right_key int;
+DECLARE old_level int; 
+DECLARE old_parentid int;
 BEGIN       
-      
         
-/*Here we change Last things in forums */
+/* Here we change Last things in forums */
 SELECT LASTMESSAGEID
 FROM {objectQualifier}FORUM
 WHERE FORUMID = :I_FORUMID
@@ -1675,9 +1674,7 @@ INTO :ici_LastMessageID;
 
         UPDATE {objectQualifier}ACTIVE 
         SET FORUMID=NULL 
-        WHERE FORUMID=:I_FORUMID;
-
-        
+        WHERE FORUMID=:I_FORUMID;        
 
        /* DELETE  {objectQualifier}WATCHTOPIC,{objectQualifier}TOPIC
         FROM {objectQualifier}WATCHTOPIC, {objectQualifier}TOPIC
@@ -1744,7 +1741,7 @@ INTO :ici_LastMessageID;
 
         DELETE FROM {objectQualifier}FORUM
         WHERE       FORUMID = :I_FORUMID;
-        /* Forum on update */
+        /* Forum on UPDATE */
         SELECT PARENTID FROM  {objectQualifier}FORUM
         WHERE FORUMID = :I_FORUMID
         INTO :ici_ParentID;
@@ -1767,21 +1764,24 @@ INTO :ici_LastMessageID;
         EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ParentID;
         END        
         END 
-		if (:I_REBUILDTREE = 1) THEN
-	begin
+   
 	
-	select left_key,right_key,"LEVEL", parentid
-	from {objectQualifier}forum_ns where tree = 0
-	INTO :i_old_left_key, :i_old_right_key, :i_old_level, :i_old_parentid;
-
-	-- if (:i_MoveChildren = 1 ) THEN
-	-- begin
+	if (I_REBUILDTREE = 1) THEN
+	begin
+		
+	delete from {objectQualifier}Forum where FORUMID = :I_FORUMID;	
+	if (I_MOVECHILDREN = 1) THEN
+	begin
+	select  categoryid, left_key, right_key, "LEVEL", parentid
+	from {objectQualifier}FORUM where FORUMID = :I_FORUMID
+	INTO :old_categoryid, :old_left_key, :old_right_key,:old_level,:old_parentid; 
 	-- move children 1 level higher before deleting a forum
-	-- EXECUTE PROCEDURE {objectQualifier}FORUM_NS_AFTER_DEL2_FUNC  0, :i_old_left_key, :i_old_right_key, :i_old_level, :i_old_parentid;
-	-- end	
-	-- EXECUTE PROCEDURE {objectQualifier}FORUM_NS_AFTER_DELETE_FUNC 0, :i_old_left_key, :i_old_right_key, :i_old_level, :i_old_parentid;
-	EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
+	  EXECUTE PROCEDURE {objectQualifier}FORUM_AFTER_DEL2_FUNC :old_categoryid, :old_left_key, :old_right_key, :old_level, :old_parentid;
+	end	
+	  EXECUTE PROCEDURE {objectQualifier}FORUM_AFTER_DEL_FUNC :old_categoryid, :old_left_key, :old_right_key, :old_level, :old_parentid;
 	end
+	else
+	  delete from {objectQualifier}Forum where FORUMID = :I_FORUMID;	
 		
     END;
 --GO
@@ -1855,7 +1855,7 @@ INTO :ici_LastMessageID;
   WHERE       BOARDID = :I_BOARDID;
   DELETE FROM {objectQualifier}BOARD
   WHERE       BOARDID = :I_BOARDID;
-  EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
+  -- no need to rebuild tree	
   END;
 --GO
 
@@ -1904,11 +1904,11 @@ BEGIN
     -- move the topic 
      UPDATE {objectQualifier}TOPIC SET FORUMID = :I_FORUMID WHERE TOPICID = :I_TOPICID;
  
-    -- update last posts 
+    -- UPDATE last posts 
      EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_OldForumID);
      EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATELASTPOST(:I_FORUMID);
      
-    -- update stats 
+    -- UPDATE stats 
       EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATESTATS (:ici_OldForumID);
       EXECUTE PROCEDURE  {objectQualifier}FORUM_UPDATESTATS (:I_FORUMID);     
 END;
@@ -1929,10 +1929,10 @@ DECLARE  itmpTopicID INTEGER;
 
 BEGIN       
         -- Maybe an idea to use cascading foreign keys instead? Too bad they don't work on MS SQL 7.0...
-    update  {objectQualifier}FORUM set LastMessageID=null,LastTopicID = NULL WHERE FORUMID=:I_FORUMOLDID;
-    update  {objectQualifier}ACTIVE set FORUMID=:I_FORUMNEWID WHERE FORUMID=:I_FORUMOLDID;
-    update  {objectQualifier}NNTPFORUM set FORUMID=:I_FORUMNEWID WHERE FORUMID=:I_FORUMOLDID;
-    update  {objectQualifier}WATCHFORUM set FORUMID=:I_FORUMNEWID WHERE FORUMID=:I_FORUMOLDID;
+    UPDATE  {objectQualifier}FORUM set LastMessageID=null,LastTopicID = NULL WHERE FORUMID=:I_FORUMOLDID;
+    UPDATE  {objectQualifier}ACTIVE set FORUMID=:I_FORUMNEWID WHERE FORUMID=:I_FORUMOLDID;
+    UPDATE  {objectQualifier}NNTPFORUM set FORUMID=:I_FORUMNEWID WHERE FORUMID=:I_FORUMOLDID;
+    UPDATE  {objectQualifier}WATCHFORUM set FORUMID=:I_FORUMNEWID WHERE FORUMID=:I_FORUMOLDID;
     delete from {objectQualifier}FORUMREADTRACKING WHERE FORUMID = :I_FORUMOLDID;
   
    SELECT LASTMESSAGEID
@@ -1962,7 +1962,10 @@ BEGIN
 
         DELETE FROM {objectQualifier}FORUM
         WHERE       FORUMID = :I_FORUMOLDID;
-        /* Forum on update */
+
+		EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE NULL, NULL;
+
+        /* Forum on UPDATE */
         SELECT PARENTID FROM  {objectQualifier}FORUM
         WHERE FORUMID = :I_FORUMNEWID
         INTO :ici_ParentID;
@@ -2066,16 +2069,326 @@ INTO
 END;
 --GO
 
+CREATE PROCEDURE  {objectQualifier}FORUM_SAVE(
+    I_FORUMID 		INTEGER,
+    I_CATEGORYID	INTEGER,
+    I_PARENTID		INTEGER,
+    I_NAME			VARCHAR(128),
+    I_DESCRIPTION	VARCHAR(255),
+    I_SORTORDER		SMALLINT,
+    I_LOCKED		BOOL,
+    I_HIDDEN		BOOL,
+    I_ISTEST		BOOL,
+    I_MODERATED		BOOL,
+    I_REMOTEURL		VARCHAR(128),
+    I_THEMEURL		VARCHAR(128),
+    I_IMAGEURL      VARCHAR(128),
+    I_STYLES        VARCHAR(255),
+    I_ACCESSMASKID	INTEGER,
+    I_USERID	    INTEGER,
+    I_ISUSERFORUM   BOOL,
+    I_CANHAVEPERSFORUMS BOOL,
+	I_ADJACENTFORUMID INTEGER,
+	I_ADJACENTFORUMMODE INTEGER,
+    I_UTCTIMESTAMP  TIMESTAMP
+ )
+ RETURNS (o_ForumID INTEGER)
+ AS	
+     DECLARE L_FLAGS INTEGER DEFAULT 0;
+	 DECLARE I_BOARDID INTEGER;
+     DECLARE l_UserName VARCHAR(255);
+     DECLARE l_UserDisplayName VARCHAR(255);
+     DECLARE l_BoardID INTEGER;
+	 DECLARE I_OldParentID	INTEGER;
+	 DECLARE I_OLDCATEGORYID	INTEGER;
+	 DECLARE I_OldSortOrder		INTEGER;
+	 DECLARE l_ForumId INTEGER;
+	 declare ICI_CNTR INTEGER default 0;
+	 declare I_OldRightKey	INTEGER;
+	  declare I_OldLeftKey	INTEGER;
+	declare I_OldLevel	INTEGER;
+	declare I_OldNid	INTEGER;
+	declare I_parins INTEGER;
+	declare ici_ocat INTEGER;
+	declare ici_newid INTEGER;
+	declare ici_nid INTEGER;
+	DECLARE AFTERSET SMALLINT DEFAULT 0;	
+	declare newlk int;
+ 
+BEGIN 	
+     -- VERIFY NEW SORT ORDER IS OK TO RESORE TREE IF REQUIRED
+	 IF (I_ADJACENTFORUMID IS NOT NULL) THEN
+	 BEGIN
+	  -- over  	
+	              if (I_ADJACENTFORUMMODE = 3) THEN	
+				  begin	               
+		               i_sortorder = 0;
+					   ici_cntr = 1;
+		          end  
+	 FOR Select f.FORUMID from {objectQualifier}FORUM f
+		   join {objectQualifier}CATEGORY c
+		   on c.CATEGORYID = f.CATEGORYID
+		   where c.CATEGORYID = :I_CATEGORYID and (:I_PARENTID is null or f.PARENTID = :I_PARENTID)   
+		   order by c.SORTORDER, f.SORTORDER, f.FORUMID
+	     INTO :l_ForumId	
+	     DO
+          BEGIN
+               if (:I_ADJACENTFORUMID = :l_ForumId) THEN 
+	          	begin
+		        -- before
+		             if (:I_ADJACENTFORUMMODE = 1) THEN
+		               begin
+		               I_SORTORDER = :ICI_CNTR;
+		               ICI_CNTR = :ICI_CNTR + 1;
+		               end
+		       -- after
+		            if (:I_ADJACENTFORUMMODE = 2) THEN
+		               begin
+		               I_SORTORDER = :ICI_CNTR + 1;	
+					   AFTERSET = 1;
+		               end
+		       end 
+        -- this is after gap
+		if (I_SORTORDER = :ICI_CNTR) then
+		begin
+		 ICI_CNTR = :ICI_CNTR + 1;
+		 AFTERSET = 0;
+		end	  
+		
+		UPDATE	{objectQualifier}FORUM
+		 SET SORTORDER = :ICI_CNTR where ForumID = :l_ForumId;
+		 ICI_CNTR = :ICI_CNTR + 1;
+		
+  END
+    END
+
+  
+    IF (:I_LOCKED<>0) THEN L_FLAGS = BIN_OR(L_FLAGS, 1);
+    IF (:I_HIDDEN<>0) THEN  L_FLAGS = BIN_OR(L_FLAGS, 2);
+    IF (:I_ISTEST<>0) THEN  L_FLAGS = BIN_OR(L_FLAGS, 4);
+    IF (:I_MODERATED<>0) THEN  L_FLAGS = BIN_OR(L_FLAGS, 8);
+    IF (:I_FORUMID IS NULL) THEN I_FORUMID = 0;
+    IF (:I_PARENTID = 0) THEN I_PARENTID = null;
+	
+    IF (:I_USERID IS NOT NULL) THEN
+    BEGIN	
+    SELECT FIRST 1 Name,  DisplayName FROM {objectQualifier}USER WHERE USERID = :i_UserID
+    INTO :l_UserName, :l_UserDisplayName;
+    END
+    -- guests should not create forums?
+    ELSE
+    BEGIN 
+    SELECT BoardID FROM {objectQualifier}CATEGORY WHERE CATEGORYID = :I_CATEGORYID
+    INTO :l_BoardID;
+    SELECT FIRST 1 Name, DisplayName FROM {objectQualifier}USER WHERE BOARDID = :l_BoardID and BIN_AND(Flags,4) = 4  ORDER BY Joined DESC
+    INTO :l_UserName, :l_UserDisplayName;
+    END
+	SELECT BoardID FROM {objectQualifier}Category WHERE CategoryID = :I_CATEGORYID
+	INTO :I_BOARDID ;
+  IF (:I_FORUMID IS NOT NULL AND :I_FORUMID > 0) THEN
+  BEGIN
+  -- GET OLD CHECK VALUES BEFORE UPDATE
+    select ParentID, CategoryID, 
+   SortOrder, left_key, 
+   right_key,"LEVEL"
+   from {objectQualifier}Forum   
+   where ForumID= :I_FORUMID
+   into :I_OldParentID, :I_OLDCATEGORYID, 
+   :I_OldSortOrder, :I_OldLeftKey, 
+   :I_OldRightKey,:I_OldLevel;
+   
+   if (:I_CATEGORYID != :I_OLDCATEGORYID OR :I_SORTORDER != :I_OldSortOrder OR :I_OldParentID != :I_PARENTID) THEN
+	begin	
+	
+	if (I_AdjacentForumID is not null) THEN
+    begin 
+    if (I_AdjacentForumMode = 1) THEN 
+	select left_key from {objectQualifier}Forum where ForumID = :I_AdjacentForumID
+	INTO :newlk;
+	if (I_AdjacentForumMode = 2) THEN 
+	select right_key+1  from {objectQualifier}Forum where ForumID = :I_AdjacentForumID
+	INTO :newlk;			
+
+/*	EXECUTE PROCEDURE {objectQualifier}forum_before_update_func 
+	:I_ForumID, :I_CategoryID, :newlk, null, null, :I_ParentID,0,0, 
+    :I_ForumID, :I_OLDCATEGORYID, :I_OldLeftKey, :I_OldRightKey, :I_OldLevel, :I_OldParentID; */
+	END
+	END
+	
+
+  UPDATE {objectQualifier}FORUM
+  SET
+  PARENTID=:I_PARENTID,
+  NAME= :I_NAME,
+  DESCRIPTION=:I_DESCRIPTION,
+  SORTORDER = (CASE WHEN :I_ADJACENTFORUMMODE = -1 THEN SORTORDER ELSE :I_SORTORDER END),
+  CATEGORYID=:I_CATEGORYID,
+  REMOTEURL = :I_REMOTEURL,
+  THEMEURL = :I_THEMEURL,
+  FLAGS = :L_FLAGS,
+  IMAGEURL = :I_IMAGEURL,
+  STYLES = :I_STYLES,
+  ISUSERFORUM = :I_ISUSERFORUM,
+  CANHAVEPERSFORUMS =:I_CANHAVEPERSFORUMS
+  WHERE FORUMID=:I_FORUMID;
+
+  	if (I_OLDCATEGORYID <> I_CATEGORYID) then
+		EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE null, :I_OLDCATEGORYID;
+
+		EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE null,:I_CATEGORYID;
+  END
+  ELSE
+  BEGIN
+  -- use an existing trigger delete it
+  SELECT NEXT VALUE FOR SEQ_{objectQualifier}FORUM_FORUMID FROM RDB$DATABASE INTO :I_FORUMID;
+  INSERT INTO {objectQualifier}FORUM(FORUMID,PARENTID,NAME,DESCRIPTION,
+  SORTORDER,CATEGORYID,NUMTOPICS,NUMPOSTS,REMOTEURL,THEMEURL,FLAGS, IMAGEURL,
+  STYLES, ISUSERFORUM,CREATEDBYUSERID,CREATEDBYUSERNAME,CREATEDBYUSERDISPLAYNAME,
+  CREATEDDATE,CANHAVEPERSFORUMS)
+  VALUES(:I_FORUMID,:I_PARENTID,:I_NAME,:I_DESCRIPTION,
+  :I_SORTORDER,:I_CATEGORYID,0,0,:I_REMOTEURL,:I_THEMEURL,:L_FLAGS,:I_IMAGEURL,
+  :I_STYLES,:I_ISUSERFORUM,  :I_USERID,:l_UserName, :l_UserDisplayName,
+  :I_UTCTIMESTAMP,:I_CANHAVEPERSFORUMS) RETURNING FORUMID INTO :I_FORUMID; 
+
+  -- rebuild tree 
+		
+  select ParentID, CategoryID, 
+   SortOrder, left_key, 
+   right_key,"LEVEL"
+   from {objectQualifier}Forum   
+   where ForumID= :I_FORUMID
+   into :I_OldParentID, :I_OLDCATEGORYID, 
+   :I_OldSortOrder, :I_OldLeftKey, 
+   :I_OldRightKey,:I_OldLevel;   
+   
+	
+	if (I_AdjacentForumID is not null) THEN
+    begin 
+    if (I_AdjacentForumMode = 1) THEN 
+	select left_key from {objectQualifier}Forum where ForumID = :I_AdjacentForumID
+	INTO :newlk;
+	if (I_AdjacentForumMode = 2) THEN 
+	select right_key+1  from {objectQualifier}Forum where ForumID = :I_AdjacentForumID
+	INTO :newlk;	
+
+	EXECUTE PROCEDURE {objectQualifier}forum_before_insert_func 
+	:I_OLDCATEGORYID, :I_FORUMID, :I_OLDCATEGORYID, :newlk, null, null, :I_OldParentID, :I_OldSortOrder,0, 0 ;
+	END
+
+  INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID)
+  SELECT GROUPID,(SELECT :I_FORUMID FROM RDB$DATABASE),(SELECT :I_ACCESSMASKID FROM RDB$DATABASE)
+  FROM {objectQualifier}GROUP
+  WHERE BOARDID IN (SELECT BOARDID  from {objectQualifier}CATEGORY
+  WHERE CATEGORYID=:I_CATEGORYID);
+  END
+ 
+    if (exists (select first 1 1 from {objectQualifier}FORUMHISTORY WHERE FORUMID = :I_FORUMID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
+    begin
+    UPDATE {objectQualifier}FORUMHISTORY set 
+           CHANGEDUSERID = :I_USERID,	
+           CHANGEDUSERNAME = :l_UserName,
+           CHANGEDDISPLAYNAME = :l_UserDisplayName
+        WHERE ForumID=:I_FORUMID AND CHANGEDDATE = :I_UTCTIMESTAMP ;
+    end
+    else
+    begin
+    INSERT INTO {objectQualifier}FORUMHISTORY(FORUMID, CHANGEDUSERID,CHANGEDUSERNAME,CHANGEDDISPLAYNAME,CHANGEDDATE)
+    VALUES (:I_FORUMID,:I_USERID,:l_UserName,:l_UserDisplayName,:I_UTCTIMESTAMP);
+    end
+  o_ForumID=:I_FORUMID;
+  SUSPEND; 
+  END;
+--GO
+
 CREATE  PROCEDURE {objectQualifier}CATEGORY_DELETE(
                 I_CATEGORYID INTEGER, I_NEWCATEGORYID INTEGER)
                 RETURNS(OUT_FLAG INTEGER)
-                AS                
-BEGIN
-         if (I_NEWCATEGORYID is not null) then
-		 begin
-	         update {objectQualifier}FORUM set CATEGORYID = :I_NEWCATEGORYID where CATEGORYID = :I_CATEGORYID;
-		 end 
+                AS  
+DECLARE I_FORUMID INTEGER;	
+DECLARE I_PARENTID INTEGER;	
+DECLARE I_NAME 	VARCHAR(255);
+DECLARE I_DESCRIPTION VARCHAR(255);
+DECLARE I_SORTORDER	 SMALLINT DEFAULT 0;
+DECLARE I_FLAGS		INTEGER;
+DECLARE I_LOCKED bool;
+DECLARE I_HIDDEN		bool;
+DECLARE I_NOCOUNT		bool;
+DECLARE I_MODERATED		bool;
+DECLARE I_REMOTEURL		VARCHAR(255);
+DECLARE I_THEMEURL		VARCHAR(255);
+DECLARE I_IMAGEURL      VARCHAR(255);
+DECLARE I_STYLES        VARCHAR(255);
+DECLARE I_USERID	    INTEGER;
+DECLARE I_ISUSERFORUM   BOOL;
+DECLARE I_CANHAVEPERSFORUMS BOOL;
+DECLARE	I_ADJACENTFORUMID INTEGER;
+DECLARE LAST_SORTORDER INTEGER;
+DECLARE	I_CREATEDDATE TIMESTAMP; 
+DECLARE o_ForumID INTEGER;
+BEGIN 
 
+         if (:I_NEWCATEGORYID is not null) then
+		 begin         
+
+			 SELECT FIRST 1 FORUMID, SORTORDER
+			 FROM {objectQualifier}FORUM WHERE CATEGORYID = :I_CATEGORYID ORDER BY SORTORDER DESC
+			 INTO :I_ADJACENTFORUMID, :LAST_SORTORDER;
+
+			 FOR SELECT FORUMID,PARENTID,NAME,DESCRIPTION,SORTORDER,
+			 FLAGS,REMOTEURL,THEMEURL,IMAGEURL,STYLES
+			 ,CREATEDBYUSERID,ISUSERFORUM,CANHAVEPERSFORUMS,CREATEDDATE 
+			 FROM {objectQualifier}FORUM WHERE CATEGORYID = :I_CATEGORYID ORDER BY PARENTID, SORTORDER
+			 INTO
+			 :I_FORUMID,
+			 :I_PARENTID,
+			 :I_NAME,
+			 :I_DESCRIPTION,
+             :I_SORTORDER,
+			 :I_FLAGS,
+			 :I_REMOTEURL,
+			 :I_THEMEURL,
+			 :I_IMAGEURL,
+			 :I_STYLES,
+			 :I_USERID,
+			 :I_ISUSERFORUM,
+			 :I_CANHAVEPERSFORUMS,			
+			 :I_CREATEDDATE
+			 DO
+			 BEGIN	
+			 select CASE sign(BIN_AND(:I_FLAGS, 1)) when 1 THEN 1 ELSE 0 end from rdb$database
+			 into :I_LOCKED;
+			  select CASE sign(BIN_AND(:I_FLAGS, 2)) when 1 THEN 1 ELSE 0 end from rdb$database
+			 into :I_HIDDEN;
+			  select CASE sign(BIN_AND(:I_FLAGS, 4)) when 1 THEN 1 ELSE 0 end from rdb$database
+			 into :I_NOCOUNT;
+			  select CASE sign(BIN_AND(:I_FLAGS, 8)) when 1 THEN 1 ELSE 0 end from rdb$database
+			 into :I_MODERATED;			 
+			
+			 IF (I_PARENTID IS NULL) THEN I_SORTORDER = :LAST_SORTORDER + 1;
+			 		 
+			 EXECUTE PROCEDURE  {objectQualifier}FORUM_SAVE :I_FORUMID, :I_NEWCATEGORYID,:I_PARENTID,
+			 :I_NAME,
+			 :I_DESCRIPTION,
+             :I_SORTORDER,
+			 :I_LOCKED,
+			 :I_HIDDEN,
+			 :I_NOCOUNT,
+			 :I_MODERATED,
+			 :I_REMOTEURL,
+			 :I_THEMEURL,
+			 :I_IMAGEURL,
+			 :I_STYLES,
+			  null,
+			 :I_USERID,
+			 :I_ISUSERFORUM,
+			 :I_CANHAVEPERSFORUMS,
+			 :I_ADJACENTFORUMID,
+			 -- INSERT AFTER A LAST FORUM IN A CATEGORY
+			 2,
+			 :I_CREATEDDATE RETURNING_VALUES :o_ForumID;			 			
+	         END
+	    END	
+		  
         IF (EXISTS (SELECT 1
                    FROM   {objectQualifier}FORUM
                    WHERE  CATEGORYID = :I_CATEGORYID)) THEN       
@@ -2084,8 +2397,7 @@ BEGIN
             DELETE FROM {objectQualifier}CATEGORY
             WHERE       CATEGORYID = :I_CATEGORYID;
              OUT_FLAG = 1;        
-       SUSPEND;
-	   EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
+       SUSPEND;	   
     END;
 --GO
 
@@ -2326,7 +2638,7 @@ BEGIN
 		then
 		ICI_CNTR = :ICI_CNTR + 1;
 		
-		update	{objectQualifier}CATEGORY
+		UPDATE	{objectQualifier}CATEGORY
 		 SET SORTORDER = :ICI_CNTR where CATEGORYID = :ici_tmp;
 		 ICI_CNTR = :ICI_CNTR + 1;		
   END	
@@ -2362,10 +2674,6 @@ VALUES     (:"CategoryID",:I_BOARDID,
 :I_SORTORDER,:I_CANHAVEPERSFORUMS);
 I_CATEGORYID = "CategoryID";
 END
-IF (:I_SORTORDER != :I_OldSortOrder OR :I_OLDBOARDID != :I_BOARDID or :I_CATEGORYID > 0) THEN
-	BEGIN
-	EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
-	END  
 END;
 --GO
 
@@ -3004,236 +3312,7 @@ CREATE PROCEDURE  {objectQualifier}FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID
  END;
 --GO
 
-CREATE PROCEDURE  {objectQualifier}FORUM_SAVE(
-    I_FORUMID 		INTEGER,
-    I_CATEGORYID	INTEGER,
-    I_PARENTID		INTEGER,
-    I_NAME			VARCHAR(128),
-    I_DESCRIPTION	VARCHAR(255),
-    I_SORTORDER		SMALLINT,
-    I_LOCKED		BOOL,
-    I_HIDDEN		BOOL,
-    I_ISTEST		BOOL,
-    I_MODERATED		BOOL,
-    I_REMOTEURL		VARCHAR(128),
-    I_THEMEURL		VARCHAR(128),
-    I_IMAGEURL      VARCHAR(128),
-    I_STYLES        VARCHAR(255),
-    I_ACCESSMASKID	INTEGER,
-    I_USERID	    INTEGER,
-    I_ISUSERFORUM   BOOL,
-    I_CANHAVEPERSFORUMS BOOL,
-	I_ADJACENTFORUMID INTEGER,
-	I_ADJACENTFORUMMODE INTEGER,
-    I_UTCTIMESTAMP  TIMESTAMP
- )
- RETURNS (o_ForumID INTEGER)
- AS	
-     DECLARE l_Flags INTEGER DEFAULT 0;
-	 DECLARE I_BOARDID INTEGER;
-     DECLARE l_UserName VARCHAR(255);
-     DECLARE l_UserDisplayName VARCHAR(255);
-     DECLARE l_BoardID INTEGER;
-	 DECLARE I_OldParentID	INTEGER;
-	 DECLARE I_OldCategoryID	INTEGER;
-	 DECLARE I_OldSortOrder		INTEGER;
-	 DECLARE l_ForumId INTEGER;
-	 declare ICI_CNTR INTEGER default 0;
-	 declare I_OldRightKey	INTEGER;
-	  declare I_OldLeftKey	INTEGER;
-	declare I_OldLevel	INTEGER;
-	declare I_OldNid	INTEGER;
-	declare I_parins INTEGER;
-	declare ici_ocat INTEGER;
-	declare ici_newid INTEGER;
-	declare ici_nid INTEGER;	
- 
-BEGIN 	
-     -- VERIFY NEW SORT ORDER IS OK TO RESORE TREE IF REQUIRED
-	 IF (I_ADJACENTFORUMID IS NOT NULL) THEN
-	 BEGIN
-	  -- over  	
-	              if (I_ADJACENTFORUMMODE = 3) THEN	
-				  begin	               
-		               i_sortorder = 0;
-					   ici_cntr = 1;
-		          end  
-	 FOR Select f.FORUMID from {objectQualifier}FORUM f
-		   join {objectQualifier}CATEGORY c
-		   on c.CATEGORYID = f.CATEGORYID
-		   where c.CATEGORYID = :I_CATEGORYID and (:I_PARENTID is null or f.PARENTID = :I_PARENTID)   
-		   order by c.SORTORDER, f.FORUMID
-	     INTO :l_ForumId	
-	     DO
-          BEGIN
-               if (:I_ADJACENTFORUMID = :l_ForumId) THEN 
-	          	begin
-		        -- before
-		             if (:I_ADJACENTFORUMMODE = 1) THEN
-		               begin
-		               I_SORTORDER = :ICI_CNTR;
-		               ICI_CNTR = :ICI_CNTR + 1;
-		               end
-		       -- after
-		            if (:I_ADJACENTFORUMMODE = 2) THEN
-		               begin
-		               I_SORTORDER = :ICI_CNTR + 1;	
-		               end
-		       end 
-		
-		update	{objectQualifier}FORUM
-		 SET SORTORDER = :ICI_CNTR where ForumID = :l_ForumId;
-		 ICI_CNTR = :ICI_CNTR + 1;
-		-- this is after gap
-		if (:I_SORTORDER = :ICI_CNTR) then
-		begin
-		 ICI_CNTR = :ICI_CNTR + 1;
-		end	  
-  END
-    END
 
-  -- GET OLD CHECK VALUES BEFORE UPDATE
-    select f.ParentID, f.CategoryID, 
-   f.SortOrder, fn.left_key, 
-   fn.right_key,fn."LEVEL", fn.nid
-   from {objectQualifier}Forum  f 
-   join {objectQualifier}forum_ns  fn 
-   on fn.ForumID = f.ForumID
-   where f.ForumID= :I_FORUMID
-   into :I_OldParentID, :I_OldCategoryID, 
-   :I_OldSortOrder, :I_OldLeftKey, 
-   :I_OldRightKey,:I_OldLevel, :I_OldNid;
-   
-    IF (:I_LOCKED<>0) THEN l_Flags = BIN_OR(l_Flags, 1);
-    IF (:I_HIDDEN<>0) THEN  l_Flags = BIN_OR(l_Flags, 2);
-    IF (:I_ISTEST<>0) THEN  l_Flags = BIN_OR(l_Flags, 4);
-    IF (:I_MODERATED<>0) THEN  l_Flags = BIN_OR(l_Flags, 8);
-    IF (:I_FORUMID IS NULL) THEN I_FORUMID = 0;
-    IF (:I_PARENTID = 0) THEN I_PARENTID = null;
-	
-    IF (:I_USERID IS NOT NULL) THEN
-    BEGIN	
-    SELECT FIRST 1 Name,  DisplayName FROM {objectQualifier}USER WHERE USERID = :i_UserID
-    INTO :l_UserName, :l_UserDisplayName;
-    END
-    -- guests should not create forums?
-    ELSE
-    BEGIN 
-    SELECT BoardID FROM {objectQualifier}CATEGORY WHERE CATEGORYID = :I_CATEGORYID
-    INTO :l_BoardID;
-    SELECT FIRST 1 Name, DisplayName FROM {objectQualifier}USER WHERE BOARDID = :l_BoardID and BIN_AND(Flags,4) = 4  ORDER BY Joined DESC
-    INTO :l_UserName, :l_UserDisplayName;
-    END
-	SELECT BoardID FROM {objectQualifier}Category WHERE CategoryID = :I_CATEGORYID
-	INTO :I_BOARDID ;
-  IF (:I_FORUMID IS NOT NULL AND :I_FORUMID > 0) THEN
-  BEGIN
-
- /* if (:I_CATEGORYID != :I_OldCategoryID OR :I_SORTORDER != :I_OldSortOrder OR :I_OldParentID != :I_PARENTID) THEN
-	begin	
-	SELECT nid from {objectQualifier}forum_ns fn
-	join {objectQualifier}forum f
-	on (f.ForumID = fn.ForumID and fn.ForumID > 0)
-	where f.ForumID = :I_PARENTID
-	INTO :I_parins;
-
-	IF (:I_parins IS NULL) THEN
-	SELECT fn.nid from {objectQualifier}forum_ns fn
-	where fn.CategoryID = :I_CATEGORYID and fn.ForumID = 0
-	INTO :I_parins;
-
-	SELECT nid from {objectQualifier}forum_ns fn
-	join {objectQualifier}forum f
-	on (f.ForumID = fn.ForumID and fn.ForumID > 0)
-	where f.ForumID = :I_OldParentID
-	INTO :ici_ocat;
-
-	IF (:ici_ocat IS NULL) THEN
-	SELECT fn.nid from {objectQualifier}forum_ns fn
-	where fn.CategoryID = :I_OldCategoryID and fn.forumid = 0
-	INTO :ici_ocat;
-
-	execute  PROCEDURE {objectQualifier}forum_ns_before_update_func null, 
-0, null, null,null, :I_parins, null, 
-null, :I_OldNid, 0, :I_OldLeftKey, :I_OldRightKey, :I_OldLevel, :ici_ocat;
-	end
-	*/
-
-  UPDATE {objectQualifier}FORUM
-  SET
-  PARENTID=:I_PARENTID,
-  NAME= :I_NAME,
-  DESCRIPTION=:I_DESCRIPTION,
-  SORTORDER = (CASE WHEN :I_ADJACENTFORUMMODE = -1 THEN SORTORDER ELSE :I_SORTORDER END),
-  CATEGORYID=:I_CATEGORYID,
-  REMOTEURL = :I_REMOTEURL,
-  THEMEURL = :I_THEMEURL,
-  FLAGS = :l_Flags,
-  IMAGEURL = :I_IMAGEURL,
-  STYLES = :I_STYLES,
-  ISUSERFORUM = :I_ISUSERFORUM,
-  CANHAVEPERSFORUMS =:I_CANHAVEPERSFORUMS
-  WHERE FORUMID=:I_FORUMID;
-  END
-  ELSE
-  BEGIN
-  -- use an existing trigger delete it
-  SELECT NEXT VALUE FOR SEQ_{objectQualifier}FORUM_FORUMID FROM RDB$DATABASE INTO :I_FORUMID;
-  INSERT INTO {objectQualifier}FORUM(FORUMID,PARENTID,NAME,DESCRIPTION,
-  SORTORDER,CATEGORYID,NUMTOPICS,NUMPOSTS,REMOTEURL,THEMEURL,FLAGS, IMAGEURL,
-  STYLES, ISUSERFORUM,CREATEDBYUSERID,CREATEDBYUSERNAME,CREATEDBYUSERDISPLAYNAME,
-  CREATEDDATE,CANHAVEPERSFORUMS)
-  VALUES(:I_FORUMID,:I_PARENTID,:I_NAME,:I_DESCRIPTION,
-  :I_SORTORDER,:I_CATEGORYID,0,0,:I_REMOTEURL,:I_THEMEURL,:l_Flags,:I_IMAGEURL,
-  :I_STYLES,:I_ISUSERFORUM,  :I_USERID,:l_UserName, :l_UserDisplayName,
-  :I_UTCTIMESTAMP,:I_CANHAVEPERSFORUMS); 
-
-  INSERT INTO {objectQualifier}FORUMACCESS(GROUPID,FORUMID,ACCESSMASKID)
-  SELECT GROUPID,(SELECT :I_FORUMID FROM RDB$DATABASE),(SELECT :I_ACCESSMASKID FROM RDB$DATABASE)
-  FROM {objectQualifier}GROUP
-  WHERE BOARDID IN (SELECT BOARDID  from {objectQualifier}CATEGORY
-  WHERE CATEGORYID=:I_CATEGORYID);
-
-  -- rebuild tree 
-		
-	/* SELECT nid from {objectQualifier}forum_ns fn
-	join {objectQualifier}FORUM f
-	on (f.ForumID = fn.ForumID and fn.ForumID > 0)
-	where f.ForumID = :I_PARENTID
-	INTO :ici_nid;
-	if (:ici_nid is null) then
-	SELECT fn.nid from {objectQualifier}forum_ns fn
-	where fn.CategoryID = :I_CATEGORYID and fn.forumid = 0
-	INTO :ici_nid;
-
-	execute procedure {objectQualifier}forum_ns_before_insert_func :I_BOARDID, :I_CATEGORYID, :I_FORUMID,
-    0, null, null, null, :ici_nid, :I_SORTORDER,
-    null, null RETURNING_VALUES  :ici_newid; */
-		-- tree rebuildED
-		EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
-  END
- 
-    if (exists (select first 1 1 from {objectQualifier}FORUMHISTORY WHERE FORUMID = :I_FORUMID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
-    begin
-    update {objectQualifier}FORUMHISTORY set 
-           CHANGEDUSERID = :I_USERID,	
-           CHANGEDUSERNAME = :l_UserName,
-           CHANGEDDISPLAYNAME = :l_UserDisplayName
-        WHERE ForumID=:I_FORUMID AND CHANGEDDATE = :I_UTCTIMESTAMP ;
-    end
-    else
-    begin
-    INSERT INTO {objectQualifier}FORUMHISTORY(FORUMID, CHANGEDUSERID,CHANGEDUSERNAME,CHANGEDDISPLAYNAME,CHANGEDDATE)
-    VALUES (:I_FORUMID,:I_USERID,:l_UserName,:l_UserDisplayName,:I_UTCTIMESTAMP);
-    end
-  o_ForumID=:I_FORUMID;
-  SUSPEND;
- -- IF (:I_CategoryID != :I_OldCategoryID OR :I_SortOrder != :I_OldSortOrder OR :I_OldParentID != :I_ParentID) THEN
---	BEGIN
---	EXECUTE PROCEDURE {objectQualifier}FORUM_NS_RECREATE;
---	END
-  END;
---GO
 
 CREATE PROCEDURE  {objectQualifier}FORUM_SIMPLELIST(
                  I_STARTID INTEGER,
@@ -3974,7 +4053,7 @@ CREATE  PROCEDURE {objectQualifier}GROUP_MEMBER(
       
     if (exists (select first 1 1 from {objectQualifier}GROUPHISTORY WHERE GROUPID = :I_GROUPID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
     begin
-    update {objectQualifier}GROUPHISTORY set 
+    UPDATE {objectQualifier}GROUPHISTORY set 
            CHANGEDUSERID = :I_USERID,	
            CHANGEDUSERNAME = :l_UserName,
            CHANGEDDISPLAYNAME = :l_UserDisplayName
@@ -4598,13 +4677,13 @@ BEGIN
         INTO :ICI_USERID,:ici_TopicID,
         :ici_ForumID,:ici_Posted,:ici_UserName,:ici_UserDisplayName,:ici_NewFlag;
  
-    /* update Message table, set meesage flag to approved */
+    /* UPDATE Message table, set meesage flag to approved */
     UPDATE {objectQualifier}MESSAGE 
      SET
         FLAGS = BIN_OR(FLAGS, 16)
     WHERE MESSAGEID = :I_MESSAGEID;
 
-    /*update User table to increase postcount*/
+    /*UPDATE User table to increase postcount*/
     IF (EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}FORUM 
     WHERE FORUMID=:ici_ForumID 
     AND BIN_AND(FLAGS, 4)=0)) THEN
@@ -4614,7 +4693,7 @@ BEGIN
         /*upgrade user, i.e. promote rank if conditions allow it*/
         EXECUTE PROCEDURE {objectQualifier}USER_UPGRADE :ICI_USERID;
     END
-    /*update Forum table with last topic/post info*/
+    /*UPDATE Forum table with last topic/post info*/
 
   SELECT DISTINCT PARENTID 
   FROM  {objectQualifier}FORUM
@@ -4651,7 +4730,7 @@ BEGIN
   
 
  
-   -- update Topic table with info about last post in topic
+   -- UPDATE Topic table with info about last post in topic
     UPDATE {objectQualifier}TOPIC set
         LASTPOSTED = :ici_Posted,
         LASTMESSAGEID = :I_MESSAGEID,
@@ -4663,7 +4742,7 @@ BEGIN
          and x.ISAPPROVED = 1 and x.ISDELETED = 0)
         WHERE TOPICID = :ici_TopicID;
     
-    /*update forum stats*/
+    /*UPDATE forum stats*/
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID; 	
 END;
 --GO
@@ -5137,12 +5216,12 @@ INTO :ici_Posted;
           IF (ici_Position IS NULL) THEN 
           ici_Position = 0; 
  
- update {objectQualifier}MESSAGE SET
+ UPDATE {objectQualifier}MESSAGE SET
         "POSITION" = "POSITION"+1
      WHERE     (TOPICID = :I_MOVETOTOPIC) 
      and POSTED > :ici_Posted;
  
- update {objectQualifier}MESSAGE set
+ UPDATE {objectQualifier}MESSAGE set
         "POSITION" = "POSITION"-1
      WHERE     (TOPICID = :ici_OldTopicID) 
      and POSTED > :ici_Posted;
@@ -5196,12 +5275,12 @@ INTO :ici_Posted;
     EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE(:ici_OldTopicID,null,0,:ici_EraseOldTopic);
 	END 
 	 
-    -- update lastpost
+    -- UPDATE lastpost
     EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_OldForumID,:ici_OldTopicID);
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_OldForumID);
     EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_NewForumID,:I_MOVETOTOPIC);
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_NewForumID);
-    -- update topic numposts
+    -- UPDATE topic numposts
     UPDATE {objectQualifier}TOPIC SET
         NUMPOSTS = 
         (SELECT COUNT(1) from {objectQualifier}MESSAGE x 
@@ -5295,7 +5374,7 @@ AS
         WHERE MESSAGEID = :I_MESSAGEID AND USERID = :I_REPORTERID ;	
 
 
-    /*update Message table to set message with flag Reported*/
+    /*UPDATE Message table to set message with flag Reported*/
     UPDATE {objectQualifier}MESSAGE 
     SET FLAGS = BIN_OR(FLAGS, 128) 
     WHERE MESSAGEID = :I_MESSAGEID;
@@ -5791,7 +5870,7 @@ i_DelAction=:I_ISDELETEACTION*8;
     SET FLAGS = BIN_XOR(FLAGS, 8) WHERE MESSAGEID =:I_MESSAGEID 
     AND (BIN_AND(FLAGS, 8) <> :i_DelAction);
      
-     /* update num posts for user now that the delete/undelete status has been toggled...*/
+     /* UPDATE num posts for user now that the delete/undelete status has been toggled...*/
      UPDATE {objectQualifier}USER 
      SET NUMPOSTS = (SELECT count(MESSAGEID) 
      FROM {objectQualifier}MESSAGE 
@@ -5804,12 +5883,12 @@ i_DelAction=:I_ISDELETEACTION*8;
     AND BIN_AND(FLAGS, 8)=0)) THEN	
     EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE (:ici_TopicID,null, 0,1);
 	
-    /*update lastpost*/
+    /*UPDATE lastpost*/
     EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST :ici_ForumID,:ici_TopicID;
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ForumID;
     EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ForumID;
 	
-    /* update topic numposts*/
+    /* UPDATE topic numposts*/
     UPDATE {objectQualifier}TOPIC set
         NUMPOSTS = 
         (select count(1) from {objectQualifier}MESSAGE x 
@@ -6148,14 +6227,14 @@ CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_SAVEMESSAGE(
     
      
  
-    /* update user */
+    /* UPDATE user */
     IF (EXISTS(SELECT 1 FROM {objectQualifier}FORUM 
     WHERE FORUMID=:ici_ForumID AND BIN_AND(FLAGS, 4)=0)) THEN 	
         UPDATE {objectQualifier}USER 
         SET NUMPOSTS=NUMPOSTS+1 WHERE USERID=:I_USERID;
     
     
-    /* update topic */
+    /* UPDATE topic */
     UPDATE {objectQualifier}TOPIC SET 
         LASTPOSTED		= :I_POSTED,
         LASTMESSAGEID	= :ici_MessageID,
@@ -6175,7 +6254,7 @@ EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_ForumID,:ici_TopicI
 EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_ForumID);
 EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(:ici_ForumID);
 
-    /* update forum 
+    /* UPDATE forum 
 
 SELECT ParentID 
 INTO ici_ParentID
@@ -6587,7 +6666,7 @@ DECLARE ICI_FLAGS INTEGER;
 BEGIN
 
 
-        update {objectQualifier}POLL
+        UPDATE {objectQualifier}POLL
         set FLAGS	= 0 WHERE POLLID = :I_POLLID AND FLAGS IS NULL;
 
         SELECT FLAGS FROM {objectQualifier}POLL		
@@ -6618,7 +6697,7 @@ BEGIN
         WHEN (:I_SHOWVOTERS <= 0 AND BIN_AND(:ICI_FLAGS, 32) = 32)  THEN BIN_XOR(:ICI_FLAGS,32)
         ELSE :ICI_FLAGS END);		
 
-      update {objectQualifier}POLL
+      UPDATE {objectQualifier}POLL
         set QUESTION	=	:I_QUESTION,
             CLOSES		=	:I_CLOSES,
             OBJECTPATH = :I_QUESTIONOBJECTPATH,
@@ -6630,7 +6709,7 @@ BEGIN
       WHERE POLLID = :I_POLLID
       into :ICI_PGID;
    
-    update {objectQualifier}POLLGROUPCLUSTER
+    UPDATE {objectQualifier}POLLGROUPCLUSTER
         set FLAGS	= (CASE 
         WHEN (:I_ISBOUNDED > 0 AND BIN_AND(FLAGS,2) <> 2) THEN BIN_OR(Flags,2) 		
         WHEN (:I_ISBOUNDED <= 0 AND BIN_AND(FLAGS,2) = 2) THEN BIN_XOR(Flags,2) 		
@@ -7803,7 +7882,7 @@ BEGIN
                 (SORTORDER BETWEEN 1 and 255);
     
     ELSE IF (I_MOVE < 0) THEN
-        update {objectQualifier}SMILEY
+        UPDATE {objectQualifier}SMILEY
             set SORTORDER=SORTORDER+1
             WHERE BOARDID=:I_BOARDID and 
                 (SORTORDER between :ici_TotalPosition and :ici_Position) and
@@ -8874,7 +8953,7 @@ CREATE  PROCEDURE {objectQualifier}USER_ADDPOINTS(
 
     IF (:ICI_VOTEDATE is not null) THEN
     begin	     
-          update {objectQualifier}REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
+          UPDATE {objectQualifier}REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
           WHERE VOTEDATE = :ICI_VoteDate AND REPUTATIONFROMUSERID=:I_FROMUSERID AND REPUTATIONTOUSERID=:I_USERID;
     END
     ELSE
@@ -8907,7 +8986,7 @@ CREATE  PROCEDURE {objectQualifier}USER_REMOVEPOINTS(
 
     IF (:ICI_VOTEDATE is not null) THEN
     begin	     
-          update {objectQualifier}REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
+          UPDATE {objectQualifier}REPUTATIONVOTE set VOTEDATE=:I_UTCTIMESTAMP 
           WHERE VOTEDATE = :ICI_VoteDate AND REPUTATIONFROMUSERID=:I_FROMUSERID AND REPUTATIONTOUSERID=:I_USERID;
     END
     ELSE
@@ -10726,11 +10805,11 @@ BEGIN
    if (:I_DISPLAYNAME IS NOT NULL AND COALESCE(:ICI_OLDDISPLAYNAME,'') != COALESCE(:I_DISPLAYNAME,'')) THEN
         begin
         -- sync display names everywhere - can run a long time on large forums
-        update {objectQualifier}Forum set LastUserDisplayName = :I_DISPLAYNAME WHERE LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);  
-        update {objectQualifier}Topic set LastUserDisplayName = :I_DISPLAYNAME WHERE LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
-        update {objectQualifier}Topic set UserDisplayName = :I_DISPLAYNAME WHERE USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
-        update {objectQualifier}Message set UserDisplayName = :I_DISPLAYNAME WHERE USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
-        update {objectQualifier}ShoutboxMessage set UserDisplayName = :I_DISPLAYNAME WHERE USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        UPDATE {objectQualifier}Forum set LastUserDisplayName = :I_DISPLAYNAME WHERE LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);  
+        UPDATE {objectQualifier}Topic set LastUserDisplayName = :I_DISPLAYNAME WHERE LASTUSERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR LASTUSERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        UPDATE {objectQualifier}Topic set UserDisplayName = :I_DISPLAYNAME WHERE USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        UPDATE {objectQualifier}Message set UserDisplayName = :I_DISPLAYNAME WHERE USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
+        UPDATE {objectQualifier}ShoutboxMessage set UserDisplayName = :I_DISPLAYNAME WHERE USERID = :I_USERID and (:ICI_OLDDISPLAYNAME IS NULL OR USERDISPLAYNAME = :ICI_OLDDISPLAYNAME);
         end
 
     END
@@ -13175,7 +13254,7 @@ end;
    select FIRST 1 LASTACCESSDATE from {objectQualifier}TOPICREADTRACKING WHERE USERID=:I_USERID AND TOPICID=:I_TOPICID  INTO :ICI_LASTACCESSDATE;
     IF (ICI_LASTACCESSDATE IS NOT NULL) THEN
     begin
-          update {objectQualifier}TOPICREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP WHERE LASTACCESSDATE = :ICI_LASTACCESSDATE;
+          UPDATE {objectQualifier}TOPICREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP WHERE LASTACCESSDATE = :ICI_LASTACCESSDATE;
     end
     ELSE
       begin
@@ -13210,7 +13289,7 @@ CREATE PROCEDURE  {objectQualifier}READFORUM_ADDORUPDATE(I_USERID integer, I_FOR
     IF ( EXISTS (select FIRST 1 LASTACCESSDATE from {objectQualifier}FORUMREADTRACKING WHERE USERID=:I_USERID AND FORUMID=:I_FORUMID)) THEN
     begin
       select FIRST 1 LASTACCESSDATE from {objectQualifier}FORUMREADTRACKING WHERE USERID=:I_USERID AND FORUMID=:I_FORUMID  INTO :ICI_LASTACCESSDATE;
-          update {objectQualifier}FORUMREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP WHERE LASTACCESSDATE = :ICI_LASTACCESSDATE;
+          UPDATE {objectQualifier}FORUMREADTRACKING set LASTACCESSDATE=:I_UTCTIMESTAMP WHERE LASTACCESSDATE = :ICI_LASTACCESSDATE;
     end
     ELSE
       begin
@@ -13353,7 +13432,7 @@ begin
         values(:I_BOARDID,:I_TOPICSTATUSNAME,:I_DEFAULTDESCRIPTION);
         end
     else begin
-        update {objectQualifier}TOPICSTATUS
+        UPDATE {objectQualifier}TOPICSTATUS
         set TOPICSTATUSNAME = :I_TOPICSTATUSNAME, 
             DEFAULTDESCRIPTION = :I_DEFAULTDESCRIPTION
         WHERE TOPICSTATUSID = :I_TOPICSTATUSID;
@@ -13363,7 +13442,7 @@ end;
 
 CREATE PROCEDURE  {objectQualifier}USER_UPDATE_SSN_STATUS(I_USERID INTEGER, I_ISFACEBOOKUSER BOOL, I_ISTWITTERUSER BOOL) as
 begin
-        update {objectQualifier}USER
+        UPDATE {objectQualifier}USER
         set ISFACEBOOKUSER = :I_ISFACEBOOKUSER,
             ISTWITTERUSER = :I_ISTWITTERUSER 		  
         WHERE USERID = :I_USERID;
@@ -13654,7 +13733,7 @@ BEGIN
 	UPDATE {objectQualifier}MESSAGE SET FLAGS = BIN_XOR(FLAGS,8) WHERE TOPICID=:I_TOPICID AND BIN_AND(FLAGS,8) = 8;
 	UPDATE {objectQualifier}TOPIC SET FLAGS = BIN_XOR(FLAGS,8) WHERE TOPICMOVEDID=:I_TOPICID AND BIN_AND(FLAGS,8) = 8;
     
-	-- last message id was nulled to update forum stats
+	-- last message id was nulled to UPDATE forum stats
 	UPDATE  {objectQualifier}TOPIC 
 	SET LASTMESSAGEID = (SELECT FIRST 1 m.MESSAGEID from  {objectQualifier}MESSAGE m
     where m.TOPICID = :I_TOPICID and BIN_AND(m.Flags,8) != 8 ORDER BY m.POSTED desc)

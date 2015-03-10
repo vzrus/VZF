@@ -2568,7 +2568,7 @@ begin
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) VALUES(@GroupIDAdmin,@ForumID,@AccessMaskIDAdmin)
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) VALUES(@GroupIDGuest,@ForumID,@AccessMaskIDReadOnly)
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) VALUES(@GroupIDMember,@ForumID,@AccessMaskIDMember)
-	execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate];
+	
     SELECT @BoardID;
 end
 GO
@@ -2763,6 +2763,8 @@ begin
    if (@NewCategoryID is not null) 
 		  begin
 	         update [{databaseSchema}].[{objectQualifier}Forum] set CategoryID = @NewCategoryID where CategoryID = @CategoryID;
+			 execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null, @CategoryID	
+			 execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null, @NewCategoryID	
 		  end
 
     if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where CategoryID = @CategoryID)
@@ -2949,11 +2951,7 @@ declare @afterset bit;
                     @SortOrder)
         SELECT @CategoryID = Scope_identity()		
     END
-/*	if (@OldBoardID != @BoardID OR @SortOrder != @OldSortOrder OR @CategoryID > 0)
-	begin
-	execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate];
-	end */
-	 SELECT CategoryID = @CategoryID	
+	SELECT CategoryID = @CategoryID	
 END
 GO
 
@@ -3344,9 +3342,9 @@ begin
 	begin
 	-- select @RebuildTree = 1;
 	-- move children 1 level higher before deleting a forum
-	  execute  [{databaseSchema}].[{objectQualifier}forum_ns_after_delete2_func_new] @old_categoryid, @old_left_key, @old_right_key, @old_level, @old_parentid
+	  execute  [{databaseSchema}].[{objectQualifier}forum_after_del2_func] @old_categoryid, @old_left_key, @old_right_key, @old_level, @old_parentid
 	end	
-	  execute  [{databaseSchema}].[{objectQualifier}forum_ns_after_delete_func_new] @old_categoryid, @old_left_key, @old_right_key, @old_level, @old_parentid
+	  execute  [{databaseSchema}].[{objectQualifier}forum_after_del_func] @old_categoryid, @old_left_key, @old_right_key, @old_level, @old_parentid
 	--  execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate];	
 	end
 	else
@@ -3723,7 +3721,7 @@ begin
  begin
  SELECT @lvl = [level], @lk = left_key + 1, @rk = right_key - 1 
  from [{databaseSchema}].[{objectQualifier}Forum]  with(nolock)
- where @ParentID IS NULL or ForumID = @ParentID;
+ where ForumID = @ParentID;
  end
  -- thiese are forums from a category
  IF (@ParentID IS NULL AND @CategoryID > 0) 
@@ -3741,7 +3739,7 @@ begin
   on c.CategoryID = f.CategoryID
   where c.BoardID = @BoardID;
  end
- -- set lvl = lvl + 1;
+ select @lvl = @lvl - 1;
 
         select 
         a.CategoryID, 
@@ -3788,7 +3786,7 @@ begin
         left outer join [{databaseSchema}].[{objectQualifier}Topic] t with(nolock) ON t.TopicID = [{databaseSchema}].[{objectQualifier}forum_lasttopic](b.ForumID,@UserID,b.LastTopicID,b.LastPosted)
     where 		
         (@CategoryID is null or a.CategoryID = @CategoryID) and
-	    (b.[level] >= @lvl-1) and
+	    (b.[level] >= @lvl) and
 		((b.Flags & 2)=0 or x.ReadAccess <>0 ) and
 		b.left_key >= @lk and b.right_key <= @rk      	
     order by
@@ -4021,23 +4019,25 @@ begin
    where f.ForumID=@ForumID;
 
 	-- rebuild tree
-	 if (@CategoryID != @OldCategoryID OR @SortOrder != @OldSortOrder OR @OldParentID != @ParentID)
+	/* if (@CategoryID != @OldCategoryID OR @SortOrder != @OldSortOrder OR @OldParentID != @ParentID)
 	begin
 	declare @newlk int;
-	if (@AdjacentForumID is not null)
+	 if (@AdjacentForumID is not null)
    begin
- --  declare @newlk int;
+ 
     if (@AdjacentForumMode = 1)  
 	select @newlk = left_key from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;
 	if (@AdjacentForumMode = 2)  
 	select @newlk = right_key+1  from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;	
+	declare @o_lk int, @o_rk int, @o_lv int;
 
-execute	[{databaseSchema}].[{objectQualifier}forum_ns_before_update_func_new] 
-@ForumID, @CategoryID, @newlk, null, null, @ParentID,0,0, 
-@ForumID, @OldCategoryID, @OldLeftKey, @OldRightKey, @OldLevel, @OldParentID;
+    execute	[{databaseSchema}].[{objectQualifier}forum_before_update_func] 
+    @ForumID, @CategoryID, @newlk, null, null, @ParentID,0,0, 
+    @ForumID, @OldCategoryID, @OldLeftKey, @OldRightKey, @OldLevel, @OldParentID,
+	@o_lk output,@o_rk output,@o_lv output; 
 
 	end 
-	end
+	end */
 	
         update [{databaseSchema}].[{objectQualifier}Forum] set 
             ParentID=@ParentID,
@@ -4053,7 +4053,10 @@ execute	[{databaseSchema}].[{objectQualifier}forum_ns_before_update_func_new]
             IsUserForum = @IsUserForum,
             CanHavePersForums = @CanHavePersForums
         where ForumID=@ForumID
-	--	execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate];
+		if (@OldCategoryID <> @CategoryID)
+		execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null,@OldCategoryID;
+
+		execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null,@CategoryID;
 
     end
     else begin 
@@ -4076,7 +4079,7 @@ execute	[{databaseSchema}].[{objectQualifier}forum_ns_before_update_func_new]
 	if (@AdjacentForumMode = 2)  
 	select @nlk = right_key + 1  from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;	
     
-	execute [{databaseSchema}].[{objectQualifier}forum_ns_before_insert_func_new] 
+	execute [{databaseSchema}].[{objectQualifier}forum_before_insert_func] 
 	@OldCategoryID, @ForumID,@OldCategoryID, @nlk, null, null, @OldParentID, @SortOrder,0, 0
 
    end	
@@ -12301,6 +12304,8 @@ begin
     update [{databaseSchema}].[{objectQualifier}UserForum] set ForumID=@ForumNewID where ForumID=@ForumOldID
     --END ABOT CHANGED 09.04.2004
     delete from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @ForumOldID
+
+	execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null, null	
 end
 GO
 

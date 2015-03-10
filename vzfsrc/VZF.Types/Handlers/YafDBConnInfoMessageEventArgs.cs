@@ -28,7 +28,7 @@ namespace YAF.Types.Handlers
     /// <summary>
     /// The _message.
     /// </summary>
-    private string _message;
+    private string _message; 
 
     /// <summary>
     /// Initializes a new instance of the <see cref="YafDBConnInfoMessageEventArgs"/> class.
