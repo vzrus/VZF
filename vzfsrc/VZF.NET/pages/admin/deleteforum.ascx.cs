@@ -85,7 +85,10 @@ namespace YAF.Pages.Admin
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnInit([NotNull] EventArgs e)
         {
-            this.MoveTopics.CheckedChanged += this.MoveTopics_CheckedChanged;
+            if (!Config.LargeForumTree)
+            {
+                this.MoveTopics.CheckedChanged += this.MoveTopics_CheckedChanged;
+            }
             this.Delete.Click += this.Save_Click;
             this.Cancel.Click += this.Cancel_Click;
 
@@ -102,13 +105,12 @@ namespace YAF.Pages.Admin
         {
             this.PageContext.PageElements.RegisterJQuery();
             this.PageContext.PageElements.RegisterJQueryUI();
-           // this.PageContext.PageElements.RegisterCssIncludeResource("css/jquery-ui-themes/ui-lightness/jquery-ui.min.css")
-           // this.PageContext.PageElements.RegisterCssIncludeResource("css/jquery-ui-themes/ui-lightness/theme.css")
 
            this.PageContext.PageElements.RegisterJsResourceInclude("blockUIJs", "js/jquery.blockUI.js");
 
             if (Config.LargeForumTree)
             {
+                this.MoveTopics.AutoPostBack = false;
 
                 this.ForumList.Visible = false;
 
@@ -117,7 +119,7 @@ namespace YAF.Pages.Admin
                 //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");              
 
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.min.css");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
 
                 var forumId = this.GetQueryStringAsInt("fa");
 
@@ -139,7 +141,7 @@ namespace YAF.Pages.Admin
 
                 YafContext.Current.PageElements.RegisterJsBlock(
                   "ftreedelfrm",
-                  JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJS(
+                  JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
                       "treedelfrm",
                       PageContext.PageUserID,
                       PageContext.PageBoardID,
@@ -147,7 +149,18 @@ namespace YAF.Pages.Admin
                       string.Empty,
                       args,
                       "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); 
+
+             /*   YafContext.Current.PageElements.RegisterJsBlock(
+                 "ftreedelfrm",
+                 JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJsNew(
+                     "treedelfrm",
+                     PageContext.PageBoardID,
+                     "echoActive",
+                     Config.BaseScriptFile,
+                     args,
+                     "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                     "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); */
             }
 
             base.OnPreRender(e);

@@ -160,8 +160,6 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listallmymodera
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listpath;
 --GO
-DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_listpath;
---GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listread;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_listread;
@@ -3684,7 +3682,7 @@ END;
  join {databaseSchema}.{objectQualifier}Category c
  where c.BoardID = i_BoardID;
  END IF;
- -- set lvl = lvl + 1;
+ set lvl = lvl - 1;
 
    select 
         a.CategoryID, 
@@ -3696,8 +3694,10 @@ END;
         b.Styles,
         b.ParentID,
         b.PollGroupID,
-        {databaseSchema}.{objectQualifier}forum_topics(b.ForumID) as Topics,
-        {databaseSchema}.{objectQualifier}forum_posts(b.ForumID) as Posts,		
+        (select sum(fp.NumTopics) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Topics,
+        (select sum(fp.NumPosts) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Posts,		
         t.LastPosted as LastPosted,
         t.LastMessageID,
         t.LastMessageFlags,
@@ -3737,10 +3737,10 @@ END;
         {databaseSchema}.{objectQualifier}Category a 
         join {databaseSchema}.{objectQualifier}Forum b on b.CategoryID=a.CategoryID		
         join {databaseSchema}.{objectQualifier}ActiveAccess x  on (x.ForumID=b.ForumID and x.UserID = i_UserID) 
-        left outer join {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = {databaseSchema}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted)
+        left outer join {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = {databaseSchema}.{objectQualifier}forum_ns_lasttopic(b.left_key,b.right_key, a.CategoryId, i_UserID)
     where 		
        (i_CategoryID IS NULL OR a.CategoryID = i_CategoryID) AND
-	   	(b.`level` >= lvl-1) and		 
+	   	(b.`level` >= lvl) and		 
 		((b.Flags & 2)=0 OR x.ReadAccess) and         	
         b.left_key >= lk and b.right_key <= rk 		
     order by

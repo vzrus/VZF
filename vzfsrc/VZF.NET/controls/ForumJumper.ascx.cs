@@ -39,10 +39,10 @@ namespace VZF.Сontrols
                 forumTree.Visible = true;
                 // register dynatree script. For large trees we load it lazily.
                 YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.fancytree-all.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
                 this.TreeTable.Visible = true; 
                 YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
-                                                                JavaScriptBlocks.FancyTreeGetNodesJumpLazyJS("tree",
+                                                                JavaScriptBlocks.FancyTreeGetNodesJumpLazyJs("tree",
                                                                 PageContext.PageUserID, PageContext.PageBoardID, "echoActive", "&links=1", "{0}resource.ashx?tjl".FormatWith(
                                                                                                             YafForumInfo.ForumClientFileRoot), string.Empty, "&forumUrl={0}".FormatWith(HttpUtility.UrlEncode(YafBuildLink.GetBasePath()))));
                 // The script hides/shows tree divider.

@@ -105,15 +105,16 @@
                 {
 
                     var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
-                    context.Response.Write(FancyTree.GetForumsJumpTreeNodesLevel(
-                            context.Request.QueryString.GetFirstOrDefault("tjl"),
-                            view,
-                            access,
-                            context.Request.QueryString.GetFirstOrDefault("active"),
-                            boardFirst,
-                            forumUrl,
-                            links,
-                            amdd).ToJson());
+                    var s = FancyTree.GetForumsJumpTreeNodesLevel(
+                        context.Request.QueryString.GetFirstOrDefault("tjl"),
+                        view,
+                        access,
+                        context.Request.QueryString.GetFirstOrDefault("active"),
+                        boardFirst,
+                        forumUrl,
+                        links,
+                        amdd).ToJson();
+                    context.Response.Write(s);
                 }
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();

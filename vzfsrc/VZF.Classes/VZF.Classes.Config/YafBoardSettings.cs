@@ -244,7 +244,7 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("JqueryUIThemeCDNHosted", true);
+                return this._reg.GetValue("JqueryUIThemeCDNHosted", false);
             }
 
             set
@@ -307,7 +307,21 @@ namespace YAF.Classes
             }
         }
 
+        /// <summary>
+        /// Gets or sets FancyTree Theme.
+        /// </summary>
+        public string FancyTreeTheme
+        {
+            get
+            {
+                return this._regBoard.GetValue("FancyTreeTheme", "skin-xp");
+            }
 
+            set
+            {
+                this._regBoard.SetValue("FancyTreeTheme", value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets Jquery UI Theme.

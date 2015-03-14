@@ -1654,6 +1654,9 @@ Spoiler Content
       <Resource tag="BUTTON_RETWEET_TT">Retweet this Message</Resource>      
    </page>
    <page name="COMMON">
+     <Resource tag="AFTER">After</Resource>
+     <Resource tag="BEFORE">Before</Resource>
+     <Resource tag="CHILD">Child</Resource>
      <Resource tag="EXTERNALUSER">(External User)</Resource>
       <Resource tag="OR">or</Resource>
      <Resource tag="SHOWHIDE">Show/Hide</Resource>
@@ -1744,6 +1747,7 @@ Spoiler Content
       <Resource tag="LOADING">Loading...</Resource>
       <Resource tag="MAX_ONLINE">Most users ever online was {0}, {1}.</Resource>
       <Resource tag="MODAL_NOTIFICATION_HEADER">Notification</Resource>
+     <Resource tag="NEW">New</Resource>
       <Resource tag="OK">OK</Resource>
       <Resource tag="PAGES">Pages</Resource>
       <Resource tag="PM_NOTIFICATION_SUBJECT">New Private Message From {0} at {1}</Resource>
@@ -2244,7 +2248,8 @@ Spoiler Content
       <Resource tag="ACTIVE_USERS_TIME">for last {0:N0} minutes</Resource>
       <Resource tag="BY">by {0}</Resource>
       <Resource tag="CURRENT_TIME">Current time: {0}.</Resource>
-      <Resource tag="FORUM">Forum</Resource>
+     <Resource tag="CATEGORY">Category</Resource>    
+     <Resource tag="FORUM">Forum</Resource>
       <Resource tag="GO_LAST_POST">Go to last post</Resource>
       <Resource tag="GO_LASTUNREAD_POST">Go to first unread</Resource>
       <Resource tag="IN">in {0}</Resource>
@@ -4057,11 +4062,12 @@ Visit {forumname} at {forumlink}
       <Resource tag="BOARD_THEME">Theme:</Resource>
       <Resource tag="COPYRIGHT_REMOVAL_KEY">Copyright Removal Key:</Resource>
       <Resource tag="COPYRIGHT_REMOVAL_KEY_HELP">
-        <![CDATA[Remove the copyright information and link back to YAF from the footer of your entire forum domain. Available <a href="http://yetanotherforum.net/purchase.aspx">from YAF.NET site</a>. ]]>
+        <![CDATA[Remove the copyright information and link back to VZF from the footer of your entire forum domain. Available <a href="http://yetanotherforum.net/purchase.aspx">from YAF.NET site</a>. ]]>
       </Resource>
       <Resource tag="BOARD_MOBILE_THEME">Mobile Theme:</Resource>
       <Resource tag="BOARD_THEME_LOGO">Allow Themed Logo:</Resource>
-      <Resource tag="BOARD_JQ_THEME">jQuery UI Theme:</Resource>
+      <Resource tag="BOARD_JQ_THEME">Java Script UI Theme:</Resource>
+      <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
       <Resource tag="BOARD_CDN_HOSTED">Use Google Hosted CDN jQuery UI CSS File?</Resource>
       <Resource tag="BOARD_CULTURE">Culture:</Resource>
       <Resource tag="BOARD_TOPIC_DEFAULT">Show Topic Default:</Resource>
@@ -4177,6 +4183,8 @@ Visit {forumname} at {forumlink}
       <Resource tag="HIDE_NOACESS_HELP">Means that the forum will be hidden when the user don't have read access to it.</Resource>
       <Resource tag="LOCKED">Locked:</Resource>
       <Resource tag="LOCKED_HELP">If the forum is locked, no one can post or reply in this forum.</Resource>
+      <Resource tag="SAVING_TITLE">Saving forum</Resource>
+      <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
       <Resource tag="NO_POSTSCOUNT">No posts count:</Resource>
       <Resource tag="NO_POSTSCOUNT_HELP">If this is checked, posts in this forum will not count in the ladder system/forum statistics.</Resource>
       <Resource tag="PERSONALFORUMS_NUMBER">User Personal Forums(Blogs) number:</Resource>

@@ -41,26 +41,6 @@ namespace VZF.Data.MsSql
         // Parameter 10
         #region Constants and Fields
 
-        /// <summary>
-        ///   The _script list.
-        /// </summary>
-        private static readonly string[] _scriptList = 
-        {
-            "mssql/preinstall.sql",
-            "mssql/tables.sql", 
-            "mssql/indexes.sql", 
-            "mssql/views.sql",
-            "mssql/constraints.sql", 
-            "mssql/triggers.sql",
-            "mssql/functions.sql", 
-            "mssql/procedures.sql",       
-            "mssql/providers/tables.sql",
-            "mssql/providers/indexes.sql",
-            "mssql/providers/procedures.sql",
-            "mssql/nestedsets.sql", 
-            "mssql/nestedsets_sp.sql", 
-            "mssql/postinstall.sql"
-        };
 
         /// <summary>
         ///   The _full text script.
@@ -75,6 +55,11 @@ namespace VZF.Data.MsSql
         #endregion
 
         #region Properties
+
+        public static bool DbInstallTransactions
+        {
+            get { return true; }
+        }
 
         /// <summary>
         ///   Gets or sets FullTextScript.
@@ -186,15 +171,15 @@ namespace VZF.Data.MsSql
         }
 
         /// <summary>
-        ///   Gets ScriptList.
+        ///   Gets ScriptFolder.
         /// </summary>
-        public static string[] ScriptList
+        public static string ScriptFolder
         {
             get
             {
-                return _scriptList;
+                return "mssql";
             }
-        }
+        }       
 
         public static string SqlScriptsDelimiterRegexPattern
         {

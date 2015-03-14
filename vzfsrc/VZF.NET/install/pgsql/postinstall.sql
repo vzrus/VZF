@@ -32,3 +32,9 @@ DROP FUNCTION {databaseSchema}.{objectQualifier}create_or_replace_index
 );
 --GO
 
+/* since 9.1 SELECT
+  schemaname, relname,
+  last_vacuum, last_autovacuum,
+  vacuum_count, autovacuum_count  -- not available on 9.0 and earlier
+FROM pg_stat_user_tables; */
+

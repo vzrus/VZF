@@ -232,7 +232,7 @@ namespace VZF.Controls
             {
                 this.Get<IYafSession>().UnreadTopics = 0;
 
-                activeTopics = CommonDb.topic_latest(PageContext.PageModuleID, boardID: this.PageContext.PageBoardID,
+                activeTopics = CommonDb.topic_latest(PageContext.PageModuleID, boardId: this.PageContext.PageBoardID,
                     numOfPostsToRetrieve: this.Get<YafBoardSettings>().ActiveDiscussionsCount,
                     pageUserId: this.PageContext.PageUserID,
                     useStyledNicks: this.Get<YafBoardSettings>().UseStyledNicks,

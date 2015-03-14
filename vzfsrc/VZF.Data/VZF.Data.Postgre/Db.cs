@@ -64,6 +64,11 @@ namespace VZF.Data.Postgre
 
         #endregion
 
+        public static bool DbInstallTransactions
+        {
+            get { return true; }
+        }
+
         /// <summary>
         /// The full text supported.
         /// </summary>
@@ -172,46 +177,16 @@ namespace VZF.Data.Postgre
         }
 
         /// <summary>
-        /// The _script list.
+        ///   Gets ScriptFolder.
         /// </summary>
-        public static readonly string[] _scriptList =
-            {
-                "pgsql/preinstall.sql", 
-                "pgsql/domains.sql", 
-                "pgsql/tables.sql",
-                "pgsql/sequences.sql", 
-                "pgsql/pkeys.sql", 
-                "pgsql/indexes.sql",
-                "pgsql/fkeys.sql",               
-                "pgsql/rules.sql",
-                "pgsql/views.sql", 
-                "pgsql/types.sql", 
-                "pgsql/nestedsets.sql", 
-                "pgsql/nestedsets_sp.sql",
-                "pgsql/procedures.sql",
-                "pgsql/procedures1.sql", 
-                "pgsql/functions.sql",
-                "pgsql/providers/tables.sql", 
-                "pgsql/providers/pkeys.sql",
-                "pgsql/providers/indexes.sql", 
-                "pgsql/providers/types.sql",
-                "pgsql/providers/procedures.sql",               
-               // "pgsql/forum_ns_old.sql",
-                "pgsql/triggers.sql", 
-                "pgsql/postinstall.sql"
-              //  "pgsql/fulltext_ru.sql"
-            };
-
-        /// <summary>
-        /// Gets the script list.
-        /// </summary>
-        public static string[] ScriptList
+        public static string ScriptFolder
         {
             get
             {
-                return _scriptList;
+                return "pgsql";
             }
         }
+      
 
         #endregion
 

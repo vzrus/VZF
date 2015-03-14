@@ -465,6 +465,45 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_listread_return_type AS
 );
 --GO
 
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_listread_return_type AS
+(
+"CategoryID" integer,
+"Category" varchar(128),
+"ForumID" integer,
+"ParentID" integer,
+"Forum" varchar(128),
+"Description" varchar(255),
+"ImageUrl"  varchar(128),
+"PollGroupID" integer,
+"IsUserForum" boolean,
+left_key integer,
+right_key integer,
+"PageUserID" integer,
+/*"LastTopicID" integer,*/
+"Topics" integer,
+"Posts" integer,
+/* "Subforums" integer, */
+"LastTopicID" integer,
+"LastTopicStatus" varchar(255),
+"LastTopicStyles" varchar(255),
+"TopicMovedID" integer,
+"LastPosted" timestamp,
+"LastMessageID" integer,
+"LastMessageFlags" integer,
+"LastUserID" integer,
+"LastTopicName"  varchar(128),
+"LastUser"  varchar(128),
+"LastUserDisplayName" varchar(128),
+"Flags" integer,
+"Style"  varchar(255),
+"Viewing" integer,
+"RemoteURL" varchar(255),
+"ReadAccess" integer,
+"LastForumAccess"  timestamp,
+"LastTopicAccess"  timestamp 
+);
+--GO
+
 CREATE TYPE {databaseSchema}.{objectQualifier}forum_listtopics_return_type AS
 (
 	"TopicID" integer,

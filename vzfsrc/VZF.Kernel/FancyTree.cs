@@ -27,18 +27,14 @@ namespace VZF.Kernel
     #region Using
 
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web;
 
     using VZF.Data.Common;
-    using VZF.Data.DAL;
-
     using VZF.Types.Objects;
     using VZF.Utils;
 
@@ -46,9 +42,7 @@ namespace VZF.Kernel
     using YAF.Core;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Data.DAL;
     using YAF.Types.Flags;
-    using VZF.Types.Constants;
     using VZF.Utils.Helpers;
     using YAF.Core.Tasks;
 
@@ -59,58 +53,14 @@ namespace VZF.Kernel
     /// </summary>
     public static class FancyTree
     {
-        /// <summary>
-        /// The yes image.
-        /// </summary>
-        private static string yesImage;
-
-        /// <summary>
-        /// The no image.
-        /// </summary>
-        private static string noImage;
-
-        /// <summary>
-        /// The delete image.
-        /// </summary>
-        private static string deleteImage;
-
-        /// <summary>
-        /// The copy image.
-        /// </summary>
-        private static string copyImage;
-
-        /// <summary>
-        /// The edit image.
-        /// </summary>
-        private static string editImage;
-
-        /// <summary>
-        /// The move forum.
-        /// </summary>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="nodesInfo">
-        /// The nodes info.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-    /*    public static string MoveForum(int userId, string nodesInfo) 
+        /*    public static string MoveForum(int userId, string nodesInfo) 
         {
             string ret = string.Empty;
 
             // first - moved node id, second - parent nodeid, third - prevnode
             return ret;
         } */
-
-        /// <summary>
-        /// The get all common admin tree.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-      /*  public static string GetAllCommonAdminTree()
+        /*  public static string GetAllCommonAdminTree()
         {
             using (
                 DataSet ds = CommonDb.ds_forumadmin(
@@ -328,6 +278,21 @@ namespace VZF.Kernel
         } */
 
         /// <summary>
+        /// The move forum.
+        /// </summary>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <summary>
+        /// The get all common admin tree.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <summary>
         /// The get all user access admin tree.
         /// </summary>
         /// <param name="userId">
@@ -336,7 +301,7 @@ namespace VZF.Kernel
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-       /* public static string GetAllUserAccessAdminTree(int userId)
+        /* public static string GetAllUserAccessAdminTree(int userId)
         {
             // sort it by name
             var valuesOrdered = UserForumAccess.GetUserAccessListSortedByForumName(userId);
@@ -547,7 +512,7 @@ namespace VZF.Kernel
                         .GetOrSet(
                             Constants.Cache.ForumJump.FormatWith(
                                 YafContext.Current.User != null
-                                    ? YafContext.Current.PageUserID.ToString()
+                                    ? YafContext.Current.PageUserID.ToString(CultureInfo.InvariantCulture)
                                     : UserMembershipHelper.GuestUserName),
                             () =>
                             CommonDb.forum_listall_sorted_all(
@@ -563,7 +528,6 @@ namespace VZF.Kernel
                     // level counter
                     int closeBlockTimes = 0;
                     int currentHideLevel = int.MaxValue;
-                    int currentlevel;
                     int nextlevel;
                     int currentCategory = 0;
                     bool singleFirstOrAnyLastRow;
@@ -573,7 +537,7 @@ namespace VZF.Kernel
                         // remembering current level as previous
                         string title = childRows.Rows[i]["Title"].ToString();
                         var forumId = childRows.Rows[i]["ForumID"].ToType<int>();
-                        currentlevel = UserForumAccess.DashCounter(title);
+                        int currentlevel = UserForumAccess.DashCounter(title);
                         singleFirstOrAnyLastRow = (i == 0 && childRows.Rows.Count == 1) || i == childRows.Rows.Count - 1;
                         nextlevel = singleFirstOrAnyLastRow
                                         ? 0
@@ -673,17 +637,13 @@ namespace VZF.Kernel
     string trnop,
     string trna)
         {
-            // return true;
             int? boardId = null;
             int? categoryId = null;
             int? forumId = null;
             int? parentId = null;
-            int sortOrder = 0;
             int? adjacentForumId = null;
             int? adjacentCategoryId = null;
             int? adjacentPosition = null;
-
-            bool withBoards = false;
 
             switch (trna)
             {
@@ -734,7 +694,7 @@ namespace VZF.Kernel
             // a forum is being moved
             if (forumId.HasValue)
             {
-                DataRow row = CommonDb.forum_list(YafContext.Current.ModuleID, boardId, forumId).Rows[0];         
+                DataRow row = CommonDb.forum_list(YafContext.Current.ModuleID, boardId, forumId).Rows[0];
                 string errorMessage;
                 var flags = new ForumFlags(Convert.ToInt32(row["Flags"]));
                 // schedule...
@@ -744,13 +704,13 @@ namespace VZF.Kernel
                     parentId,
                     row["Name"],
                     row["Description"],
-                    sortOrder,
+                    0,
                     flags.IsLocked,
                     flags.IsHidden,
                     flags.IsTest,
                     flags.IsModerated,
                     null,
-                   row["RemoteURL"],
+                    row["RemoteURL"],
                     row["ImageURL"],
                     row["ThemeURL"],
                     row["Styles"],
@@ -762,12 +722,14 @@ namespace VZF.Kernel
                     adjacentPosition,
                     out errorMessage);
             }
-            else if (categoryId.HasValue && !forumId.HasValue)
+            else if (categoryId.HasValue)
             {
-                DataRow crow = CommonDb.category_list(YafContext.Current.ModuleID, boardId,categoryId).Rows[0];  
-               // Saving a category
-               string failureMessage;
-               CategorySaveTask.Start(YafContext.Current.ModuleID, boardId, categoryId, crow["Name"], crow["CategoryImage"], crow["SortOrder"], crow["CanHavePersForums"], adjacentCategoryId, adjacentPosition, out failureMessage);
+                DataRow crow = CommonDb.category_list(YafContext.Current.ModuleID, boardId, categoryId).Rows[0];
+                // Saving a category
+                string failureMessage;
+                CategorySaveTask.Start(YafContext.Current.ModuleID, boardId, categoryId, crow["Name"],
+                    crow["CategoryImage"], crow["SortOrder"], crow["CanHavePersForums"], adjacentCategoryId,
+                    adjacentPosition, out failureMessage);
             }
 
             return true;
@@ -787,10 +749,11 @@ namespace VZF.Kernel
                 }
                 else
                 {
-                    /// TODO: implement bulk access change for a category.
+                    // TODO: implement bulk access change for a category.
                 }
             }
         }
+
         public static List<TreeNode> GetForumsJumpTreeNodesLevel(
             string nodeIdString,
             int view,
@@ -848,17 +811,17 @@ namespace VZF.Kernel
                 {
                     string boardName = bdt.Rows[0]["Name"].ToString();
                     var tn = new TreeNode
-                                 {
-                                     key = boardId.ToString(CultureInfo.InvariantCulture),
-                                     title = HttpUtility.HtmlEncode(boardName),
-                                     lazy = true,
-                                     folder = true,
-                                     expanded = false,
-                                     selected = false,
-                                     extraClasses = string.Empty,
-                                     tooltip =
-                                         YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_FORUM")
-                                 };
+                    {
+                        key = boardId.ToString(CultureInfo.InvariantCulture),
+                        title = HttpUtility.HtmlEncode(boardName),
+                        lazy = true,
+                        folder = true,
+                        expanded = false,
+                        selected = false,
+                        extraClasses = string.Empty,
+                        tooltip =
+                            YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_FORUM")
+                    };
                     collection.Add(tn);
                     return collection;
                 }
@@ -875,24 +838,24 @@ namespace VZF.Kernel
                 {
                     ctbl = CommonDb.category_list(YafContext.Current.PageModuleID,
                         YafContext.Current.PageBoardID, null);
-                    if (ctbl != null && ctbl.Rows.Count > 0)
+
+                    if (ctbl == null || ctbl.Rows.Count <= 0) return collection;
+
+                    foreach (DataRow row in ctbl.Rows)
                     {
-                        foreach (DataRow row in ctbl.Rows)
+                        collection.Add(new TreeNode
                         {
-                            collection.Add(new TreeNode
-                            {
-                                title = GetCategoryTitleLink(forumUrl, row["CategoryID"], row["Name"], !trnl),
-                                key = GetCategoryNodeKey(boardId, row),
-                                lazy = true,
-                                folder = true,
-                                expanded = false,
-                                selected = false,
-                                extraClasses = string.Empty,
-                                tooltip =
-                                    YafContext.Current.Get<ILocalization>()
+                            title = GetCategoryTitleLink(forumUrl, row["CategoryID"], row["Name"], !trnl),
+                            key = GetCategoryNodeKey(boardId, row),
+                            lazy = true,
+                            folder = true,
+                            expanded = false,
+                            selected = false,
+                            extraClasses = string.Empty,
+                            tooltip =
+                                YafContext.Current.Get<ILocalization>()
                                     .GetText("COMMON", "VIEW_CATEGORY")
-                            });
-                        }
+                        });
                     }
                 }
                 else
@@ -903,10 +866,8 @@ namespace VZF.Kernel
                         YafContext.Current.PageUserID);
                     if (ctbl != null && ctbl.Rows.Count > 0)
                     {
-                        foreach (DataRow row in ctbl.Rows)
-                        {
-
-                            collection.Add(new TreeNode
+                        collection.AddRange(from DataRow row in ctbl.Rows
+                            select new TreeNode
                             {
                                 key = GetCategoryNodeKey(boardId, row),
                                 title = GetCategoryTitleLink(forumUrl, row["CategoryID"], row["CategoryName"], !trnl),
@@ -915,15 +876,10 @@ namespace VZF.Kernel
                                 expanded = false,
                                 selected = false,
                                 extraClasses = string.Empty,
-                                tooltip =
-                                    YafContext.Current.Get<ILocalization>()
-                                    .GetText("COMMON", "VIEW_CATEGORY")
+                                tooltip = YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_CATEGORY")
                             });
-                        }
                     }
                 }
-
-
             }
             else
             {
@@ -933,25 +889,25 @@ namespace VZF.Kernel
                     if (amdd.HasValue)
                     {
                         ss = CommonDb.forum_ns_getch_accgroup(
-                      YafContext.Current.PageModuleID,
-                      boardId,
-                      categoryId,
-                      forumId,
-                      amdd,
-                      notIncluded,
-                      immediateOnly,
-                      "-");
+                            YafContext.Current.PageModuleID,
+                            boardId,
+                            categoryId,
+                            forumId,
+                            amdd,
+                            notIncluded,
+                            immediateOnly,
+                            "-");
                     }
                     else
                     {
                         ss = CommonDb.forum_ns_getchildren(
-                      YafContext.Current.PageModuleID,
-                      boardId,
-                      categoryId,
-                      forumId,
-                      notIncluded,
-                      immediateOnly,
-                      "-");
+                            YafContext.Current.PageModuleID,
+                            boardId,
+                            categoryId,
+                            forumId,
+                            notIncluded,
+                            immediateOnly,
+                            "-");
                     }
 
                 }
@@ -968,28 +924,33 @@ namespace VZF.Kernel
                         "-");
                 }
 
-                if (ss != null && ss.Rows.Count > 0)
+                if (ss == null || ss.Rows.Count <= 0) return collection;
+
+                var accessMasks =
+                    CommonDb.accessmask_aforumlist(mid: YafContext.Current.ModuleID,
+                        boardId: YafContext.Current.PageBoardID,
+                        accessMaskId: null, excludeFlags: 0, pageUserId: null,
+                        isAdminMask: true, isCommonMask: true);
+
+                foreach (DataRow row in ss.Rows)
                 {
-                    DataTable accessMasks = CommonDb.accessmask_aforumlist(mid: YafContext.Current.ModuleID, boardId: YafContext.Current.PageBoardID,
-              accessMaskId: null, excludeFlags: 0, pageUserId: null,
-              isAdminMask: true, isCommonMask: true);
-                    foreach (DataRow row in ss.Rows)
-                    {
-                        var nodeKey = GetForumNodeKey(boardId, row);
-                        collection.Add(
-                            new TreeNode
-                                     {
-                                         key = nodeKey,
-                                         expanded = false,
-                                         lazy = row["HasChildren"].ToType<bool>(),
-                                         folder = false,
-                                         tooltip = YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_FORUM"),
-                                         selected = false,
-                                         extraClasses = string.Empty,
-                                         title = GetForumTitleLink(forumUrl, row["ForumID"], row["Title"], row.Table.Columns.Contains("NoAccess") ? row["NoAccess"] : null, row.Table.Columns.Contains("AccessMaskID") ? row["AccessMaskID"] : null,
-                                             !trnl, view == 1, amdd.HasValue, nodeKey, accessMasks)
-                                     });
-                    }
+                    var nodeKey = GetForumNodeKey(boardId, row);
+                    collection.Add(
+                        new TreeNode
+                        {
+                            key = nodeKey,
+                            expanded = false,
+                            lazy = row["HasChildren"].ToType<bool>(),
+                            folder = false,
+                            tooltip = YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_FORUM"),
+                            selected = false,
+                            extraClasses = string.Empty,
+                            title =
+                                GetForumTitleLink(forumUrl, row["ForumID"], row["Title"],
+                                    row.Table.Columns.Contains("NoAccess") ? row["NoAccess"] : null,
+                                    row.Table.Columns.Contains("AccessMaskID") ? row["AccessMaskID"] : null,
+                                    !trnl, view == 1, amdd.HasValue, nodeKey, accessMasks)
+                        });
                 }
             }
 
@@ -1010,7 +971,6 @@ namespace VZF.Kernel
         private static string GetCategoryTitleLink(string forumUrl, object id, object name, bool titleOnly)
         {
             string pathStart;
-            string realU;
             if (!titleOnly)
             {
                 if (Config.IsMojoPortal)
@@ -1031,6 +991,7 @@ namespace VZF.Kernel
 
             if (name.ToString().IsSet())
             {
+                string realU;
                 if (Config.IsAnyPortal)
                 {
                     realU = pathStart;
@@ -1051,7 +1012,7 @@ namespace VZF.Kernel
         }
 
         private static string GetForumTitleLink(string forumUrl, 
-            object id, object name, object noAccessRow, object accessMaskID, bool titleOnly, bool addAccessRow, bool addAccessDropDown, 
+            object id, object name, object noAccessRow, object accessMaskId, bool titleOnly, bool addAccessRow, bool addAccessDropDown, 
             string nodeKey,
             DataTable accessMasks)
         {
@@ -1062,13 +1023,13 @@ namespace VZF.Kernel
                             + UserForumAccess.AddAccessImagesAndTips(
                                 YafContext.Current.PageUserID,
                                 id.ToType<int>());
-                yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
-                noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
+                YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
+                YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
             }
 
             if (addAccessDropDown)
             {             
-               accessRow = accessRow + UserForumAccess.AddGroupAccessDdl(accessMasks, nodeKey, accessMaskID);
+               accessRow = accessRow + UserForumAccess.AddGroupAccessDdl(accessMasks, nodeKey, accessMaskId);
             }
           
             string fttl;
@@ -1107,9 +1068,8 @@ namespace VZF.Kernel
                                         ? string.Empty
                                         : HttpUtility.HtmlEncode(name);
             }
+
             return fttl;
         }
-
-      
     }
 }

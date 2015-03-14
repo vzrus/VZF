@@ -19,8 +19,16 @@ IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{datab
 DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_posts]
 GO
 
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_posts]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_ns_posts]
+GO
+
 IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_topics]') and type in (N'FN', N'IF', N'TF'))
 DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_topics]
+GO
+
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_topics]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_ns_topics]
 GO
 
 IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_subforums]') and type in (N'FN', N'IF', N'TF'))
@@ -29,7 +37,9 @@ GO
 
 IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_lasttopic]') and type in (N'FN', N'IF', N'TF'))
 DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_lasttopic]
-
+GO
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_lasttopic]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_ns_lasttopic]
 GO
 
 IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}medal_getribbonsetting]') and type in (N'FN', N'IF', N'TF'))
@@ -135,6 +145,13 @@ begin
 end
 GO
 
+create function [{databaseSchema}].[{objectQualifier}forum_ns_posts](@lk int, @rk int, @CategoryID int) returns int as
+begin
+	return (select sum(NumPosts) from [{databaseSchema}].[{objectQualifier}Forum] 
+	where CategoryID = @CategoryID and left_key >= @lk and right_key <= @rk);	
+end
+GO
+
 create function [{databaseSchema}].[{objectQualifier}forum_topics](@ForumID int) returns int as
 
 begin
@@ -166,6 +183,14 @@ begin
 	end
 
 	return @NumTopics
+end
+GO
+
+create function [{databaseSchema}].[{objectQualifier}forum_ns_topics](@lk int, @rk int, @CategoryID int) returns int as
+
+begin
+	return (select sum(NumTopics) from [{databaseSchema}].[{objectQualifier}Forum] with(nolock)
+	where CategoryID = @CategoryID and left_key >= @lk and right_key <= @rk);	
 end
 GO
 
@@ -275,11 +300,38 @@ BEGIN
 END
 GO
 
+CREATE FUNCTION [{databaseSchema}].[{objectQualifier}forum_ns_lasttopic] 
+
+(
+    @lk int,
+	@rk int,
+    @CategoryID int,
+	@UserID int = null,
+	@LastTopicID int = null,
+	@LastPosted datetime = null
+) RETURNS int AS
+BEGIN	
+
+		IF (@UserID IS NULL) 		
+		    select top 1 @LastTopicID = f.LastTopicID from [{databaseSchema}].[{objectQualifier}Forum] f with(nolock)
+			        inner join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on f.ForumID=x.ForumID
+		             where f.CategoryID = @CategoryID and f.left_key >= @lk  and f.right_key <= @rk and f.IsHidden = 0		 
+                    order by f.LastPosted desc;
+		else
+			select top 1 @LastTopicID = f.LastTopicID from [{databaseSchema}].[{objectQualifier}Forum] f with(nolock)
+			        inner join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on f.ForumID=x.ForumID
+		            where f.CategoryID = @CategoryID and f.left_key >= @lk and f.right_key <= @rk 
+		            and (f.IsHidden = 0 or x.ReadAccess <> 0) 
+		             and x.UserID=@UserID 		 
+                      order by f.LastPosted desc;
+      return  @LastTopicID
+END
+GO
+
 -- table-valued functions
 
 IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_lastposted]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION [{databaseSchema}].[{objectQualifier}forum_lastposted]
-
 GO
 
 CREATE FUNCTION [{databaseSchema}].[{objectQualifier}forum_lastposted] 

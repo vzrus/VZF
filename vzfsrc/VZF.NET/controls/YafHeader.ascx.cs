@@ -151,7 +151,7 @@ namespace VZF.Controls
                 return;
             }
 
-            YafBuildLink.Redirect(ForumPages.search, "search={0}", this.searchInput.Text.TrimWordsOverMaxLengthWordsPreserved(this.Get<YafBoardSettings>().SearchStringMaxLength));
+            YafBuildLink.Redirect(ForumPages.search, "search={0}", HttpUtility.UrlEncode(this.searchInput.Text.TrimWordsOverMaxLengthWordsPreserved(this.Get<YafBoardSettings>().SearchStringMaxLength)));
         }
 
         /// <summary>

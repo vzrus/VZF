@@ -327,6 +327,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">Is the list of file extensions allowed files or disallowed files (less secure)?</Resource>
     <Resource tag="BOARD_JQ_THEME">jQuery UI Theme:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">The jQuery UI Theme to use on this board for the Tabs and Accordion.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">Mobile Theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">The mobile theme to use on this board.</Resource>
     <Resource tag="BOARD_NAME">Board Name:</Resource>
@@ -368,6 +369,8 @@
     <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     <Resource tag="DELETE_TITLE">Deleting category</Resource>
     <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
     <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
     <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
     <Resource tag="NEW_FORUM">New Forum:</Resource>
@@ -559,6 +562,8 @@
     <Resource tag="PRE_MODERATED_HELP">If the forum is moderated, posts have to be approved by a moderator.</Resource>
     <Resource tag="REMOTE_URL">Remote URL:</Resource>
     <Resource tag="REMOTE_URL_HELP">Enter a url here, and instead of going to the forum you will be taken to this url instead.</Resource>
+    <Resource tag="SAVING_TITLE">Saving forum</Resource>
+    <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
     <Resource tag="SORT_ORDER">SortOrder:</Resource>
     <Resource tag="SORT_ORDER_HELP">Sort order under this category.</Resource>
     <Resource tag="STYLES">Styles:</Resource>
@@ -2021,6 +2026,7 @@
     <Resource tag="MAXNUMBEROF">Maximum number of characters in each post is: {0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">After</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Insert Album Image...</Resource>
     <Resource tag="ALLOWED">Allowed</Resource>
     <Resource tag="BACK">Back</Resource>
@@ -2031,6 +2037,7 @@
     <Resource tag="BBCODE_QUOTEPOSTED">Originally Posted by: {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">Go to Quoted Post</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} wrote:</Resource>
+    <Resource tag="BEFORE">Before</Resource>
     <Resource tag="CAL_JQ_CULTURE">fi</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">MM/dd/YY</Resource>
     <Resource tag="CAL_JQ_TT">Click here to choose date</Resource>
@@ -2050,6 +2057,7 @@
     <Resource tag="CAPTCHA_ENTER">Enter Letters From Security Image:</Resource>
     <Resource tag="CAPTCHA_IMAGE">Security Image:</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">Changed Email</Resource>
+    <Resource tag="CHILD">Child</Resource>
     <Resource tag="COMMON_WORDS">out,please,a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your</Resource>
     <Resource tag="CONTINUE">Continue</Resource>
     <Resource tag="COPY">Copy</Resource>
@@ -2091,6 +2099,7 @@
     <Resource tag="MODAL_NOTIFICATION_HEADER">Notification</Resource>
     <Resource tag="MODERATOR">Moderator</Resource>
     <Resource tag="NAME">Name</Resource>
+    <Resource tag="NEW">New</Resource>
     <Resource tag="NO">No</Resource>
     <Resource tag="NONE">None</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">You have been award on the {0} Forum</Resource>
@@ -2630,6 +2639,7 @@
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Subscribe to your favorite topics via Atom.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Subscribe to forum Atom feed.</Resource>
     <Resource tag="BY">kirjoitti {0}</Resource>
+    <Resource tag="CATEGORY">Category</Resource>
     <Resource tag="CURRENT_TIME">Aika nyt: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">The requested user could not be found.</Resource>
     <Resource tag="ERROR_HOVERCARD">Sorry, no data found or something went wrong.</Resource>

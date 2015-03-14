@@ -564,7 +564,7 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets JQuery UI File Name.
+        /// Gets JQuery UI File Name.
         /// </summary>
         [NotNull]
         public static string JQueryUIFile

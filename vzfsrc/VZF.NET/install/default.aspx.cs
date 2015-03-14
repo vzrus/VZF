@@ -128,10 +128,7 @@ namespace YAF.Install
         /// </summary>
         public IServiceLocator ServiceLocator
         {
-            get
-            {
-                return YafContext.Current.ServiceLocator;
-            }
+            get { return YafContext.Current.ServiceLocator; }
         }
 
         /// <summary>
@@ -139,10 +136,7 @@ namespace YAF.Install
         /// </summary>
         protected bool IsForumInstalled
         {
-            get
-            {
-                return CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>());
-            }
+            get { return CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()); }
         }
 
         /// <summary>
@@ -150,10 +144,7 @@ namespace YAF.Install
         /// </summary>
         protected bool IsInstalled
         {
-            get
-            {
-                return this._config.GetConfigValueAsString(_AppPasswordKey).IsSet();
-            }
+            get { return this._config.GetConfigValueAsString(_AppPasswordKey).IsSet(); }
         }
 
         /// <summary>
@@ -168,8 +159,8 @@ namespace YAF.Install
                     string connName = this.lbConnections.SelectedValue;
 
                     return connName.IsSet()
-                               ? ConfigurationManager.ConnectionStrings[connName].ConnectionString
-                               : string.Empty;
+                        ? ConfigurationManager.ConnectionStrings[connName].ConnectionString
+                        : string.Empty;
                 }
 
                 var cstr = new StringBuilder();
@@ -193,10 +184,7 @@ namespace YAF.Install
         /// </summary>
         private string CurrentWizardStepID
         {
-            get
-            {
-                return this.InstallWizard.WizardSteps[this.InstallWizard.ActiveStepIndex].ID;
-            }
+            get { return this.InstallWizard.WizardSteps[this.InstallWizard.ActiveStepIndex].ID; }
 
             set
             {
@@ -449,9 +437,9 @@ namespace YAF.Install
                     else
                     {
                         object version = this.Cache["DBVersion"]
-                                         ?? CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
+                                         ?? CommonDb.GetDbVersion(this.Session["InstallModuleID"].ToType<int?>());
 
-                        if (((int)version) >= 30 || ((int)version) == -1)
+                        if (((int) version) >= 30 || ((int) version) == -1)
                         {
                             // migration is NOT needed...
                             this.CurrentWizardStepID = "WizFinished";
@@ -465,7 +453,8 @@ namespace YAF.Install
                     {
                         this.lblMigrateUsersCount.Text =
                             CommonDb.user_list(
-                                this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null, true).Rows.Count.ToString();
+                                this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null, true)
+                                .Rows.Count.ToString();
                     }
 
                     break;
@@ -920,9 +909,10 @@ namespace YAF.Install
         /// <returns>
         /// The test database connection.
         /// </returns>
-        private static bool TestDatabaseConnection([NotNull] out string exceptionMessage, string connectionString)        
+        private static bool TestDatabaseConnection([NotNull] out string exceptionMessage, string connectionString)
         {
-            return CommonDb.TestConnection(out exceptionMessage, connectionString, VZF.Data.DAL.SqlDbAccess.GetProviderNameFromConnectionString(connectionString));
+            return CommonDb.TestConnection(out exceptionMessage, connectionString,
+                VZF.Data.DAL.SqlDbAccess.GetProviderNameFromConnectionString(connectionString));
         }
 
         /// <summary>
@@ -1049,15 +1039,15 @@ namespace YAF.Install
                 // create the admin user...
                 MembershipCreateStatus status;
                 user = this.Get<MembershipProvider>()
-                           .CreateUser(
-                               this.UserName.Text,
-                               this.Password1.Text,
-                               this.AdminEmail.Text,
-                               this.SecurityQuestion.Text,
-                               this.SecurityAnswer.Text,
-                               true,
-                               null,
-                               out status);
+                    .CreateUser(
+                        this.UserName.Text,
+                        this.Password1.Text,
+                        this.AdminEmail.Text,
+                        this.SecurityQuestion.Text,
+                        this.SecurityAnswer.Text,
+                        true,
+                        null,
+                        out status);
                 if (status != MembershipCreateStatus.Success)
                 {
                     this.AddLoadMessage(
@@ -1107,7 +1097,7 @@ namespace YAF.Install
                     cult.Rows.Cast<DataRow>().Where(drow => drow["CultureTag"].ToString() == this.Culture.SelectedValue)
                     )
                 {
-                    langFile = (string)drow["CultureFile"];
+                    langFile = (string) drow["CultureFile"];
                 }
 
                 CommonDb.system_initialize(
@@ -1226,7 +1216,7 @@ namespace YAF.Install
             foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
             {
                 this.lbConnections.Items.Add(connectionString.Name);
-            }          
+            }
 
             ListItem item = this.lbConnections.Items.FindByText("vzfnet_ms");
 
@@ -1269,8 +1259,8 @@ namespace YAF.Install
             if (YafContext.Current.QueryIDs != null && YafContext.Current.QueryIDs["md"] != null)
             {
                 this.Session["InstallModuleID"] = YafContext.Current.QueryIDs["md"] == null
-                                                      ? 1
-                                                      : YafContext.Current.QueryIDs["md"].ToType<int>();
+                    ? 1
+                    : YafContext.Current.QueryIDs["md"].ToType<int>();
             }
             if (this.IsPostBack)
             {
@@ -1285,10 +1275,10 @@ namespace YAF.Install
             else
             {
                 this.ModuleID.Text = this.Session["InstallModuleID"] != null
-                                         ? this.Session["InstallModuleID"].ToString()
-                                         : "1";
+                    ? this.Session["InstallModuleID"].ToString()
+                    : "1";
                 SelectModuleLbl.Text = "Enter required module ID";
-                this.Cache["DBVersion"] = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
+                this.Cache["DBVersion"] = CommonDb.GetDbVersion(this.Session["InstallModuleID"].ToType<int?>());
 
                 this.CurrentWizardStepID = this.IsInstalled ? "WizEnterPassword" : "WizValidatePermission";
 
@@ -1316,7 +1306,7 @@ namespace YAF.Install
                 {
                     this.Culture.Items.FindByValue("en-US").Selected = true;
                 }
-                 
+
                 // this.DBUsernamePasswordHolder.Visible = CommonDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
                 this.PropertiesList.DataSource =
                     CommonDb.ConnectionParameters(this.Session["InstallModuleID"].ToType<int?>());
@@ -1376,7 +1366,9 @@ namespace YAF.Install
                         !this._config.WriteConnectionString(
                             Config.ConnectionStringName,
                             this.CurrentConnString,
-                            SqlDbAccess.GetProviderName(SqlDbAccess.GetConnectionStringName(this.Session["InstallModuleID"].ToType<int?>(), string.Empty))))
+                            SqlDbAccess.GetProviderName(
+                                SqlDbAccess.GetConnectionStringName(this.Session["InstallModuleID"].ToType<int?>(),
+                                    string.Empty))))
                     {
                         // failure to write db Settings..
                         return UpdateDBFailureType.ConnectionStringWrite;
@@ -1400,79 +1392,78 @@ namespace YAF.Install
         /// </returns>
         private bool UpgradeDatabase(bool fullText)
         {
+            CommonDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>())
+                .ForEach(
+                    s =>
+                        this.ExecuteScript(s,
+                            CommonDb.DbInstallTransactions(this.Session["InstallModuleID"].ToType<int?>())));
+            int prevVersion = CommonDb.GetDbVersion(this.Session["InstallModuleID"].ToType<int?>());
+
+            CommonDb.system_updateversion(
+                this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+
+            // Ederon : 9/7/2007
+            // resync all boards - necessary for propr last post bubbling
+            CommonDb.board_resync(this.Session["InstallModuleID"].ToType<int?>());
+
+            // upgrade providers...
+            // YAF.Providers.Membership.DB.Current.UpgradeMembership(prevVersion, YafForumInfo.AppVersion);
+
+            if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 30
+                || this.IsForumInstalled && this.UpgradeExtensions.Checked)
             {
-                foreach (string script in CommonDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>()))
+                // load default bbcode if available...
+                if (File.Exists(this.Request.MapPath(_BbcodeImport)))
                 {
-                    this.ExecuteScript(script, true);
-                }              
-
-                int prevVersion = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
-
-                CommonDb.system_updateversion(
-                    this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
-
-                // Ederon : 9/7/2007
-                // resync all boards - necessary for propr last post bubbling
-                CommonDb.board_resync(this.Session["InstallModuleID"].ToType<int?>());
-
-                // upgrade providers...
-                // YAF.Providers.Membership.DB.Current.UpgradeMembership(prevVersion, YafForumInfo.AppVersion);
-
-                if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 30
-                    || this.IsForumInstalled && this.UpgradeExtensions.Checked)
-                {
-                    // load default bbcode if available...
-                    if (File.Exists(this.Request.MapPath(_BbcodeImport)))
+                    // import into board...
+                    using (var bbcodeStream = new StreamReader(this.Request.MapPath(_BbcodeImport)))
                     {
-                        // import into board...
-                        using (var bbcodeStream = new StreamReader(this.Request.MapPath(_BbcodeImport)))
-                        {
-                            DataImport.BBCodeExtensionImport(this.PageBoardID, bbcodeStream.BaseStream);
-                            bbcodeStream.Close();
-                        }
-                    }
-
-                    // load default extensions if available...
-                    if (File.Exists(this.Request.MapPath(_FileImport)))
-                    {
-                        // import into board...
-                        using (var fileExtStream = new StreamReader(this.Request.MapPath(_FileImport)))
-                        {
-                            DataImport.FileExtensionImport(this.PageBoardID, fileExtStream.BaseStream);
-                            fileExtStream.Close();
-                        }
-                    }
-
-                    // load default topic status if available...
-                    if (File.Exists(this.Request.MapPath(_TopicStatusImport)))
-                    {
-                        // import into board...
-                        using (var topicStatusStream = new StreamReader(this.Request.MapPath(_TopicStatusImport)))
-                        {
-                            DataImport.TopicStatusImport(this.PageBoardID, topicStatusStream.BaseStream);
-                            topicStatusStream.Close();
-                        }
+                        DataImport.BBCodeExtensionImport(this.PageBoardID, bbcodeStream.BaseStream);
+                        bbcodeStream.Close();
                     }
                 }
 
-                if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 42)
+                // load default extensions if available...
+                if (File.Exists(this.Request.MapPath(_FileImport)))
                 {
-                    // un-html encode all topic subject names...
-                    CommonDb.unencode_all_topics_subjects(
-                        this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
+                    // import into board...
+                    using (var fileExtStream = new StreamReader(this.Request.MapPath(_FileImport)))
+                    {
+                        DataImport.FileExtensionImport(this.PageBoardID, fileExtStream.BaseStream);
+                        fileExtStream.Close();
+                    }
                 }
 
-                if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 49)
+                // load default topic status if available...
+                if (File.Exists(this.Request.MapPath(_TopicStatusImport)))
                 {
-                    // Reset The UserBox Template
-                    this.Get<YafBoardSettings>().UserBox = Constants.UserBox.DisplayTemplateDefault;
-
-                    ((YafLoadBoardSettings)this.Get<YafBoardSettings>()).SaveRegistry();
+                    // import into board...
+                    using (var topicStatusStream = new StreamReader(this.Request.MapPath(_TopicStatusImport)))
+                    {
+                        DataImport.TopicStatusImport(this.PageBoardID, topicStatusStream.BaseStream);
+                        topicStatusStream.Close();
+                    }
                 }
-
-                // vzrus: uncomment it to not keep install/upgrade objects in DB and for better security 
-                // DB.system_deleteinstallobjects();
             }
+
+            if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 42)
+            {
+                // un-html encode all topic subject names...
+                CommonDb.unencode_all_topics_subjects(
+                    this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
+            }
+
+            if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 49)
+            {
+                // Reset The UserBox Template
+                this.Get<YafBoardSettings>().UserBox = Constants.UserBox.DisplayTemplateDefault;
+
+                ((YafLoadBoardSettings) this.Get<YafBoardSettings>()).SaveRegistry();
+            }
+
+            // vzrus: uncomment it to not keep install/upgrade objects in DB and for better security 
+            // DB.system_deleteinstallobjects();
+
 
             /*catch ( Exception x )
       {

@@ -1,4 +1,6 @@
-﻿namespace VZF.Controls
+﻿using System.Collections.Generic;
+
+namespace VZF.Controls
 {
     using System;
     using System.Data;
@@ -163,18 +165,32 @@
             if (Config.LargeForumTree)
             {
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
                 this.divactive.Visible = true;
+                var dic = new Dictionary<string, string>
+                {
+                    {"delete", this.GetText("COMMON", "DELETE")},
+                    {"edit", this.GetText("COMMON", "EDIT")},
+                    {"new", this.GetText("COMMON", "NEW")},
+                    {"category", this.GetText("DEFAULT", "CATEGORY")},
+                    {"forum", this.GetText("DEFAULT", "FORUM")},
+                    {"before", this.GetText("COMMON", "BEFORE")},
+                    {"after", this.GetText("COMMON", "AFTER")},
+                    {"over", this.GetText("COMMON", "CHILD")}
+                };
+
                 YafContext.Current.PageElements.RegisterJsBlock(
                     "fancytreescr",
-                    JavaScriptBlocks.FancytreeGetNodesAdminLazyJS(
+                    JavaScriptBlocks.FancytreeGetNodesAdminLazyJs(
                         "tree",
                         PageContext.PageUserID,
                         PageContext.PageBoardID,
-                        "echoActive",
+                        this.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS"),
                         "&v=2",
                         "{0}resource.ashx?".FormatWith(YafForumInfo.ForumClientFileRoot),
-                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())), 
+                        dic)
+                        );
             }
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(

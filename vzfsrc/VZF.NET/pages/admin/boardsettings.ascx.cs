@@ -119,6 +119,10 @@ namespace YAF.Pages.Admin
             this.JqueryUITheme.DataTextField = "Theme";
             this.JqueryUITheme.DataValueField = "Theme";
 
+            this.FancyTreeTheme.DataSource = StaticDataHelper.FancyTreeThemes();
+            this.FancyTreeTheme.DataTextField = "Theme";
+            this.FancyTreeTheme.DataValueField = "Theme";
+
             this.BindData();
 
             // bind poll group list
@@ -149,6 +153,7 @@ namespace YAF.Pages.Admin
             this.DefaultNotificationSetting.Items.AddRange(notificationItems);
 
             SetSelectedOnList(ref this.JqueryUITheme, this.Get<YafBoardSettings>().JqueryUITheme);
+            SetSelectedOnList(ref this.FancyTreeTheme, this.Get<YafBoardSettings>().FancyTreeTheme);
 
             // Get first default full culture from a language file tag.
             string langFileCulture = StaticDataHelper.CultureDefaultFromFile(this.Get<YafBoardSettings>().Language)
@@ -275,6 +280,7 @@ namespace YAF.Pages.Admin
             this.Get<YafBoardSettings>().ForumEmail = this.ForumEmail.Text;
             this.Get<YafBoardSettings>().CopyrightRemovalDomainKey = this.CopyrightRemovalKey.Text.Trim();
             this.Get<YafBoardSettings>().JqueryUITheme = this.JqueryUITheme.SelectedValue;
+            this.Get<YafBoardSettings>().FancyTreeTheme = this.FancyTreeTheme.SelectedValue;
             this.Get<YafBoardSettings>().JqueryUIThemeCDNHosted = this.JqueryUIThemeCDNHosted.Checked;
 
             int hours;

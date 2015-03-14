@@ -3751,8 +3751,8 @@ begin
         b.Styles,
         b.ParentID,
         b.PollGroupID,
-        Topics			= [{databaseSchema}].[{objectQualifier}forum_topics](b.ForumID),
-        Posts			= [{databaseSchema}].[{objectQualifier}forum_posts](b.ForumID),		
+        Topics			= [{databaseSchema}].[{objectQualifier}forum_ns_topics](b.left_key,b.right_key,a.CategoryID),
+        Posts			= [{databaseSchema}].[{objectQualifier}forum_ns_posts](b.left_key,b.right_key, a.CategoryID),		
         LastPosted		= t.LastPosted,
         LastMessageID	= t.LastMessageID,
         LastMessageFlags = t.LastMessageFlags,
@@ -3783,7 +3783,7 @@ begin
         [{databaseSchema}].[{objectQualifier}Category] a with(nolock)
         join [{databaseSchema}].[{objectQualifier}Forum] b with(nolock) on b.CategoryID=a.CategoryID
 		join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on (x.ForumID=b.ForumID and  x.UserID = @UserID)
-        left outer join [{databaseSchema}].[{objectQualifier}Topic] t with(nolock) ON t.TopicID = [{databaseSchema}].[{objectQualifier}forum_lasttopic](b.ForumID,@UserID,b.LastTopicID,b.LastPosted)
+        left outer join [{databaseSchema}].[{objectQualifier}Topic] t with(nolock) ON t.TopicID = [{databaseSchema}].[{objectQualifier}forum_ns_lasttopic](b.left_key,b.right_key,a.CategoryID,@UserID,b.LastTopicID,b.LastPosted)
     where 		
         (@CategoryID is null or a.CategoryID = @CategoryID) and
 	    (b.[level] >= @lvl) and

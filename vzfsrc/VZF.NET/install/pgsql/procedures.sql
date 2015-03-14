@@ -4045,7 +4045,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_listread(
                            i_showpersonalforums boolean,
                            i_forumcreatedbyuserid integer,
                            i_UTCTIMESTAMP timestamp)
-                  RETURNS SETOF {databaseSchema}.{objectQualifier}forum_listread_return_type AS
+                  RETURNS SETOF {databaseSchema}.{objectQualifier}forum_ns_listread_return_type AS
 $BODY$DECLARE
 ici_lasttopicid integer;
 ici_topicmovedid integer;
@@ -4066,7 +4066,7 @@ rk integer;
 lk integer;
 intcnt integer:=0; 
 _rectemp {databaseSchema}.{objectQualifier}forum_listread_tmp%ROWTYPE;
-_rec {databaseSchema}.{objectQualifier}forum_listread_return_type%ROWTYPE; 
+_rec {databaseSchema}.{objectQualifier}forum_ns_listread_return_type%ROWTYPE; 
 BEGIN	
  
 
@@ -4099,9 +4099,14 @@ FOR _rec IN
         b.description, 		
         b.imageurl,		
         b.pollgroupid, 
-        b.isuserforum,		
-        {databaseSchema}.{objectQualifier}forum_topics(b.forumid) AS Topics,
-        {databaseSchema}.{objectQualifier}forum_posts(b.forumid) AS Posts,
+        b.isuserforum,	
+		b.left_key,
+		b.right_key,
+		i_userid,	
+        (select sum(fp.NumTopics) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Topics,
+        (select sum(fp.NumPosts) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Posts,	
         b.lasttopicid,
         ici_lasttopicstatus,
         ici_lasttopicstyles,
@@ -4140,11 +4145,11 @@ FOR _rec IN
 	    a.sortorder,
 	    b.left_key
     LOOP 	 
-                    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL) THEN	 
-                     _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_lasttopic(_rec."ForumID",i_userid,_rec."LastTopicID",_rec."LastPosted");
-    END IF;
+    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted" IS NULL) THEN
+	 _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_ns_lasttopic(_rec."left_key",_rec."right_key", _rec."CategoryID", _rec."PageUserID"); 
+    END IF; 
     IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL AND _rec."TopicMovedID" IS NOT NULL) THEN	 
-     _rec."LastTopicID":={databaseSchema}.{objectQualifier}forum_lasttopic(_rec."ForumID",i_userid,_rec."TopicMovedID",_rec."LastPosted");
+            _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_ns_lasttopic(_rec."left_key",_rec."right_key", _rec."CategoryID", _rec."PageUserID");   
     END IF;	  	
      SELECT    t.lastposted , 
                t.lastmessageid, 
@@ -4182,6 +4187,132 @@ FOR _rec IN
     RETURN NEXT _rec;	
 END LOOP;
 
+END;
+
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
+  --GO 
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_listread_test(
+                           i_boardid integer,
+                           i_userid integer,
+                           i_categoryid integer,
+                           i_parentid integer,
+                           i_stylednicks boolean,
+                           i_findlastunread boolean,
+						   i_showcommonforums boolean,
+                           i_showpersonalforums boolean,
+                           i_forumcreatedbyuserid integer,
+                           i_UTCTIMESTAMP timestamp)
+                  RETURNS SETOF {databaseSchema}.{objectQualifier}forum_listread_return_type AS
+$BODY$DECLARE
+ici_lasttopicid integer;
+ici_topicmovedid integer;
+ici_lastposted timestamp ;
+ici_lastmessageid integer;
+ici_lastmessageflags integer;
+ici_lastuserid integer;
+ici_lastuserdisplayname varchar(255);
+ici_lasttopicname varchar(255);
+ici_lasttopicstyles varchar(255);
+ici_lastuser varchar(255);
+ici_pollgroupid integer; 
+ici_style varchar(255):='';
+ici_lasttopicstatus  varchar(255):='';
+ici_lasttopicaccess  timestamp;
+lvl integer := 0;
+rk integer; 
+lk integer;
+intcnt integer:=0; 
+_rec {databaseSchema}.{objectQualifier}forum_listread_return_type%ROWTYPE; 
+BEGIN	
+ 
+
+ IF i_parentid IS NOT NULL THEN
+ SELECT "level",left_key + 1, right_key - 1 into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum   
+ where forumid = i_parentid limit 1;
+ END IF;
+ IF i_parentid IS NULL AND i_categoryid > 0 THEN
+ SELECT 0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum n
+ where n.categoryid = i_categoryid;; 
+ END IF;
+ IF i_parentid IS NULL AND i_categoryid IS NULL THEN
+ SELECT 0, min(n.left_key), max(n.right_key) into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum n 
+ join {databaseSchema}.{objectQualifier}category c
+ on c.categoryid = n.categoryid
+ where c.boardid = i_boardid;
+ END IF;
+ lvl := lvl - 1;
+
+FOR _rec IN
+    SELECT 
+        a.categoryid, 
+        a.name AS Category, 
+        b.forumid AS ForumID,
+        b.parentid,
+        b.name AS Forum, 
+        b.description, 		
+        b.imageurl,		
+        b.pollgroupid, 
+        b.isuserforum,	
+		b.left_key,
+		b.right_key,
+		i_userid,	
+        (select sum(fp.NumTopics) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Topics,
+        (select sum(fp.NumPosts) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Posts,		
+        t.topicid,
+        t.status,
+        t.styles,
+        t.topicmovedid,
+        t.lastposted, 
+        t.lastmessageid, 
+        t.lastmessageflags, 
+        t.lastuserid,
+        t.topic,
+        COALESCE(t.lastusername,(SELECT u2.name FROM   {databaseSchema}.{objectQualifier}user u2 WHERE  u2.userid = t.lastuserid LIMIT 1)),
+        '',
+        b.flags,
+        (case(i_stylednicks)
+            when true THEN (SELECT us.userstyle FROM {databaseSchema}.{objectQualifier}user us where us.userid = _rec."LastUserID")   
+            else ''	 end) as "Style",
+    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}active xz 
+    JOIN {databaseSchema}.{objectQualifier}user usr 
+    ON xz.userid = usr.userid 
+    WHERE xz.forumid=b.forumid 
+    AND usr.isactiveexcluded IS FALSE) AS Viewing, 
+        b.remoteurl,
+        x.readaccess::integer,
+        (case(i_findlastunread)
+             when true THEN
+               (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}forumreadtracking x WHERE x.forumid=b.forumid AND x.userid = i_userid LIMIT 1)
+             else null	 end) AS LastForumAccess,
+             (case when (i_findlastunread IS TRUE)
+               THEN
+               (SELECT lastaccessdate FROM {databaseSchema}.{objectQualifier}topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid)
+               else null end)  AS LastTopicAccess			 		
+    FROM 
+        {databaseSchema}.{objectQualifier}category a
+        JOIN {databaseSchema}.{objectQualifier}forum b on (b.categoryid=a.categoryid and a.boardid = i_boardid)
+		JOIN {databaseSchema}.{objectQualifier}activeaccess x on (x.forumid=b.forumid and x.userid = i_userid) 
+		left outer join {databaseSchema}.{objectQualifier}topic t ON t.topicid = {databaseSchema}.{objectQualifier}forum_ns_lasttopic(b.left_key,b.right_key, a.categoryid, i_userid)
+    WHERE
+        (i_categoryid IS NULL OR a.categoryid = i_categoryid) AND
+		(b."level" >= lvl) and		 
+		((b.flags & 2)=0 OR x.readaccess) and         	
+        b.left_key >= lk and b.right_key <= rk 	
+    ORDER BY
+	    a.sortorder,
+	    b.left_key
+    LOOP     
+    RETURN NEXT _rec;	
+    END LOOP;
 END;
 
 $BODY$
@@ -6042,9 +6173,21 @@ $BODY$DECLARE
              intervaladd integer :=5;
              timesendattempt timestamp ;
 BEGIN
-timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
+timesendattempt :=i_utctimestamp + (intervaladd || ' minute')::interval;
 
-      
+        UPDATE {databaseSchema}.{objectQualifier}mail
+        SET 
+            ProcessID = NULL
+        WHERE
+            ProcessID IS NOT NULL AND SendAttempt > i_utctimestamp;
+
+        UPDATE {databaseSchema}.{objectQualifier}Mail
+        SET 
+            SendTries = SendTries + 1,
+            SendAttempt = timesendattempt,
+            ProcessID = i_processid
+        WHERE
+            MailID IN (SELECT MailID FROM {databaseSchema}.{objectQualifier}Mail WHERE SendAttempt < i_utctimestamp OR SendAttempt IS NULL ORDER BY SendAttempt, Created limit 10);
          
     -- now SELECT all mail reserved for this process...
     FOR _rec IN
@@ -6064,7 +6207,9 @@ timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
     WHERE processid = i_processid  ORDER BY sendattempt, created LIMIT 10
 LOOP
 RETURN NEXT _rec;
-END LOOP; 	
+END LOOP; 
+
+	 
         
  END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER

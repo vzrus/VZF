@@ -1,4 +1,7 @@
-﻿namespace VZF.Utilities
+﻿using VZF.Utils;
+using YAF.Types;
+
+namespace VZF.Utilities
 {
     #region Using
 
@@ -21,10 +24,8 @@
         /// <param name="echoActive"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public static string FancyTreeSelectSingleNodeLazyJS(string treeId, int userId, int boardId, string echoActive, string activeNode, string arguments, string jsonData, string forumUrl)
+        public static string FancyTreeSelectSingleNodeLazyJs(string treeId, int userId, int boardId, string echoActive, string activeNode, string arguments, string jsonData, string forumUrl)
         {
-            // treeId = "tree";
-
             return
                 String.Format(@"$(function() 
                 {{
@@ -63,5 +64,7 @@ dataType: 'json' }} );
               }}); }}
         , */
         }
+
+    
     }
 }

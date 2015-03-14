@@ -256,6 +256,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox AllowPersonalGroupsOnlyForPersonalForums;
         
         /// <summary>
+        /// HelpLabel9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel9;
+        
+        /// <summary>
+        /// FancyTreeTheme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList FancyTreeTheme;
+        
+        /// <summary>
         /// LocalizedLabel8 control.
         /// </summary>
         /// <remarks>

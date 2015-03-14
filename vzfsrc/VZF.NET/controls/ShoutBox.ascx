@@ -27,9 +27,9 @@
         return false;
     }
 
-    function refreshShoutBoxFailed(err)
+    function refreshShoutBoxFailed(XMLHttpRequest, textStatus, errorThrown)
     {
-        jQuery('#shoutBoxChatArea').html("Error refreshing chat: " + err);
+        jQuery('#shoutBoxChatArea').html("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown  );
     }
 
     function checkForNewMessages() {

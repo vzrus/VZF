@@ -115,6 +115,16 @@
         </tr>
         <tr>
             <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel9" runat="server" LocalizedTag="BOARD_JSTREE_THEME"
+                    LocalizedPage="ADMIN_BOARDSETTINGS" />
+            </td>
+            <td class="post">
+                <asp:DropDownList ID="FancyTreeTheme" runat="server" Width="400">
+                </asp:DropDownList>
+            </td>
+        </tr>
+        <tr>
+            <td class="postheader">
                 <VZF:HelpLabel ID="LocalizedLabel8" runat="server" LocalizedTag="BOARD_JQ_THEME"
                     LocalizedPage="ADMIN_BOARDSETTINGS" />
             </td>

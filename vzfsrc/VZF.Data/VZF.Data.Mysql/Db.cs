@@ -148,6 +148,11 @@ namespace VZF.Data.Mysql
             }
         }
         */
+
+        public static bool DbInstallTransactions
+        {
+            get { return true; }
+        }
         
         // MySQL InnoDB engine currently don't support fulltext....
 
@@ -169,46 +174,21 @@ namespace VZF.Data.Mysql
         {
             get
             {
-                return "mysql/fulltext.sql";
+                return ScriptFolder + "/fulltext.sql";
             }
         }
 
         /// <summary>
-        /// The _script list.
+        ///   Gets ScriptFolder.
         /// </summary>
-        private static readonly string[] _scriptList =
-            {
-                "mysql/preinstall.sql", 
-                "mysql/tables.sql", 
-                "mysql/pkeys.sql", 
-                "mysql/indexes.sql",
-                "mysql/fkeys.sql", 
-                "mysql/constraints.sql",
-                "mysql/triggers.sql", 
-                "mysql/types.sql", 
-                "mysql/views.sql",
-                "mysql/procedures.sql", 
-                "mysql/functions.sql",
-                "mysql/providers/tables.sql", 
-                "mysql/providers/pkeys.sql",
-                "mysql/providers/indexes.sql", 
-                "mysql/providers/procedures.sql",
-                "mysql/nestedsets.sql", 
-                "mysql/nestedsets_sp.sql", 
-                "mysql/postinstall.sql"
-            };
-
-        /// <summary>
-        /// Gets the script list.
-        /// </summary>
-        public static string[] ScriptList
+        public static string ScriptFolder
         {
             get
             {
-                return _scriptList;
+                return "mysql";
             }
-        }
-
+        }     
+   
         #endregion
       
         #region VZ-Team additions

@@ -1,6 +1,6 @@
-﻿function DynatreeGetNodesAdminLazyJS(treeId, jsonData, boardId, addarguments, echoActive, forumPath, selector)
+﻿function FancyTreeGetNodesAdminLazyJS(treeId, jsonData, boardId, addarguments, echoActive, forumPath, selector)
 {
-    $('#' + treeId).dynatree(
+    $('#' + treeId).fancytree(
             {
                 title: 'Lazy Tree',                         
                 fx: { height: 'toggle', duration: 200 },

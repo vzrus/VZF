@@ -21,6 +21,9 @@
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+
 namespace VZF.Utilities
 {
     #region Using
@@ -43,7 +46,7 @@ namespace VZF.Utilities
         /// <param name="impossibleLabel"></param>
         /// <param name="userId"></param>
         /// <returns></returns>      
-        public static string FancytreeGetNodesAdminLazyJS(string treeId, int userId, int boardId, string impossibleLabel, string arguments, string jsonData, string forumPath)
+        public static string FancytreeGetNodesAdminLazyJs(string treeId, int userId, int boardId, string impossibleLabel, string arguments, string jsonData, string forumPath, Dictionary<string,string> menuItems)
         {
             return String.Format(@"$(function() 
                 {{
@@ -58,7 +61,7 @@ namespace VZF.Utilities
                                    }},
 
                            dnd: {{
-                                  autoExpandMS: 400,
+                                  autoExpandMS: 500,
                                   focusOnClick: true,
                                   preventVoidMoves: true,
                                   preventRecursiveMoves: true,
@@ -118,18 +121,18 @@ namespace VZF.Utilities
       delegate: 'span.fancytree-title',
 ////      menu: '#options',
       menu: [         
-          {{title: 'Delete  ', cmd: 'delete', uiIcon: 'ui-icon-trash', disabled: false }},
+          {{title: '{7}', cmd: 'delete', uiIcon: 'ui-icon-trash', disabled: false }},
           {{title: '----'}},
-          {{title: 'Edit', cmd: 'edit', uiIcon: 'ui-icon-pencil', disabled: false }},         
-          {{title: 'New', data:'new', uiIcon: 'ui-icon-plus', children: [
-              {{title: 'Category', data: 'category', uiIcon: 'ui-icon-folder-collapsed', children: [
-                   {{title: 'After', cmd: 'catafter', uiIcon: 'ui-icon-arrow-1-s',  disabled: false }},
-                   {{title: 'Before', cmd: 'catbefore', uiIcon: 'ui-icon-arrow-1-n',  disabled: false}}                                                            ]
+          {{title: '{8}', cmd: 'edit', uiIcon: 'ui-icon-pencil', disabled: false }},         
+          {{title: '{9}', data:'new', uiIcon: 'ui-icon-plus', children: [
+              {{title: '{10}', data: 'category', uiIcon: 'ui-icon-folder-collapsed', children: [
+              {{title: '{12}', cmd: 'catbefore', uiIcon: 'ui-icon-arrow-1-n',  disabled: false}}, 
+              {{title: '{13}', cmd: 'catafter', uiIcon: 'ui-icon-arrow-1-s',  disabled: false }}                                                                             ]
               }},
-              {{title: 'Forum', data: 'forum', uiIcon: 'ui-icon-note', children: [
-                   {{title: 'After', cmd: 'frmafter', uiIcon: 'ui-icon-arrow-1-s', disabled: false }},
-                   {{title: 'Before', cmd: 'frmbefore', uiIcon: 'ui-icon-arrow-1-n',  disabled: false}},
-                   {{title: 'Child', cmd: 'frmover', uiIcon: 'ui-icon-arrowreturn-1-e', disabled: false}}                                                         ]
+              {{title: '{11}', data: 'forum', uiIcon: 'ui-icon-note', children: [
+                   {{title: '{12}', cmd: 'frmbefore', uiIcon: 'ui-icon-arrow-1-n',  disabled: false}},
+                   {{title: '{13}', cmd: 'frmafter', uiIcon: 'ui-icon-arrow-1-s', disabled: false }},                   
+                   {{title: '{14}', cmd: 'frmover', uiIcon: 'ui-icon-arrowreturn-1-e', disabled: false}}                                                         ]
               }}   
                                                 ]
           }}                                        
@@ -140,11 +143,11 @@ namespace VZF.Utilities
                   if (!node.folder) {{
                                      $('#{0}').contextmenu('setEntry', 'new', 
              
-              {{title: 'New', children: [
-            {{title: 'Forum', data: 'forum', children: [
-            {{title: 'After', cmd: 'frmafter', uiIcon: 'ui-icon-trash', disabled: false }},
-            {{title: 'Before', cmd: 'frmbefore', uiIcon: 'ui-icon-trash', disabled: false}},
-            {{title: 'Child', cmd: 'frmover', uiIcon: 'ui-icon-trash', disabled: false}}
+            {{title: '{9}', data:'new', uiIcon: 'ui-icon-plus', children: [
+            {{title: '{11}', data: 'forum', uiIcon: 'ui-icon-note', children: [
+            {{title: '{12}', cmd: 'frmbefore', uiIcon: 'ui-icon-arrow-1-n', disabled: false}},
+            {{title: '{13}', cmd: 'frmafter', uiIcon: 'ui-icon-arrow-1-s', disabled: false }},           
+            {{title: '{14}', cmd: 'frmover', uiIcon: 'ui-icon-arrowreturn-1-e', disabled: false}}
                                                        ]
              }}                         ]
           }}
@@ -152,10 +155,10 @@ namespace VZF.Utilities
                                    }}
                   else {{
                         $('#{0}').contextmenu('setEntry', 'newm', 
-              {{title: 'New', children: [
-            {{title: 'Category', data: 'category', children: [
-            {{title: 'After', cmd: 'catafter', uiIcon: 'ui-icon-trash', disabled: false }},
-            {{title: 'Before', cmd: 'catbefore', uiIcon: 'ui-icon-trash', disabled: false}}      
+            {{title: '{9}', uiIcon: 'ui-icon-plus', data:'new', children: [
+            {{title: '{10}', data: 'category', uiIcon: 'ui-icon-folder-collapsed', children: [           
+            {{title: '{12}', cmd: 'catbefore', uiIcon: 'ui-icon-arrow-1-n', disabled: false}}, 
+            {{title: '{13}', cmd: 'catafter', uiIcon: 'ui-icon-arrow-1-s', disabled: false }}
                                                               ]
              }}                     ]
 
@@ -243,7 +246,9 @@ namespace VZF.Utilities
                                                          }}
                   }});
 
-              }});", treeId, jsonData, boardId, arguments, impossibleLabel, forumPath, Config.JQueryAlias);
+              }});", treeId, jsonData, boardId, arguments, impossibleLabel, forumPath, Config.JQueryAlias,
+                     menuItems["delete"], menuItems["edit"], menuItems["new"], menuItems["category"],
+                     menuItems["forum"], menuItems["before"], menuItems["after"], menuItems["over"]);
 
         }
     }

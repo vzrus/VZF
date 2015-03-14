@@ -18,13 +18,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Collections.Generic;
+
 namespace YAF.Pages.Admin
 {
     #region Using
 
     using System;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.UI.WebControls;
 
@@ -38,7 +39,6 @@ namespace YAF.Pages.Admin
     using YAF.Types.Interfaces;
     using VZF.Utilities;
     using VZF.Utils;
-    using VZF.Utils.Helpers;
     using VZF.Data.DAL;
 
     #endregion
@@ -61,7 +61,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void DeleteCategory_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ((ThemeButton)sender).Attributes["onclick"] =
+            ((ThemeButton) sender).Attributes["onclick"] =
                 "return confirm('{0}')".FormatWith(this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_CAT"));
         }
 
@@ -76,7 +76,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void DeleteForum_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ((ThemeButton)sender).Attributes["onclick"] =
+            ((ThemeButton) sender).Attributes["onclick"] =
                 "return (confirm('{0}') && confirm('{1}'))".FormatWith(
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE"),
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
@@ -159,34 +159,48 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-           /* if (!Page.IsPostBack)
+            /* if (!Page.IsPostBack)
             {
                 this.Get<IYafSession>().ForumTreeChangerActiveTargetNode = null;
             } */
-            
+
             this.NewForum.Visible = this.NewCategory.Visible = !Config.LargeForumTree;
 
             if (Config.LargeForumTree)
-            {      
-                    tviewcontainer.Visible = true;                    
-                    this.TreeMenuTip.LocalizedPage = "ADMIN_FORUMS";
-                    this.TreeMenuTip.LocalizedTag = "TREEVIEW_MENUTIPS";
-                    //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");
-                   
-                    YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                    YafContext.Current.PageElements.RegisterJsResourceInclude("contextmenu", "js/jquery.ui-contextmenu.min.js");
-                    YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.min.css");                    
-        
-                    YafContext.Current.PageElements.RegisterJsBlock(
-                           "fancytreescr",
-                           JavaScriptBlocks.FancytreeGetNodesAdminLazyJS(
-                               "ftree3",
-                               PageContext.PageUserID,
-                               PageContext.PageBoardID,
-                               this.GetText("COMMON", "IMPOSSIBLE_ACTION"),
-                               @"&v=2",
-                               @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
-                               "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); 
+            {
+                tviewcontainer.Visible = true;
+                this.TreeMenuTip.LocalizedPage = "ADMIN_FORUMS";
+                this.TreeMenuTip.LocalizedTag = "TREEVIEW_MENUTIPS";
+                //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");
+
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterJsResourceInclude("contextmenu",
+                    "js/jquery.ui-contextmenu.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+
+                YafContext.Current.PageElements.RegisterJsBlock(
+                    "fancytreescr",
+                    JavaScriptBlocks.FancytreeGetNodesAdminLazyJs(
+                        "ftree3",
+                        PageContext.PageUserID,
+                        PageContext.PageBoardID,
+                        this.GetText("COMMON", "IMPOSSIBLE_ACTION"),
+                        @"&v=2",
+                        @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
+                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))
+                        ,
+                        new Dictionary<string, string>
+                        {
+                            {"delete", this.GetText("COMMON", "DELETE")},
+                            {"edit", this.GetText("COMMON", "EDIT")},
+                            {"new", this.GetText("COMMON", "NEW")},
+                            {"category", this.GetText("DEFAULT", "CATEGORY")},
+                            {"forum", this.GetText("DEFAULT", "FORUM")},
+                            {"before", this.GetText("COMMON", "BEFORE")},
+                            {"after", this.GetText("COMMON", "AFTER")},
+                            {"over", this.GetText("COMMON", "CHILD")}
+                        } 
+                        ));
 
             }
 
@@ -195,17 +209,17 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-         
+
             this.NewCategory.Text = this.GetText("ADMIN_FORUMS", "NEW_CATEGORY");
-            this.NewForum.Text = this.GetText("ADMIN_FORUMS", "NEW_FORUM"); 
-          
+            this.NewForum.Text = this.GetText("ADMIN_FORUMS", "NEW_FORUM");
+
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(
                 this.GetText("ADMIN_ADMIN", "Administration"), this.GetText("TEAM", "FORUMS"));
 
             this.BindData();
         }
-       
+
         /// <summary>
         /// The bind data.
         /// </summary>
@@ -213,7 +227,9 @@ namespace YAF.Pages.Admin
         {
             if (!Config.LargeForumTree)
             {
-                using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID, null, false))
+                using (
+                    DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID, null,
+                        false))
                 {
                     var dd = ds.Tables[SqlDbAccess.GetVzfObjectName("Category", PageContext.PageModuleID)];
                     this.CategoryList.DataSource = dd;
@@ -298,7 +314,8 @@ namespace YAF.Pages.Admin
             switch (this.Get<IYafSession>().ForumTreeChangerActiveNode.Split('_').Length)
             {
                 case 1:
-                    if (CommonDb.category_delete(PageContext.PageModuleID, this.Get<IYafSession>().ForumTreeChangerActiveNode, null))
+                    if (CommonDb.category_delete(PageContext.PageModuleID,
+                        this.Get<IYafSession>().ForumTreeChangerActiveNode, null))
                     {
                         this.BindData();
                         this.ClearCaches();
@@ -310,7 +327,8 @@ namespace YAF.Pages.Admin
 
                     break;
                 case 2:
-                    YafBuildLink.Redirect(ForumPages.admin_deleteforum, "f={0}", this.Get<IYafSession>().ForumTreeChangerActiveNode);
+                    YafBuildLink.Redirect(ForumPages.admin_deleteforum, "f={0}",
+                        this.Get<IYafSession>().ForumTreeChangerActiveNode);
                     break;
                 default:
                     YafBuildLink.Redirect(ForumPages.admin_editboard);
@@ -338,14 +356,15 @@ namespace YAF.Pages.Admin
             switch (this.Get<IYafSession>().ForumTreeChangerActiveNode.Split('_').Length)
             {
                 case 2:
-                    YafBuildLink.Redirect(ForumPages.admin_editforum, "copy={0}", this.Get<IYafSession>().ForumTreeChangerActiveNode);
+                    YafBuildLink.Redirect(ForumPages.admin_editforum, "copy={0}",
+                        this.Get<IYafSession>().ForumTreeChangerActiveNode);
                     break;
                 default:
                     this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "FORUM_SELECTTOCOPYNODE_MSG"));
-                break;
+                    break;
             }
         }
-       
+
         /// <summary>
         /// The edit forum btn_ click.
         /// </summary>
@@ -372,7 +391,8 @@ namespace YAF.Pages.Admin
                     YafBuildLink.Redirect(ForumPages.admin_editforum);
                     break;
                 case 3:
-                    YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", this.Get<IYafSession>().ForumTreeChangerActiveNode);
+                    YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}",
+                        this.Get<IYafSession>().ForumTreeChangerActiveNode);
                     break;
             }
         }

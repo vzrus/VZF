@@ -417,7 +417,38 @@ namespace YAF.Core
                 return dt;
             }
         }
+       
+        /// <summary>
+        /// The themes.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public static DataTable FancyTreeThemes()
+        {
+            using (var dt = new DataTable("FancyTreeThemes"))
+            {
+                dt.Columns.Add("Theme", typeof(string));
 
+                var themeDir = new DirectoryInfo(HttpContext.Current.Request.MapPath(YafForumInfo.GetURLToResource("css/fancytree")));
+
+                foreach (DirectoryInfo dir in themeDir.GetDirectories())
+                {
+                    try
+                    {
+                        DataRow dr = dt.NewRow();
+                        dr["Theme"] = dir.Name;
+
+                        dt.Rows.Add(dr);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+
+                return dt;
+            }
+        }
         /// <summary>
         /// The time zones.
         /// </summary>

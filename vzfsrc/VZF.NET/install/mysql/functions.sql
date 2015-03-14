@@ -7,7 +7,11 @@ DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}bitset;
 --GO
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_posts;
 --GO 
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_posts;
+--GO 
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_topics;
+--GO
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_topics;
 --GO
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_posts1;
 --GO 
@@ -26,6 +30,8 @@ DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}medal_gethide;
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}medal_getsortorder;
 --GO 
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_lasttopic;
+--GO
+DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_lasttopic;
 --GO
 DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}forum_subforums;
 --GO
@@ -232,6 +238,7 @@ END IF;
 RETURN oNumPosts;
 END ;
 --GO 
+
 
 /* FUNCTION CREATED BY VZ_TEAM */ 
  
@@ -638,6 +645,36 @@ READS SQL DATA
  END;
 --GO 
 
+
+CREATE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_lasttopic 
+ 
+ (	
+	i_lk INT,
+	i_rk INT,
+	i_CategoryID INT, 
+	i_UserID INT	
+ ) 
+RETURNS INT
+READS SQL DATA
+ BEGIN
+ DECLARE i_LastTopicID INT;
+	IF (i_UserID IS NULL) then		
+		    select  f.LastTopicID into i_LastTopicID from {databaseSchema}.{objectQualifier}Forum f 
+			        inner join {databaseSchema}.{objectQualifier}ActiveAccess x on f.ForumID=x.ForumID
+		             where f.CategoryID = i_CategoryID and f.left_key >= i_lk  and f.right_key <= i_rk 
+					 and (f.Flags & 2)=0		 
+                    order by f.LastPosted desc limit 1;
+		else
+			select  f.LastTopicID into i_LastTopicID from {databaseSchema}.{objectQualifier}Forum f 
+			        inner join {databaseSchema}.{objectQualifier}ActiveAccess x on f.ForumID=x.ForumID
+		            where f.CategoryID = i_CategoryID and f.left_key >= i_lk and f.right_key <= i_rk 
+		            and ((f.Flags & 2)=0 = 0 or x.ReadAccess <> 0) 
+		             and x.UserID= i_UserID 		 
+                      order by f.LastPosted desc limit 1;  
+		 end if;  
+	RETURN i_LastTopicID;
+ END;
+--GO 
 
 
 

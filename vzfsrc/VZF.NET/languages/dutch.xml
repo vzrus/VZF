@@ -327,6 +327,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">Is de lijst van bestandstypen voor goed- of afgekeurde typen. (minder veilig)?</Resource>
     <Resource tag="BOARD_JQ_THEME">jQuery UI Thema:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">Het jQuery UI Thema om op dit board te gebruiken voor de Tabs en de Accordion.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">Mobiel Thema:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">Mobiel thema om op dit board te gebruiken.</Resource>
     <Resource tag="BOARD_NAME">Board Naam:</Resource>
@@ -368,6 +369,8 @@
     <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     <Resource tag="DELETE_TITLE">Deleting category</Resource>
     <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
     <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
     <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
     <Resource tag="NEW_FORUM">New Forum:</Resource>
@@ -558,6 +561,8 @@
     <Resource tag="PRE_MODERATED_HELP">Berichten moeten worden goedgekeurd door een moderator.</Resource>
     <Resource tag="REMOTE_URL">Externe URL:</Resource>
     <Resource tag="REMOTE_URL_HELP">Voer hier een url in, waardoor gebruikers in plaats van naar het forum, naar een externe url gaan.</Resource>
+    <Resource tag="SAVING_TITLE">Saving forum</Resource>
+    <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
     <Resource tag="SORT_ORDER">Sorteervolgorde:</Resource>
     <Resource tag="SORT_ORDER_HELP">Sorteervolgorde van deze categorie.</Resource>
     <Resource tag="STYLES">Stijlen:</Resource>
@@ -2012,6 +2017,7 @@
     <Resource tag="MAXNUMBEROF">Het maximaal aantal tekens in een bericht is: {0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">After</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Voeg Album plaatje toe...</Resource>
     <Resource tag="ALLOWED">Toegestaan</Resource>
     <Resource tag="BACK">Terug</Resource>
@@ -2022,6 +2028,7 @@
     <Resource tag="BBCODE_QUOTEPOSTED">Eerst geschreven door: {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">Ga naar gequote bericht</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} schreef:</Resource>
+    <Resource tag="BEFORE">Before</Resource>
     <Resource tag="CAL_JQ_CULTURE">nl</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">MM/dd/YY</Resource>
     <Resource tag="CAL_JQ_TT">Klik hier om een datum te kiezen</Resource>
@@ -2041,6 +2048,7 @@
     <Resource tag="CAPTCHA_ENTER">Geeft de letters in van het anti-spam plaatje:</Resource>
     <Resource tag="CAPTCHA_IMAGE">Anti-spam plaatje:</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">Veranderde Email</Resource>
+    <Resource tag="CHILD">Child</Resource>
     <Resource tag="COMMON_WORDS">uit,alsjeblieft,een,in staat,over,over,na,alle,bijna,ook,ik,onder,een,en,eventuele,worden,zoals,op,zijn,want,geweest,maar door,kan,kan niet,kon,lieve,ik,doe,doet,ofwel,anders,ooit,elke,voor,van,krijgen,kreeg,had,heeft,hebben,hij,haar,haar,hem,zijn,hoe echter,i,indien,in,naar,is het,haar,maar,althans,laten,waarschijnlijk zoals,,kan ik,misschien,de meeste,moet,mijn,noch,en ook niet,niet,van,uit,vaak op,alleen,of,andere,onze,eigen,nogal,zei,laten we zeggen,zegt ze,zou moeten,omdat,ja,sommigen dan,dat,de,hun,hen dan,daar,deze,zij,deze,tis,om,ook het was,ons,wil,was,we waren,wat,wanneer,waar,welke,terwijl die,wie,waarom,wil,met,zou,maar toch,u,uw</Resource>
     <Resource tag="CONTINUE">Ga verder</Resource>
     <Resource tag="COPY">Kopi&amp;euml;er</Resource>
@@ -2082,6 +2090,7 @@
     <Resource tag="MODAL_NOTIFICATION_HEADER">Mededeling</Resource>
     <Resource tag="MODERATOR">Moderator</Resource>
     <Resource tag="NAME">Naam</Resource>
+    <Resource tag="NEW">New</Resource>
     <Resource tag="NO">Nee</Resource>
     <Resource tag="NONE">Geen</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">You have been award on the {0} Forum</Resource>
@@ -2635,6 +2644,7 @@
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Meld je aan via Atom voor je favoriete topics.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Meld je aan bij de forum Atom feed.</Resource>
     <Resource tag="BY">door {0}</Resource>
+    <Resource tag="CATEGORY">Category</Resource>
     <Resource tag="CURRENT_TIME">Huidige tijd: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">The requested user could not be found.</Resource>
     <Resource tag="ERROR_HOVERCARD">Sorry, no data found or something went wrong.</Resource>

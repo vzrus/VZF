@@ -16,6 +16,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+
 namespace YAF.Core
 {
   #region Using
@@ -73,23 +77,54 @@ namespace YAF.Core
 
     #region Public Methods
 
-    /// <summary>
-    /// Saves the whole setting registry to the database.
-    /// </summary>
-    public void SaveRegistry()
-    {
-      // loop through all values and commit them to the DB
-      foreach (string key in this._reg.Keys)
+      /// <summary>
+      /// Saves the whole setting registry to the database.
+      /// </summary>
+      public void SaveRegistry()
       {
-        CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._reg[key]);
-      }
+          // loop through all values and commit them to the DB
+          foreach (string key in this._reg.Keys)
+          {
+              CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._reg[key]);
+          }
 
-      foreach (string key in this._regBoard.Keys)
+          foreach (string key in this._regBoard.Keys)
+          {
+              CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key], this._boardID);
+          }
+      }
+     
+      public void SaveRegistry(Dictionary<string,object> regEntry, int? boardId)
       {
-          CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key], this._boardID);
+          foreach (var entry in regEntry)
+          {
+              // loop through all values and commit them to the DB
+              if (boardId.HasValue)
+              {
+                  foreach (string key in this._regBoard.Keys)
+                  {
+                      if (entry.Key.ToLowerInvariant().Equals(key.ToLowerInvariant()))
+                      {
+                          CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key],
+                              this._boardID);
+                          break;
+                      }
+                  }
+              }
+              else
+              {
+                  foreach (string key in this._reg.Keys)
+                  {
+                      if (entry.Key.ToLowerInvariant().Equals(key.ToLowerInvariant()))
+                      {
+                          CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._reg[key]);
+                          break;
+                      }
+                  }
+              }
+          }
       }
-    }
-
+    
     #endregion
 
     #region Methods
@@ -112,7 +147,7 @@ namespace YAF.Core
         }
       }
 
-      using (dataTable = CommonDb.registry_list(YafContext.Current.PageModuleID,null, this._boardID))
+      using (dataTable = CommonDb.registry_list(YafContext.Current.PageModuleID, null, this._boardID))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)

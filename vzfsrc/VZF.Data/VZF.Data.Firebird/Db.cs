@@ -211,7 +211,7 @@ namespace VZF.Data.Firebird
         /// <summary>
         /// The _full text supported.
         /// </summary>
-        private static bool _fullTextSupported;
+        private static bool _fullTextSupported = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether full text supported.
@@ -220,7 +220,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return false;
+                return _fullTextSupported;
             }
         }
 
@@ -236,50 +236,19 @@ namespace VZF.Data.Firebird
         }
 
         /// <summary>
-        /// The _script list.
+        ///   Gets ScriptFolder.
         /// </summary>
-        private static readonly string[] _scriptList =
-            {
-                "firebird/preinstall.sql",
-                "firebird/procedures_drop.sql",
-                "firebird/providers/procedures_drop.sql",
-                "firebird/functions_drop.sql", 
-                "firebird/test_drop.sql",
-                "firebird/views_drop.sql", 
-                "firebird/exceptions_drop.sql",
-                "firebird/domains.sql", 
-                "firebird/sequences.sql",
-                "firebird/tables.sql", 
-                "firebird/tablesupgrade.sql",
-                "firebird/pkeys.sql", 
-                "firebird/indexes.sql",
-                "firebird/ukeys.sql", 
-                "firebird/fkeys.sql",
-                "firebird/triggers.sql", 
-                "firebird/views.sql",
-                "firebird/exceptions.sql", 
-                "firebird/functions.sql",
-                "firebird/providers/tables.sql", 
-                "firebird/providers/pkeys.sql",
-                "firebird/providers/indexes.sql",
-                "firebird/providers/procedures.sql",
-                "firebird/nestedsets.sql", 
-                "firebird/nestedsets_sp.sql",                        
-                "firebird/procedures.sql", 
-                "firebird/procedures1.sql",
-                "firebird/procedures2.sql",               
-                "firebird/postinstall.sql"
-            };
-
-        /// <summary>
-        /// Gets the script list.
-        /// </summary>
-        public static string[] ScriptList
+        public static string ScriptFolder
         {
             get
             {
-                return _scriptList;
+                return "firebird";
             }
+        }
+
+        public static bool DbInstallTransactions
+        {
+            get { return false; }
         }
 
         #endregion

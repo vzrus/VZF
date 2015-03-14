@@ -17,7 +17,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Globalization;
 using System.Threading;
+using VZF.Utils.Extensions;
 
 
 namespace YAF.Classes
@@ -411,78 +413,48 @@ namespace YAF.Classes
 
         [CanBeNull]
         [WebMethod(EnableSession = true)]
-        public string FancyTreeGetNodes([NotNull] object nodeId, object view, object access, object active, object boardFirst, object forumUrl, object showLinks, object showAccessRow)
+        public string FancyTreeGetNodes(int boardId1, string inodeId, int viiew1, string ctive1, string elected1,
+            bool boardFirst, string forumUrl, bool showLinks1, [NotNull] int showAccessRow1)
         {
-          /*
             // show access masks list
             int? amdd = null;
             // var userId = YafContext.Current.CurrentUserData.UserID;
-            if (context.Request.QueryString.GetFirstOrDefault("tjls") != null)
+
+            int access = boardId1;
+
+            if (ctive1.IsSet())
             {
-                access = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
+                this.Get<IYafSession>().NntpTreeActiveNode = ctive1;
             }
 
-            if (actiive != null)
+            if (elected1.IsSet())
             {
-                this.Get<IYafSession>().NntpTreeActiveNode = active.ToString();
+                this.Get<IYafSession>().SearchTreeSelectedNodes = elected1.Split('!');
             }
 
-            if (selected != null)
+
+            if (viiew1.ToType<int>() == 0)
             {
-                this.Get<IYafSession>().SearchTreeSelectedNodes = selected.ToString().Split('!');
+                access = 1;
             }
 
-            if (view != null)
-            {
-                view = view.ToType<int>();
-                if (view == 0)
-                {
-                    access = 1;
-                }
-            }
 
-            if (boardFirst != null)
-            {
-                if (boardFirst.ToType<int>() == 0)
-                {
-                    boardFirst = true;
-                }
-            }
 
-            if (showLinks != null)
-            {
-                if (showLinks.ToType<int>() == 0)
-                {
-                    showLinks = false;
-                }
-                else
-                {
-                    showLinks = true;
-                }
-            }
-            else
-            {
-                showLinks = false;
-            }
 
-            if (showAccessRow != null)
+            if (inodeId != "-100" || inodeId.IsNotSet())
             {
-                showAccessRow = showAccessRow.ToType<int>();
+                inodeId = boardId1.ToString(CultureInfo.InvariantCulture);
+                return new JavaScriptSerializer().Serialize(FancyTree.GetForumsJumpTreeNodesLevel(
+                    inodeId,
+                    viiew1,
+                    access,
+                    ctive1,
+                    boardFirst,
+                    forumUrl,
+                    showLinks1,
+                    showAccessRow1.ToType<int>()));
 
             }
-
-            if (nodeId != "-100")
-            {               
-                return FancyTree.GetForumsJumpTreeNodesLevel(
-                                nodeId.ToString,
-                                view,
-                                access,
-                                active,
-                                boardFirst,
-                                forumUrl,
-                                showLinks,
-                                showAccessRow).ToJson();
-            } */
 
             return null;
         }

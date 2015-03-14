@@ -114,9 +114,8 @@ namespace YAF.Pages.Admin
                         "&active={0}".FormatWith(value);
                 }
           
-                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");              
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.min.css");  
-   
+                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));   
                 YafContext.Current.PageElements.RegisterJsBlock(
                   "ftreedelcat",
                   JavaScriptBlocks.FancyTreeSelectCategories(
@@ -137,8 +136,6 @@ namespace YAF.Pages.Admin
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-           
-
             if (this.IsPostBack)
             {
                 return;
@@ -170,8 +167,8 @@ namespace YAF.Pages.Admin
                 "return (confirm('{0}') && confirm('{1}'));".FormatWith(
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_CAT"),
                     this.GetText("ADMIN_DELETECATEGORY", "CONFIRM_DELETE_POSITIVE"));
-         
 
+            this.LoadingImage.ImageUrl = YafForumInfo.GetURLToResource("images/loader.gif");
             this.BindData();
 
             var forumId = this.GetQueryStringAsInt("fa");

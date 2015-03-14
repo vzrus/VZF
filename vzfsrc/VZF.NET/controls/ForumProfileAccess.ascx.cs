@@ -81,7 +81,7 @@ namespace VZF.Controls
             if (Config.LargeForumTree)
             {
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
                 YafContext.Current.PageElements.RegisterJsBlock(
                     "fancytreescr",
                     JavaScriptBlocks.FancyTreeGetNodesProfileLazyJS("treetable",PageContext.PageUserID,

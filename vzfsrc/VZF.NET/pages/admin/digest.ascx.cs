@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Collections.Generic;
+
 namespace YAF.Pages.Admin
 {
     #region Using
@@ -54,7 +57,13 @@ namespace YAF.Pages.Admin
         protected void ForceSend_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             this.Get<YafBoardSettings>().ForceDigestSend = true;
-            ((YafLoadBoardSettings)YafContext.Current.BoardSettings).SaveRegistry();
+            ((YafLoadBoardSettings)YafContext.Current.BoardSettings).SaveRegistry(
+                new Dictionary<string, object>
+                {
+                    {"ForceDigestSend", true}
+                }, 
+                PageContext.PageBoardID);
+
 
             this.PageContext.AddLoadMessage(this.GetText("ADMIN_DIGEST", "MSG_FORCE_SEND"));
         }

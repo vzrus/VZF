@@ -327,6 +327,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">Ist die Liste der Dateierweiterungen erlaubt oder nicht erlaubt Dateien Dateien (weniger sicher)?</Resource>
     <Resource tag="BOARD_JQ_THEME">jQuery-UI Skin:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">Das jQuery UI Skin das in diesem Board verwendet werden soll für die Reiter und das Admin Menu Accordion.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">Mobiles Skin:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">Das Mobile Skin das in diesem Board verwendet wird</Resource>
     <Resource tag="BOARD_NAME">Boardname:</Resource>
@@ -368,6 +369,8 @@
     <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     <Resource tag="DELETE_TITLE">Deleting category</Resource>
     <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
     <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
     <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
     <Resource tag="NEW_FORUM">New Forum:</Resource>
@@ -558,6 +561,8 @@
     <Resource tag="PRE_MODERATED_HELP">Wenn dieses Forum moderiert wird, müssen Beiträge von einem Moderator bestätigt werden.</Resource>
     <Resource tag="REMOTE_URL">Remote-URL:</Resource>
     <Resource tag="REMOTE_URL_HELP">Wenn Sie hier eine Url eingeben, wird diese Url aufgerufen wenn man das Forum öffnet.</Resource>
+    <Resource tag="SAVING_TITLE">Saving forum</Resource>
+    <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
     <Resource tag="SORT_ORDER">Sortiert nach:</Resource>
     <Resource tag="SORT_ORDER_HELP">Sortierung unter diese Kategorie.</Resource>
     <Resource tag="STYLES">Stile:</Resource>
@@ -2003,6 +2008,7 @@
     <Resource tag="MAXNUMBEROF">Maximale Anzahl an Zeichen in jedem Beitrag ist: {0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">After</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Album Bild einfügen...</Resource>
     <Resource tag="ALLOWED">Erlaubt</Resource>
     <Resource tag="BACK">Zurück</Resource>
@@ -2013,6 +2019,7 @@
     <Resource tag="BBCODE_QUOTEPOSTED">Zitat von: {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">Gehe zum zitierten Beitrag</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} schrieb:</Resource>
+    <Resource tag="BEFORE">Before</Resource>
     <Resource tag="CAL_JQ_CULTURE">de</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">dd.MM.YYYY</Resource>
     <Resource tag="CAL_JQ_TT">Klicken Sie Um Datum zu wählen</Resource>
@@ -2032,6 +2039,7 @@
     <Resource tag="CAPTCHA_ENTER">Die Buchstaben des Sicherheitscode eingeben</Resource>
     <Resource tag="CAPTCHA_IMAGE">Sicherheitscode</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">E-Mail geändert</Resource>
+    <Resource tag="CHILD">Child</Resource>
     <Resource tag="COMMON_WORDS">aus, bitte, ein, in der Lage, über, überall, nachdem alle, fast, auch bin, unter ein, und alle sind, wie, bei,, da werden, aber durch kann, kann nicht, könnte, lieber habe, zu tun, ist, entweder, sonst, je, jede, für, von, zu bekommen, bekam, hatte, hat, haben er, sie, ihr, ihn, seine, wie ich jedoch, wenn, in, in, ist, es, seine, gerade, zumindest lassen, wie, wahrscheinlich, kann mir vielleicht die meisten, muss, meiner, weder, nein, noch nicht, der, aus, oft auf, nur, oder andere, unsere, eigene, sondern sagte, sagen wir, sagt, sie sollten, da so einige, als, dass das, ihr, sie, dann gibt es diese, sie, diese, zu, Auch was, uns will, war, wir wurden, was, wann, wo, was, während, wer, wen, warum, wird mit, wäre doch, Sie, Ihre</Resource>
     <Resource tag="CONTINUE">Weiter</Resource>
     <Resource tag="COPY">Kopieren</Resource>
@@ -2073,6 +2081,7 @@
     <Resource tag="MODAL_NOTIFICATION_HEADER">Mitteilung</Resource>
     <Resource tag="MODERATOR">Moderator</Resource>
     <Resource tag="NAME">Name</Resource>
+    <Resource tag="NEW">New</Resource>
     <Resource tag="NO">Nein</Resource>
     <Resource tag="NONE">Keine</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">Sie haben eine Auszeichnung erhalten im {0} Forum</Resource>
@@ -2628,6 +2637,7 @@
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Abonnieren Sie Ihre Lieblings-Themen über Atom.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Abonnieren Sie Forum Atom-Feed.</Resource>
     <Resource tag="BY">von {0}</Resource>
+    <Resource tag="CATEGORY">Category</Resource>
     <Resource tag="CURRENT_TIME">Aktuelle Zeit: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">Der Benutzer wurde nicht gefunden.</Resource>
     <Resource tag="ERROR_HOVERCARD">Keine Daten gefunden oder etwas ist schief gelaufen.</Resource>

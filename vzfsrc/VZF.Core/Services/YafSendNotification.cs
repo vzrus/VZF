@@ -304,7 +304,7 @@ namespace YAF.Core.Services
             }
 
             // TODO : Rewrite Watch Topic code to allow watch mails in the users language, as workaround send all messages in the default board language
-            var languageFile = this.Get<YafBoardSettings>().Language;
+            var languageFile =  this.Get<YafBoardSettings>().Language;
 
             foreach (var message in CommonDb.MessageList(YafContext.Current.PageModuleID, newMessageId))
             {

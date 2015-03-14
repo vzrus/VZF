@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Globalization;
+
 namespace YAF.Core.Tasks
 {
   #region Using
@@ -129,9 +132,14 @@ namespace YAF.Core.Tasks
         {
           // && DateTime.Now < DateTime.Today.AddHours(5))
           // we're good to send -- update latest send so no duplication...
-          boardSettings.LastDigestSend = DateTime.Now.ToString();
+          boardSettings.LastDigestSend = DateTime.Now.ToString(CultureInfo.InvariantCulture);
           boardSettings.ForceDigestSend = false;
-          boardSettings.SaveRegistry();
+          ((YafLoadBoardSettings)YafContext.Current.BoardSettings).SaveRegistry(
+              new Dictionary<string, object>
+                {
+                    {"ForceDigestSend", false}
+                },
+                YafContext.Current.PageBoardID);
 
           return true;
         }

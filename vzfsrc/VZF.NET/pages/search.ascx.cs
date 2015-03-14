@@ -171,7 +171,7 @@ namespace YAF.Pages
                 YafContext.Current.PageElements.RegisterJQuery();
                 YafContext.Current.PageElements.RegisterJQueryUI();
                 PageContext.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                PageContext.PageElements.RegisterCssIncludeResource("css/fancytree/skin-lion/ui.fancytree.css");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
                 // this.TreeTable.Visible = true;
                 PageContext.PageElements.RegisterJsBlock("fancytreescr",
                     JavaScriptBlocks.FancyTreeGetNodesSearchLazyCheckBoxesJS("tree",
@@ -520,7 +520,7 @@ namespace YAF.Pages
                 {
                     try
                     {
-                        this.listForum.SelectedValue = forumString;
+                        this.listForum.SelectedValue = HttpUtility.UrlDecode(forumString);
                     }
                     catch (Exception)
                     {
@@ -720,7 +720,7 @@ namespace YAF.Pages
                         this.PageContext.PageBoardID,
                         this.Get<YafBoardSettings>().ReturnSearchMax,
                         this.Get<YafBoardSettings>().UseFullTextSearch,
-                        this.Get<YafBoardSettings>().EnableDisplayName, includeChildren, PageContext.CurrentUserData.CultureUser);
+                        this.Get<YafBoardSettings>().EnableDisplayName, includeChildren, PageContext.CurrentUserData.CultureUser == null ? PageContext.BoardSettings.Culture : PageContext.CurrentUserData.CultureUser);
 
                     if (newSearch)
                     {

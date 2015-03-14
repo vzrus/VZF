@@ -211,7 +211,8 @@
     <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesJumpLazyJS.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesSearchLazyCheckBoxesJS.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectCategories.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectSingleNodeLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectSingleNodeLazyJsNew.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectSingleNodeLazyJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookInitJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookLoginJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookPostJs.cs" />
@@ -1738,7 +1739,6 @@
     <Content Include="install\firebird\sequences.sql" />
     <Content Include="install\firebird\tables.sql" />
     <Content Include="install\firebird\tablesupdate.sql" />
-    <Content Include="install\firebird\test_drop.sql" />
     <Content Include="install\firebird\tests.sql" />
     <Content Include="install\firebird\triggers.sql" />
     <Content Include="install\firebird\triggers_drop.sql" />
@@ -1800,7 +1800,6 @@
     <Content Include="install\pgsql\providers\tables.sql" />
     <Content Include="install\pgsql\providers\types.sql" />
     <Content Include="install\pgsql\rules.sql" />
-    <Content Include="install\pgsql\sequences.sql" />
     <Content Include="install\pgsql\tables.sql" />
     <Content Include="install\pgsql\tests.sql" />
     <Content Include="install\pgsql\triggers.sql" />
@@ -2554,7 +2553,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3390,9 +3389,6 @@
     <Content Include="resources\js\jquery.yafmodaldialog.js" />
     <Content Include="resources\js\vzfDynatree.js" />
     <Content Include="resources\js\yaf.js" />
-    <Content Include="resources\js\_src\jquery.dynatree-1.2.3.js" />
-    <Content Include="resources\js\_src\jquery.dynatree.js" />
-    <Content Include="resources\js\_src\ui.core.js" />
     <Content Include="resources\ProviderExceptions.xml" />
     <Content Include="rss.xsl" />
     <Content Include="images\avatars\.cvsignore" />
@@ -4010,7 +4006,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
@@ -4036,7 +4032,7 @@
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.less" />
-    <None Include="web_pg.config">
+    <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
@@ -4791,15 +4787,15 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
+    <Content Include="web_ms.config" />
+    <None Include="web_ms.Debug.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
-    <None Include="web.Deploy.config">
-      <DependentUpon>web.config</DependentUpon>
+    <None Include="web_ms.Deploy.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
+    <None Include="web_ms.Release.config">
+      <DependentUpon>web_ms.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -4845,6 +4841,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="resources\js\_src\" />
     <Folder Include="uploads\Avatars\" />
   </ItemGroup>
   <ItemGroup>

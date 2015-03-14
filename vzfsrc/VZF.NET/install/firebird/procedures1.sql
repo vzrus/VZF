@@ -1925,7 +1925,7 @@ ici_LastPosted = :I_UTCTIMESTAMP;
   where c.BoardID = :I_BOARDID
   INTO :ici_lvl, :ici_lk, :ici_rk;
  end
-
+ ici_lvl = :ici_lvl -1;
     for	select 
         a.CategoryID, 
         a.NAME AS Category, 
@@ -1937,8 +1937,8 @@ ici_LastPosted = :I_UTCTIMESTAMP;
         b.ParentID,
         b.PollGroupID,
         b.IsUserForum,
-        (SELECT I_NUMTOPICS FROM {objectQualifier}FORUM_TOPICS(b.FORUMID)),
-        (SELECT I_NUMPOSTS FROM {objectQualifier}FORUM_POSTS(b.FORUMID)),			
+        (SELECT I_NUMTOPICS FROM {objectQualifier}FORUM_NS_TOPICS(b.left_key, b.right_key, a.CATEGORYID)),
+        (SELECT I_NUMPOSTS FROM {objectQualifier}FORUM_NS_POSTS(b.left_key, b.right_key, a.CATEGORYID)),			
         t.LastPosted AS LastPosted,
         t.LastMessageID AS LastMessageID,
         t.LASTMESSAGEFLAGS AS LastMessageFlags,
@@ -1972,10 +1972,10 @@ ici_LastPosted = :I_UTCTIMESTAMP;
 		join {objectQualifier}ACTIVEACCESS x 
 		on (x.FORUMID=b.FORUMID and x.USERID = :I_USERID)
         left outer join {objectQualifier}TOPIC t 
-		ON t.TopicID = (select * from {objectQualifier}FORUM_LASTTOPIC(b.ForumID, :I_USERID,b.LastTopicID,b.LastPosted))
+		ON t.TopicID = (select * from {objectQualifier}FORUM_NS_LASTTOPIC(b.left_key, b.right_key, a.CATEGORYID, :I_USERID))
     where 		
         (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and	
-		b."LEVEL" >= :ici_lvl - 1 and
+		b."LEVEL" >= :ici_lvl and
 		(BIN_AND(b.FLAGS,2)=0 OR x.READACCESS = 1) and 
 		b.left_key >= :ici_lk and b.right_key <= :ici_rk 		
 		order by
