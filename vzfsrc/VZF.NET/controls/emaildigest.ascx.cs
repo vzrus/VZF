@@ -21,20 +21,17 @@ namespace VZF.Controls
   #region Using
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Data;
     using System.Web;
     using System.Web.UI;
-
+    using VZF.Data.Common;
     using VZF.Utils;
     using VZF.Utils.Helpers;
-
     using YAF.Classes;
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Types.Objects;
 
     #endregion
 
@@ -50,12 +47,7 @@ namespace VZF.Controls
     /// </summary>
     private CombinedUserDataHelper _combinedUserData;
 
-    /// <summary>
-    ///   The _forum data.
-    /// </summary>
-    private List<SimpleForum> _forumData;
-
-    /// <summary>
+      /// <summary>
     ///   The _language file.
     /// </summary>
     private string _languageFile;
@@ -83,44 +75,29 @@ namespace VZF.Controls
     ///   Gets ActiveTopics.
     /// </summary>
     [NotNull]
-    public IEnumerable<IGrouping<SimpleForum, SimpleTopic>> ActiveTopics
+    public DataTable ActiveTopics
     {
-      get
-      {
-        // flatten...
-        var topicsFlattened = this._forumData.SelectMany(x => x.Topics);
-
-        return
-          topicsFlattened.Where(
-            t =>
-            t.LastPostDate > DateTime.Now.AddHours(this._topicHours) &&
-            t.CreatedDate < DateTime.Now.AddHours(this._topicHours)).GroupBy(x => x.Forum);
-      }
+        get;
+        set;
     }
 
     /// <summary>
     ///   Gets or sets BoardID.
     /// </summary>
-    public int BoardID { get; set; }
+    public int BoardId { get; set; }
 
     /// <summary>
     ///   Gets or sets CurrentUserID.
     /// </summary>
-    public int CurrentUserID { get; set; }
+    public int CurrentUserId { get; set; }
 
     /// <summary>
     ///   Gets NewTopics.
     /// </summary>
     [NotNull]
-    public IEnumerable<IGrouping<SimpleForum, SimpleTopic>> NewTopics
+    public DataTable NewTopics
     {
-      get
-      {
-        // flatten...
-        var topicsFlattened = this._forumData.SelectMany(x => x.Topics);
-
-        return topicsFlattened.Where(t => t.CreatedDate > DateTime.Now.AddHours(this._topicHours)).GroupBy(x => x.Forum);
-      }
+        get; set;
     }
 
     /// <summary>
@@ -133,7 +110,7 @@ namespace VZF.Controls
       {
         if (this._combinedUserData == null)
         {
-          this._combinedUserData = new CombinedUserDataHelper(this.CurrentUserID);
+          this._combinedUserData = new CombinedUserDataHelper(this.CurrentUserId);
         }
 
         return this._combinedUserData;
@@ -262,24 +239,23 @@ namespace VZF.Controls
         return;
       }
 
-      if (this.CurrentUserID == 0)
+      if (this.CurrentUserId == 0)
       {
-        this.CurrentUserID = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("UserID").ToType<int>();
+        this.CurrentUserId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("UserID").ToType<int>();
       }
 
-      if (this.BoardID == 0)
+      if (this.BoardId == 0)
       {
-        this.BoardID = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("BoardID").ToType<int>();
+        this.BoardId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("BoardID").ToType<int>();
       }
 
       // get topic hours...
       this._topicHours = -this.Get<YafBoardSettings>().DigestSendEveryXHours;
+     
+      this.NewTopics = CommonDb.digest_topicnew(PageContext.PageModuleID, this.BoardId, this.CurrentUserId, DateTime.UtcNow.AddHours(this._topicHours), null, true);
+      this.ActiveTopics = CommonDb.digest_topicactive(PageContext.PageModuleID, this.BoardId, this.CurrentUserId, DateTime.UtcNow.AddHours(this._topicHours), DateTime.UtcNow, true);
 
-
-      this._forumData = this.Get<IDBBroker>().GetSimpleForumTopic(
-        this.BoardID, this.CurrentUserID, DateTime.Now.AddHours(this._topicHours), 9999);
-
-      if (!this.NewTopics.Any() && !this.ActiveTopics.Any())
+      if (this.NewTopics.Rows.Count <= 0 && this.ActiveTopics.Rows.Count <= 0)
       {
         if (showErrors)
         {
@@ -291,8 +267,8 @@ namespace VZF.Controls
         return;
       }
 
-      this._languageFile = UserHelper.GetUserLanguageFile(this.CurrentUserID);
-      this._theme = new YafTheme(UserHelper.GetUserThemeFile(this.CurrentUserID));
+      this._languageFile = UserHelper.GetUserLanguageFile(this.CurrentUserId);
+      this._theme = new YafTheme(UserHelper.GetUserThemeFile(this.CurrentUserId));
 
       string subject = this.GetText("SUBJECT").FormatWith(this.Get<YafBoardSettings>().Name);
 

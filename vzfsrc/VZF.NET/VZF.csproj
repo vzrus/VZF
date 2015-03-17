@@ -2553,7 +2553,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app_ms.config" />
+    <Content Include="app.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3387,7 +3387,7 @@
     <Content Include="resources\js\jquery.ui-contextmenu.min.js" />
     <Content Include="resources\js\jquery.ui.datepicker-farsi.js" />
     <Content Include="resources\js\jquery.yafmodaldialog.js" />
-    <Content Include="resources\js\vzfDynatree.js" />
+    <Content Include="resources\js\vzf_fancytree.js" />
     <Content Include="resources\js\yaf.js" />
     <Content Include="resources\ProviderExceptions.xml" />
     <Content Include="rss.xsl" />
@@ -4006,7 +4006,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
@@ -4032,14 +4032,16 @@
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.less" />
-    <None Include="web.config">
+    <None Include="web_pg.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
     <Content Include="db.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="mail.config" />
+    <Content Include="mail.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\localfolder.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -4787,15 +4789,15 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web_ms.config" />
-    <None Include="web_ms.Debug.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="web_ms.Deploy.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <None Include="web.Deploy.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
-    <None Include="web_ms.Release.config">
-      <DependentUpon>web_ms.config</DependentUpon>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

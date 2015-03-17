@@ -1968,21 +1968,21 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="FromUserID">
+        /// <param name="fromUserId">
         /// The from user id.
         /// </param>
-        /// <param name="ToUserID">
+        /// <param name="toUserId">
         /// The to user id.
         /// </param>
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string buddy_denyRequest(int? mid, object FromUserID, object ToUserID)
+        public static string buddy_denyRequest(int? mid, object fromUserId, object toUserId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", FromUserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", ToUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", fromUserId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", toUserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
 
                 sc.CommandText.AppendObjectQuery("buddy_denyrequest", mid);
@@ -2187,7 +2187,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="startID">
+        /// <param name="startId">
         /// The start id.
         /// </param>
         /// <param name="limit">
@@ -2196,20 +2196,20 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
-        public static DataTable category_simplelist(int? mid, int startID, int limit)
+        public static DataTable category_simplelist(int? mid, int startId, int limit)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                if (startID <= 0)
+                if (startId <= 0)
                 {
-                    startID = 0;
+                    startId = 0;
                 }
                 if (limit <= 0)
                 {
                     limit = 500;
                 }
 
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_StartID", startID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_StartID", startId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", limit));
 
                 sc.CommandText.AppendObjectQuery("category_simplelist", mid);
@@ -2240,6 +2240,12 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="canHavePersForums">
         /// The can Have Pers Forums.
+        /// </param>
+        /// <param name="adjacentCategoryId">
+        /// The adjacent Category Id.
+        /// </param>
+        /// <param name="adjacentCategoryMode">
+        /// The adjacent Category Mode.
         /// </param>        
         public static void category_save(
             int? mid,
@@ -2406,7 +2412,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="choiceID">
+        /// <param name="choiceId">
         /// The choice id.
         /// </param>
         /// <param name="choice">
@@ -2418,11 +2424,11 @@ namespace VZF.Data.Common
         /// <param name="mime">
         /// The mime.
         /// </param>        
-        public static void choice_update(int? mid, object choiceID, object choice, object path, object mime)
+        public static void choice_update(int? mid, object choiceId, object choice, object path, object mime)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Choice", choice));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ObjectPath", path));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_MimeType", mime));
@@ -2724,7 +2730,7 @@ namespace VZF.Data.Common
         {
             try
             {
-                sql = sql.Trim().Replace("{databaseOwner}", Config.DatabaseOwner);
+                sql = sql.Trim().Replace("{databaseOwner}", Config.DatabaseSchemaName);
                 sql = sql.Trim().Replace("{databaseName}", Config.DatabaseSchemaName);
                 sql = sql.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
 
@@ -2909,6 +2915,50 @@ namespace VZF.Data.Common
             }
         }
 
+        public static DataTable digest_topicactive(
+            int? mid,
+            int? boardId,
+            int? pageUserId,
+            DateTime? sinceDate,
+            DateTime? toDate,        
+            object styledNicks)
+        {
+            using (var sc = new VzfSqlCommand(mid))
+            { 
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_SinceDate", sinceDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_ToDate", toDate));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendObjectQuery("digest_topicactive", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }
+        }
+
+         public static DataTable digest_topicnew(
+            int? mid,
+            int? boardId,
+            int? pageUserId,
+            DateTime? sinceDate,
+            DateTime? toDate,        
+            object styledNicks)
+        {
+            using (var sc = new VzfSqlCommand(mid))
+            { 
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_SinceDate", sinceDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_ToDate", toDate));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendObjectQuery("digest_topicnew", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }
+        }
+
         /// <summary>
         /// The forum_list_sort_basic.
         /// </summary>
@@ -3009,15 +3059,15 @@ namespace VZF.Data.Common
             if (description is Exception)
             {
                 var ex = (Exception)description;
-                description = ex.Message + "\r\n" + ex.Source + "/r/n/" + ex.StackTrace;
+                description = ex.Message + "\r\n" + ex.Source + "\r\n" + ex.StackTrace;                
             }
 
             // TODO: Implement the object existance as it throws errors during install
             if (GetIsForumInstalled(mid))
             {
-// #if !DEBUG
+ #if !DEBUG
                 try{
-// #endif
+ #endif
 
                 using (var sc = new VzfSqlCommand(mid))
                 {
@@ -3030,25 +3080,30 @@ namespace VZF.Data.Common
                     sc.CommandText.AppendObjectQuery("eventlog_create", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
                 }
-// #if !DEBUG
+ #if !DEBUG
                 }
                 catch(Exception e)
                 {
                   throw;
                 }
-// #endif
+ #endif
             }
         }
 
         /// <summary>
         /// Deletes event log entry of given ID.
         /// </summary>
-        /// <param name="mid"> </param>
-        /// <param name="eventLogID">ID of event log entry.</param>
-        /// <param name="pageUserId"> </param>
-        public static void eventlog_delete(int? mid, object eventLogID, object pageUserId)
+        /// <param name="mid"> 
+        /// The mid. </param>
+        /// <param name="eventLogId">
+        /// ID of event log entry.
+        /// </param>
+        /// <param name="pageUserId"> 
+        /// The page User Id. 
+        /// </param>
+        public static void eventlog_delete(int? mid, object eventLogId, object pageUserId)
         {
-            eventlog_delete(mid, eventLogID, null, pageUserId);
+            eventlog_delete(mid, eventLogId, null, pageUserId);
         }
 
         /// <summary>
@@ -3057,7 +3112,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="eventLogID">
+        /// <param name="eventLogId">
         /// The event log id.
         /// </param>
         /// <param name="boardId">
@@ -3066,11 +3121,11 @@ namespace VZF.Data.Common
         /// <param name="pageUserId">
         /// The page user id.
         /// </param>  
-        private static void eventlog_delete(int? mid, object eventLogID, object boardId, object pageUserId)
+        private static void eventlog_delete(int? mid, object eventLogId, object boardId, object pageUserId)
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_EventLogID", eventLogID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_EventLogID", eventLogId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
 
@@ -3311,7 +3366,6 @@ namespace VZF.Data.Common
                     sc.CommandText.AppendObjectQuery("extension_delete", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
                 }
-
             }
             catch
             {
@@ -9246,20 +9300,6 @@ namespace VZF.Data.Common
                 sc.CommandText.AppendObjectQuery("recent_users", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
-        }
-
-        /// <summary>
-        /// The registry_list.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <returns>
-        /// The <see cref="T:System.Data.DataTable"/>.
-        /// </returns>
-        public static DataTable registry_list(int? mid)
-        {
-            return registry_list(mid, null, null);
         }
 
         /// <summary>

@@ -137,7 +137,7 @@ namespace VZF.Data.Firebird.Search
             {
                 searchSql += "AND (";
 
-                searchSql += new SearchFromWho().Build(searchSql, searchFromWhoMethod, toSearchFromWho, useFullText, searchDisplayName);
+                searchSql = new SearchFromWho().Build(searchSql, searchFromWhoMethod, toSearchFromWho, useFullText, searchDisplayName);
 
                 searchSql += ") ";
             }
@@ -146,7 +146,7 @@ namespace VZF.Data.Firebird.Search
             {
                 searchSql += "AND (";
 
-                searchSql += new SearchWhat().Build(searchSql, searchWhatMethod, toSearchWhat, useFullText); 
+                searchSql = new SearchWhat().Build(searchSql, searchWhatMethod, toSearchWhat, useFullText); 
 
                 searchSql += ") ";
             }

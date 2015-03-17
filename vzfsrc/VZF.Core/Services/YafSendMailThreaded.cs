@@ -106,47 +106,100 @@ namespace YAF.Core.Services
                 this.SendMail.SendAllIsolated(
                     mailMessages.Select(x => x.Key),
                     (message, ex) =>
+                    {
+                        if (ex is FormatException)
                         {
-                            if (ex is FormatException)
-                            {
 #if (DEBUG)
-                                // email address is no good -- delete this email...
-                                this.Logger.Debug("Invalid Email Address: {0}".FormatWith(ex.ToString()), ex.ToString());
-#else
-                                // email address is no good -- delete this email...
+                            // email address is no good -- delete this email...
+                            this.Logger.Debug(ex, "Invalid Email Address: {0}".FormatWith(ex.Message));
+#else                                // email address is no good -- delete this email...
                                 this.Logger.Warn("Invalid Email Address: {0}".FormatWith(ex.ToString()));
 #endif
-                            }
-                            else if (ex is SmtpException)
+                        }
+                        else if (ex is SmtpFailedRecipientException)
+                        {
+                            var ex1 = (SmtpFailedRecipientException)ex;
+                            SmtpStatusCode status = ex1.StatusCode;
+                            if (status == SmtpStatusCode.MailboxBusy ||
+                                status == SmtpStatusCode.MailboxUnavailable)
                             {
 #if (DEBUG)
-                                this.Logger.Debug("SendMailThread SmtpException", ex.ToString());
-#else
-                                this.Logger.Warn("Send Exception: {0}".FormatWith(ex.ToString()));
-
+                                Logger.Debug("Delivery failed because mail box busy or unavalable.");
+                                CommonDb.eventlog_create(0, 1, "Delivery failed because mail box busy or unavalable. :", ex1.ToString(), Types.Constants.EventLogTypes.Debug);
 #endif
-                                if (mailMessages.ContainsKey(message) && mailMessages[message].SendTries < 2)
-                                {
-                                    // remove from the collection so it doesn't get deleted...
-                                    mailMessages.Remove(message);
-                                }
-                                else
-                                {
-                                   // this.Logger.Warn("SendMailThread Failed for the 2nd time:", ex.ToString());
-                                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, "SendMailThread Failed for the 2nd time: " + ex.Source, ex.StackTrace);
-                                }
                             }
                             else
                             {
 #if (DEBUG)
-                                 // general exception...
-                                this.Logger.Debug("SendMailThread General Exception", ex.ToString());
-#else
-                                // general exception...
-                                this.Logger.Warn("Exception Thrown in SendMail Thread: {0}".FormatWith(ex.ToString()));
-#endif
+                                Logger.Debug(string.Format("Failed to deliver message to {0}\r\n{1}", ex1.Message, ex1.StackTrace));
+                                CommonDb.eventlog_create(0, 1, string.Format("Failed to deliver message to {0}\r\n{1}", ex1.Message, ex1.StackTrace), Types.Constants.EventLogTypes.Debug);
+#endif                          
                             }
-                        });
+
+                            if (mailMessages.ContainsKey(message) && mailMessages[message].SendTries < 2)
+                            {
+                                // remove from the collection so it doesn't get deleted...
+                                mailMessages.Remove(message);
+                            }
+                        }
+                        else if (ex is SmtpFailedRecipientsException)
+                        {
+                            var ex2 = (SmtpFailedRecipientsException)ex;
+                            for (int i = 0; i < ex2.InnerExceptions.Length; i++)
+                            {
+                                SmtpStatusCode status = ex2.InnerExceptions[i].StatusCode;
+                                if (status == SmtpStatusCode.MailboxBusy ||
+                                    status == SmtpStatusCode.MailboxUnavailable)
+                                {
+#if (DEBUG)
+                                    Logger.Debug("Delivery failed because mail box busy or unavalable.");
+                                    CommonDb.eventlog_create(0, 1, "Delivery failed because mail box busy or unavalable. :", ex2.ToString(), Types.Constants.EventLogTypes.Debug);
+ #endif                             
+                                }
+                                else
+                                {
+#if (DEBUG)
+                                    Logger.Debug(string.Format("Failed to deliver message to {0},{1}", ex2.InnerExceptions[i].FailedRecipient, i));
+                                    CommonDb.eventlog_create(0, 1, string.Format("Failed to deliver message to {0},{1}", ex2.InnerExceptions[i].FailedRecipient, i), Types.Constants.EventLogTypes.Debug);
+#endif
+                                }
+
+                            }
+                            if (mailMessages.ContainsKey(message) && mailMessages[message].SendTries < 2)
+                            {
+                                // remove from the collection so it doesn't get deleted...
+                                mailMessages.Remove(message);
+                            }
+                        }
+                        else if (ex is SmtpException)
+                        {
+#if (DEBUG)
+                            this.Logger.Debug("SendMailThread SmtpException", ex.ToString());
+                            this.Logger.Debug("SendMailThread SmtpException :", ex.Message);
+                            CommonDb.eventlog_create(0, 1, "SmtpException ::", ex.ToString(), Types.Constants.EventLogTypes.Debug);
+#else
+                                this.Logger.Warn("Send Exception: {0}".FormatWith(ex.ToString()));
+#endif
+                            if (mailMessages.ContainsKey(message) && mailMessages[message].SendTries < 2)
+                            {
+                                // remove from the collection so it doesn't get deleted...
+                                mailMessages.Remove(message);
+                            }
+                        }
+
+
+
+                        else
+                        {
+#if (DEBUG)
+                            // general exception...
+                            this.Logger.Debug("SendMailThread General Exception", ex.ToString());
+                            // general exception...
+                              CommonDb.eventlog_create(0, 1, "Exception Thrown in SendMail Thread: {0}".FormatWith(ex.ToString()), Types.Constants.EventLogTypes.Debug);
+                            this.Logger.Warn("Exception Thrown in SendMail Thread: {0}".FormatWith(ex.ToString()));
+#endif
+                        }
+                    });
 
                 foreach (var message in mailMessages.Values)
                 {

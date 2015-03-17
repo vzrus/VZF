@@ -106,8 +106,7 @@ namespace YAF.Core
                       if (entry.Key.ToLowerInvariant().Equals(key.ToLowerInvariant()))
                       {
                           CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key],
-                              this._boardID);
-                          break;
+                              this._boardID);                         
                       }
                   }
               }
@@ -117,8 +116,7 @@ namespace YAF.Core
                   {
                       if (entry.Key.ToLowerInvariant().Equals(key.ToLowerInvariant()))
                       {
-                          CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._reg[key]);
-                          break;
+                          CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._reg[key]);                         
                       }
                   }
               }
@@ -138,7 +136,7 @@ namespace YAF.Core
     {
       DataTable dataTable;
 
-      using (dataTable = CommonDb.registry_list(YafContext.Current.PageModuleID))
+      using (dataTable = CommonDb.registry_list(YafContext.Current.PageModuleID, string.Empty))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)

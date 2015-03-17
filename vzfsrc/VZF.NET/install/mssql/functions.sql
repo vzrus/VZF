@@ -310,17 +310,16 @@ CREATE FUNCTION [{databaseSchema}].[{objectQualifier}forum_ns_lasttopic]
 	@LastTopicID int = null,
 	@LastPosted datetime = null
 ) RETURNS int AS
-BEGIN	
-
+BEGIN
 		IF (@UserID IS NULL) 		
 		    select top 1 @LastTopicID = f.LastTopicID from [{databaseSchema}].[{objectQualifier}Forum] f with(nolock)
 			        inner join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on f.ForumID=x.ForumID
-		             where f.CategoryID = @CategoryID and f.left_key >= @lk  and f.right_key <= @rk and f.IsHidden = 0		 
+		             where f.CategoryID = @CategoryID and f.left_key >= @lk  and f.right_key <= @rk and f.IsHidden = 0	and f.LastPosted is not null 	 
                     order by f.LastPosted desc;
 		else
 			select top 1 @LastTopicID = f.LastTopicID from [{databaseSchema}].[{objectQualifier}Forum] f with(nolock)
 			        inner join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on f.ForumID=x.ForumID
-		            where f.CategoryID = @CategoryID and f.left_key >= @lk and f.right_key <= @rk 
+		            where f.CategoryID = @CategoryID and f.left_key >= @lk and f.right_key <= @rk and f.LastPosted is not null 
 		            and (f.IsHidden = 0 or x.ReadAccess <> 0) 
 		             and x.UserID=@UserID 		 
                       order by f.LastPosted desc;

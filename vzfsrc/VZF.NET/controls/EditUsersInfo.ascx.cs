@@ -103,7 +103,8 @@ namespace VZF.Controls
 
                 // var usr = new CombinedUserDataHelper(user);
                 string userName = this.Get<MembershipProvider>().GetUserNameByEmail(emailx);
-                if ((userName != null && userName != user.UserName) || this.Get<YafBoardSettings>().ForumEmail == emailx)
+                if ((userName != null && userName != user.UserName) 
+                    || this.Get<YafBoardSettings>().ForumEmail == emailx)
                 {
                     this.PageContext.AddLoadMessage(this.GetText("PROFILE", "BAD_EMAIL"));
                     return;

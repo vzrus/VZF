@@ -900,6 +900,110 @@ LEAVE;
 END;
 --GO
 
+CREATE PROCEDURE {objectQualifier}DIGEST_TOPICNEW(
+                 I_BOARDID integer,
+                 I_PAGEUSERID integer,
+                 I_SINCEDATE timestamp,
+                 I_TODATE timestamp,              
+                 I_STYLEDNICKS smallint,               
+				 I_UTCTIMESTAMP timestamp)
+        RETURNS (
+		         "ForumName" varchar(255),
+				 "Subject" varchar(255),
+				 "StartedUserName" varchar(255),
+				 "LastUserName"  varchar(255),
+				 "LastMessageID" integer,
+				 "LastMessage" BLOB SUB_TYPE 1,
+				 "Replies" integer)            
+        AS        
+BEGIN    
+FOR SELECT
+        d.NAME,
+		c.TOPIC,
+		c.USERDISPLAYNAME,		
+	    c.LASTUSERDISPLAYNAME,
+	    c.LASTMESSAGEID,
+		(SELECT x.MESSAGE FROM {objectQualifier}MESSAGE x 
+          WHERE x.TOPICID=c.TOPICID and x.MESSAGEID = c.LASTMESSAGEID),
+	    (SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
+          WHERE x.TOPICID=c.TOPICID and BIN_AND(x.FLAGS, 8)=0)  
+    FROM
+        {objectQualifier}TOPIC c  
+        JOIN {objectQualifier}FORUM d ON d.FORUMID=c.FORUMID 
+		JOIN {objectQualifier}CATEGORY cat ON cat.CATEGORYID = d.CATEGORYID     
+        join {objectQualifier}VACCESS x on (x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID AND  x.READACCESS <> 0)      
+    WHERE
+	    c.POSTED > :I_SINCEDATE AND
+        cat.BOARDID = :I_BOARDID AND   
+        c.ISDELETED = 0 
+    ORDER BY
+	d.SORTORDER,
+    c.LASTPOSTED DESC    
+    INTO 
+      :"ForumName",
+	  :"Subject",
+	  :"StartedUserName",
+	  :"LastUserName",
+	  :"LastMessageID",
+	  :"LastMessage",
+	  :"Replies" 
+    DO SUSPEND;
+END;
+--GO
+
+CREATE PROCEDURE {objectQualifier}DIGEST_TOPICACTIVE(
+                 I_BOARDID integer,             
+                 I_PAGEUSERID integer,
+                 I_SINCEDATE timestamp,
+                 I_TODATE timestamp,         
+                 I_STYLEDNICKS smallint,               
+				 I_UTCTIMESTAMP timestamp)
+        RETURNS (
+		         "ForumName" varchar(255),
+				 "Subject" varchar(255),
+				 "StartedUserName" varchar(255),
+				 "LastUserName"  varchar(255),
+				 "LastMessageID" integer,
+				 "LastMessage" BLOB SUB_TYPE 1,
+				 "Replies" integer)            
+        AS        
+BEGIN    
+FOR SELECT
+        d.NAME,
+		c.TOPIC,
+		c.USERDISPLAYNAME,		
+	    c.LASTUSERDISPLAYNAME,
+	    c.LASTMESSAGEID,
+		(SELECT x.MESSAGE FROM {objectQualifier}MESSAGE x 
+          WHERE x.TOPICID=c.TOPICID and x.MESSAGEID = c.LASTMESSAGEID),
+	    ((SELECT COUNT(1) FROM {objectQualifier}MESSAGE x 
+          WHERE x.TOPICID=c.TOPICID and BIN_AND(x.FLAGS, 8)=0))    
+    FROM
+        {objectQualifier}TOPIC c  
+        JOIN {objectQualifier}FORUM d ON d.FORUMID=c.FORUMID 
+		JOIN {objectQualifier}CATEGORY cat ON cat.CATEGORYID = d.CATEGORYID     
+        join {objectQualifier}VACCESS x on (x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID AND  x.READACCESS <> 0)      
+    WHERE
+	    c.LASTPOSTED > :I_SINCEDATE and
+        c.LASTPOSTED < :I_TODATE    AND 
+        cat.BOARDID = :I_BOARDID AND   
+        c.ISDELETED = 0
+    ORDER BY
+	d.SORTORDER,
+    c.LASTPOSTED DESC    
+    INTO 
+      :"ForumName",
+	  :"Subject",
+	  :"StartedUserName",
+	  :"LastUserName",
+	  :"LastMessageID",
+	  :"LastMessage",
+	  :"Replies" 
+    DO SUSPEND;
+END;
+--GO
+
+
   CREATE PROCEDURE {objectQualifier}TOPIC_UNREAD (
     I_BOARDID integer,
     I_CATEGORYID integer,

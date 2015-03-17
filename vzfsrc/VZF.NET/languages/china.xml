@@ -4362,6 +4362,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Create Topic From Message</Resource>
     <Resource tag="EMPTY_TOPIC">Topic name is empty</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE" />
     <Resource tag="MOVE_MESSAGE">Move Message</Resource>
     <Resource tag="MOVE_TITLE">Move Message to a Different Topic</Resource>

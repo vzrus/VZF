@@ -2526,6 +2526,8 @@ Spoiler Content
       <Resource tag="NEW_TOPIC">Create Topic to move to:</Resource>
       <Resource tag="SELECT_FORUM_MOVETO">Select Forum to move to:</Resource>
       <Resource tag="SELECT_TOPIC_MOVETO">Select Topic to move to:</Resource>
+      <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+      <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="TITLE">Move Message to a Different Topic or split in to a new Topic</Resource>
     <Resource tag="MOVE_TITLE">Move Message to a Different Topic</Resource>
     <Resource tag="SPLIT_TITLE">Split Message in to a new Topic</Resource>

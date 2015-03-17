@@ -20,6 +20,10 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}vaccess_combo;
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_moderatoraccess_list;
 --GO
 -- eof vaccess procedure
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}digest_topicnew;
+--GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}digest_topicactive;
+--GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_tagsave;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_tags;
@@ -3672,14 +3676,15 @@ END;
  where ForumID = i_ParentID;
  END IF;
  IF i_ParentID IS NULL AND i_CategoryID > 0 THEN
- SELECT 0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}Forum n
- where n.Category = i_CategoryID;
+ SELECT 0, min(left_key), max(right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}Forum
+ where CategoryID = i_CategoryID;
  END IF;
  IF i_ParentID IS NULL AND i_CategoryID IS NULL THEN
- SELECT  0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
- from {databaseSchema}.{objectQualifier}Forum n 
- join {databaseSchema}.{objectQualifier}Category c
+ SELECT  0, min(f.left_key), max(f.right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}Forum f
+ join {databaseSchema}.{objectQualifier}Category c 
+ on c.CategoryID = f.CategoryID
  where c.BoardID = i_BoardID;
  END IF;
  set lvl = lvl - 1;
@@ -4976,9 +4981,9 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}mail_create
 
  BEGIN
     INSERT INTO {databaseSchema}.{objectQualifier}Mail
-        (FromUser,FromUserName,ToUser,ToUserName,Created,Subject,Body,BodyHtml)
+        (FromUser,FromUserName,ToUser,ToUserName,Created,Subject,Body,BodyHtml,sendtries)
     VALUES
-        (i_From,i_FromName,i_To,i_ToName,i_UTCTIMESTAMP,i_Subject,i_Body,i_BodyHtml);	
+        (i_From,i_FromName,i_To,i_ToName,i_UTCTIMESTAMP,i_Subject,i_Body,i_BodyHtml,0);	
  END;
 --GO
 
@@ -5076,18 +5081,24 @@ END;
     i_UTCTIMESTAMP DATETIME
  )
  BEGIN
- CREATE TEMPORARY TABLE IF NOT EXISTS tmp_table55 SELECT  MailID FROM {databaseSchema}.{objectQualifier}Mail WHERE SendAttempt < i_UTCTIMESTAMP OR SendAttempt IS NULL ORDER BY SendAttempt desc, Created desc LIMIT 10;
+ CREATE TEMPORARY TABLE IF NOT EXISTS tmp_table55 SELECT  MailID FROM {databaseSchema}.{objectQualifier}Mail WHERE SendAttempt < i_UTCTIMESTAMP OR SendAttempt IS NULL ORDER BY SendAttempt, Created LIMIT 10;
+      UPDATE {databaseSchema}.{objectQualifier}Mail
+	          SET 
+            ProcessID = NULL
+        WHERE
+            ProcessID IS NOT NULL AND SendAttempt > i_UTCTIMESTAMP;
+   
     UPDATE {databaseSchema}.{objectQualifier}Mail
     SET 
         SendTries = SendTries + 1,
         SendAttempt = ADDDATE(i_UTCTIMESTAMP, INTERVAL 5 MINUTE),
         ProcessID = i_ProcessID
     WHERE
-        MailID IN (SELECT MailID FROM tmp_table55 ORDER BY SendAttempt desc, Created desc);
+        MailID IN (SELECT MailID FROM tmp_table55 ORDER BY SendAttempt, Created desc);
  
     /*now select all mail reserved for this process...*/
-    SELECT * FROM {databaseSchema}.{objectQualifier}Mail WHERE ProcessID = i_ProcessID ORDER BY SendAttempt desc, Created desc LIMIT 10;
-           DROP TABLE IF EXISTS tmp_table55;
+    SELECT * FROM {databaseSchema}.{objectQualifier}Mail WHERE ProcessID = i_ProcessID ORDER BY SendAttempt, Created LIMIT 10;
+           DROP TABLE IF EXISTS tmp_table55;  
  END;
 --GO
 
@@ -15077,3 +15088,69 @@ DECLARE ici_ForumID INT;
 END;
 --GO
 
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}digest_topicnew(
+                 i_boardid integer,
+                 i_pageuserid integer,
+                 i_sincedate datetime,
+                 i_todate datetime,              
+                 i_StyledNicks tinyint(1),               
+				 i_utctimestamp datetime)
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName" ,
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        {databaseSchema}.{objectQualifier}Topic c  
+        JOIN {databaseSchema}.{objectQualifier}Forum d ON d.ForumID=c.ForumID 
+		JOIN {databaseSchema}.{objectQualifier}Category cat ON cat.CategoryID = d.CategoryID     
+        join {databaseSchema}.{objectQualifier}vaccess x on (x.ForumID=d.ForumID AND x.UserID = i_pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = i_boardid AND  
+       c.Posted > i_sincedate and        
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
+end;
+--GO
+
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}digest_topicactive(
+                 i_boardid integer,
+                 i_pageuserid integer,
+                 i_sincedate datetime,
+                 i_todate datetime,              
+                 i_StyledNicks tinyint(1),               
+				 i_utctimestamp datetime)
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName",
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        {databaseSchema}.{objectQualifier}Topic c  
+        JOIN {databaseSchema}.{objectQualifier}Forum d ON d.ForumID=c.ForumID 
+		JOIN {databaseSchema}.{objectQualifier}Category cat ON cat.CategoryID = d.CategoryID     
+        join {databaseSchema}.{objectQualifier}vaccess x on (x.ForumID=d.ForumID AND x.UserID = i_pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = i_boardid AND        
+       c.LastPosted > i_sincedate and
+       c.LastPosted < i_todate  and    
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
+end;
+--GO

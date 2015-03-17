@@ -56,17 +56,6 @@ begin
 end;
 --GO
 
-CREATE OR ALTER PROCEDURE  {objectQualifier}FORUM_NS_POSTS(I_LK INTEGER, I_RK INTEGER, I_CATEGORYID INTEGER) 
-RETURNS (I_NUMPOSTS INTEGER) as
-begin
-SELECT SUM(NUMPOSTS) from {objectQualifier}FORUM 
-	where CATEGORYID = :I_CATEGORYID and left_key >= :I_LK and right_key <= :I_RK
-	INTO :I_NUMPOSTS;
-  SUSPEND;
-end;
---GO
-
-
 CREATE OR ALTER PROCEDURE  {objectQualifier}FORUM_TOPICS(I_FORUMID integer)
  returns (I_NumTopics integer) as
 	DECLARE VARIABLE I_tmp integer;
@@ -95,16 +84,6 @@ begin
 	close ct;		
 	end	
 	SUSPEND;
-end;
---GO
-
-CREATE OR ALTER PROCEDURE  {objectQualifier}FORUM_NS_TOPICS(I_LK INTEGER, I_RK INTEGER, I_CATEGORYID INTEGER)
- returns (I_NUMTOPICS integer) as
-begin
-	SELECT SUM(NUMTOPICS) FROM {objectQualifier}FORUM 
-	WHERE CATEGORYID = :I_CATEGORYID and left_key >= :I_LK and right_key <= :I_RK
-	INTO :I_NUMTOPICS;
-  SUSPEND;
 end;
 --GO
 
@@ -298,7 +277,7 @@ BEGIN
 		    select  f.LastTopicID from {objectQualifier}FORUM f 
 			        inner join {objectQualifier}ACTIVEACCESS x 
 					 on f.FORUMID=x.FORUMID
-		             where f.CATEGORYID = :I_CATEGORYID and f.left_key >= :I_LK  and f.right_key <= :I_RK 
+		             where f.CATEGORYID = :I_CATEGORYID and f.left_key >= :I_LK  and f.right_key <= :I_RK and f.LASTPOSTED IS NOT NULL
 					 and BIN_AND(f.FLAGS, 2)=0		 
                     order by f.LASTPOSTED desc ROWS 1
 					INTO :"LastTopicID";
@@ -307,7 +286,7 @@ BEGIN
 		BEGIN
 			select  f.LastTopicID from {objectQualifier}FORUM f 
 			        inner join {objectQualifier}ACTIVEACCESS x  on f.FORUMID=x.FORUMID
-		            where f.CATEGORYID = :I_CATEGORYID and f.left_key >= :I_LK and f.right_key <= :I_RK 
+		            where f.CATEGORYID = :I_CATEGORYID and f.left_key >= :I_LK and f.right_key <= :I_RK and f.LASTPOSTED IS NOT NULL 
 		            and (BIN_AND(f.FLAGS, 2)=0  or x.READACCESS <> 0) 
 		             and x.USERID = :I_USERID		 
                       order by f.LASTPOSTED desc ROWS 1

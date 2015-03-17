@@ -117,13 +117,15 @@ namespace YAF.Core.Tasks
         int sendEveryXHours = boardSettings.DigestSendEveryXHours;
 
         if (boardSettings.LastDigestSend.IsSet())
-        {
-          lastSend = Convert.ToDateTime(boardSettings.LastDigestSend);
+        {           
+        
+            lastSend = DateTime.Parse(boardSettings.LastDigestSend, CultureInfo.InvariantCulture);
+          
         }
 
 #if (DEBUG)
         // haven't sent in X hours or more and it's 12 to 5 am.
-        sendDigest = lastSend < DateTime.Now.AddHours(-sendEveryXHours);      
+        sendDigest = lastSend < DateTime.UtcNow.AddHours(-sendEveryXHours);      
 #else
         // haven't sent in X hours or more and it's 12 to 5 am.
         sendDigest = lastSend < DateTime.Now.AddHours(-sendEveryXHours) && DateTime.Now < DateTime.Today.AddHours(6);
@@ -132,12 +134,13 @@ namespace YAF.Core.Tasks
         {
           // && DateTime.Now < DateTime.Today.AddHours(5))
           // we're good to send -- update latest send so no duplication...
-          boardSettings.LastDigestSend = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            boardSettings.LastDigestSend = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
           boardSettings.ForceDigestSend = false;
-          ((YafLoadBoardSettings)YafContext.Current.BoardSettings).SaveRegistry(
+          boardSettings.SaveRegistry(
               new Dictionary<string, object>
                 {
-                    {"ForceDigestSend", false}
+                    {"ForceDigestSend", false},
+                    {"LastDigestSend", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)}
                 },
                 YafContext.Current.PageBoardID);
 

@@ -126,15 +126,14 @@ $BODY$DECLARE
 	IF (i_userid IS NULL) then		
 		    select  f.lasttopicid into ici_LastTopicID from {databaseSchema}.{objectQualifier}forum f 
 			        inner join {databaseSchema}.{objectQualifier}activeaccess x on f.forumid=x.forumid
-		             where f.categoryid = i_categoryid and f.left_key >= i_lk  and f.right_key <= i_rk 
+		             where f.categoryid = i_categoryid  and f.left_key >= i_lk and f.right_key <= i_rk and f.lastposted is not null
 					 and (f.flags & 2)=0		 
                     order by f.lastposted desc limit 1;
 		else
 			select  f.lasttopicid into ici_LastTopicID from {databaseSchema}.{objectQualifier}forum f 
 			        inner join {databaseSchema}.{objectQualifier}activeaccess x on (f.forumid=x.forumid and x.userid= i_userid)
-		            where f.categoryid = i_categoryid and f.left_key >= i_lk and f.right_key <= i_rk 
-		            and ((f.flags & 2)=0 or x.readaccess) 
-		              		 
+		            where f.categoryid = i_categoryid and f.left_key >= i_lk and f.right_key <= i_rk and f.lastposted is not null
+		            and ((f.flags & 2)=0 or x.readaccess) 		              		 
                       order by f.lastposted desc limit 1;  
 		 end if;  
 	RETURN ici_LastTopicID;

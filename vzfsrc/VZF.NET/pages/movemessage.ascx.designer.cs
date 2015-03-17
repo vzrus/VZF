@@ -58,6 +58,24 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.DropDownList ForumList;
         
         /// <summary>
+        /// jumpList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl jumpList;
+        
+        /// <summary>
+        /// rowTopicsDdl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow rowTopicsDdl;
+        
+        /// <summary>
         /// LocalizedLabel3 control.
         /// </summary>
         /// <remarks>
@@ -74,6 +92,33 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList TopicsList;
+        
+        /// <summary>
+        /// rowTopicName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow rowTopicName;
+        
+        /// <summary>
+        /// LocalizedLabel7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel7;
+        
+        /// <summary>
+        /// TopicIDTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TopicIDTb;
         
         /// <summary>
         /// Move control.

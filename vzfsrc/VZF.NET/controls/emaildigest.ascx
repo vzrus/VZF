@@ -31,81 +31,89 @@
         </div>
         <div class="main">
             <div>
-                <% if (this.NewTopics.Any())
-                   {%>
+                <% if (this.NewTopics.Rows.Count > 0)
+                   {
+                       var forumName = string.Empty;
+                       %>
                 <h1 class="header">
                     <%=this.GetText("NEWTOPICS")%></h1>
                 <%
-                    foreach (var f in this.NewTopics)
-                    {%>
+                    foreach (System.Data.DataRow f in this.NewTopics.Rows)
+                    {
+                     if (!forumName.Equals(f["ForumName"].ToString()))
+                     {
+                         forumName = f["ForumName"].ToString();
+                         %>              
                 <h2 class="forumTitle">
-                    <%=f.Key.Name%>
+                    <%=forumName%>
                 </h2>
-                <%
-                    foreach (var t in f.OrderByDescending(x => x.LastPostDate))
-                    {%>
+                <%}
+                   %>
                 <div class="topic">
                     <div>
                         <h3>
-                            <a class="subject" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", t.LastMessageID)%>"
+                            <a class="subject" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", f["LastMessageID"])%>"
                                 target="_blank">
-                                <%=t.Subject%></a> <a class="comments" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", t.LastMessageID)%>"
+                                <%=f["Subject"].ToString()%></a> <a class="comments" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", f["LastMessageID"])%>"
                                     target="_blank">
-                                    <%=this.GetText("COMMENTS").FormatWith(t.Replies)%></a></h3>
+                                    <%=this.GetText("COMMENTS").FormatWith(f["Replies"].ToString())%></a></h3>
                         <h5>
-                            <%=this.GetText("STARTEDBY").FormatWith(t.StartedUserName)%></h5>
+                            <%=this.GetText("STARTEDBY").FormatWith(f["StartedUserName"].ToString())%></h5>
                         <div class="shortpost">
                             <span class="text">
-                                <%=this.GetMessageFormattedAndTruncated(t.LastMessage, 200)%>
-                            </span><a href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", t.LastMessageID)%>"
+                                <%=this.GetMessageFormattedAndTruncated(f["LastMessage"].ToString(), 200)%>
+                            </span><a href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", f["LastMessageID"])%>"
                                 class="link" target="_blank">
                                 <%=this.GetText("LINK")%></a> <span class="by">
-                                    <%=this.GetText("LASTBY").FormatWith(t.LastUserName)%>
+                                    <%=this.GetText("LASTBY").FormatWith(f["LastUserName"])%>
                                 </span>
                         </div>
                     </div>
                 </div>
                 <%
-                    }
-                    }
+                   }
                    }%>
-                <% if (this.ActiveTopics.Any())
-                   {%>
+                <% if (this.ActiveTopics.Rows.Count > 0)
+                   {
+                       var forumName = string.Empty; 
+                       %>
                 <h1 class="header">
                     <%=this.GetText("ACTIVETOPICS")%></h1>
                 <%
-                    foreach (var f in this.ActiveTopics)
-                    {%>
+                   foreach (System.Data.DataRow f in this.ActiveTopics.Rows)
+                    {
+                     if (!forumName.Equals(f["ForumName"].ToString()))
+                     {
+                         forumName = f["ForumName"].ToString();
+                         %>              
                 <h2 class="forumTitle">
-                    <%=f.Key.Name%>
+                    <%=forumName%>
                 </h2>
-                <%
-                    foreach (var t in f.OrderBy(x => x.Replies))
-                    {%>
+                <%}
+                   %>
                 <div class="topic">
                     <div>
                         <h3>
-                            <a class="subject" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", t.LastMessageID)%>"
+                            <a class="subject" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", f["LastMessageID"])%>"
                                 target="_blank">
-                                <%=t.Subject%></a> <a class="comments" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", t.LastMessageID)%>"
+                                <%=f["Subject"]%></a> <a class="comments" href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", f["LastMessageID"])%>"
                                     target="_blank">
-                                    <%=this.GetText("COMMENTS").FormatWith(t.Replies)%></a></h3>
+                                    <%=this.GetText("COMMENTS").FormatWith(f["Replies"])%></a></h3>
                         <h5>
-                            <%=this.GetText("STARTEDBY").FormatWith(t.StartedUserName)%></h5>
+                            <%=this.GetText("STARTEDBY").FormatWith(f["StartedUserName"])%></h5>
                         <div class="shortpost">
                             <span class="text">
-                                <%=this.GetMessageFormattedAndTruncated(t.LastMessage, 200)%>
-                            </span><a href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", t.LastMessageID)%>"
+                                <%=this.GetMessageFormattedAndTruncated(f["LastMessage"].ToString(), 200)%>
+                            </span><a href="<%=YafBuildLink.GetLink(ForumPages.posts, true, "m={0}#post{0}", f["LastMessageID"])%>"
                                 class="link" target="_blank">
                                 <%=this.GetText("LINK")%></a> <span class="by">
-                                    <%=this.GetText("LASTBY").FormatWith(t.LastUserName)%>
+                                    <%=this.GetText("LASTBY").FormatWith(f["LastUserName"])%>
                                 </span>
                         </div>
                     </div>
                 </div>
                 <%
-                    }
-                    }
+                   }
                    }%>
             </div>
         </div>

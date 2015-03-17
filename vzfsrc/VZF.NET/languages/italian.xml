@@ -4324,6 +4324,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Crea nuova discussione dal messaggio</Resource>
     <Resource tag="EMPTY_TOPIC">L'oggetto della discussione è vuoto</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE">Sposta</Resource>
     <Resource tag="MOVE_MESSAGE">Sposta il messaggio</Resource>
     <Resource tag="MOVE_TITLE">Sposta il messaggio in altra discussione</Resource>

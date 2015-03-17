@@ -4344,6 +4344,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Tạo chủ đề mới từ bài viết</Resource>
     <Resource tag="EMPTY_TOPIC">Tên chủ đề không được bỏ trống</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE" />
     <Resource tag="MOVE_MESSAGE">Di chuyển</Resource>
     <Resource tag="MOVE_TITLE">Move Message to a Different Topic</Resource>

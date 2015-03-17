@@ -232,7 +232,8 @@ SELECT f.forumid,
 	   -- we don't return board and category nodes here
 	   (f.level - 2)  
 	   FROM {databaseSchema}.{objectQualifier}forum f 
-	   WHERE f.categoryid= ici_categoryid and f.left_key <= _left_key AND f.right_key >= _right_key ORDER BY f.left_key
+	   WHERE f.categoryid= ici_categoryid and f.left_key <= _left_key AND f.right_key >= _right_key 
+	   ORDER BY f.left_key
 LOOP
 RETURN NEXT _rec;
 END LOOP;

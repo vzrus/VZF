@@ -613,7 +613,7 @@ namespace YAF.Core.Services
             }
 
             return forumData;
-        }
+        }       
 
         /// <summary>
         /// The get smilies.

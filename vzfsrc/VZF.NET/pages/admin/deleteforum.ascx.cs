@@ -139,7 +139,7 @@ namespace YAF.Pages.Admin
                         "&active={0}".FormatWith(value);                                   
                 }
 
-                YafContext.Current.PageElements.RegisterJsBlock(
+               YafContext.Current.PageElements.RegisterJsBlock(
                   "ftreedelfrm",
                   JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
                       "treedelfrm",
@@ -149,9 +149,9 @@ namespace YAF.Pages.Admin
                       string.Empty,
                       args,
                       "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); 
-
-             /*   YafContext.Current.PageElements.RegisterJsBlock(
+                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));  
+            
+                /*   YafContext.Current.PageElements.RegisterJsBlock(
                  "ftreedelfrm",
                  JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJsNew(
                      "treedelfrm",

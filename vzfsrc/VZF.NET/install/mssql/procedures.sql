@@ -24,6 +24,13 @@ GO
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}adminpageaccess_list]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}adminpageaccess_list]
 GO
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}digest_topicnew]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicnew]
+GO
+
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}digest_topicactive]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicactive]
+GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}eventloggroupaccess_save]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}eventloggroupaccess_save]
@@ -12783,5 +12790,74 @@ declare @ForumID int;
 		SELECT @ForumID = ForumID FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID;
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatelastpost] @ForumID    
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatestats] @ForumID
+end
+GO
+
+CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicnew](
+                 @boardid integer,
+                 @pageuserid integer,
+                 @sincedate datetime,
+                 @todate datetime,              
+                 @stylednicks bit,               
+				 @utctimestamp datetime)
+				 as
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName" ,
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        [{databaseSchema}].[{objectQualifier}Topic] c  
+        JOIN [{databaseSchema}].[{objectQualifier}Forum] d ON d.ForumID=c.ForumID 
+		JOIN [{databaseSchema}].[{objectQualifier}Category] cat ON cat.CategoryID = d.CategoryID     
+        join [{databaseSchema}].[{objectQualifier}vaccess] x on (x.ForumID=d.ForumID AND x.UserID = @pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = @boardid and  
+       c.Posted > @sincedate and        
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
+end
+GO
+
+CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicactive](
+                 @boardid integer,
+                 @pageuserid integer,
+                 @sincedate datetime,
+                 @todate datetime,              
+                 @stylednicks bit,               
+				 @utctimestamp datetime)
+				 as
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName" ,
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        [{databaseSchema}].[{objectQualifier}Topic] c  
+        JOIN [{databaseSchema}].[{objectQualifier}Forum] d ON d.ForumID=c.ForumID 
+		JOIN [{databaseSchema}].[{objectQualifier}Category] cat ON cat.CategoryID = d.CategoryID     
+        join [{databaseSchema}].[{objectQualifier}vaccess] x on (x.ForumID=d.ForumID AND x.UserID = @pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = @boardid and  
+	   c.lastposted > @sincedate and
+       c.lastposted < @todate  and           
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
 end
 GO

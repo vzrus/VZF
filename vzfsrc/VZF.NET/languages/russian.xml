@@ -348,10 +348,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Пользователи могут создавать персональные форумы(блоги) как подфорумы. Разрешение должно быть установлено администратором для форума.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Персональные форумы в категориях:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Пользователи могут создавать персональные форумы(блоги) прямо в категориях.</Resource>
-    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
-    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
-    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
-    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Разрешать только личные группы для персональных форумов:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Пользователи не могут выбирать обычные группы для доступа к персональным форумам(блогам).</Resource>
+    <Resource tag="PERSONALMASKSONLY">Разрешить только личные маски для персональных форумов:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Пользователи не могут выбирать обычные маски доступа для доступа к персональным форумам(блогам).</Resource>
     <Resource tag="TITLE">Настройки конференции</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -1366,7 +1366,7 @@
     <Resource tag="SERVERTIME_CORRECT_HELP">Введите целое число (минуты) между -720 и 720, только если это время UTC неверно: </Resource>
     <Resource tag="SHOUTBOX_COUNT">Число сообщений в чате:</Resource>
     <Resource tag="SHOUTBOX_COUNT_HELP">Число сообщений, которые будут отображаться в окне чата.</Resource>
-    <Resource tag="SHOUTBOX_DEFAULTSTATE">Состсояние чата по умолчанию (Shout Box):</Resource>
+    <Resource tag="SHOUTBOX_DEFAULTSTATE">Состояние чата по умолчанию (Shout Box):</Resource>
     <Resource tag="SHOUTBOX_DEFAULTSTATE_HELP">Чат может быть открыт или закрыт, для текущего изменения пользователям необходимо удалить куки.</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION">Показывать активные обсуждения:</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION_HELP">Включить или отключить отображение активных обсуждений.</Resource>
@@ -1382,8 +1382,8 @@
     <Resource tag="SHOW_DEL_MESSAGES_HELP">Удалённые сообщения(пустые) будут видны с уведомлением. Не включайте обе опции одновременно.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">Показывать удалённые сообщения для всех:</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">Это покажет пустое сообщение с уведомлением всем пользователям.&lt;br /&gt; Если не выбрано, то администраторы, модераторы и автор будут видеть это сообщение.</Resource>
-    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
-    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Показывать удалённые темы в общем списке:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">Удалённые темы будут видны модераторам в общем списке тем, иначе они будут отображаться только на странице модерации.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">Показывать список быстрого перехода:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">Показывать список быстрого перехода в разных местах форума.</Resource>
     <Resource tag="SHOW_FORUM_STATS">Показывать статистику конференции:</Resource>
@@ -4317,6 +4317,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Создать новую тему из сообщения</Resource>
     <Resource tag="EMPTY_TOPIC">Отсутствует название темы</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Введите идентификатор темы в которую нужно переместить сообщение:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE" />
     <Resource tag="MOVE_MESSAGE">Переместить сообщение</Resource>
     <Resource tag="MOVE_TITLE">Переместить сообщение в другую тему</Resource>

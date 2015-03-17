@@ -4285,6 +4285,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Neues Thema aus Beitrag erstellen</Resource>
     <Resource tag="EMPTY_TOPIC">Der Name des Themas ist leer</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE">Beitrag verschieben</Resource>
     <Resource tag="MOVE_MESSAGE">Beitrag verschieben</Resource>
     <Resource tag="MOVE_TITLE">Beitrag in anderes Thema verschieben.</Resource>

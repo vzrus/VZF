@@ -1724,7 +1724,7 @@ INTO :ici_LastMessageID;
         INTO :itmpTopicID
         DO
         BEGIN
-        EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :itmpTopicID, null, 0, 1;        
+        EXECUTE PROCEDURE {objectQualifier}TOPIC_DELETE :itmpTopicID, null, 1, 0;        
         END                
       
         /* TopicDelete finished*/ 
@@ -1741,6 +1741,7 @@ INTO :ici_LastMessageID;
 
         DELETE FROM {objectQualifier}FORUM
         WHERE       FORUMID = :I_FORUMID;
+
         /* Forum on UPDATE */
         SELECT PARENTID FROM  {objectQualifier}FORUM
         WHERE FORUMID = :I_FORUMID
@@ -1763,8 +1764,7 @@ INTO :ici_LastMessageID;
         EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST :ici_ParentID;
         EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS :ici_ParentID;
         END        
-        END 
-   
+        END    
 	
 	if (I_REBUILDTREE = 1) THEN
 	begin
@@ -1778,10 +1778,11 @@ INTO :ici_LastMessageID;
 	-- move children 1 level higher before deleting a forum
 	  EXECUTE PROCEDURE {objectQualifier}FORUM_AFTER_DEL2_FUNC :old_categoryid, :old_left_key, :old_right_key, :old_level, :old_parentid;
 	end	
+    -- will fail should be revisited later 	 
 	  EXECUTE PROCEDURE {objectQualifier}FORUM_AFTER_DEL_FUNC :old_categoryid, :old_left_key, :old_right_key, :old_level, :old_parentid;
 	end
 	else
-	  delete from {objectQualifier}Forum where FORUMID = :I_FORUMID;	
+	  delete from {objectQualifier}Forum where FORUMID = :I_FORUMID;
 		
     END;
 --GO
@@ -4205,6 +4206,11 @@ CREATE PROCEDURE  {objectQualifier}MAIL_LIST
  -- WHERE SENDATTEMPT < current_timestamp
  -- OR SENDATTEMPT IS NULL ORDER BY "MailID";
   
+    UPDATE {objectQualifier}Mail
+	          SET 
+            PROCESSID = NULL
+        WHERE
+            PROCESSID IS NOT NULL AND SENDATTEMPT > :I_UTCTIMESTAMP;
     UPDATE {objectQualifier}MAIL
     SET 
         SENDTRIES = SENDTRIES + 1,
@@ -4213,7 +4219,7 @@ CREATE PROCEDURE  {objectQualifier}MAIL_LIST
     WHERE
         MAILID IN (SELECT MAILID FROM (SELECT  FIRST 10 DISTINCT MAILID FROM {objectQualifier}MAIL 
  WHERE SENDATTEMPT < :I_UTCTIMESTAMP
-  OR SENDATTEMPT IS NULL   ORDER BY SENDATTEMPT desc, CREATED desc));
+  OR SENDATTEMPT IS NULL   ORDER BY SENDATTEMPT, CREATED));
         -- MailID IN (SELECT MailID FROM tmp_table55);
  
     -- now select all mail reserved for this process...*
@@ -4232,7 +4238,7 @@ CREATE PROCEDURE  {objectQualifier}MAIL_LIST
   PROCESSID 
   FROM  {objectQualifier}MAIL
     WHERE PROCESSID = :I_PROCESSID 
-    ORDER BY SENDATTEMPT desc, CREATED desc
+    ORDER BY SENDATTEMPT, CREATED 
     INTO
     :"MailID",
     :"FromUser",
@@ -7483,13 +7489,13 @@ RETURNS
   "RankID" integer,
   "BoardID" integer,
   "Name" VARCHAR(128),
+  "Description" VARCHAR(128),
   "MinPosts" integer,
   "RankImage" VARCHAR(128),
   "Flags" integer,
   "PMLimit" integer,
   "Style" VARCHAR(255),
   "SortOrder" integer,
-  "Description" varchar(128),
   "UsrSigChars" integer,
   "UsrSigBBCodes"  varchar(255),
   "UsrSigHTMLTags" varchar(255),
@@ -7500,7 +7506,21 @@ AS
 BEGIN
     IF (I_RANKID IS NULL) THEN
     FOR	SELECT
-            a.*
+            a.RANKID, 
+			a.BOARDID, 
+			a.NAME, 
+			a.DESCRIPTION, 
+			a.MINPOSTS, 
+			a.RANKIMAGE,
+			a.FLAGS, 
+			a.PMLIMIT, 
+			a.STYLE, 
+			a.SORTORDER, 
+			a.USRSIGCHARS, 
+			a.USRSIGBBCODES, 
+			a.USRSIGHTMLTAGS, 
+			a.USRALBUMS, 
+			a.USRALBUMIMAGES
         FROM
             {objectQualifier}RANK a
         WHERE
@@ -7512,13 +7532,13 @@ BEGIN
              :"RankID",
              :"BoardID",
              :"Name",
+			 :"Description",
              :"MinPosts",
              :"RankImage",
              :"Flags",
              :"PMLimit",
              :"Style",
-             :"SortOrder",
-             :"Description",
+             :"SortOrder",         
              :"UsrSigChars",
              :"UsrSigBBCodes",
              :"UsrSigHTMLTags",
@@ -7527,7 +7547,21 @@ BEGIN
       DO SUSPEND;
     ELSE
     FOR	SELECT
-            a.*
+            a.RANKID, 
+			a.BOARDID, 
+			a.NAME, 
+			a.DESCRIPTION, 
+			a.MINPOSTS, 
+			a.RANKIMAGE,
+			a.FLAGS, 
+			a.PMLIMIT, 
+			a.STYLE, 
+			a.SORTORDER, 
+			a.USRSIGCHARS, 
+			a.USRSIGBBCODES, 
+			a.USRSIGHTMLTAGS, 
+			a.USRALBUMS, 
+			a.USRALBUMIMAGES
         FROM
             {objectQualifier}RANK a
         WHERE
@@ -7536,13 +7570,13 @@ BEGIN
              :"RankID",
              :"BoardID",
              :"Name",
+			 :"Description",
              :"MinPosts",
              :"RankImage",
              :"Flags",
              :"PMLimit",
              :"Style",
-             :"SortOrder",
-             :"Description",
+             :"SortOrder",           
              :"UsrSigChars",
              :"UsrSigBBCodes",
              :"UsrSigHTMLTags",
@@ -9004,16 +9038,18 @@ CREATE PROCEDURE  {objectQualifier}USER_ADMINSAVE
      (I_BOARDID INTEGER,
      I_USERID INTEGER,
      I_NAME VARCHAR(128),
+	 I_DISPLAYNAME VARCHAR(128),
      I_EMAIL VARCHAR(128),
      I_FLAGS INTEGER,
      I_RANKID INTEGER)
      RETURNS
      (o_UserID INTEGER)
      AS
-     BEGIN
+     BEGIN	
      UPDATE {objectQualifier}USER
      SET
      NAME = :I_NAME,
+	 DISPLAYNAME = :I_DISPLAYNAME,
      "EMAIL" = :I_EMAIL,
      RANKID = :I_RANKID,
      FLAGS = :I_FLAGS
@@ -11240,6 +11276,9 @@ BEGIN
                             VALUES ((SELECT NEXT VALUE FOR SEQ_{objectQualifier}WATCHFORUM_WATCHFORUMID FROM RDB$DATABASE),:I_FORUMID,
                             :I_USERID,
                             :I_UTCTIMESTAMP);
+						/*	DELETE FROM objectQualifier}WATCHTOPIC where TOPICID IN (SELECT TOPICID 
+							FROM {objectQualifier}WATCHTOPIC w 
+							JOIN {objectQualifier}TOPIC t on t.TOPICID = w.TOPICID WHERE w.USERID = :I_USERID); */
                             
  END;                           
 --GO

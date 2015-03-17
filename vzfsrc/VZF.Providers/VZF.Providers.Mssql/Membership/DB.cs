@@ -529,7 +529,7 @@ namespace YAF.Providers.Membership
       using (var sc = new VzfSqlCommand(connectionStringName))
       {
           sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
-          sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "@UserKey", user.ProviderUserKey));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserKey", user.ProviderUserKey));
           sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", user.UserName));
           sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Email", user.Email));
           sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Comment", user.Comment));

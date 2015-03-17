@@ -966,49 +966,49 @@ namespace VZF.Kernel
         {
            return "{0}_{1}".FormatWith(GetCategoryNodeKey(boardId, row) ,row["ForumID"].ToString().IsSet()
                ? row["ForumID"] : string.Empty);
-        }    
- 
+        }
+
         private static string GetCategoryTitleLink(string forumUrl, object id, object name, bool titleOnly)
         {
-            string pathStart;
-            if (!titleOnly)
+            string pathStart = string.Empty;
+            if (name.ToString().IsNotSet())
             {
-                if (Config.IsMojoPortal)
-                {
-                    pathStart = HttpUtility.UrlDecode(forumUrl) + "&g={0}&c=***".FormatWith(ForumPages.forum);
-                }
-                else
-                {
-                    pathStart = forumUrl.Replace(".aspx", ".aspx?g={0}&c=***".FormatWith(ForumPages.forum));
-                }
+                return string.Empty;
+            }
+
+            if (titleOnly)
+            {
+                return HttpUtility.HtmlEncode(name);
+            }
+
+
+            pathStart = Config.IsAnyPortal
+                                   ? pathStart
+                                   : HttpUtility.UrlDecode(forumUrl).Replace("resource.ashx", Config.BaseScriptFile);
+           
+            if (Config.IsMojoPortal)
+            {
+                pathStart = pathStart + "&";
+
             }
             else
             {
-                return name.ToString().IsNotSet()
-                                                ? string.Empty
-                                                : HttpUtility.HtmlEncode(name);
+                if (pathStart.IndexOf('?') != pathStart.Length - 1)
+                {
+                    pathStart = pathStart + "?";
+                }
             }
 
-            if (name.ToString().IsSet())
-            {
-                string realU;
-                if (Config.IsAnyPortal)
-                {
-                    realU = pathStart;
-                }
-                else
-                {
-                    realU = YafBuildLink.GetLinkNotEscaped(ForumPages.forum, "c=***")
-                          .Replace("resource.ashx", Config.BaseScriptFile);
-                }
-              
+            pathStart = pathStart + "g={0}&c={1}".FormatWith(ForumPages.forum, id);
+            /* if (Config.IsAnyPortal)
+               {
+                   realU = pathStart;
+               }*/
 
-                return @"<a href='{0}' target='_top' title='{1}'>{1}</a>".FormatWith(
-                   realU.Replace("***", id.ToString()),                     
-                     HttpUtility.HtmlEncode(name));
-            }
-          
-            return string.Empty;
+            return @"<a href='{0}' target='_top' title='{1}'>{1}</a>".FormatWith(
+                 pathStart,
+                 HttpUtility.HtmlEncode(name));
+
         }
 
         private static string GetForumTitleLink(string forumUrl, 
@@ -1036,21 +1036,21 @@ namespace VZF.Kernel
             if (!titleOnly)
             {
                 string pathStart;
+                pathStart = HttpUtility.UrlDecode(forumUrl).Replace("resource.ashx", Config.BaseScriptFile);
+               
                 if (Config.IsMojoPortal)
                 {
-                    pathStart = HttpUtility.UrlDecode(forumUrl) + "&g={0}&f=***".FormatWith(ForumPages.topics);
+                    pathStart = pathStart + "&g={0}&f={1}".FormatWith(ForumPages.topics,id);
                 }
                 else
                 {
-                    pathStart = HttpUtility.UrlDecode(forumUrl)
-                        .Replace(".aspx", ".aspx?g={0}&f=***".FormatWith(ForumPages.topics));
-                }
+                    if (pathStart.IndexOf('?') != pathStart.Length - 1)
+                    {
+                        pathStart = pathStart + "?";
+                    }
 
-
-                string realU = Config.IsAnyPortal
-                                   ? pathStart
-                                   : YafBuildLink.GetLinkNotEscaped(ForumPages.topics, "f=***")
-                                         .Replace("resource.ashx", Config.BaseScriptFile);
+                     pathStart = pathStart + "g={0}&f={1}".FormatWith(ForumPages.topics,id);
+                }               
              
                 fttl =  noAccessRow != null && noAccessRow.ToType<bool>()
                                   ? "{0}{1}".FormatWith(
@@ -1058,7 +1058,7 @@ namespace VZF.Kernel
                                       YafContext.Current.Get<ILocalization>()
                                         .GetText("DEFAULT", "NO_FORUM_ACCESS"))
                                   : @"<a href='{0}' target='_top' title='{1}'>{1}</a>{2}".FormatWith(
-                                      realU.Replace("***", id.ToString()),
+                                      pathStart,
                                       HttpUtility.HtmlEncode(name),
                                       accessRow);
             }

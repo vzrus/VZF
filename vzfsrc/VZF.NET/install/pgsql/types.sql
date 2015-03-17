@@ -2632,5 +2632,14 @@ CREATE TYPE {databaseSchema}.{objectQualifier}user_listtodaysbirthdays_rt AS
 );
 --GO
 
-
-
+CREATE TYPE {databaseSchema}.{objectQualifier}digest_topicactivenew_rt AS
+(
+"ForumName" varchar(255),
+				 "Subject" varchar(255),
+				 "StartedUserName" varchar(255),
+				 "LastUserName"  varchar(255),
+				 "LastMessageID" integer,
+				 "LastMessage" text,
+				 "Replies" integer
+);
+--GO

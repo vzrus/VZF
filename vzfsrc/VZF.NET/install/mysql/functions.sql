@@ -662,14 +662,14 @@ READS SQL DATA
 		    select  f.LastTopicID into i_LastTopicID from {databaseSchema}.{objectQualifier}Forum f 
 			        inner join {databaseSchema}.{objectQualifier}ActiveAccess x on f.ForumID=x.ForumID
 		             where f.CategoryID = i_CategoryID and f.left_key >= i_lk  and f.right_key <= i_rk 
-					 and (f.Flags & 2)=0		 
+					 and (f.Flags & 2)=0 and f.LastTopicID is not null		 
                     order by f.LastPosted desc limit 1;
 		else
 			select  f.LastTopicID into i_LastTopicID from {databaseSchema}.{objectQualifier}Forum f 
 			        inner join {databaseSchema}.{objectQualifier}ActiveAccess x on f.ForumID=x.ForumID
 		            where f.CategoryID = i_CategoryID and f.left_key >= i_lk and f.right_key <= i_rk 
 		            and ((f.Flags & 2)=0 = 0 or x.ReadAccess <> 0) 
-		             and x.UserID= i_UserID 		 
+		             and x.UserID= i_UserID and f.LastTopicID is not null			 
                       order by f.LastPosted desc limit 1;  
 		 end if;  
 	RETURN i_LastTopicID;

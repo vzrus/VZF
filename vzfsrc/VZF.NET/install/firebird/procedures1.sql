@@ -1862,6 +1862,8 @@ RETURNS
 "ParentID" INTEGER,
 "PollGroupID" INTEGER,
 "IsUserForum" BOOL,
+"left_key" INTEGER,
+"right_key" INTEGER,
 "Topics" INTEGER,
 "Posts" INTEGER,
 "Flags" INTEGER,
@@ -1937,8 +1939,10 @@ ici_LastPosted = :I_UTCTIMESTAMP;
         b.ParentID,
         b.PollGroupID,
         b.IsUserForum,
-        (SELECT I_NUMTOPICS FROM {objectQualifier}FORUM_NS_TOPICS(b.left_key, b.right_key, a.CATEGORYID)),
-        (SELECT I_NUMPOSTS FROM {objectQualifier}FORUM_NS_POSTS(b.left_key, b.right_key, a.CATEGORYID)),			
+		b.left_key,
+		b.right_key,
+        (SELECT 0 FROM rdb$database),
+        (SELECT 0 FROM rdb$database),			
         t.LastPosted AS LastPosted,
         t.LastMessageID AS LastMessageID,
         t.LASTMESSAGEFLAGS AS LastMessageFlags,
@@ -1992,6 +1996,8 @@ ici_LastPosted = :I_UTCTIMESTAMP;
          :"ParentID",
          :"PollGroupID",
          :"IsUserForum",
+		 :"left_key",
+		 :"right_key",
          :"Topics",
          :"Posts", 
          :"LastPosted",
@@ -2014,6 +2020,10 @@ ici_LastPosted = :I_UTCTIMESTAMP;
          :"LastTopicAccess"
          DO 
          BEGIN
+		 	SELECT SUM(NUMTOPICS),SUM(NUMPOSTS) FROM {objectQualifier}FORUM 
+	        WHERE CATEGORYID = :"CategoryID" and left_key >= :"left_key"
+		    and right_key <= :"right_key"
+			INTO :"Topics","Posts";
          IF (:"LastUser" IS NULL OR CHAR_LENGTH(:"LastUser") < 2) THEN
          select x.NAME, x.DISPLAYNAME from {objectQualifier}USER x 
          where x.USERID=:"LastUserID" INTO :"LastUser",:"LastUserDisplayName";		

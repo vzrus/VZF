@@ -125,6 +125,7 @@ namespace YAF.Core
             @event.Data.IsMobileDevice = isMobileDevice;
             @event.Data.Browser = browser;
             @event.Data.Platform = platform;
+        
 
             YafContext.Current.Vars["DontTrack"] = dontTrack;
         }

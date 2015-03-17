@@ -92,7 +92,7 @@ namespace YAF.Pages.Admin
         }
         protected override void OnPreRender([NotNull] EventArgs e)
         {
-            this.PageContext.PageElements.RegisterJQuery();
+         //   this.PageContext.PageElements.RegisterJQuery();
             this.PageContext.PageElements.RegisterJQueryUI();
 
             this.PageContext.PageElements.RegisterJsResourceInclude("blockUIJs", "js/jquery.blockUI.js");

@@ -105,7 +105,7 @@ namespace YAF.Pages.Admin
 
             this.LastDigestSendLabel.Text = this.Get<YafBoardSettings>().LastDigestSend.IsNotSet()
                                                 ? this.GetText("ADMIN_DIGEST", "DIGEST_NEVER")
-                                                : this.Get<YafBoardSettings>().LastDigestSend;
+                                                : this.Get<IDateTime>().FormatDateTimeTopic(this.Get<YafBoardSettings>().LastDigestSend);
 
             this.DigestEnabled.Text = this.Get<YafBoardSettings>().AllowDigestEmail
                                           ? this.GetText("COMMON", "YES")

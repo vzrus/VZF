@@ -160,7 +160,7 @@ DECLARE ici_categoryid integer;
 
 SELECT left_key, right_key, categoryid
 into  ici_left_key, ici_right_key, ici_categoryid
-FROM {databaseSchema}.{objectQualifier}forum_ns where ForumID = i_ForumID;
+FROM {databaseSchema}.{objectQualifier}forum where ForumID = i_ForumID;
 
 SELECT f.ForumID,
 	   f.Name,
