@@ -19,6 +19,7 @@
  */
 
 using System.Collections.Generic;
+using VZF.Utils.Extensions;
 
 namespace YAF.Pages.Admin
 {
@@ -177,18 +178,21 @@ namespace YAF.Pages.Admin
                 YafContext.Current.PageElements.RegisterJsResourceInclude("contextmenu",
                     "js/jquery.ui-contextmenu.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs",
+                    "js/fancytree.vzf.nodesadmintreelazy.js");
 
-                YafContext.Current.PageElements.RegisterJsBlock(
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
                     "fancytreescr",
-                    JavaScriptBlocks.FancytreeGetNodesAdminLazyJs(
+                      "fancytreeGetNodesAdminLazyJs('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                        .FormatWith(
+                        Config.JQueryAlias,
                         "ftree3",
                         PageContext.PageUserID,
                         PageContext.PageBoardID,
                         this.GetText("COMMON", "IMPOSSIBLE_ACTION"),
                         @"&v=2",
                         @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
-                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))
-                        ,
+                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())),
                         new Dictionary<string, string>
                         {
                             {"delete", this.GetText("COMMON", "DELETE")},
@@ -199,9 +203,8 @@ namespace YAF.Pages.Admin
                             {"before", this.GetText("COMMON", "BEFORE")},
                             {"after", this.GetText("COMMON", "AFTER")},
                             {"over", this.GetText("COMMON", "CHILD")}
-                        } 
+                        }.ToJson()
                         ));
-
             }
 
             if (this.IsPostBack)

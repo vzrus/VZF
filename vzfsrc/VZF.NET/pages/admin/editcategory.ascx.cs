@@ -314,7 +314,7 @@ namespace YAF.Pages.Admin
             if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
             {
 
-                return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item2;
+                return TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault(name)).CategoryId;
 
             }
 

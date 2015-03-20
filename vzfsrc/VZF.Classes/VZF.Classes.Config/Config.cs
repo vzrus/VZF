@@ -377,18 +377,6 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        /// Gets a value indicating whether database allows schema name.
-        /// </summary>
-        [NotNull]
-        public static bool DatabaseAllowsSchemaName
-        {
-            get
-            {
-                return GetConfigValueAsBool("YAF.DatabaseAllowsSchemaName", true);
-            }
-        }
-
-        /// <summary>
         ///     Gets a value indicating whether Is JQuery Registration disabled? -- default is false.
         /// </summary>
         public static bool DisableJQuery

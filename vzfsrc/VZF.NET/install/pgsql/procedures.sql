@@ -8021,7 +8021,7 @@ $BODY$
 
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}nntptopic_savemessage(integer, varchar, text, integer, varchar, varchar, timestamp, varchar);
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}nntptopic_savemessage(
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}nntptopic_addmessage(
                            i_nntpforumid integer, 
                            i_topic varchar, 
                            i_body text, 

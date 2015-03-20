@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Web;
+
 namespace YAF.Providers.Roles
 {
     using System;
@@ -65,7 +67,7 @@ namespace YAF.Providers.Roles
         /// <summary>
         /// The _user role cache.
         /// </summary>
-        private ConcurrentDictionary<string, StringCollection> _userRoleCache = null;
+        private ConcurrentDictionary<string, StringCollection> _userRoleCache;
 
         #endregion
 
@@ -237,7 +239,10 @@ namespace YAF.Providers.Roles
         /// The username to match.
         /// </param>
         /// <returns>
-        /// The <see cref="string[]"/>.
+        /// The <see>
+        ///         <cref>string[]</cref>
+        ///     </see>
+        ///     .
         /// </returns>
         public override string[] FindUsersInRole(string roleName, string usernameToMatch)
         {
@@ -261,7 +266,10 @@ namespace YAF.Providers.Roles
         /// The get all roles.
         /// </summary>
         /// <returns>
-        /// The <see cref="string[]"/>.
+        /// The <see>
+        ///         <cref>string[]</cref>
+        ///     </see>
+        ///     .
         /// </returns>
         public override string[] GetAllRoles()
         {
@@ -286,7 +294,10 @@ namespace YAF.Providers.Roles
         /// The username.
         /// </param>
         /// <returns>
-        /// The <see cref="string[]"/>.
+        /// The <see>
+        ///         <cref>string[]</cref>
+        ///     </see>
+        ///     .
         /// </returns>
         public override string[] GetRolesForUser(string username)
         {
@@ -295,7 +306,7 @@ namespace YAF.Providers.Roles
                 ExceptionReporter.ThrowArgument("ROLES", "USERNAMEBLANK");
             }
 
-            StringCollection roleNames = null;
+            StringCollection roleNames;
 
             // get the users's collection from the dictionary
             if (!this.UserRoleCache.ContainsKey(username.ToLower()))
@@ -310,7 +321,7 @@ namespace YAF.Providers.Roles
                 }
 
                 // add it to the dictionary cache...
-                this.UserRoleCache.AddOrUpdate(username.ToLower(), (k) => roleNames, (s, v) => roleNames);
+                this.UserRoleCache.AddOrUpdate(username.ToLower(), k => roleNames, (s, v) => roleNames);
             }
             else
             {
@@ -327,7 +338,10 @@ namespace YAF.Providers.Roles
         /// The role name.
         /// </param>
         /// <returns>
-        /// The <see cref="string[]"/>.
+        /// The <see>
+        ///         <cref>string[]</cref>
+        ///     </see>
+        ///     .
         /// </returns>
         public override string[] GetUsersInRole(string roleName)
         {
@@ -379,13 +393,13 @@ namespace YAF.Providers.Roles
                 ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
 
                 // set the app variable...
-                if (YafContext.Application[ConnStrAppKeyName] == null)
+                if (YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] == null)
                 {
-                    YafContext.Application.Add(ConnStrAppKeyName, connStr);
+                    YafContext.Current.Get<HttpApplicationStateBase>().Add(ConnStrAppKeyName, connStr);
                 }
                 else
                 {
-                    YafContext.Application[ConnStrAppKeyName] = connStr;
+                    YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] = connStr;
                 }
             }
 

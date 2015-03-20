@@ -60,7 +60,6 @@
     <Folder Include="common\membership\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="vzf14.pfx" />
     <None Include="vzf2015.snk" />
   </ItemGroup>
   <ItemGroup>

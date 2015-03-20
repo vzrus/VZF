@@ -162,10 +162,14 @@ namespace YAF.Pages.Admin
                 YafContext.Current.PageElements.RegisterJQueryUI();
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreeeditgroupjs",
+                   "js/fancytree.vzf.nodesadminsetgroupaccess.js");
 
-                YafContext.Current.PageElements.RegisterJsBlock(
-                    "fancytreegroupscr",
-                    JavaScriptBlocks.FancyTreeGetNodesGroupAccessLazyJS(
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
+                    "fancytreeeditgroupscr",
+                     "fancyTreeSetNodesGroupAccessLazyJS('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                        .FormatWith(
+                        Config.JQueryAlias,
                         "treegroupaccess",
                         PageContext.PageUserID,
                         PageContext.PageBoardID,
@@ -175,7 +179,6 @@ namespace YAF.Pages.Admin
                         "{0}resource.ashx?".FormatWith(YafForumInfo.ForumClientFileRoot),
                         "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
             }
-
 
             // bind data
             this.BindData();

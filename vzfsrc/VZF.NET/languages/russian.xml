@@ -363,19 +363,14 @@
     <Resource tag="YES">Да</Resource>
   </page>
   <page name="ADMIN_DELETECATEGORY">
-    <Resource tag="DELETE_CATEGORY">Delete category</Resource>
-    <Resource tag="DELETE_FORUM">Delete category</Resource>
-    <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
-    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
-    <Resource tag="DELETE_TITLE">Deleting category</Resource>
-    <Resource tag="HEADER1">Delete the category:</Resource>
-    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
-    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
-    <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
-    <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
-    <Resource tag="NEW_FORUM">New Forum:</Resource>
-    <Resource tag="NEW_FORUM_HELP">Select the new category for the forums.</Resource>
-    <Resource tag="TITLE">Delete category</Resource>
+    <Resource tag="DELETE_CATEGORY">Удалить категорию</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Удаление категории и перемещение форумов</Resource>
+    <Resource tag="DELETE_MSG">Пожалуйста, не покидайте страницу, пока идёт удаление...</Resource>
+    <Resource tag="DELETE_TITLE">Удаление категории</Resource>
+    <Resource tag="HEADER1">Удаление категории</Resource>
+    <Resource tag="MOVE_FORUMS1">Выбрать категорию для перемещения форумов:</Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">Вы можете удалить только пустую категорию.</Resource>
+    <Resource tag="TITLE">Удаление категории</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Удалить форум</Resource>
@@ -1269,6 +1264,10 @@
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Количество тем на одной странице  на странице Мои Темы. </Resource>
     <Resource tag="NAME_LENGTH">Максимальное количество символов в нике пользователя:</Resource>
     <Resource tag="NAME_LENGTH_HELP">Максимально разрешённая длина имени пользователя и отображаемого имени пользователя.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Время захвата статей из каждой группы новостей:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">Чтобы защитить сервер ограничивайте это время несколькими десятками секунд.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Время между импортом сообщений из каждой группы NNTP:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">Разрешённое время в минутах, до следующего захвата.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">Использовать тег "NoFollow" в ссылках:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">Все ссылки будут иметь тег nofollow и большинство ботов не будут уходить по ним.</Resource>
     <Resource tag="NOTIFICATION_BAR">Полоса уведомления</Resource>
@@ -1554,6 +1553,7 @@
     <Resource tag="LAST_MESSAGE">Последнее сообщение</Resource>
     <Resource tag="LAST_UPDATE">Последнее обновление</Resource>
     <Resource tag="RETRIEVE">Получить</Resource>
+    <Resource tag="RETRIEVE_SERVICE">Служба импорта сообщений автоматически импортирует сообщения. Установите параметры захвата в настройках хоста.</Resource>
     <Resource tag="Retrieved">Получено {0} статей. {1:N2} статей в секунду.</Resource>
     <Resource tag="SECONDS">секунд</Resource>
     <Resource tag="TIME">Укажите как долго получать статьи.</Resource>

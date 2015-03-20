@@ -39,12 +39,18 @@
                 int view = 0;
                 bool boardFirst = false;
                 bool links = true;
+                string nodeKey;
                 // show access masks list
                 int? amdd = null;
                 // var userId = YafContext.Current.CurrentUserData.UserID;
                 if (context.Request.QueryString.GetFirstOrDefault("tjls") != null)
                 {
+                    nodeKey = context.Request.QueryString.GetFirstOrDefault("tjls");
                     access = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
+                }
+                else
+                {
+                    nodeKey = context.Request.QueryString.GetFirstOrDefault("tjl");
                 }
 
                 if (context.Request.QueryString.GetFirstOrDefault("active") != null)
@@ -106,7 +112,7 @@
 
                     var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
                     var s = FancyTree.GetForumsJumpTreeNodesLevel(
-                        context.Request.QueryString.GetFirstOrDefault("tjl"),
+                        nodeKey,
                         view,
                         access,
                         context.Request.QueryString.GetFirstOrDefault("active"),

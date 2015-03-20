@@ -14,7 +14,7 @@
             <td class="header2" height="30" colspan="2">
             </td>
         </tr>  
-        <tr id="rowCatMove" visible="false" runat="server">
+        <tr>
             <td class="postheader" height="30">
                 <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="MOVE_FORUMS1" LocalizedPage="ADMIN_DELETECATEGORY" />
             </td>

@@ -21,13 +21,10 @@ namespace YAF.Core.Tasks
   #region Using
 
   using System;
-  using System.Diagnostics;
-
   using YAF.Types.Attributes;
   using YAF.Types.Interfaces;
-  using VZF.Utils;
 
-	#endregion
+    #endregion
 
   /// <summary>
   /// Sends Email in the background.

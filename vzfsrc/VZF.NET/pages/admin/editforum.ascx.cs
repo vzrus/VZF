@@ -150,7 +150,7 @@ namespace YAF.Pages.Admin
         {
             if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
             {
-                return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item3;
+                return TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault(name)).ForumId;
             }
 
             if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
@@ -170,7 +170,7 @@ namespace YAF.Pages.Admin
         {
             if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
             {
-                return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item3;
+                return TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault(name)).ForumId;
             }
 
             if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
@@ -602,8 +602,8 @@ namespace YAF.Pages.Admin
                 &&  this.Request.QueryString.GetFirstOrDefault("fa") != null 
                 &&  this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
             {
-                    var parcedNode1 = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("fa"));
-                    categoryId = parcedNode1.Item2.ToString();
+                    var parcedNode1 = TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault("fa"));
+                    categoryId = parcedNode1.CategoryId.ToString();
                     using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
                     {
                         parentID = dt.Rows[0]["ParentID"];                     
@@ -664,8 +664,6 @@ namespace YAF.Pages.Admin
         int? adjacentForumPosition = null;
         string message;
 
-        Tuple<int?, int?, int?> parcedNode = null;       
-
         if (!Config.LargeForumTree)
         {
             categoryId = this.CategoryList.SelectedValue;
@@ -676,8 +674,8 @@ namespace YAF.Pages.Admin
             {
                 if (this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
                 {
-                    parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("fa"));                
-                    categoryId = parcedNode.Item2.ToString();
+                    var parcedNode = TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault("fa"));                
+                    categoryId = parcedNode.CategoryId.ToString();
                     if (Config.LargeForumTree)
                     {
                         adjacentForumPosition = -1;
@@ -690,16 +688,16 @@ namespace YAF.Pages.Admin
         {
             if (this.Request.QueryString.GetFirstOrDefault("before").Contains("_"))
             {
-                parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("before"));
-                if (parcedNode.Item3.HasValue)
+               var parcedNode = TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault("before"));
+                if (parcedNode.ForumId.HasValue)
                 {
-                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, parcedNode.Item3))
+                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, parcedNode.ForumId))
                     {
                         parentID = dt.Rows[0]["ParentID"];
                     }
 
-                    adjacentForumId = parcedNode.Item3;
-                    categoryId = parcedNode.Item2.ToString();
+                    adjacentForumId = parcedNode.ForumId;
+                    categoryId = parcedNode.CategoryId.ToString();
                 }    
               
                 adjacentForumPosition = 1;
@@ -712,20 +710,20 @@ namespace YAF.Pages.Admin
             {
 
                
-                parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("after"));
+               var parcedNode = TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault("after"));
                
-                if (parcedNode.Item3.HasValue)
+                if (parcedNode.ForumId.HasValue)
                 {
-                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, parcedNode.Item3))
+                    using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, parcedNode.ForumId))
                     {
                         parentID = dt.Rows[0]["ParentID"];
                     }
 
-                    adjacentForumId = parcedNode.Item3;
+                    adjacentForumId = parcedNode.ForumId;
                     adjacentForumPosition = 2;                   
                 }
 
-                categoryId = parcedNode.Item2.ToString();
+                categoryId = parcedNode.CategoryId.ToString();
               
             }
         }
@@ -734,10 +732,10 @@ namespace YAF.Pages.Admin
         {
             if (this.Request.QueryString.GetFirstOrDefault("over").Contains("_"))
             {
-                parcedNode = TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault("over"));
-                if (parcedNode.Item3.HasValue)
+               var parcedNode = TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault("over"));
+                if (parcedNode.ForumId.HasValue)
                 {
-                    adjacentForumId = parcedNode.Item3;
+                    adjacentForumId = parcedNode.ForumId;
                     adjacentForumPosition = 3;
                     parentID = adjacentForumId;
                 }
@@ -747,7 +745,7 @@ namespace YAF.Pages.Admin
                    
                 }
                 
-                categoryId = parcedNode.Item2.ToString();            
+                categoryId = parcedNode.CategoryId.ToString();            
             }
 
         }
@@ -803,8 +801,8 @@ namespace YAF.Pages.Admin
                 a = "before";
                 if (this.Request.QueryString.GetFirstOrDefault(a).Contains("_"))
                 {
-                    s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNodeId(
-                        this.Request.QueryString.GetFirstOrDefault("before")).Item1, 
+                    s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNode(
+                        this.Request.QueryString.GetFirstOrDefault("before")).BoardId, 
                         categoryId, 
                         newForumId);
                 }
@@ -817,8 +815,8 @@ namespace YAF.Pages.Admin
                     a = "after";
                     if (this.Request.QueryString.GetFirstOrDefault(a).Contains("_"))
                     {
-                        s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNodeId(
-                            this.Request.QueryString.GetFirstOrDefault("after")).Item1, 
+                        s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNode(
+                            this.Request.QueryString.GetFirstOrDefault("after")).BoardId, 
                             categoryId, 
                             newForumId);
                     }
@@ -832,8 +830,8 @@ namespace YAF.Pages.Admin
                     a = "over";
                     if (this.Request.QueryString.GetFirstOrDefault(a).Contains("_"))
                     {
-                        s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNodeId(
-                            this.Request.QueryString.GetFirstOrDefault("over")).Item1, 
+                        s = "{0}_{1}_{2}".FormatWith(TreeViewUtils.GetParcedTreeNode(
+                            this.Request.QueryString.GetFirstOrDefault("over")).BoardId, 
                             categoryId, newForumId);
                     }
                 }

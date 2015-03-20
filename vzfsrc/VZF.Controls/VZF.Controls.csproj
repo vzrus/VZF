@@ -181,7 +181,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vzf14.pfx" />
     <None Include="vzf2015.snk" />
     <None Include="YafAdminMenu\YafMenu.xsc">
       <DependentUpon>YafMenu.xsd</DependentUpon>

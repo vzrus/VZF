@@ -24,6 +24,8 @@
  * 
  */
 
+using System.Web;
+
 namespace YAF.Providers.Profile
 {
     using System;
@@ -222,13 +224,13 @@ namespace YAF.Providers.Profile
                 ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
 
                 // set the app variable...
-                if (YafContext.Application[ConnStrAppKeyName] == null)
+                if (YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] == null)
                 {
-                    YafContext.Application.Add(ConnStrAppKeyName, connStr);
+                    YafContext.Current.Get<HttpApplicationStateBase>().Add(ConnStrAppKeyName, connStr);
                 }
                 else
                 {
-                    YafContext.Application[ConnStrAppKeyName] = connStr;
+                    YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] = connStr;
                 }
             }
 

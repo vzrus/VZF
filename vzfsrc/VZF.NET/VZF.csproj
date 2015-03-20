@@ -205,14 +205,7 @@
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DatePickerLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DisablePageManagerScrollJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DropDownLoadJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesAdminLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesGroupAccessLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesProfileLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesJumpLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeGetNodesSearchLazyCheckBoxesJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectCategories.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectSingleNodeLazyJsNew.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FancyTree\FancyTreeSelectSingleNodeLazyJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookInitJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookLoginJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookPostJs.cs" />
@@ -1076,6 +1069,7 @@
     <Content Include="digest.aspx" />
     <Content Include="default.aspx" />
     <Content Include="editors\ckeditor\adapters\jquery.js" />
+    <Content Include="editors\ckeditor\CHANGES.md" />
     <Content Include="editors\ckeditor\ckeditor.js" />
     <Content Include="editors\ckeditor\ckeditor_init.js" />
     <Content Include="editors\ckeditor\ckeditor_initbbcode.js" />
@@ -1147,6 +1141,7 @@
     <Content Include="editors\ckeditor\lang\vi.js" />
     <Content Include="editors\ckeditor\lang\zh-cn.js" />
     <Content Include="editors\ckeditor\lang\zh.js" />
+    <Content Include="editors\ckeditor\LICENSE.md" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
@@ -1226,6 +1221,7 @@
     <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.addons.min.js" />
     <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.addons.search.min.js" />
     <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.min.js" />
+    <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.min.js.map" />
     <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.mode.bbcode.min.js" />
     <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.mode.bbcodemixed.min.js" />
     <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.mode.htmlmixed.min.js" />
@@ -1340,6 +1336,8 @@
     <Content Include="editors\ckeditor\plugins\pastefromword\filter\default.js" />
     <Content Include="editors\ckeditor\plugins\scayt\dialogs\options.js" />
     <Content Include="editors\ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
+    <Content Include="editors\ckeditor\plugins\scayt\README.md" />
     <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
     <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
     <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
@@ -1393,6 +1391,7 @@
     <Content Include="editors\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
     <Content Include="editors\ckeditor\plugins\syntaxhighlight\dialogs\syntaxhighlight.js" />
     <Content Include="editors\ckeditor\plugins\syntaxhighlight\images\syntaxhighlight.gif" />
+    <Content Include="editors\ckeditor\plugins\syntaxhighlight\images\Thumbs.db" />
     <Content Include="editors\ckeditor\plugins\syntaxhighlight\lang\de.js" />
     <Content Include="editors\ckeditor\plugins\syntaxhighlight\lang\en.js" />
     <Content Include="editors\ckeditor\plugins\syntaxhighlight\lang\zh-cn.js" />
@@ -1407,6 +1406,9 @@
     <Content Include="editors\ckeditor\plugins\wsc\dialogs\wsc.css" />
     <Content Include="editors\ckeditor\plugins\wsc\dialogs\wsc.js" />
     <Content Include="editors\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />
+    <Content Include="editors\ckeditor\plugins\wsc\README.md" />
+    <Content Include="editors\ckeditor\README.md" />
     <Content Include="editors\ckeditor\skins\moono\dialog.css" />
     <Content Include="editors\ckeditor\skins\moono\dialog_ie.css" />
     <Content Include="editors\ckeditor\skins\moono\dialog_ie7.css" />
@@ -1429,10 +1431,84 @@
     <Content Include="editors\ckeditor\skins\moono\images\lock-open.png" />
     <Content Include="editors\ckeditor\skins\moono\images\lock.png" />
     <Content Include="editors\ckeditor\skins\moono\images\refresh.png" />
+    <Content Include="editors\ckeditor\skins\moono\readme.md" />
     <Content Include="editors\ckeditor\styles.js" />
     <Content Include="editors\ckeditor\yaf_contents.css" />
     <Content Include="editors\radEditor\toolsFile.xml" />
+    <Content Include="editors\tinymce\langs\ar.js" />
+    <Content Include="editors\tinymce\langs\ar_SA.js" />
+    <Content Include="editors\tinymce\langs\az.js" />
+    <Content Include="editors\tinymce\langs\be.js" />
+    <Content Include="editors\tinymce\langs\bg_BG.js" />
+    <Content Include="editors\tinymce\langs\bn_BD.js" />
+    <Content Include="editors\tinymce\langs\bs.js" />
+    <Content Include="editors\tinymce\langs\ca.js" />
+    <Content Include="editors\tinymce\langs\cs.js" />
+    <Content Include="editors\tinymce\langs\cy.js" />
+    <Content Include="editors\tinymce\langs\da.js" />
+    <Content Include="editors\tinymce\langs\de.js" />
+    <Content Include="editors\tinymce\langs\de_AT.js" />
+    <Content Include="editors\tinymce\langs\dv.js" />
+    <Content Include="editors\tinymce\langs\el.js" />
+    <Content Include="editors\tinymce\langs\en_CA.js" />
+    <Content Include="editors\tinymce\langs\en_GB.js" />
+    <Content Include="editors\tinymce\langs\es.js" />
+    <Content Include="editors\tinymce\langs\es_MX.js" />
+    <Content Include="editors\tinymce\langs\et.js" />
+    <Content Include="editors\tinymce\langs\eu.js" />
+    <Content Include="editors\tinymce\langs\fa.js" />
+    <Content Include="editors\tinymce\langs\fa_IR.js" />
+    <Content Include="editors\tinymce\langs\fi.js" />
+    <Content Include="editors\tinymce\langs\fo.js" />
+    <Content Include="editors\tinymce\langs\fr_FR.js" />
+    <Content Include="editors\tinymce\langs\gd.js" />
+    <Content Include="editors\tinymce\langs\gl.js" />
+    <Content Include="editors\tinymce\langs\he_IL.js" />
+    <Content Include="editors\tinymce\langs\hr.js" />
+    <Content Include="editors\tinymce\langs\hu_HU.js" />
+    <Content Include="editors\tinymce\langs\hy.js" />
+    <Content Include="editors\tinymce\langs\id.js" />
+    <Content Include="editors\tinymce\langs\is_IS.js" />
+    <Content Include="editors\tinymce\langs\it.js" />
+    <Content Include="editors\tinymce\langs\ja.js" />
+    <Content Include="editors\tinymce\langs\ka_GE.js" />
+    <Content Include="editors\tinymce\langs\kk.js" />
+    <Content Include="editors\tinymce\langs\km_KH.js" />
+    <Content Include="editors\tinymce\langs\ko_KR.js" />
+    <Content Include="editors\tinymce\langs\ku.js" />
+    <Content Include="editors\tinymce\langs\ku_IQ.js" />
+    <Content Include="editors\tinymce\langs\lb.js" />
+    <Content Include="editors\tinymce\langs\lt.js" />
+    <Content Include="editors\tinymce\langs\lv.js" />
+    <Content Include="editors\tinymce\langs\ml.js" />
+    <Content Include="editors\tinymce\langs\ml_IN.js" />
+    <Content Include="editors\tinymce\langs\mn_MN.js" />
+    <Content Include="editors\tinymce\langs\nb_NO.js" />
+    <Content Include="editors\tinymce\langs\nl.js" />
+    <Content Include="editors\tinymce\langs\pl.js" />
+    <Content Include="editors\tinymce\langs\pt_BR.js" />
+    <Content Include="editors\tinymce\langs\pt_PT.js" />
+    <Content Include="editors\tinymce\langs\readme.md" />
+    <Content Include="editors\tinymce\langs\ro.js" />
     <Content Include="editors\tinymce\langs\ru.js" />
+    <Content Include="editors\tinymce\langs\si_LK.js" />
+    <Content Include="editors\tinymce\langs\sk.js" />
+    <Content Include="editors\tinymce\langs\sl_SI.js" />
+    <Content Include="editors\tinymce\langs\sr.js" />
+    <Content Include="editors\tinymce\langs\sv_SE.js" />
+    <Content Include="editors\tinymce\langs\ta.js" />
+    <Content Include="editors\tinymce\langs\ta_IN.js" />
+    <Content Include="editors\tinymce\langs\tg.js" />
+    <Content Include="editors\tinymce\langs\th_TH.js" />
+    <Content Include="editors\tinymce\langs\tr_TR.js" />
+    <Content Include="editors\tinymce\langs\tt.js" />
+    <Content Include="editors\tinymce\langs\ug.js" />
+    <Content Include="editors\tinymce\langs\uk.js" />
+    <Content Include="editors\tinymce\langs\uk_UA.js" />
+    <Content Include="editors\tinymce\langs\vi.js" />
+    <Content Include="editors\tinymce\langs\vi_VN.js" />
+    <Content Include="editors\tinymce\langs\zh_CN.js" />
+    <Content Include="editors\tinymce\langs\zh_TW.js" />
     <Content Include="editors\tinymce\license.txt" />
     <Content Include="editors\tinymce\plugins\advlist\plugin.js" />
     <Content Include="editors\tinymce\plugins\advlist\plugin.min.js" />
@@ -1573,8 +1649,17 @@
     <Content Include="editors\tinymce\plugins\wordcount\plugin.min.js" />
     <Content Include="editors\tinymce\skins\lightgray\content.inline.min.css" />
     <Content Include="editors\tinymce\skins\lightgray\content.min.css" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\readme.md" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.json" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.svg" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.eot" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.json" />
     <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.svg" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.ttf" />
+    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="editors\tinymce\skins\lightgray\img\anchor.gif" />
     <Content Include="editors\tinymce\skins\lightgray\img\loader.gif" />
     <Content Include="editors\tinymce\skins\lightgray\img\object.gif" />
@@ -2561,13 +2646,34 @@
     <Content Include="App_Browsers\OceanAppleWebKit.browser" />
     <Content Include="App_Browsers\OceanSpiders.browser" />
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Include="resources\css\fancytree\skin-awesome\ui.fancytree.css" />
     <Content Include="resources\css\fancytree\skin-lion\icons.gif" />
     <Content Include="resources\css\fancytree\skin-lion\loading.gif" />
     <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.less" />
     <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.min.css" />
+    <Content Include="resources\css\fancytree\skin-vista\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-vista\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-vista\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-vista\vista_colors.txt" />
+    <Content Include="resources\css\fancytree\skin-win7\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-win7\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-win7\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-win8-n\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-win8-n\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-win8-n\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-win8-xxl\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-win8-xxl\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-win8-xxl\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-win8\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-win8\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-win8\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-xp\icons-rtl.gif" />
+    <Content Include="resources\css\fancytree\skin-xp\icons.gif" />
+    <Content Include="resources\css\fancytree\skin-xp\loading.gif" />
+    <Content Include="resources\css\fancytree\skin-xp\ui.fancytree.css" />
+    <Content Include="resources\css\fancytree\skin-xp\vline-rtl.gif" />
+    <Content Include="resources\css\fancytree\skin-xp\vline.gif" />
     <Content Include="resources\css\forum.css" />
     <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_444444_256x240.png" />
     <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_555555_256x240.png" />
@@ -2612,6 +2718,7 @@
     <Content Include="resources\css\jquery-ui-themes\blitzer\jquery-ui.min.css" />
     <Content Include="resources\css\jquery-ui-themes\blitzer\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
     <Content Include="resources\css\jquery-ui-themes\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
@@ -3368,6 +3475,46 @@
     <Content Include="resources\images\spellchecker_shadow.png" />
     <Content Include="resources\images\title-bg.gif" />
     <Content Include="resources\js\DataPanel.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadmincategorylist.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadminsetgroupaccess.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.js" />
+    <Content Include="resources\js\fancytree.vzf.nodessearch.js" />
+    <Content Include="resources\js\fancytree.vzf.nodeslazyprofileaccess.js" />
+    <Content Include="resources\js\fancytree.vzf.togglejump.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesjumplazy.min.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesjumplazy.js" />
+    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js" />
+    <Content Include="resources\js\i18n\defaults-cs_CZ.js" />
+    <Content Include="resources\js\i18n\defaults-cs_CZ.min.js" />
+    <Content Include="resources\js\i18n\defaults-de_DE.js" />
+    <Content Include="resources\js\i18n\defaults-de_DE.min.js" />
+    <Content Include="resources\js\i18n\defaults-en_US.js" />
+    <Content Include="resources\js\i18n\defaults-en_US.min.js" />
+    <Content Include="resources\js\i18n\defaults-es_CL.js" />
+    <Content Include="resources\js\i18n\defaults-es_CL.min.js" />
+    <Content Include="resources\js\i18n\defaults-eu.js" />
+    <Content Include="resources\js\i18n\defaults-eu.min.js" />
+    <Content Include="resources\js\i18n\defaults-fr_FR.js" />
+    <Content Include="resources\js\i18n\defaults-fr_FR.min.js" />
+    <Content Include="resources\js\i18n\defaults-it_IT.js" />
+    <Content Include="resources\js\i18n\defaults-it_IT.min.js" />
+    <Content Include="resources\js\i18n\defaults-nl_NL.js" />
+    <Content Include="resources\js\i18n\defaults-nl_NL.min.js" />
+    <Content Include="resources\js\i18n\defaults-pl_PL.js" />
+    <Content Include="resources\js\i18n\defaults-pl_PL.min.js" />
+    <Content Include="resources\js\i18n\defaults-pt_BR.js" />
+    <Content Include="resources\js\i18n\defaults-pt_BR.min.js" />
+    <Content Include="resources\js\i18n\defaults-ro_RO.js" />
+    <Content Include="resources\js\i18n\defaults-ro_RO.min.js" />
+    <Content Include="resources\js\i18n\defaults-ru_RU.js" />
+    <Content Include="resources\js\i18n\defaults-ru_RU.min.js" />
+    <Content Include="resources\js\i18n\defaults-ua_UA.js" />
+    <Content Include="resources\js\i18n\defaults-ua_UA.min.js" />
+    <Content Include="resources\js\i18n\defaults-zh_CN.js" />
+    <Content Include="resources\js\i18n\defaults-zh_CN.min.js" />
+    <Content Include="resources\js\i18n\defaults-zh_TW.js" />
+    <Content Include="resources\js\i18n\defaults-zh_TW.min.js" />
     <Content Include="resources\js\jquery-ui-i18n.min.js" />
     <Content Include="resources\js\jquery-ui.min.js" />
     <Content Include="resources\js\jquery.blockUI.js" />
@@ -3387,7 +3534,7 @@
     <Content Include="resources\js\jquery.ui-contextmenu.min.js" />
     <Content Include="resources\js\jquery.ui.datepicker-farsi.js" />
     <Content Include="resources\js\jquery.yafmodaldialog.js" />
-    <Content Include="resources\js\vzf_fancytree.js" />
+    <Content Include="resources\js\fancytree.vzf.nodeslazy.js" />
     <Content Include="resources\js\yaf.js" />
     <Content Include="resources\ProviderExceptions.xml" />
     <Content Include="rss.xsl" />
@@ -4010,28 +4157,24 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
+    <Content Include="resources\css\fancytree\skin-awesome\ui.fancytree.less" />
+    <Content Include="resources\css\fancytree\skin-lion\icons-lion.psp" />
+    <Content Include="resources\css\fancytree\skin-vista\ui.fancytree.less" />
+    <Content Include="resources\css\fancytree\skin-win7\ui.fancytree.less" />
+    <Content Include="resources\css\fancytree\skin-win8-n\ui.fancytree.less" />
+    <Content Include="resources\css\fancytree\skin-win8-xxl\ui.fancytree.less" />
+    <Content Include="resources\css\fancytree\skin-win8\ui.fancytree.less" />
+    <Content Include="resources\css\fancytree\skin-xp\ui.fancytree.less" />
     <Content Include="packages.config" />
-    <Content Include="editors\ckeditor\CHANGES.md" />
-    <Content Include="editors\ckeditor\LICENSE.md" />
-    <Content Include="editors\ckeditor\plugins\codemirror\js\codemirror.min.js.map" />
-    <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
-    <Content Include="editors\ckeditor\plugins\scayt\README.md" />
-    <Content Include="editors\ckeditor\plugins\syntaxhighlight\images\Thumbs.db" />
-    <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />
-    <Content Include="editors\ckeditor\plugins\wsc\README.md" />
-    <Content Include="editors\ckeditor\README.md" />
-    <Content Include="editors\ckeditor\skins\moono\readme.md" />
-    <Content Include="editors\tinymce\langs\readme.md" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\readme.md" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.json" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.eot" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.json" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.ttf" />
-    <Content Include="editors\tinymce\skins\lightgray\fonts\tinymce.woff" />
-    <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.less" />
+    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js.map">
+      <DependentUpon>fancytree.vzf.nodeslazy.min.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js.map">
+      <DependentUpon>fancytree.vzf.nodesadmintreelazy.min.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodesjumplazy.min.js.map">
+      <DependentUpon>fancytree.vzf.nodesjumplazy.min.js</DependentUpon>
+    </Content>
     <None Include="web_pg.config">
       <SubType>Designer</SubType>
     </None>
@@ -4749,7 +4892,6 @@
     <None Include="themes\Fancy\fonts\Lobster-webfont.eot" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.ttf" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.woff" />
-    <Content Include="vzf14.pfx" />
     <Content Include="uploads\Albums\2.0.18044_original.jpg.yafalbum" />
     <Content Include="uploads\Albums\2.0.2903861.jpg.yafalbum" />
     <Content Include="uploads\Albums\2.1.1275672472_src43.jpg.yafalbum" />
@@ -4789,16 +4931,9 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Deploy.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">

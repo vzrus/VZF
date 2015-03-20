@@ -23,21 +23,23 @@ namespace YAF.Pages.Admin
     #region Using
 
     using System;
+    using System.Collections.Generic;
+
     using System.Data;
 
     using VZF.Data.Common;
+    using VZF.Types.Objects;
+    using VZF.Utilities;
+    using VZF.Utils.Extensions;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-
     using YAF.Core;
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utilities;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
-    using System.Web;
 
     #endregion
 
@@ -59,21 +61,20 @@ namespace YAF.Pages.Admin
         /// </returns>
         protected int? GetQueryStringAsInt([NotNull] string name)
         {
-            int value;
-
-            if (this.Request.QueryString.GetFirstOrDefault(name) != null)
+            if (this.Request.QueryString.GetFirstOrDefault(name) == null)
             {
-                if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
-                {
+                return null;
+            }
 
-                    return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item2;
+            if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
+            {
+                return TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault(name)).CategoryId;
+            }
 
-                }
-
-                if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
-                {
-                    return value;
-                }
+            int value;
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+            {
+                return value;
             }
 
             return null;
@@ -84,51 +85,64 @@ namespace YAF.Pages.Admin
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnInit([NotNull] EventArgs e)
-        {           
+        {
             this.Delete.Click += this.Save_Click;
             this.Cancel.Click += this.Cancel_Click;
 
             base.OnInit(e);
         }
+
         protected override void OnPreRender([NotNull] EventArgs e)
         {
-         //   this.PageContext.PageElements.RegisterJQuery();
             this.PageContext.PageElements.RegisterJQueryUI();
-
             this.PageContext.PageElements.RegisterJsResourceInclude("blockUIJs", "js/jquery.blockUI.js");
-            string value = null;
-            if (this.Request.QueryString.GetFirstOrDefault("fa") != null)
+
+            DataTable ctbl = CommonDb.category_list(
+                YafContext.Current.PageModuleID,
+                PageContext.PageBoardID, null);
+
+            var collection = new List<TreeNode>();
+
+            foreach (DataRow row in ctbl.Rows)
             {
-                if (this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
+                // Don't add the category itself.
+                if (this.GetQueryStringAsInt("fa") == (int)row["CategoryID"])
                 {
-                    value = this.Request.QueryString.GetFirstOrDefault("fa");
+                    continue;
                 }
-            }
-            if (Config.LargeForumTree)
-            {
-                this.rowCatMove.Visible = true;
-                string args = "&links=0";
-                if (value.IsSet())
+
+                collection.Add(new TreeNode
                 {
-                    args +=
-                        "&active={0}".FormatWith(value);
-                }
-          
-                YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));   
-                YafContext.Current.PageElements.RegisterJsBlock(
-                  "ftreedelcat",
-                  JavaScriptBlocks.FancyTreeSelectCategories(
-                      "treedelcat",
-                      PageContext.PageUserID,
-                      PageContext.PageBoardID,
-                      "echoActive",
-                      string.Empty,
-                      args,
-                      "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                    title = row["Name"].ToString(),
+                    key = PageContext.PageBoardID + "_" + row["CategoryID"],
+                    lazy = true,
+                    folder = true,
+                    expanded = false,
+                    selected = false,
+                    extraClasses = string.Empty,
+                    tooltip = string.Empty
+                });
             }
+
+            YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
+            YafContext.Current.PageElements.RegisterCssIncludeResource(
+                "css/fancytree/{0}/ui.fancytree.css".FormatWith(
+                    YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+            YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs",
+                "js/fancytree.vzf.nodesadmincategorylist.js");
+            YafContext.Current.PageElements.RegisterJsBlockStartup(
+                "ftreedelcat",
+                "fancyTreeGetCategoriesListJs('{0}','{1}','{2}','{3}','{4}');"
+                .FormatWith(
+                Config.JQueryAlias,
+                "treedelcat",
+                "You selected category ",
+                "{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
+                collection.ToJson()));
+
+            base.OnPreRender(e);
         }
+
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>
@@ -136,17 +150,15 @@ namespace YAF.Pages.Admin
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            if (this.Request.QueryString.GetFirstOrDefault("fa") == null)
+            {
+                YafBuildLink.RedirectInfoPage(InfoMessage.AccessDenied);
+            }
+
             if (this.IsPostBack)
             {
                 return;
             }
-
-            if (Config.LargeForumTree)
-            {
-                this.rowCatMove.Visible = true;
-            }
-
-           // this.PageContext.PageElements.RegisterJsResourceInclude("blockUIJs", "js/jquery.blockUI.js");
 
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
             this.PageLinks.AddLink(
@@ -168,11 +180,13 @@ namespace YAF.Pages.Admin
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_CAT"),
                     this.GetText("ADMIN_DELETECATEGORY", "CONFIRM_DELETE_POSITIVE"));
 
+            this.CategoryNameTitle.Text = CommonDb.category_list(
+                PageContext.PageModuleID,
+                PageContext.PageBoardID, 
+                this.GetQueryStringAsInt("fa")).Rows[0]["Name"].ToString();
+
             this.LoadingImage.ImageUrl = YafForumInfo.GetURLToResource("images/loader.gif");
             this.BindData();
-
-            var forumId = this.GetQueryStringAsInt("fa");
-
         }
 
         /// <summary>
@@ -207,9 +221,8 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-          
-        }    
-        
+        }
+
         /// <summary>
         /// Cancel Deleting and Redirecting back to The Admin Forums Page.
         /// </summary>
@@ -244,55 +257,56 @@ namespace YAF.Pages.Admin
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-               var errorMessage = string.Empty;
+            var errorMessage = string.Empty;
 
-               int? categoryToMoveForums = null;
+            int? categoryToMoveForums = null;
 
-               if (Config.LargeForumTree)             
-               {
-                   string val = this.Get<IYafSession>().NntpTreeActiveNode;
+            string val = this.Get<IYafSession>().NntpTreeActiveNode;
 
-                   if (val.IsSet())
-                   {
-                       string[] valArr = val.Split('_');
+            if (val.IsSet())
+            {
+                string[] valArr = val.Split('_');
 
-                       if (valArr.Length == 3)
-                       {                   
-                           return;
-                       }
-
-                       if (valArr.Length == 2)
-                       {
-                           categoryToMoveForums = valArr[1].ToType<int>();
-                       }
-                       else
-                       {                           
-                           return;
-                       }
-                   }
-
-               }
-
-                // Simply Delete the Category if it's empty.
-                var categoryId = this.GetQueryStringAsInt("fa");
-                if (CategoryDeleteTask.Start(YafContext.Current.PageModuleID, categoryId.Value, categoryToMoveForums, out errorMessage))
+                if (valArr.Length == 3)
                 {
-                    this.ClearCaches();                       
+                    return;
+                }
+
+                if (valArr.Length == 2)
+                {
+                    categoryToMoveForums = valArr[1].ToType<int>();
                 }
                 else
                 {
-                    this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MSG_NOT_DELETE"));
+                    return;
                 }
-                // schedule...               
+            }
 
-                // enable timer...
-                this.UpdateStatusTimer.Enabled = true;
+            // Simply Delete the Category if it's empty.
+            var categoryId = this.GetQueryStringAsInt("fa");
 
-                this.LocalizedLabel6.LocalizedTag = "DELETE_TITLE";
+            if (CategoryDeleteTask.Start(
+                YafContext.Current.PageModuleID, 
+                categoryId.Value, 
+                categoryToMoveForums,
+                out errorMessage))
+            {
+                this.ClearCaches();
+            }
+            else
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MSG_NOT_DELETE"));
+            }
 
-                // show blocking ui...
-                this.PageContext.PageElements.RegisterJsBlockStartup(
-                    "BlockUIExecuteJs", JavaScriptBlocks.BlockUIExecuteJs("DeleteCategoryMessage"));           
+            // schedule...
+            // enable timer...
+            this.UpdateStatusTimer.Enabled = true;
+
+            this.LocalizedLabel6.LocalizedTag = "DELETE_TITLE";
+
+            // show blocking ui...
+            this.PageContext.PageElements.RegisterJsBlockStartup(
+                "BlockUIExecuteJs", JavaScriptBlocks.BlockUIExecuteJs("DeleteCategoryMessage"));
         }
 
         #endregion

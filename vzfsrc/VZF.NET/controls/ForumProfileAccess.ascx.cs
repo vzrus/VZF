@@ -82,9 +82,16 @@ namespace VZF.Controls
             {
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
-                YafContext.Current.PageElements.RegisterJsBlock(
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs",
+                    "js/fancytree.vzf.nodeslazyprofileaccess.js");
+                
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
                     "fancytreescr",
-                    JavaScriptBlocks.FancyTreeGetNodesProfileLazyJS("treetable",PageContext.PageUserID,
+                    "fancyTreeGetNodesProfileLazyJS('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                        .FormatWith(
+                        Config.JQueryAlias, 
+                        "treetable", 
+                        PageContext.PageUserID,
                         PageContext.PageBoardID,
                         "echoActive",
                         "&v=1&links=1",

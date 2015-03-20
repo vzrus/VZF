@@ -508,6 +508,42 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox CreateNntpUsers;
         
         /// <summary>
+        /// HelpLabel238 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel238;
+        
+        /// <summary>
+        /// NntpArticlesRetrieveTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NntpArticlesRetrieveTime;
+        
+        /// <summary>
+        /// HelpLabel239 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel239;
+        
+        /// <summary>
+        /// NntpTopicProtectionPeriod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NntpTopicProtectionPeriod;
+        
+        /// <summary>
         /// LocalizedLabel32 control.
         /// </summary>
         /// <remarks>

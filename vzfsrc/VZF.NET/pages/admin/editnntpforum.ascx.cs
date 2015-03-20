@@ -353,18 +353,21 @@ namespace YAF.Pages.Admin
                 this.divactive.Visible = true;
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs", "js/fancytree.vzf.nodeslazy.min.js");
 
-                YafContext.Current.PageElements.RegisterJsBlock(
-                    "fancytreescr",
-                    JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
-                        "tree",
-                        PageContext.PageUserID,
-                        PageContext.PageBoardID,
-                        "echoActive",
-                        activeNode,
-                        args,
-                        "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
+                "ftreenntpfrm", "fancyTreeSelectSingleNodeLazyJs('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                   .FormatWith(Config.JQueryAlias, 
+                   "tree",
+                   PageContext.PageUserID,
+                      PageContext.PageBoardID,
+                      "echoActive",
+                       activeNode,
+                      args,
+                      "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+
+
                 YafContext.Current.PageElements.RegisterJsBlock(
                     "btnshowtree",
                     JavaScriptBlocks.ButtonShowForumInNNTPTree("tree","btnshowtree",activeNode));

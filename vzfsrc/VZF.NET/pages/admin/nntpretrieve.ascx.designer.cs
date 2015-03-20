@@ -40,40 +40,13 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.Repeater List;
         
         /// <summary>
-        /// LocalizedLabel3 control.
+        /// LocalizedLabel5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::VZF.Controls.LocalizedLabel LocalizedLabel3;
-        
-        /// <summary>
-        /// Seconds control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Seconds;
-        
-        /// <summary>
-        /// LocalizedLabel6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.LocalizedLabel LocalizedLabel6;
-        
-        /// <summary>
-        /// Retrieve control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Retrieve;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel5;
         
         /// <summary>
         /// SmartScroller1 control.

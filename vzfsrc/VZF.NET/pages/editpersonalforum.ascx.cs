@@ -740,20 +740,15 @@ namespace YAF.pages
             isNew = false;
             if (this.Request.QueryString.GetFirstOrDefault("after") != null)
             {
-                int afterBoardId;
-                int afterCategoryId;
-                int afterForumId;
-                TreeViewUtils.TreeNodeIdParser(
-                    this.Request.QueryString.GetFirstOrDefault("after"),
-                    out afterForumId,
-                    out afterCategoryId,
-                    out afterBoardId);
+
+                var key = TreeViewUtils.GetParcedTreeNode(
+                    this.Request.QueryString.GetFirstOrDefault("after"));
 
                 // Insert after a forum
-                if (afterForumId > 0)
+                if (key.ForumId > 0)
                 {
                     using (
-                        DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, afterForumId))
+                        DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, key.ForumId))
                     {
                         sortOrder = 1;
 
@@ -769,7 +764,7 @@ namespace YAF.pages
 
                         this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
                         this.SortOrder.Enabled = false;
-                        parentId = afterForumId;
+                        parentId = key.ForumId;
                         return string.Empty;
                     }
                 }
@@ -797,20 +792,15 @@ namespace YAF.pages
 
             if (this.Request.QueryString.GetFirstOrDefault("before") != null)
             {
-                int beforeBoardId;
-                int beforeCategoryId;
-                int beforeForumId;
-                TreeViewUtils.TreeNodeIdParser(
-                    this.Request.QueryString.GetFirstOrDefault("before"),
-                    out beforeForumId,
-                    out beforeCategoryId,
-                    out beforeBoardId);
+
+                var key = TreeViewUtils.GetParcedTreeNode(
+                    this.Request.QueryString.GetFirstOrDefault("before"));
 
                 // Insert after a forum
-                if (beforeForumId > 0)
+                if (key.ForumId > 0)
                 {
                     using (
-                        var dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, beforeForumId))
+                        var dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, key.ForumId))
                     {
                         sortOrder = 1;
 
@@ -834,10 +824,10 @@ namespace YAF.pages
                 }
 
                 // Insert after a category
-                if (beforeCategoryId > 0)
+                if (key.CategoryId > 0)
                 {
                     using (
-                        DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, beforeCategoryId))
+                        DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, key.CategoryId))
                     {
                         sortOrder = 1;
 
@@ -856,14 +846,8 @@ namespace YAF.pages
 
             if (this.Request.QueryString.GetFirstOrDefault("addchild") != null)
             {
-                int addchildBoardId;
-                int addchildCategoryId;
-                int addchildForumId;
-                TreeViewUtils.TreeNodeIdParser(
-                    this.Request.QueryString.GetFirstOrDefault("addchild"),
-                    out addchildForumId,
-                    out addchildCategoryId,
-                    out addchildBoardId);
+               var d = TreeViewUtils.GetParcedTreeNode(
+                    this.Request.QueryString.GetFirstOrDefault("addchild"));
             }
 
             if (this.Request.QueryString.GetFirstOrDefault("new") != null)

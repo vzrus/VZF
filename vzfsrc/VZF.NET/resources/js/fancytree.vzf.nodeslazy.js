@@ -1,4 +1,4 @@
-﻿$(function fancyTreeSelectSingleNodeLazyJs(selector,treeId,userId,boardId,echoActive,activeNode,argums,jsonData,forumUrl) 
+﻿function fancyTreeSelectSingleNodeLazyJs(selector,treeId,userId,boardId,echoActive,activeNode,argums,jsonData,forumUrl) 
 {
     $('#' + treeId).fancytree(
             {
@@ -24,5 +24,4 @@
 } );
 
 }
-)
 

@@ -458,15 +458,15 @@ namespace YAF.Pages
         protected override void OnInit([NotNull] EventArgs e)
         {
             // get the forum editor based on the settings
-            string editorId = this.Get<YafBoardSettings>().ForumEditor;
+            // string editorId = this.Get<YafBoardSettings>().ForumEditor;
 
-            if (this.Get<YafBoardSettings>().AllowUsersTextEditor)
-            {
+           //  if (this.Get<YafBoardSettings>().AllowUsersTextEditor)
+           // {
                 // Text editor
-                editorId = !string.IsNullOrEmpty(this.PageContext.TextEditor)
-                               ? this.PageContext.TextEditor
-                               : this.Get<YafBoardSettings>().ForumEditor;
-            }
+             //   editorId = !string.IsNullOrEmpty(this.PageContext.TextEditor)
+             //                  ? this.PageContext.TextEditor
+             //                  : this.Get<YafBoardSettings>().ForumEditor;
+          //  }
 
             // Check if Editor exists, if not fallback to default editorid=1
             /* this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy(editorId, false)
@@ -581,7 +581,10 @@ namespace YAF.Pages
             }
 
             // get topic flags
-            this._topicFlags = new TopicFlags(this._topic["Flags"]);
+            var dataRow = this._topic;
+            if (dataRow == null) return;
+
+            this._topicFlags = new TopicFlags(dataRow["Flags"]);
 
             using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
@@ -615,19 +618,19 @@ namespace YAF.Pages
 
                 this.NewTopic2.NavigateUrl =
                     this.NewTopic1.NavigateUrl =
-                    YafBuildLink.GetLinkNotEscaped(ForumPages.postmessage, "f={0}", this.PageContext.PageForumID);
+                        YafBuildLink.GetLinkNotEscaped(ForumPages.postmessage, "f={0}", this.PageContext.PageForumID);
 
                 this.MoveTopic1.NavigateUrl =
                     this.MoveTopic2.NavigateUrl =
-                    YafBuildLink.GetLinkNotEscaped(ForumPages.movetopic, "t={0}", this.PageContext.PageTopicID);
+                        YafBuildLink.GetLinkNotEscaped(ForumPages.movetopic, "t={0}", this.PageContext.PageTopicID);
 
                 this.PostReplyLink1.NavigateUrl =
                     this.PostReplyLink2.NavigateUrl =
-                    YafBuildLink.GetLinkNotEscaped(
-                        ForumPages.postmessage,
-                        "t={0}&f={1}",
-                        this.PageContext.PageTopicID,
-                        this.PageContext.PageForumID);
+                        YafBuildLink.GetLinkNotEscaped(
+                            ForumPages.postmessage,
+                            "t={0}&f={1}",
+                            this.PageContext.PageTopicID,
+                            this.PageContext.PageForumID);
 
                 this.QuickReply.Text = this.GetText("POSTMESSAGE", "SAVE");
                 this.DataPanel1.TitleText = this.GetText("QUICKREPLY");
@@ -639,34 +642,34 @@ namespace YAF.Pages
                     this.Get<IBadWordReplace>().Replace(this.Server.HtmlDecode(this.PageContext.PageTopicName)),
                     string.Empty);
 
-                var topicSubject = this.Get<IBadWordReplace>().Replace(this.HtmlEncode(this._topic["Topic"]));
+                var topicSubject = this.Get<IBadWordReplace>().Replace(this.HtmlEncode(dataRow["Topic"]));
 
-                if (this._topic["Status"].ToString().IsSet() && this.Get<YafBoardSettings>().EnableTopicStatus)
+                if (dataRow["Status"].ToString().IsSet() && this.Get<YafBoardSettings>().EnableTopicStatus)
                 {
-                    var topicStatusIcon = this.Get<ITheme>().GetItem("TOPIC_STATUS", this._topic["Status"].ToString());
+                    var topicStatusIcon = this.Get<ITheme>().GetItem("TOPIC_STATUS", dataRow["Status"].ToString());
 
                     if (topicStatusIcon.IsSet() && !topicStatusIcon.Contains("[TOPIC_STATUS."))
                     {
                         topicSubject =
                             "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" style=\"border: 0;width:16px;height:16px\" />&nbsp;{2}"
                                 .FormatWith(
-                                    this.Get<ITheme>().GetItem("TOPIC_STATUS", this._topic["Status"].ToString()),
-                                    this.GetText("TOPIC_STATUS", this._topic["Status"].ToString()),
+                                    this.Get<ITheme>().GetItem("TOPIC_STATUS", dataRow["Status"].ToString()),
+                                    this.GetText("TOPIC_STATUS", dataRow["Status"].ToString()),
                                     topicSubject);
                     }
                     else
                     {
                         topicSubject =
                             "[{0}]&nbsp;{1}".FormatWith(
-                                this.GetText("TOPIC_STATUS", this._topic["Status"].ToString()), topicSubject);
+                                this.GetText("TOPIC_STATUS", dataRow["Status"].ToString()), topicSubject);
                     }
                 }
 
-                if (!this._topic["Description"].IsNullOrEmptyDBField()
+                if (!dataRow["Description"].IsNullOrEmptyDBField()
                     && this.Get<YafBoardSettings>().EnableTopicDescription)
                 {
                     this.TopicTitle.Text = "{0} - <em>{1}</em>".FormatWith(
-                        topicSubject, this.Get<IBadWordReplace>().Replace(this.HtmlEncode(this._topic["Description"])));
+                        topicSubject, this.Get<IBadWordReplace>().Replace(this.HtmlEncode(dataRow["Description"])));
                 }
                 else
                 {
@@ -674,7 +677,7 @@ namespace YAF.Pages
                 }
 
                 this.TopicLink.ToolTip = this.Get<IBadWordReplace>().Replace(
-                    this.HtmlEncode(this._topic["Description"]));
+                    this.HtmlEncode(dataRow["Description"]));
                 this.TopicLink.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
                     ForumPages.posts, "t={0}", this.PageContext.PageTopicID);
                 this.ViewOptions.Visible = this.Get<YafBoardSettings>().AllowThreaded;
@@ -755,7 +758,7 @@ namespace YAF.Pages
             var message =
                 StringExtensions.RemoveMultipleWhitespace(
                     BBCodeHelper.StripBBCode(
-                        HtmlHelper.StripHtml(HtmlHelper.CleanHtmlString((string)this._topic["Topic"]))));
+                        HtmlHelper.StripHtml(HtmlHelper.CleanHtmlString((string)dataRow["Topic"]))));
 
             var meta = this.Page.Header.FindControlType<HtmlMeta>();
             string description = string.Empty;
@@ -895,9 +898,9 @@ namespace YAF.Pages
             }
             else
             {
-                int tmpID = this.WatchTopicID.InnerText.ToType<int>();
+                var tmpId = this.WatchTopicID.InnerText.ToType<int>();
 
-                CommonDb.watchtopic_delete(PageContext.PageModuleID, tmpID);
+                CommonDb.watchtopic_delete(PageContext.PageModuleID, tmpId);
 
                 this.PageContext.AddLoadMessage(this.GetText("INFO_UNWATCH_TOPIC"));
             }
@@ -1234,6 +1237,9 @@ namespace YAF.Pages
         /// <param name="messagePosition">
         /// The message Position.
         /// </param>
+        /// <param name="lastRead">
+        /// The last read.
+        /// </param>
         /// <returns>
         /// The get find message id.
         /// </returns>
@@ -1277,11 +1283,11 @@ namespace YAF.Pages
                 using (
                     DataTable unread = CommonDb.message_findunread(
                         PageContext.PageModuleID,
-                        topicID: this.PageContext.PageTopicID,
+                        topicId: this.PageContext.PageTopicID,
                         messageId: findMessageId,
                         lastRead: lastRead,
                         showDeleted: showDeleted,
-                        authorUserID: userId))
+                        authorUserId: userId))
                 {
                     var unreadFirst = unread.AsEnumerable().FirstOrDefault();
                     if (unreadFirst != null)
@@ -1575,7 +1581,7 @@ namespace YAF.Pages
             long nMessageId = 0;
             object replyTo = -1;
             string msg = this._quickReplyEditor.Text;
-            long topicID = this.PageContext.PageTopicID;
+            long topicId = this.PageContext.PageTopicID;
 
             // SPAM Check
 
@@ -1637,7 +1643,7 @@ namespace YAF.Pages
             // Bypass Approval if Admin or Moderator.
             if (!CommonDb.message_save(
                 PageContext.PageModuleID,
-                topicID,
+                topicId,
                 this.PageContext.PageUserID,
                 msg,
                 null,
@@ -1648,7 +1654,7 @@ namespace YAF.Pages
                 null,
                 ref nMessageId))
             {
-                topicID = 0;
+                topicId = 0;
             }
 
             // Check to see if the user has enabled "auto watch topic" option in his/her profile.

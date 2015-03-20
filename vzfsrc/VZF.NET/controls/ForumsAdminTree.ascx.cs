@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using VZF.Utils.Extensions;
 
 namespace VZF.Controls
 {
     using System;
     using System.Data;
     using System.Web;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
@@ -15,7 +15,6 @@ namespace VZF.Controls
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Data.DAL;
 
@@ -24,25 +23,6 @@ namespace VZF.Controls
     /// </summary>
     public partial class ForumsAdminTree : BaseUserControl
     {
-        private bool _adminMode;
-
-        /// <summary>
-        ///   Gets or sets Alt.
-        /// </summary>
-     /*   [NotNull]
-        public bool AdminMode
-        {
-            get
-            {
-                return _adminMode.ToType<bool>();
-            }
-
-            set
-            {
-                _adminMode = value;
-            }
-        } */
-
         #region Methods
 
         /// <summary>
@@ -167,30 +147,33 @@ namespace VZF.Controls
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
                 this.divactive.Visible = true;
-                var dic = new Dictionary<string, string>
-                {
-                    {"delete", this.GetText("COMMON", "DELETE")},
-                    {"edit", this.GetText("COMMON", "EDIT")},
-                    {"new", this.GetText("COMMON", "NEW")},
-                    {"category", this.GetText("DEFAULT", "CATEGORY")},
-                    {"forum", this.GetText("DEFAULT", "FORUM")},
-                    {"before", this.GetText("COMMON", "BEFORE")},
-                    {"after", this.GetText("COMMON", "AFTER")},
-                    {"over", this.GetText("COMMON", "CHILD")}
-                };
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs",
+                    "js/fancytree.vzf.nodesadmintreelazy.js");
 
-                YafContext.Current.PageElements.RegisterJsBlock(
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
                     "fancytreescr",
-                    JavaScriptBlocks.FancytreeGetNodesAdminLazyJs(
-                        "tree",
+                      "fancytreeGetNodesAdminLazyJs('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                        .FormatWith(
+                        Config.JQueryAlias,
+                        "ftree3",
                         PageContext.PageUserID,
                         PageContext.PageBoardID,
-                        this.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS"),
-                        "&v=2",
-                        "{0}resource.ashx?".FormatWith(YafForumInfo.ForumClientFileRoot),
-                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())), 
-                        dic)
-                        );
+                        this.GetText("COMMON", "IMPOSSIBLE_ACTION"),
+                        @"&v=2",
+                        @"{0}resource.ashx".FormatWith(YafForumInfo.ForumClientFileRoot),
+                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())),
+                        new Dictionary<string, string>
+                        {
+                            {"delete", this.GetText("COMMON", "DELETE")},
+                            {"edit", this.GetText("COMMON", "EDIT")},
+                            {"new", this.GetText("COMMON", "NEW")},
+                            {"category", this.GetText("DEFAULT", "CATEGORY")},
+                            {"forum", this.GetText("DEFAULT", "FORUM")},
+                            {"before", this.GetText("COMMON", "BEFORE")},
+                            {"after", this.GetText("COMMON", "AFTER")},
+                            {"over", this.GetText("COMMON", "CHILD")}
+                        }.ToJson()
+                        ));
             }
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(

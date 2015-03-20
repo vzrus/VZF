@@ -22,6 +22,8 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 using System;
+using YAF.Types.Objects;
+
 namespace VZF.Utils.Helpers
 {
     /// <summary>
@@ -29,67 +31,36 @@ namespace VZF.Utils.Helpers
     /// </summary>
     public class TreeViewUtils
     {
-        /// <summary>
-        /// The tree node id parser.
-        /// </summary>
-        /// <param name="nodeIds">
-        /// The node ids.
-        /// </param>
-        /// <param name="forumId">
-        /// The forum id.
-        /// </param>
-        /// <param name="categoryId">
-        /// The category id.
-        /// </param>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        public static void TreeNodeIdParser(string nodeIds, out int forumId, out int categoryId, out int boardId)
+        public static TreeNodeKey GetParcedTreeNode(string stringToParce)
         {
-            forumId = 0;
-            categoryId = 0;
-            boardId = 0;
-            if (!nodeIds.IsSet())
-            {
-                return;
-            }
+            const string delimiter = "_";
+            if (!stringToParce.IsSet()) return null;
 
-            string[] nodeId = nodeIds.Split('_');
-            switch (nodeId.Length)
+            string[] nodePId = stringToParce.Split(delimiter.ToCharArray());
+            switch (nodePId.LongLength)
             {
                 case 1:
-                    boardId = nodeId[0].ToType<int>();
-                    break;
+                    return new TreeNodeKey
+                    {
+                        BoardId = nodePId[0].ToType<int>()
+                    };
                 case 2:
-                    categoryId = nodeId[1].ToType<int>();
-                    break;
+                    return new TreeNodeKey
+                    {
+                        BoardId = nodePId[0].ToType<int>(), 
+                        CategoryId = nodePId[1].ToType<int>()
+                    };
                 case 3:
-                    forumId = nodeId[2].ToType<int>();
-                    break;
+                    return new TreeNodeKey
+                    {
+                        BoardId = nodePId[0].ToType<int>(), 
+                        CategoryId = nodePId[1].ToType<int>(), 
+                        ForumId = nodePId[2].ToType<int>()
+                    };
             }
-        }
-
-        public static Tuple<int?, int?, int?> GetParcedTreeNodeId(string stringToParce)
-        {
-            Tuple<int?, int?, int?> s = null;
-            string delimiter = "_";
-            if (stringToParce.IsSet())
-            {
-                string[] nodePId = stringToParce.Split(delimiter.ToCharArray());
-                switch (nodePId.LongLength)
-                {
-                    case 1:
-                        return new Tuple<int?, int?, int?>(nodePId[0].ToType<int>(), null, null);
-                        break;
-                    case 2:
-                        return new Tuple<int?, int?, int?>(nodePId[0].ToType<int>(), nodePId[1].ToType<int>(), null);
-                        break;
-                    case 3:
-                        return new Tuple<int?, int?, int?>(nodePId[0].ToType<int>(), nodePId[1].ToType<int>(), nodePId[2].ToType<int>());
-                        break;
-                }
-            }
-            return s;
+            return new TreeNodeKey();
         }
     }
+
 }
+

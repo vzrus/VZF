@@ -36,7 +36,7 @@ namespace YAF.Pages
     using nStuff.UpdateControls;
 
     using YAF.Classes;
-    
+
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -97,10 +97,7 @@ namespace YAF.Pages
                 return this.ViewState["HighlightWords"] as List<string>;
             }
 
-            set
-            {
-                this.ViewState["HighlightWords"] = value;
-            }
+            set { this.ViewState["HighlightWords"] = value; }
         }
 
         /// <summary>
@@ -127,10 +124,7 @@ namespace YAF.Pages
                 return this._searchWhatCleaned;
             }
 
-            set
-            {
-                this._searchWhatCleaned = value;
-            }
+            set { this._searchWhatCleaned = value; }
         }
 
         /// <summary>
@@ -143,14 +137,11 @@ namespace YAF.Pages
                 return this._searchWhoCleaned
                        ??
                        (this._searchWhoCleaned =
-                        StringExtensions.RemoveMultipleSingleQuotes(
-                            StringExtensions.RemoveMultipleWhitespace(this.txtSearchStringFromWho.Text.Trim())));
+                           StringExtensions.RemoveMultipleSingleQuotes(
+                               StringExtensions.RemoveMultipleWhitespace(this.txtSearchStringFromWho.Text.Trim())));
             }
 
-            set
-            {
-                this._searchWhoCleaned = value;
-            }
+            set { this._searchWhoCleaned = value; }
         }
 
         #endregion
@@ -171,22 +162,27 @@ namespace YAF.Pages
                 YafContext.Current.PageElements.RegisterJQuery();
                 YafContext.Current.PageElements.RegisterJQueryUI();
                 PageContext.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
-                YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+                YafContext.Current.PageElements.RegisterCssIncludeResource(
+                    "css/fancytree/{0}/ui.fancytree.css".FormatWith(
+                        YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreesearchjs",
+                    "js/fancytree.vzf.nodessearch.js");
+
                 // this.TreeTable.Visible = true;
-                PageContext.PageElements.RegisterJsBlock("fancytreescr",
-                    JavaScriptBlocks.FancyTreeGetNodesSearchLazyCheckBoxesJS("tree",
-                    PageContext.PageUserID,PageContext.PageBoardID, "&v=4&links=1", "{0}resource.ashx?tjl".FormatWith(
-                    YafForumInfo.ForumClientFileRoot),
-                    "&root=0".FormatWith(PageContext.PageBoardID),"&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
-            }
-            else
-            {
-  
-                /* YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
-                                                                JavaScriptBlocks.DynatreeGetNodesJumpAllJS("tree",
-                                                                                                          PageContext.PageUserID, 
-                                                                                                           "{0}resource.ashx?fj={1}".FormatWith(
-                                                                                                               YafForumInfo.ForumClientFileRoot, PageContext.PageUserID))); */
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
+                    "fancytreesearchscr",
+                    "fancyTreeGetNodesSearchLazyCheckBoxesJS('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');"
+                        .FormatWith(
+                            Config.JQueryAlias,
+                            "tree",
+                            PageContext.PageUserID, PageContext.PageBoardID, "&v=4&links=1",
+                            "{0}resource.ashx?tjl".FormatWith(
+                                YafForumInfo.ForumClientFileRoot),
+                            "&root={0}".FormatWith(PageContext.PageBoardID),
+                            "&forumUrl={0}".FormatWith(
+                                HttpUtility.UrlDecode(
+                                    YafBuildLink.GetLinkNotEscaped(ForumPages.forum)
+                                        .TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
             }
 
             // Setup Syntax Highlight JS
@@ -430,8 +426,8 @@ namespace YAF.Pages
                     this.btnSearchExt1.Visible = true;
                     this.btnSearchExt1.Text =
                         this.btnSearchExt1.ToolTip =
-                        this.GetText("btnsearch_external").FormatWith(
-                            this.Get<YafBoardSettings>().SearchEngine1Parameters.Split('^')[0]);
+                            this.GetText("btnsearch_external").FormatWith(
+                                this.Get<YafBoardSettings>().SearchEngine1Parameters.Split('^')[0]);
                 }
 
                 if (!string.IsNullOrEmpty(this.Get<YafBoardSettings>().SearchEngine2)
@@ -440,11 +436,11 @@ namespace YAF.Pages
                     this.btnSearchExt2.Visible = true;
                     this.btnSearchExt2.Text =
                         this.btnSearchExt2.ToolTip =
-                        this.GetText("btnsearch_external").FormatWith(
-                            this.Get<YafBoardSettings>().SearchEngine2Parameters.Split('^')[0]);
+                            this.GetText("btnsearch_external").FormatWith(
+                                this.Get<YafBoardSettings>().SearchEngine2Parameters.Split('^')[0]);
                 }
             }
-            
+
             if (this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().SearchPermissions))
             {
                 this.btnSearch.Visible = true;
@@ -496,8 +492,8 @@ namespace YAF.Pages
             if (!Config.LargeForumTree)
             {
                 this.listForum.DataSource = CommonDb.forum_listall_sorted(PageContext.PageModuleID,
-                                                                          this.PageContext.PageBoardID,
-                                                                          this.PageContext.PageUserID);
+                    this.PageContext.PageBoardID,
+                    this.PageContext.PageUserID);
                 this.listForum.DataValueField = "ForumID";
                 this.listForum.DataTextField = "Title";
                 this.listForum.DataBind();
@@ -568,7 +564,7 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.Web.UI.WebControls.RepeaterItemEventArgs"/> instance containing the event data.</param>
         protected void SearchRes_ItemDataBound([NotNull] object sender, [NotNull] RepeaterItemEventArgs e)
         {
-            var cell = (HtmlTableCell)e.Item.FindControl("CounterCol");
+            var cell = (HtmlTableCell) e.Item.FindControl("CounterCol");
 
             if (cell == null)
             {
@@ -576,7 +572,7 @@ namespace YAF.Pages
             }
 
             string messageID = cell.InnerText;
-            int rowCount = e.Item.ItemIndex + 1 + (this.Pager.CurrentPageIndex * this.Pager.PageSize);
+            int rowCount = e.Item.ItemIndex + 1 + (this.Pager.CurrentPageIndex*this.Pager.PageSize);
             cell.InnerHtml = "<a href=\"{1}\">{0}</a><a href=\"{1}\">".FormatWith(
                 rowCount, YafBuildLink.GetLink(ForumPages.posts, "m={0}#{0}", messageID));
         }
@@ -644,8 +640,8 @@ namespace YAF.Pages
                 this.txtSearchStringWhat.Text
                 +
                 (!string.IsNullOrEmpty(this.txtSearchStringFromWho.Text)
-                     ? " " + this.txtSearchStringFromWho.Text
-                     : string.Empty));
+                    ? " " + this.txtSearchStringFromWho.Text
+                    : string.Empty));
 
             // Add "+"  between words
             searchParamsOptArrayj = searchParamsOptArrayj.Replace(" ", searchParamsDefArraySep);
@@ -668,89 +664,90 @@ namespace YAF.Pages
             try
             {
 #endif
-                if (newSearch && !this.IsValidSearchRequest())
-                {
-                    return;
-                }
+            if (newSearch && !this.IsValidSearchRequest())
+            {
+                return;
+            }
 
-                if (newSearch || this.Get<IYafSession>().SearchData == null)
+            if (newSearch || this.Get<IYafSession>().SearchData == null)
+            {
+                var sw = (SearchWhatFlags) Enum.Parse(typeof (SearchWhatFlags), this.listSearchWhat.SelectedValue);
+                var sfw = (SearchWhatFlags) Enum.Parse(typeof (SearchWhatFlags), this.listSearchFromWho.SelectedValue);
+                var forumId = new List<int>();
+                var categoryId = new List<int>();
+                if (!Config.LargeForumTree)
                 {
-                    var sw = (SearchWhatFlags)Enum.Parse(typeof(SearchWhatFlags), this.listSearchWhat.SelectedValue);
-                    var sfw = (SearchWhatFlags)Enum.Parse(typeof(SearchWhatFlags), this.listSearchFromWho.SelectedValue);
-                    var forumId = new List<int>();
-                    var categoryId = new List<int>();
-                    if (!Config.LargeForumTree)
+                    if (this.listForum.SelectedValue != "0")
                     {
-                        if (this.listForum.SelectedValue != "0")
-                        {
-                            forumId.Add(int.Parse(this.listForum.SelectedValue));
-                        }
+                        forumId.Add(int.Parse(this.listForum.SelectedValue));
                     }
-                    else
+                }
+                else
+                {
+                    string[] ss = this.Get<IYafSession>().SearchTreeSelectedNodes;
+                    if (ss != null)
                     {
-                        string[] ss = this.Get<IYafSession>().SearchTreeSelectedNodes;
-                        if (ss != null)
+                        foreach (string s in ss)
                         {
-                            foreach (string s in ss)
+                            string[] dd = s.Split('_');
+                            if (dd.Count() == 2)
                             {
-                                string[] dd = s.Split('_');
-                                if (dd.Count() == 2)
-                                {
-                                    categoryId.Add(dd[1].ToType<int>());
-                                }
-                                if (dd.Count() >= 3)
-                                {
-                                    forumId.Add(dd[2].ToType<int>());
-                                }
-
+                                categoryId.Add(dd[1].ToType<int>());
+                            }
+                            if (dd.Count() >= 3)
+                            {
+                                forumId.Add(dd[2].ToType<int>());
                             }
                         }
-
                     }
-
-                    bool includeChildren = true;
-                    this.Get<IYafSession>().SearchTreeSelectedNodes = null;
-                    var searchResults = CommonDb.GetSearchResult(PageContext.PageModuleID, this.SearchWhatCleaned,
-                        this.SearchWhoCleaned,
-                        sfw,
-                        sw,
-                        categoryId,
-                        forumId,
-                        this.PageContext.PageUserID,
-                        this.PageContext.PageBoardID,
-                        this.Get<YafBoardSettings>().ReturnSearchMax,
-                        this.Get<YafBoardSettings>().UseFullTextSearch,
-                        this.Get<YafBoardSettings>().EnableDisplayName, includeChildren, PageContext.CurrentUserData.CultureUser == null ? PageContext.BoardSettings.Culture : PageContext.CurrentUserData.CultureUser);
-
-                    if (newSearch)
-                    {
-                        // setup highlighting
-                        this.SetupHighlightWords(sw);
-                    }
-                    
-                    this.Get<IYafSession>().SearchData = searchResults;
-
-                    this.Pager.CurrentPageIndex = 0;
-                    this.Pager.PageSize = int.Parse(this.listResInPage.SelectedValue);
-                    this.Pager.Count = searchResults.AsEnumerable().Count();
-
-                    bool areResults = this.Pager.Count > 0;
-
-                    this.SearchRes.Visible = areResults;
-                    this.NoResults.Visible = !areResults;
                 }
 
-                this.UpdateHistory.AddEntry("{0}|{1}".FormatWith(this.Pager.CurrentPageIndex, this.Pager.PageSize));
+                bool includeChildren = true;
+                this.Get<IYafSession>().SearchTreeSelectedNodes = null;
+                var searchResults = CommonDb.GetSearchResult(PageContext.PageModuleID, this.SearchWhatCleaned,
+                    this.SearchWhoCleaned,
+                    sfw,
+                    sw,
+                    categoryId,
+                    forumId,
+                    this.PageContext.PageUserID,
+                    this.PageContext.PageBoardID,
+                    this.Get<YafBoardSettings>().ReturnSearchMax,
+                    this.Get<YafBoardSettings>().UseFullTextSearch,
+                    this.Get<YafBoardSettings>().EnableDisplayName, includeChildren,
+                    PageContext.CurrentUserData.CultureUser == null
+                        ? PageContext.BoardSettings.Culture
+                        : PageContext.CurrentUserData.CultureUser);
 
-                var pagedData =
-                    this.Get<IYafSession>().SearchData.AsEnumerable().Skip(this.Pager.SkipIndex).Take(
-                        this.Pager.PageSize);
+                if (newSearch)
+                {
+                    // setup highlighting
+                    this.SetupHighlightWords(sw);
+                }
 
-                // only load required messages
-                this.Get<IDBBroker>().LoadMessageText(pagedData);
+                this.Get<IYafSession>().SearchData = searchResults;
 
-                this.SearchRes.DataSource = pagedData;
-                this.SearchRes.DataBind();
+                this.Pager.CurrentPageIndex = 0;
+                this.Pager.PageSize = int.Parse(this.listResInPage.SelectedValue);
+                this.Pager.Count = searchResults.AsEnumerable().Count();
+
+                bool areResults = this.Pager.Count > 0;
+
+                this.SearchRes.Visible = areResults;
+                this.NoResults.Visible = !areResults;
+            }
+
+            this.UpdateHistory.AddEntry("{0}|{1}".FormatWith(this.Pager.CurrentPageIndex, this.Pager.PageSize));
+
+            var pagedData =
+                this.Get<IYafSession>().SearchData.AsEnumerable().Skip(this.Pager.SkipIndex).Take(
+                    this.Pager.PageSize);
+
+            // only load required messages
+            this.Get<IDBBroker>().LoadMessageText(pagedData);
+
+            this.SearchRes.DataSource = pagedData;
+            this.SearchRes.DataBind();
 #if (!DEBUG)
             }
             catch (Exception x)

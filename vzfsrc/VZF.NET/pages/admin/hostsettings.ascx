@@ -189,6 +189,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel238" runat="server" LocalizedTag="NNTP_ARTICLESFETCHTIME" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox Style="width:350px" ID="NntpArticlesRetrieveTime" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel239" runat="server" LocalizedTag="NNTP_TOPICPERIOD" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox Style="width:350px" ID="NntpTopicProtectionPeriod" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="header1" colspan="2">
                             <VZF:LocalizedLabel ID="LocalizedLabel32" runat="server" LocalizedTag="HEADER_SPAM" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>

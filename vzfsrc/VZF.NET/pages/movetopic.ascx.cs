@@ -171,6 +171,7 @@ namespace YAF.Pages
 
             YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
             YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+            YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs", "js/fancytree.vzf.nodeslazy.min.js");
 
             string value = null;
             if (this.Request.QueryString.GetFirstOrDefault("fa") != null)
@@ -188,17 +189,17 @@ namespace YAF.Pages
                     "&active={0}".FormatWith(value);
             }
 
-            YafContext.Current.PageElements.RegisterJsBlock(
-               "ftreedelfrm",
-               JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
-                   "treemovetopic",
-                   PageContext.PageUserID,
-                   PageContext.PageBoardID,
-                   "echoActive",
-                   string.Empty,
-                   args,
-                   "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                   "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+            YafContext.Current.PageElements.RegisterJsBlockStartup(
+               "ftreemm", "fancyTreeSelectSingleNodeLazyJs('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                  .FormatWith(Config.JQueryAlias,
+                  "treemovetopic",
+                  PageContext.PageUserID,
+                     PageContext.PageBoardID,
+                     "echoActive",
+                      string.Empty,
+                     args,
+                     "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                     "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
         }
 
         base.OnPreRender(e);

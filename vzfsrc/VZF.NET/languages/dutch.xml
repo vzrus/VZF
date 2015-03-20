@@ -1272,6 +1272,10 @@
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Aanta items op de 'Mijn Topics' pagina. </Resource>
     <Resource tag="NAME_LENGTH">Maximale lengte van de gebruikersnaam:</Resource>
     <Resource tag="NAME_LENGTH_HELP">Maximale lengte van de gebruikersnaam of de weergave naam.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Time to fetch every news group in seconds:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">To protect server limit the time to a short period of several dozens of seconds.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Fetch NNTP articles in time:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">This is an interval when articles can be fetched again, in minutes.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">Gebruik "NoFollow" Tag in Links:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">Als deze is aangevinkt, zullen alle links de "nofollow tag" gebruiken.</Resource>
     <Resource tag="NOTIFICATION_BAR">Notification Bar</Resource>
@@ -1574,6 +1578,7 @@
     <Resource tag="LAST_MESSAGE">Laatste Bericht</Resource>
     <Resource tag="LAST_UPDATE">Laatste Update</Resource>
     <Resource tag="RETRIEVE">Haal op</Resource>
+    <Resource tag="RETRIEVE_SERVICE">To retrieve articles a service is running. Set parameters in Host Settings and wait some time. Articles will be fetched in background.</Resource>
     <Resource tag="Retrieved">{0} artikelen opgehaald. {1:N2} artikelen per seconde.</Resource>
     <Resource tag="SECONDS">seconden</Resource>
     <Resource tag="TIME">Geef aan hoe lang het ophalen moet duren:</Resource>

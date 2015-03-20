@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Text.RegularExpressions;
+
 namespace YAF.Core.Nntp
 {
   #region Using
@@ -234,7 +236,7 @@ namespace YAF.Core.Nntp
 
                 string body = this.ReplaceBody(article.Body.Text.Trim());
 
-                CommonDb.nntptopic_savemessage(YafContext.Current.PageModuleID, nntpForumID,
+                CommonDb.nntptopic_addmessage(YafContext.Current.PageModuleID, nntpForumID,
                   subject.Truncate(75),
                   body,
                   guestUserId,
@@ -328,7 +330,7 @@ namespace YAF.Core.Nntp
     /// The replace body.
     /// </returns>
     [NotNull]
-    private string ReplaceBody([NotNull] string body)
+    public string ReplaceBody([NotNull] string body)
     {
       // Incorrect tags fixes which are common in nntp messages and cause display problems.
       // These are spotted ones.

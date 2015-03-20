@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Globalization;
+
 namespace YAF.Pages.Admin
 {
     #region Using
@@ -203,11 +205,11 @@ namespace YAF.Pages.Admin
             
             this.CopyrightRemovalKey.Text = this.Get<YafBoardSettings>().CopyrightRemovalDomainKey;
 
-            this.DigestSendEveryXHours.Text = this.Get<YafBoardSettings>().DigestSendEveryXHours.ToString();
+            this.DigestSendEveryXHours.Text = this.Get<YafBoardSettings>().DigestSendEveryXHours.ToString(CultureInfo.InvariantCulture);
 
             if (this.Get<YafBoardSettings>().BoardPollID > 0)
             {
-                this.PollGroupListDropDown.SelectedValue = this.Get<YafBoardSettings>().BoardPollID.ToString();
+                this.PollGroupListDropDown.SelectedValue = this.Get<YafBoardSettings>().BoardPollID.ToString(CultureInfo.InvariantCulture);
             }
             else
             {

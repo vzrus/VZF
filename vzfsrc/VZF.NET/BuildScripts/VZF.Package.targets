@@ -59,15 +59,7 @@
     <Copy SourceFiles="@(LibaryFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildProjectDirectory)\webconfigs\recommended-NET-web.config" DestinationFiles="$(MSBuildProjectDirectory)\Package\web.config"/>
     
-    <!-- Minify JS and CSS Files -->
-    <ItemGroup>
-      <JS Include="$(MSBuildProjectDirectory)\Package\**\*.js" Exclude="**\*.min.js;**\*-min.js;**\*_src.js;$(MSBuildProjectDirectory)\Package\editors\ckeditor\**\*.js;$(MSBuildProjectDirectory)\Package\editors\tiny_mce\**\*.js;" />
-    </ItemGroup>
-    <ItemGroup>
-      <CSS Include="$(MSBuildProjectDirectory)\Package\**\*.css" Exclude="**\*.min.css;**\*_src.css;$(MSBuildProjectDirectory)\Package\themes\**\*.css;$(MSBuildProjectDirectory)\Package\editors\ckeditor\**\*.css;$(MSBuildProjectDirectory)\Package\editors\tiny_mce\**\*.css;" />
-    </ItemGroup>
-    <AjaxMin JsSourceFiles="@(JS)" JsSourceExtensionPattern="\.js$" JsTargetExtension=".js" CssSourceFiles="@(CSS)" CssSourceExtensionPattern="\.css$" CssTargetExtension=".css"  />
-
+   
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="OutputContentInstall" />
     </CreateItem>

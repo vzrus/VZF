@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Net;
+
 namespace YAF.Core
 {
     #region Using
@@ -121,7 +123,7 @@ namespace YAF.Core
         {
             CodeContracts.ArgumentNotNull(message, "message");
 
-            var smtpSend = new SmtpClient { EnableSsl = Config.UseSMTPSSL };
+            var smtpSend = new SmtpClient { EnableSsl = Config.UseSMTPSSL};
 
             // Tommy: solve random failure problem. Don't set this value to 1.
             // See this: http://stackoverflow.com...tem-net-mail-has-issues 

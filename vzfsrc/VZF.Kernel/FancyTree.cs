@@ -662,33 +662,35 @@ namespace VZF.Kernel
             // trn - node around that the other node is being moved
             // trnp,trnop respective parents
             // trna nodde move position
-          
+
+            var keyTrno = TreeViewUtils.GetParcedTreeNode(trno);
+            var keyTrn = TreeViewUtils.GetParcedTreeNode(trn);
 
             // we move forum as a forum child 
             if (trn == trnop && trna == "over")
             {
-                forumId = TreeViewUtils.GetParcedTreeNodeId(trno).Item3;
-                adjacentForumId = parentId = TreeViewUtils.GetParcedTreeNodeId(trn).Item3;
-                categoryId = TreeViewUtils.GetParcedTreeNodeId(trn).Item2;
-                boardId = TreeViewUtils.GetParcedTreeNodeId(trn).Item1;
+                forumId = keyTrno.ForumId;
+                adjacentForumId = parentId = keyTrn.ForumId;
+                categoryId = keyTrn.CategoryId;
+                boardId = keyTrn.BoardId;
             }
 
             // we move forum right into category 
             if (trnp == trnop)
             {
-                forumId = TreeViewUtils.GetParcedTreeNodeId(trno).Item3;
-                categoryId = TreeViewUtils.GetParcedTreeNodeId(trn).Item2;
-                boardId = TreeViewUtils.GetParcedTreeNodeId(trn).Item1;
-                adjacentForumId = TreeViewUtils.GetParcedTreeNodeId(trn).Item3;
+                forumId = keyTrno.ForumId;
+                categoryId = keyTrn.CategoryId;
+                boardId = keyTrn.BoardId;
+                adjacentForumId = keyTrn.ForumId;
             }
 
             // we move a category
             if (trnp == trnop && trnp.Contains("root"))
             {
-                forumId = TreeViewUtils.GetParcedTreeNodeId(trno).Item3;
-                categoryId = TreeViewUtils.GetParcedTreeNodeId(trno).Item2;
-                boardId = TreeViewUtils.GetParcedTreeNodeId(trn).Item1;
-                adjacentCategoryId = TreeViewUtils.GetParcedTreeNodeId(trn).Item2;
+                forumId = keyTrno.ForumId;
+                categoryId = keyTrno.CategoryId;
+                boardId = keyTrn.BoardId;
+                adjacentCategoryId = keyTrn.CategoryId;
             }          
 
             // a forum is being moved
@@ -739,11 +741,11 @@ namespace VZF.Kernel
         {
             if (YafContext.Current.IsAdmin || YafContext.Current.IsHostAdmin)
             {
-                var parced = TreeViewUtils.GetParcedTreeNodeId(forumId.ToString());
-                if (parced.Item3.HasValue)
+                var parced = TreeViewUtils.GetParcedTreeNode(forumId.ToString());
+                if (parced.ForumId.HasValue)
                 {
                     CommonDb.forumaccess_save(YafContext.Current.PageModuleID,
-                        parced.Item3,
+                        parced.ForumId,
                         groupId,
                         accessMaskId);
                 }
@@ -755,7 +757,7 @@ namespace VZF.Kernel
         }
 
         public static List<TreeNode> GetForumsJumpTreeNodesLevel(
-            string nodeIdString,
+            string nodeIds,
             int view,
             int access,
             string active,
@@ -766,78 +768,54 @@ namespace VZF.Kernel
         {
             var collection = new List<TreeNode>();
 
-            int boardId = 0;
-            int categoryId = 0;
-            int forumId = 0;
-            var nodeIds = nodeIdString;
-            if (nodeIds.IsSet())
-            {
-                string[] nodeId = nodeIds.Split('_');
-                switch (nodeId.Count())
-                {
-                    case 1:
-                        boardId = nodeId[0].ToType<int>();
-                        break;
-                    case 2:
-                        boardId = nodeId[0].ToType<int>();
-                        categoryId = nodeId[1].ToType<int>();
-                        break;
-                    case 3:
-                        boardId = nodeId[0].ToType<int>();
-                        categoryId = nodeId[1].ToType<int>();
-                        forumId = nodeId[2].ToType<int>();
-                        break;
-                }
-            }
+            var keySupplied = TreeViewUtils.GetParcedTreeNode(nodeIds);
+           
 
             // var boardId = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
             const bool notIncluded = true;
 
             const bool immediateOnly = true;
 
-            if (boardId <= 0)
+            if (!keySupplied.BoardId.HasValue)
             {
-                boardId = YafContext.Current.PageBoardID;
+                keySupplied.BoardId = YafContext.Current.PageBoardID;
             }
 
-            if (forumId == 0 && categoryId == 0)
+            if (!keySupplied.ForumId.HasValue && !keySupplied.CategoryId.HasValue)
             {
             }
 
             if (boardFirst)
             {
-                var bdt = CommonDb.board_list(YafContext.Current.PageModuleID, boardId);
-                if (bdt != null && bdt.Rows.Count > 0)
-                {
-                    string boardName = bdt.Rows[0]["Name"].ToString();
-                    var tn = new TreeNode
-                    {
-                        key = boardId.ToString(CultureInfo.InvariantCulture),
-                        title = HttpUtility.HtmlEncode(boardName),
-                        lazy = true,
-                        folder = true,
-                        expanded = false,
-                        selected = false,
-                        extraClasses = string.Empty,
-                        tooltip =
-                            YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_FORUM")
-                    };
-                    collection.Add(tn);
-                    return collection;
-                }
+                var bdt = CommonDb.board_list(YafContext.Current.PageModuleID, keySupplied.BoardId);
+              
+                if (bdt == null || bdt.Rows.Count <= 0) return null;
 
-                return null;
+                string boardName = bdt.Rows[0]["Name"].ToString();
+                var tn = new TreeNode
+                {
+                    key = keySupplied.BoardId.ToString(),
+                    title = HttpUtility.HtmlEncode(boardName),
+                    lazy = true,
+                    folder = true,
+                    expanded = false,
+                    selected = false,
+                    extraClasses = string.Empty,
+                    tooltip =
+                        YafContext.Current.Get<ILocalization>().GetText("COMMON", "VIEW_FORUM")
+                };
+                collection.Add(tn);
+                return collection;
             }
 
-
             // Get a list of category nodes separately as we don't know access. 
-            if (forumId == 0 && categoryId == 0)
+            if (!keySupplied.ForumId.HasValue && !keySupplied.CategoryId.HasValue)
             {
                 DataTable ctbl;
                 if (YafContext.Current.IsAdmin)
                 {
                     ctbl = CommonDb.category_list(YafContext.Current.PageModuleID,
-                        YafContext.Current.PageBoardID, null);
+                        keySupplied.BoardId, null);
 
                     if (ctbl == null || ctbl.Rows.Count <= 0) return collection;
 
@@ -846,7 +824,7 @@ namespace VZF.Kernel
                         collection.Add(new TreeNode
                         {
                             title = GetCategoryTitleLink(forumUrl, row["CategoryID"], row["Name"], !trnl),
-                            key = GetCategoryNodeKey(boardId, row),
+                            key = GetCategoryNodeKey(keySupplied.BoardId, row),
                             lazy = true,
                             folder = true,
                             expanded = false,
@@ -869,7 +847,7 @@ namespace VZF.Kernel
                         collection.AddRange(from DataRow row in ctbl.Rows
                             select new TreeNode
                             {
-                                key = GetCategoryNodeKey(boardId, row),
+                                key = GetCategoryNodeKey(keySupplied.BoardId, row),
                                 title = GetCategoryTitleLink(forumUrl, row["CategoryID"], row["CategoryName"], !trnl),
                                 lazy = true,
                                 folder = true,
@@ -890,9 +868,9 @@ namespace VZF.Kernel
                     {
                         ss = CommonDb.forum_ns_getch_accgroup(
                             YafContext.Current.PageModuleID,
-                            boardId,
-                            categoryId,
-                            forumId,
+                            keySupplied.BoardId,
+                            keySupplied.CategoryId,
+                            keySupplied.ForumId,
                             amdd,
                             notIncluded,
                             immediateOnly,
@@ -902,9 +880,9 @@ namespace VZF.Kernel
                     {
                         ss = CommonDb.forum_ns_getchildren(
                             YafContext.Current.PageModuleID,
-                            boardId,
-                            categoryId,
-                            forumId,
+                            keySupplied.BoardId,
+                            keySupplied.CategoryId,
+                            keySupplied.ForumId,
                             notIncluded,
                             immediateOnly,
                             "-");
@@ -915,9 +893,9 @@ namespace VZF.Kernel
                 {
                     ss = CommonDb.forum_ns_getch_actuser(
                         YafContext.Current.PageModuleID,
-                        boardId,
-                        categoryId,
-                        forumId,
+                       keySupplied.BoardId,
+                            keySupplied.CategoryId,
+                            keySupplied.ForumId,
                         Convert.ToInt32(YafContext.Current.PageUserID),
                         notIncluded,
                         immediateOnly,
@@ -934,7 +912,7 @@ namespace VZF.Kernel
 
                 foreach (DataRow row in ss.Rows)
                 {
-                    var nodeKey = GetForumNodeKey(boardId, row);
+                    var nodeKey = GetForumNodeKey(keySupplied.BoardId, row);
                     collection.Add(
                         new TreeNode
                         {
@@ -957,12 +935,12 @@ namespace VZF.Kernel
             return collection;
         }
 
-        private static string GetCategoryNodeKey(int boardId, DataRow row)
+        private static string GetCategoryNodeKey(int? boardId, DataRow row)
         {
               return "{0}_{1}".FormatWith(boardId, row["CategoryID"].ToString().IsSet() ?  row["CategoryID"]: null);
         }
 
-        private static string GetForumNodeKey(int boardId, DataRow row)
+        private static string GetForumNodeKey(int? boardId, DataRow row)
         {
            return "{0}_{1}".FormatWith(GetCategoryNodeKey(boardId, row) ,row["ForumID"].ToString().IsSet()
                ? row["ForumID"] : string.Empty);
@@ -1016,6 +994,11 @@ namespace VZF.Kernel
             string nodeKey,
             DataTable accessMasks)
         {
+            if (name.ToString().IsNotSet())
+            {
+                return string.Empty;
+            }
+
             string accessRow = string.Empty;
             if (addAccessRow)
             {
@@ -1031,12 +1014,12 @@ namespace VZF.Kernel
             {             
                accessRow = accessRow + UserForumAccess.AddGroupAccessDdl(accessMasks, nodeKey, accessMaskId);
             }
-          
+             
             string fttl;
+
             if (!titleOnly)
             {
-                string pathStart;
-                pathStart = HttpUtility.UrlDecode(forumUrl).Replace("resource.ashx", Config.BaseScriptFile);
+                string pathStart = HttpUtility.UrlDecode(forumUrl).Replace("resource.ashx", Config.BaseScriptFile);
                
                 if (Config.IsMojoPortal)
                 {
@@ -1064,9 +1047,7 @@ namespace VZF.Kernel
             }
             else
             {
-                fttl = name.ToString().IsNotSet()
-                                        ? string.Empty
-                                        : HttpUtility.HtmlEncode(name);
+                fttl =  HttpUtility.HtmlEncode(name);
             }
 
             return fttl;

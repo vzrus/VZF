@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Globalization;
 using System.Web;
 using VZF.Utilities;
 using VZF.Utils.Helpers;
@@ -73,7 +74,6 @@ namespace YAF.Pages
                 if (this.TopicSubject.Text != string.Empty)
                 {
                     long nTopicId = 0;
-                    int? forumId;
                     if (!Config.LargeForumTree)
                     {
                      nTopicId = CommonDb.topic_create_by_message(PageContext.PageModuleID,
@@ -172,9 +172,9 @@ namespace YAF.Pages
                     this.PageContext.AddLoadMessage(this.GetText("ENTER_VALID_TOPICID"));
                     return;
                 }
-                this.Get<IYafSession>().NntpTreeActiveNode = null;
                 CommonDb.message_move(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("m"),
                        topicId, true);
+                this.Get<IYafSession>().NntpTreeActiveNode = null;
 
             }
 
@@ -208,6 +208,7 @@ namespace YAF.Pages
 
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs", "js/fancytree.vzf.nodeslazy.min.js");
 
                 string value = null;
                 if (this.Request.QueryString.GetFirstOrDefault("fa") != null)
@@ -225,17 +226,17 @@ namespace YAF.Pages
                         "&active={0}".FormatWith(value);
                 }
 
-                YafContext.Current.PageElements.RegisterJsBlock(
-                   "ftreedelfrm",
-                   JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
-                       "treemovemessage",
-                       PageContext.PageUserID,
-                       PageContext.PageBoardID,
-                       "echoActive",
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
+                "ftreemm", "fancyTreeSelectSingleNodeLazyJs('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                   .FormatWith(Config.JQueryAlias,
+                   "treemovemessage",
+                   PageContext.PageUserID,
+                      PageContext.PageBoardID,
+                      "echoActive",
                        string.Empty,
-                       args,
-                       "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                       "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                      args,
+                      "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
             }
 
             base.OnPreRender(e);
@@ -285,11 +286,11 @@ namespace YAF.Pages
                 this.ForumList.DataValueField = "ForumID";
             }
             this.DataBind();
-            if (!Config.LargeForumTree)
-            {
-                this.ForumList.Items.FindByValue(this.PageContext.PageForumID.ToString()).Selected = true;
-                this.ForumList_SelectedIndexChanged(this.ForumList, e);
-            }
+
+            if (Config.LargeForumTree) return;
+
+            this.ForumList.Items.FindByValue(this.PageContext.PageForumID.ToString(CultureInfo.InvariantCulture)).Selected = true;
+            this.ForumList_SelectedIndexChanged(this.ForumList, e);
         }
 
         /// <summary>

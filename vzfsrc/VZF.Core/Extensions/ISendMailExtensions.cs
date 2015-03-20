@@ -24,8 +24,6 @@ namespace YAF.Core
   using System.Net.Mail;
 
   using VZF.Data.Common;
-
-  using YAF.Core.Services;
   
   using YAF.Types;
   using YAF.Types.Interfaces;

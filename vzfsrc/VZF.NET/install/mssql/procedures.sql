@@ -598,6 +598,10 @@ IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{data
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}nntptopic_savemessage]
 GO
 
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}nntptopic_addmessage]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}nntptopic_addmessage]
+GO
+
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}pageaccess]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}pageaccess]
 GO
@@ -5306,7 +5310,7 @@ begin
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}nntptopic_savemessage](
+create procedure [{databaseSchema}].[{objectQualifier}nntptopic_addmessage](
     @NntpForumID	int,
     @Topic 			nvarchar(100),
     @Body 			ntext,
@@ -7657,35 +7661,35 @@ BEGIN
         t.TopicID,
         t.TopicMovedID,
         t.UserID,
-        UserName = IsNull(t.UserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.UserID)),
-        UserDisplayName = IsNull(t.UserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.UserID)),		
+        UserName = IsNull(t.UserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.UserID)),
+        UserDisplayName = IsNull(t.UserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.UserID)),		
         t.LastMessageID,
         t.LastMessageFlags,
         t.LastUserID,
         t.NumPosts,
         t.Posted,		
-        LastUserName = IsNull(t.LastUserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.LastUserID)),
-        LastUserDisplayName = IsNull(t.LastUserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.LastUserID)),
+        LastUserName = IsNull(t.LastUserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.LastUserID)),
+        LastUserDisplayName = IsNull(t.LastUserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.LastUserID)),
         LastUserStyle = case(@StyledNicks)
             when 1 then  (select top 1 usr.[UserStyle] from [{databaseSchema}].[{objectQualifier}User] usr with(nolock) where usr.UserID = t.LastUserID)
             else ''	 end,
         LastForumAccess = case(@FindLastUnread)
              when 1 then
-               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}ForumReadTracking] x WHERE x.ForumID=f.ForumID AND x.UserID = @PageUserID)
+               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}ForumReadTracking] x with(nolock) WHERE x.ForumID=f.ForumID AND x.UserID = @PageUserID)
              else ''	 end,
         LastTopicAccess = case(@FindLastUnread)
              when 1 then
-               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}TopicReadTracking] y WHERE y.TopicID=t.TopicID AND y.UserID = @PageUserID)
+               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}TopicReadTracking] y with(nolock) WHERE y.TopicID=t.TopicID AND y.UserID = @PageUserID)
              else ''	 end
             
     FROM	
-        [{databaseSchema}].[{objectQualifier}Topic] t 
+        [{databaseSchema}].[{objectQualifier}Topic] t with(nolock)
     INNER JOIN
-        [{databaseSchema}].[{objectQualifier}Forum] f ON t.ForumID = f.ForumID	
+        [{databaseSchema}].[{objectQualifier}Forum] f with(nolock) ON t.ForumID = f.ForumID	
     INNER JOIN
-        [{databaseSchema}].[{objectQualifier}Category] c ON c.CategoryID = f.CategoryID
+        [{databaseSchema}].[{objectQualifier}Category] c with(nolock) ON c.CategoryID = f.CategoryID
     JOIN
-        [{databaseSchema}].[{objectQualifier}ActiveAccess] v ON v.ForumID=f.ForumID
+        [{databaseSchema}].[{objectQualifier}ActiveAccess] v with(nolock) ON v.ForumID=f.ForumID
     WHERE	
         c.BoardID = @BoardID
         AND t.TopicMovedID is NULL
@@ -7694,7 +7698,7 @@ BEGIN
         AND t.IsDeleted != 1
         AND t.LastPosted IS NOT NULL
         AND
-        f.Flags & 4 <> (CASE WHEN @ShowNoCountPosts > 0 THEN -1 ELSE 4 END)
+        (@ShowNoCountPosts = 1  or (f.Flags & 4) <> 4)
     ORDER BY
         t.LastPosted DESC;
 END

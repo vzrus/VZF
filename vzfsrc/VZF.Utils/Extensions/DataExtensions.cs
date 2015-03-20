@@ -46,7 +46,7 @@ namespace VZF.Utils.Extensions
         /// <returns> Returns qualified object name of format {databaseOwner}.{objectQualifier}name </returns>
         public static string GetObjectName([NotNull] string name)
         {
-            return "[{0}].[{1}{2}]".FormatWith(Config.DatabaseOwner, Config.DatabaseObjectQualifier, name);
+            return "[{0}].[{1}{2}]".FormatWith(Config.DatabaseSchemaName, Config.DatabaseObjectQualifier, name);
         }
 
         /// <summary>

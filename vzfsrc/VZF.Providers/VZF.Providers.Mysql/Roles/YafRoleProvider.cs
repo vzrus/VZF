@@ -18,6 +18,7 @@
  */
 
 using System.Collections.Concurrent;
+using System.Web;
 
 namespace YAF.Providers.Roles
 {
@@ -360,13 +361,13 @@ namespace YAF.Providers.Roles
         ConnectionString = connStr;
 
         // set the app variable...
-        if (YafContext.Application[ConnStrAppKeyName] == null)
+        if (YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] == null)
         {
-            YafContext.Application.Add(ConnStrAppKeyName, connStr);
+            YafContext.Current.Get<HttpApplicationStateBase>().Add(ConnStrAppKeyName, connStr);
         }
         else
         {
-          YafContext.Application[ConnStrAppKeyName] = connStr;
+            YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] = connStr;
         }
         ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
       }

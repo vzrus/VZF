@@ -17,6 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Web;
+using YAF.Types.Interfaces;
+
 namespace YAF.Providers.Membership
 {
     using System;
@@ -1210,13 +1214,13 @@ namespace YAF.Providers.Membership
                 ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
 
                 // set the app variable...
-                if (YafContext.Application[ConnStrAppKeyName] == null)
+                if (YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] == null)
                 {
-                    YafContext.Application.Add(ConnStrAppKeyName, connStr);
+                    YafContext.Current.Get<HttpApplicationStateBase>().Add(ConnStrAppKeyName, connStr);
                 }
                 else
                 {
-                    YafContext.Application[ConnStrAppKeyName] = connStr;
+                    YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] = connStr;
                 }
             }
             else

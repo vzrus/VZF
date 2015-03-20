@@ -4,9 +4,11 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Web;
 using VZF.Data.DAL;
 using YAF.Core;
 using YAF.Providers.Utils;
+using YAF.Types.Interfaces;
 
 namespace YAF.Providers.Profile
 {
@@ -50,13 +52,13 @@ namespace YAF.Providers.Profile
                 ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
 
                 // set the app variable...
-                if (YafContext.Application[ConnStrAppKeyName] == null)
+                if (YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] == null)
                 {
-                    YafContext.Application.Add(ConnStrAppKeyName, connStr);
+                    YafContext.Current.Get<HttpApplicationStateBase>().Add(ConnStrAppKeyName, connStr);
                 }
                 else
                 {
-                    YafContext.Application[ConnStrAppKeyName] = connStr;
+                    YafContext.Current.Get<HttpApplicationStateBase>()[ConnStrAppKeyName] = connStr;
                 }
             }
 

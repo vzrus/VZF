@@ -304,6 +304,8 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntptopic_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntptopic_savemessage;
 --GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntptopic_addmessage;
+--GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}activeaccess_reset;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}pageload;
@@ -6437,7 +6439,7 @@ END;
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseSchema}.{objectQualifier}nntptopic_savemessage(
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}nntptopic_addmessage(
     i_NntpForumID	int,
     i_Topic 		VARCHAR(128),
     i_Body 			TEXT,

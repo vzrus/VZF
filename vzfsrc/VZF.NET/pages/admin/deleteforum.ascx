@@ -35,7 +35,7 @@
             </td>
             <td class="post">
            
-                <div id="jumpList" visible="false" runat="server"> <div id="treedelfrm" data-source="ajax"  ></div></div>
+                 <div id="jumpList" visible="false"  runat="server"> <div id="treedelfrm"  data-source="ajax"  ></div></div>
                 <asp:DropDownList Width="250" ID="ForumList" runat="server" Enabled="false">
                 </asp:DropDownList>
             </td>

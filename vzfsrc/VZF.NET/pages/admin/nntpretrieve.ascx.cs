@@ -82,42 +82,16 @@ namespace YAF.Pages.Admin
       this.Page.Header.Title = "{0} - {1}".FormatWith(
         this.GetText("ADMIN_ADMIN", "Administration"), this.GetText("ADMIN_NNTPRETRIEVE", "TITLE"));
 
-      this.Retrieve.Text = this.GetText("ADMIN_NNTPRETRIEVE", "RETRIEVE");
-
       this.BindData();
     }
 
-    /// <summary>
-    /// The retrieve_ click.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    protected void Retrieve_Click([NotNull] object sender, [NotNull] EventArgs e)
-    {
-      int nSeconds = int.Parse(this.Seconds.Text);
-      if (nSeconds < 1)
-      {
-        nSeconds = 1;
-      }
-
-      int nArticleCount = this.Get<INewsreader>().ReadArticles(
-        this.PageContext.PageBoardID, 10, nSeconds, this.PageContext.BoardSettings.CreateNntpUsers);
-
-      this.PageContext.AddLoadMessage(
-        this.GetText("ADMIN_NNTPRETRIEVE", "Retrieved").FormatWith(nArticleCount, (double)nArticleCount / nSeconds));
-      this.BindData();
-    }
-
+    
     /// <summary>
     /// The bind data.
     /// </summary>
     private void BindData()
     {
-      this.List.DataSource = CommonDb.nntpforum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, 10, null, true);
+      this.List.DataSource = CommonDb.nntpforum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, PageContext.BoardSettings.NntpTopicProtectionPeriod, null, true);
       this.DataBind();
     }
 

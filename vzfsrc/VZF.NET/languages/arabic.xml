@@ -1269,6 +1269,10 @@
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Number entries on a page on the My Topics page. </Resource>
     <Resource tag="NAME_LENGTH">User Name Max Length:</Resource>
     <Resource tag="NAME_LENGTH_HELP">Max Allowed User Name or User Display Name Max Length.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Time to fetch every news group in seconds:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">To protect server limit the time to a short period of several dozens of seconds.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Fetch NNTP articles in time:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">This is an interval when articles can be fetched again, in minutes.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">Use "NoFollow" Tag in Links:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">If this is checked, all links will have the nofollow tag.</Resource>
     <Resource tag="NOTIFICATION_BAR">Notification Bar</Resource>
@@ -1567,6 +1571,7 @@
     <Resource tag="LAST_MESSAGE">Last Message</Resource>
     <Resource tag="LAST_UPDATE">Last Update</Resource>
     <Resource tag="RETRIEVE">Retrieve</Resource>
+    <Resource tag="RETRIEVE_SERVICE">To retrieve articles a service is running. Set parameters in Host Settings and wait some time. Articles will be fetched in background.</Resource>
     <Resource tag="Retrieved">Retrieved {0} articles. {1:N2} articles per second.</Resource>
     <Resource tag="SECONDS">seconds</Resource>
     <Resource tag="TIME">Specify how much time article retrieval should use.</Resource>

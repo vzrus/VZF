@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Web;
+
 namespace YAF.Providers.Profile
 {
     using System;
@@ -179,13 +181,13 @@ namespace YAF.Providers.Profile
                 ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
 
                 // set the app variable...
-                if (YafContext.Application[_connStrAppKeyName] == null)
+                if (YafContext.Current.Get<HttpApplicationStateBase>()[_connStrAppKeyName] == null)
                 {
-                    YafContext.Application.Add(_connStrAppKeyName, connStr);
+                    YafContext.Current.Get<HttpApplicationStateBase>().Add(_connStrAppKeyName, connStr);
                 }
                 else
                 {
-                    YafContext.Application[_connStrAppKeyName] = connStr;
+                    YafContext.Current.Get<HttpApplicationStateBase>()[_connStrAppKeyName] = connStr;
                 }
             }
 

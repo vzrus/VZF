@@ -75,6 +75,7 @@
     <Compile Include="Constants\ViewPermissions.cs" />
     <Compile Include="Constants\YafRssFeeds.cs" />
     <Compile Include="Constants\YafSyndicationFormats.cs" />
+    <Compile Include="Objects\TreeNodeKey.cs" />
     <Compile Include="Objects\TypedUserFind.cs" />
     <Compile Include="EventProxies\CacheItemRemovedEvent.cs" />
     <Compile Include="EventProxies\EventPageLoad.cs" />
@@ -360,7 +361,6 @@
     <Folder Include="Data\Views\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="vzf14.pfx" />
     <None Include="vzf2015.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

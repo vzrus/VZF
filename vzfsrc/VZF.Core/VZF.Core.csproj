@@ -93,7 +93,7 @@
     <Compile Include="Extensions\DbAccessExtensions.cs" />
     <Compile Include="Extensions\MembershipUserExtensions.cs" />
     <Compile Include="Helpers\IPLocator.cs" />
-    <Compile Include="Import\DataImport.cs" />
+    <Compile Include="Helpers\Import\DataImport.cs" />
     <Compile Include="Nntp\Article.cs" />
     <Compile Include="Nntp\ArticleBody.cs" />
     <Compile Include="Nntp\ArticleHeader.cs" />
@@ -264,6 +264,8 @@
     <Compile Include="Tasks\MigrateUsersTask.cs" />
     <Compile Include="Tasks\PruneTopicTask.cs" />
     <Compile Include="Tasks\SyncMembershipUsersTask.cs" />
+    <Compile Include="Tasks\SyncNntpTask.cs" />
+    <Compile Include="Tasks\SyncNntpTaskModule.cs" />
     <Compile Include="Tasks\UserCleanUpTask.cs" />
     <Compile Include="Tasks\UserCleanUpTaskForumModule.cs" />
     <Compile Include="Theme\YafTheme.cs" />
@@ -310,7 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="vzf14.pfx" />
     <None Include="vzf2015.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

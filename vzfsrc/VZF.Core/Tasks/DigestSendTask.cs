@@ -189,7 +189,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception ex)
       {
-          CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In {0} Task: {1}".FormatWith(TaskName, ex));
+          this.Logger.Error(ex, "Error In {0} Task.".FormatWith(TaskName));
       }
     }
 

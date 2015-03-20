@@ -66,7 +66,7 @@ namespace YAF.Pages.Admin
                 if (this.Request.QueryString.GetFirstOrDefault(name).Contains("_"))
                 {
 
-                    return TreeViewUtils.GetParcedTreeNodeId(this.Request.QueryString.GetFirstOrDefault(name)).Item3;
+                    return TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault(name)).ForumId;
 
                 }
 
@@ -116,14 +116,12 @@ namespace YAF.Pages.Admin
 
                 this.jumpList.Visible = true;
 
-                //  YafContext.Current.PageElements.RegisterJsResourceInclude("yafjs", "js/vzfDynatree.js");              
-
                 YafContext.Current.PageElements.RegisterJsResourceInclude("fancytree", "js/jquery.fancytree-all.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/fancytree/{0}/ui.fancytree.css".FormatWith(YafContext.Current.Get<YafBoardSettings>().FancyTreeTheme));
-
+                YafContext.Current.PageElements.RegisterJsResourceInclude("ftreedeljs", "js/fancytree.vzf.nodeslazy.min.js");
                 var forumId = this.GetQueryStringAsInt("fa");
 
-                string value = null;               
+                string value = null;
                 if (this.Request.QueryString.GetFirstOrDefault("fa") != null)
                 {
                     if (this.Request.QueryString.GetFirstOrDefault("fa").Contains("_"))
@@ -136,21 +134,31 @@ namespace YAF.Pages.Admin
                 if (value.IsSet())
                 {
                     args +=
-                        "&active={0}".FormatWith(value);                                   
+                        "&active={0}".FormatWith(value);
                 }
 
-               YafContext.Current.PageElements.RegisterJsBlock(
-                  "ftreedelfrm",
-                  JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
-                      "treedelfrm",
-                      PageContext.PageUserID,
-                      PageContext.PageBoardID,
-                      "echoActive",
-                      string.Empty,
-                      args,
-                      "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                      "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));  
-            
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
+                 "ftreedelfrm", "fancyTreeSelectSingleNodeLazyJs('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}');"
+                    .FormatWith(Config.JQueryAlias, "treedelfrm",
+                    PageContext.PageUserID,
+                       PageContext.PageBoardID,
+                       "echoActive",
+                       string.Empty,
+                       args,
+                       "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                       "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+                
+                /*
+                   JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJs(
+                       "treedelfrm",
+                       PageContext.PageUserID,
+                       PageContext.PageBoardID,
+                       "echoActive",
+                       string.Empty,
+                       args,
+                       "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                       "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));*/
+
                 /*   YafContext.Current.PageElements.RegisterJsBlock(
                  "ftreedelfrm",
                  JavaScriptBlocks.FancyTreeSelectSingleNodeLazyJsNew(
@@ -160,7 +168,7 @@ namespace YAF.Pages.Admin
                      Config.BaseScriptFile,
                      args,
                      "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
-                     "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); */
+                     "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath())))); */            
             }
 
             base.OnPreRender(e);
@@ -406,5 +414,11 @@ namespace YAF.Pages.Admin
         }
 
         #endregion
+
+        protected void JumpListPrerender__(object sender, EventArgs e)
+        {
+                     
+      
+        }
     }
 }

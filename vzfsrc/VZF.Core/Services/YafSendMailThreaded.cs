@@ -28,7 +28,6 @@ namespace YAF.Core.Services
     using System.Threading;
 
     using VZF.Data.Common;
-
     
     using YAF.Types;
     using YAF.Types.Interfaces;
@@ -38,7 +37,11 @@ namespace YAF.Core.Services
     #endregion
 
     /// <summary>
-    /// Separate class since SendThreaded isn't needed functionality for any instance except the <see cref="HttpModule"/> instance.
+    /// Separate class since SendThreaded isn't needed functionality for any instance except the 
+    /// <see>
+    /// <cref>HttpModule</cref>
+    /// </see>
+    ///     instance.
     /// </summary>
     public class YafSendMailThreaded : ISendMailThreaded
     {
@@ -118,53 +121,27 @@ namespace YAF.Core.Services
                         }
                         else if (ex is SmtpFailedRecipientException)
                         {
-                            var ex1 = (SmtpFailedRecipientException)ex;
+                            var ex1 = (SmtpFailedRecipientException) ex;
                             SmtpStatusCode status = ex1.StatusCode;
                             if (status == SmtpStatusCode.MailboxBusy ||
                                 status == SmtpStatusCode.MailboxUnavailable)
                             {
 #if (DEBUG)
                                 Logger.Debug("Delivery failed because mail box busy or unavalable.");
-                                CommonDb.eventlog_create(0, 1, "Delivery failed because mail box busy or unavalable. :", ex1.ToString(), Types.Constants.EventLogTypes.Debug);
+                                //  CommonDb.eventlog_create(0, 1, "Delivery failed because mail box busy or unavalable. :", ex1.ToString(), Types.Constants.EventLogTypes.Debug);
 #endif
                             }
                             else
                             {
 #if (DEBUG)
-                                Logger.Debug(string.Format("Failed to deliver message to {0}\r\n{1}", ex1.Message, ex1.StackTrace));
-                                CommonDb.eventlog_create(0, 1, string.Format("Failed to deliver message to {0}\r\n{1}", ex1.Message, ex1.StackTrace), Types.Constants.EventLogTypes.Debug);
-#endif                          
-                            }
-
-                            if (mailMessages.ContainsKey(message) && mailMessages[message].SendTries < 2)
-                            {
-                                // remove from the collection so it doesn't get deleted...
-                                mailMessages.Remove(message);
-                            }
-                        }
-                        else if (ex is SmtpFailedRecipientsException)
-                        {
-                            var ex2 = (SmtpFailedRecipientsException)ex;
-                            for (int i = 0; i < ex2.InnerExceptions.Length; i++)
-                            {
-                                SmtpStatusCode status = ex2.InnerExceptions[i].StatusCode;
-                                if (status == SmtpStatusCode.MailboxBusy ||
-                                    status == SmtpStatusCode.MailboxUnavailable)
-                                {
-#if (DEBUG)
-                                    Logger.Debug("Delivery failed because mail box busy or unavalable.");
-                                    CommonDb.eventlog_create(0, 1, "Delivery failed because mail box busy or unavalable. :", ex2.ToString(), Types.Constants.EventLogTypes.Debug);
- #endif                             
-                                }
-                                else
-                                {
-#if (DEBUG)
-                                    Logger.Debug(string.Format("Failed to deliver message to {0},{1}", ex2.InnerExceptions[i].FailedRecipient, i));
-                                    CommonDb.eventlog_create(0, 1, string.Format("Failed to deliver message to {0},{1}", ex2.InnerExceptions[i].FailedRecipient, i), Types.Constants.EventLogTypes.Debug);
+                                Logger.Debug(string.Format("Failed to deliver message to {0}\r\n{1}", ex1.Message,
+                                    ex1.StackTrace));
+                                CommonDb.eventlog_create(0, 1,
+                                    string.Format("Failed to deliver message to {0}\r\n{1}", ex1.Message, ex1.StackTrace),
+                                    Types.Constants.EventLogTypes.Debug);
 #endif
-                                }
-
                             }
+
                             if (mailMessages.ContainsKey(message) && mailMessages[message].SendTries < 2)
                             {
                                 // remove from the collection so it doesn't get deleted...
@@ -175,8 +152,8 @@ namespace YAF.Core.Services
                         {
 #if (DEBUG)
                             this.Logger.Debug("SendMailThread SmtpException", ex.ToString());
-                            this.Logger.Debug("SendMailThread SmtpException :", ex.Message);
-                            CommonDb.eventlog_create(0, 1, "SmtpException ::", ex.ToString(), Types.Constants.EventLogTypes.Debug);
+                            CommonDb.eventlog_create(0, 1, "SmtpException ::", ex.ToString(),
+                                Types.Constants.EventLogTypes.Debug);
 #else
                                 this.Logger.Warn("Send Exception: {0}".FormatWith(ex.ToString()));
 #endif
@@ -186,16 +163,12 @@ namespace YAF.Core.Services
                                 mailMessages.Remove(message);
                             }
                         }
-
-
-
                         else
                         {
 #if (DEBUG)
                             // general exception...
                             this.Logger.Debug("SendMailThread General Exception", ex.ToString());
                             // general exception...
-                              CommonDb.eventlog_create(0, 1, "Exception Thrown in SendMail Thread: {0}".FormatWith(ex.ToString()), Types.Constants.EventLogTypes.Debug);
                             this.Logger.Warn("Exception Thrown in SendMail Thread: {0}".FormatWith(ex.ToString()));
 #endif
                         }

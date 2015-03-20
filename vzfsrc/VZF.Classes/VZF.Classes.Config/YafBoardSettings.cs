@@ -593,7 +593,7 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        /// Gets or sets LogBannedIP.
+        /// Gets or sets LogUserDeleted.
         /// </summary>
         public bool LogUserDeleted
         {
@@ -3759,6 +3759,38 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("IPLocatorResultsMap", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets NNTP articles retrieve time in seconds.
+        /// </summary>
+        public int NntpArticlesRetrieveTime
+        {
+            get
+            {
+                return this._reg.GetValue("NntpArticlesRetrieveTime", 10);
+            }
+
+            set
+            {
+                this._reg.SetValue("NntpArticlesRetrieveTime", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets NNTP articles retrieve protection period in minutes.
+        /// </summary>
+        public int NntpTopicProtectionPeriod
+        {
+            get
+            {
+                return this._reg.GetValue("NntpTopicProtectionPeriod", 30);
+            }
+
+            set
+            {
+                this._reg.SetValue("NntpTopicProtectionPeriod", value);
             }
         }
 
