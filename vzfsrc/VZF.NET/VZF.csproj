@@ -1823,7 +1823,7 @@
     <Content Include="install\firebird\providers\tables.sql" />
     <Content Include="install\firebird\sequences.sql" />
     <Content Include="install\firebird\tables.sql" />
-    <Content Include="install\firebird\tablesupdate.sql" />
+    <Content Include="install\firebird\tablesupgrade.sql" />
     <Content Include="install\firebird\tests.sql" />
     <Content Include="install\firebird\triggers.sql" />
     <Content Include="install\firebird\triggers_drop.sql" />
@@ -2651,7 +2651,6 @@
     <Content Include="resources\css\fancytree\skin-lion\loading.gif" />
     <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.css" />
     <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.less" />
-    <Content Include="resources\css\fancytree\skin-lion\ui.fancytree.min.css" />
     <Content Include="resources\css\fancytree\skin-vista\icons.gif" />
     <Content Include="resources\css\fancytree\skin-vista\loading.gif" />
     <Content Include="resources\css\fancytree\skin-vista\ui.fancytree.css" />
@@ -2675,15 +2674,6 @@
     <Content Include="resources\css\fancytree\skin-xp\vline-rtl.gif" />
     <Content Include="resources\css\fancytree\skin-xp\vline.gif" />
     <Content Include="resources\css\forum.css" />
-    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_444444_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_555555_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_777620_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_777777_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_cc0000_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\base\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="resources\css\jquery-ui-themes\base\jquery-ui.css" />
-    <Content Include="resources\css\jquery-ui-themes\base\jquery-ui.min.css" />
-    <Content Include="resources\css\jquery-ui-themes\base\theme.css" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-bg_diagonals-thick_8_333333_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-bg_flat_65_ffffff_40x100.png" />
     <Content Include="resources\css\jquery-ui-themes\black-tie\images\ui-bg_glass_40_111111_1x400.png" />
@@ -3062,7 +3052,6 @@
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\jquery-ui.css" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\jquery-ui.min.css" />
     <Content Include="resources\css\jquery-ui-themes\ui-darkness\theme.css" />
-    <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\animated-overlay.gif" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="resources\css\jquery-ui-themes\ui-lightness\images\ui-bg_flat_10_000000_40x100.png" />

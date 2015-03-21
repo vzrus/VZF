@@ -48,6 +48,19 @@ DO $$
 BEGIN
 IF EXISTS (SELECT 1 FROM pg_constraint 
 			   where contype='p' 
+				 and conname ='databaseschema_{objectQualifier}_ns_tree_pkey' LIMIT 1) THEN
+   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum_ns
+   DROP CONSTRAINT databaseschema_{objectQualifier}_ns_tree_pkey cascade;
+END IF;
+END
+$$;
+--GO
+
+
+DO $$
+BEGIN
+IF EXISTS (SELECT 1 FROM pg_constraint 
+			   where contype='p' 
 				 and conname ='{databaseSchema}_{objectQualifier}ns_tree_pkey' LIMIT 1) THEN
    ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum_ns
    DROP CONSTRAINT {databaseSchema}_{objectQualifier}ns_tree_pkey cascade;
@@ -55,6 +68,8 @@ END IF;
 END
 $$;
 --GO
+
+
 DO $$
 BEGIN
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
@@ -648,11 +663,15 @@ END LOOP;
 						"level"  =  _rec_f."level"
 						where forumid = _rec_f.forumid;			
 		    -- end of sync loop 					
-		   END LOOP;	
+		   END LOOP;
+		   -- clean up temporary table
+		  TRUNCATE {databaseSchema}.{objectQualifier}forum_ns;
 -- END IF;
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;   
 -- GO
+
+
 

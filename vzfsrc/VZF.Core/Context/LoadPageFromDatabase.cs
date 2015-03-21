@@ -125,7 +125,8 @@ namespace YAF.Core
                 // resources are not handled by ActiveLocation control so far.
                 string forumPage = this.Get<HttpRequestBase>().QueryString.ToString();
                 string location = this.Get<HttpRequestBase>().FilePath;
-                if (location.Contains("resource.ashx"))
+                if (location.Contains("resource.ashx") 
+                    || location.IndexOf("digest.aspx", System.StringComparison.Ordinal) > 0)
                 {
                     forumPage = string.Empty;
                     location = string.Empty;

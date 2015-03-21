@@ -14,7 +14,6 @@
             }
         },
         lazyLoad: function (event, dtnode) {
-
             dtnode.result = $.ajax({
                 url: jsonData + '=' + dtnode.node.key + argums + forumUrl,
                 dataType: 'json'
@@ -22,5 +21,4 @@
         }
     });
 }
-
 

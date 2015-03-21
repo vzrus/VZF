@@ -1956,7 +1956,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", fromUserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", toUserId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Mutual", mutual));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Mutual", mutual));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 

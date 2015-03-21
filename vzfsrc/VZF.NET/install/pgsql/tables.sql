@@ -3,11 +3,9 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_tables()
-                  RETURNS void AS
-$BODY$
+DO 
+$$
 BEGIN
-
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}accessmask' limit 1) THEN
@@ -27,7 +25,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}accessmask
             ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}accessmaskhistory' limit 1) THEN
@@ -41,7 +45,12 @@ CREATE TABLE {databaseSchema}.{objectQualifier}accessmaskhistory
             ) 
        WITH (OIDS={withOIDs});
 END IF;
-
+END
+$$;
+--GO
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}active' limit 1) THEN
@@ -63,7 +72,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}active
             ) 
         WITH (OIDS={withOIDs},fillfactor=10,autovacuum_enabled=true);
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}activeaccess' limit 1) THEN
@@ -92,7 +107,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}activeaccess
              ) 
        WITH (OIDS={withOIDs},fillfactor=10,autovacuum_enabled=true);
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}adminpageuseraccess' limit 1) THEN
@@ -103,7 +124,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}adminpageuseraccess
              ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}eventloggroupaccess' limit 1) THEN
@@ -115,8 +142,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}eventloggroupaccess(
     )
 WITH (OIDS={withOIDs},autovacuum_enabled=true);
 END IF;
+END
+$$;
+--GO
 
-
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}attachment' limit 1) THEN
@@ -133,7 +165,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}attachment
              ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}bannedip' limit 1) THEN
@@ -148,6 +186,14 @@ CREATE TABLE {databaseSchema}.{objectQualifier}bannedip
              ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_tables()
+                  RETURNS void AS
+$BODY$
+BEGIN
 
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 

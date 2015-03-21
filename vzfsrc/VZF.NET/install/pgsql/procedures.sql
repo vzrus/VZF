@@ -15365,8 +15365,8 @@ $BODY$
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}buddy_addrequest(
                            i_fromuserid integer,
                            i_touserid integer,
-						   i_usedisplayname boolean,
-					       i_utctimestamp timestamp)
+			   i_usedisplayname boolean,
+			   i_utctimestamp timestamp)
                   RETURNS  {databaseSchema}.{objectQualifier}buddy_addrequest_rt AS
 $BODY$
 DECLARE 
@@ -15558,7 +15558,7 @@ $BODY$
         DELETE  FROM   {databaseSchema}.{objectQualifier}buddy
         WHERE   fromuserid = i_fromuserid
                   AND touserid = i_touserid;
-      RETURN  (SELECT  (case when i_usedisplayname then displayname else name end) into i_paramoutput 
+      RETURN  (SELECT  (case when i_usedisplayname then displayname else name end)  
                              FROM   {databaseSchema}.{objectQualifier}user
                              WHERE  userid = i_touserid );
                            
@@ -15577,8 +15577,7 @@ $BODY$
         DELETE  FROM   {databaseSchema}.{objectQualifier}buddy
         WHERE   fromuserid = i_fromuserid
                 AND touserid = i_touserid;
-    RETURN   (SELECT  (case when i_usedisplayname then displayname else name end) INTO i_paramoutput
-                             FROM   {databaseSchema}.{objectQualifier}user
+    RETURN   (SELECT  (case when i_usedisplayname then displayname else name end)                              FROM   {databaseSchema}.{objectQualifier}user
                              WHERE   userid = i_fromuserid );
 END;
 $BODY$

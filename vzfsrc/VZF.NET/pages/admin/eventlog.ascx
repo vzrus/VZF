@@ -30,14 +30,17 @@ function toggleItem(detailId)
         <tr class="header2">
             <td>
                 <VZF:HelpLabel ID="SinceDateLabel" runat="server" LocalizedPage="ADMIN_EVENTLOG" LocalizedTag="SINCEDATE" Suffix=":" />&nbsp;
+                <br />
                 <asp:TextBox ID="SinceDate" runat="server" CssClass="edit"></asp:TextBox>
             </td>
             <td>
                 <VZF:HelpLabel ID="ToDateLabel" runat="server" LocalizedPage="ADMIN_EVENTLOG" Suffix=":" LocalizedTag="TODATE" />&nbsp;
+                <br />
                 <asp:TextBox ID="ToDate" runat="server" CssClass="edit"></asp:TextBox>
             </td>
             <td>
                 <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedPage="ADMIN_EVENTLOG" Suffix=":" LocalizedTag="TYPES" />&nbsp;
+                <br />
                 <asp:DropDownList ID="Types" runat="server" CssClass="edit"></asp:DropDownList>
             </td>
         </tr>

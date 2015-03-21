@@ -2262,10 +2262,11 @@ CREATE TYPE {databaseSchema}.{objectQualifier}topic_favorite_details_return_type
 );
 --GO
 
-CREATE TYPE {databaseSchema}.{objectQualifier}buddy_addrequest_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}buddy_addrequest_rt AS
 (
-	"i_paramoutput" varchar(128),
-	"i_approved" boolean
+    "i_approved" boolean,
+	"i_paramoutput" varchar(255)
+	
 );
 --GO
 
@@ -2604,13 +2605,6 @@ CREATE TYPE {databaseSchema}.{objectQualifier}category_getadjacentforum_rt AS
 (
 i_approved integer,
 i_paramoutput integer
-);
---GO
-
-CREATE TYPE {databaseSchema}.{objectQualifier}buddy_addrequest_rt AS
-(
-"ForumID" integer,
-"SortOrder" integer
 );
 --GO
 
