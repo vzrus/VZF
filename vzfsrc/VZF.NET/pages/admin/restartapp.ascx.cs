@@ -80,7 +80,7 @@ namespace YAF.Pages.Admin
             {
                 try
                 {
-                    File.SetLastWriteTime(this.Server.MapPath("~/web.config"), DateTime.Now);
+                    File.SetLastWriteTime(this.Server.MapPath("~/web.config"), DateTime.UtcNow);
                 }
                 catch (Exception)
                 {

@@ -151,6 +151,16 @@ namespace YAF.Pages.moderate
                 return;
             }
 
+            // check if the user has access to the page.
+            using (DataSet ds = CommonDb.forum_moderatelist(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageBoardID))
+            {
+                if (ds.Tables["Category"] == null || ds.Tables["Category"].Rows.Count <= 0)
+                {
+                    YafBuildLink.RedirectInfoPage(InfoMessage.AccessDenied);
+                }
+
+            }
+
             // create page links
             this.CreatePageLinks();
 

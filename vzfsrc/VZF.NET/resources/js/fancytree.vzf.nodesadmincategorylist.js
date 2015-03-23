@@ -12,7 +12,7 @@
             return false;
         },
         activate: function(event, dtnode) {
-          jQuery(selector).get(jsonData + '?tjl=-100' + '&active=' + dtnode.node.key,
+          $.get(jsonData + '?tjl=-100' + '&active=' + dtnode.node.key,
                 function(data) {
                     // alert(nodeSelectedMsg + dtnode.node.title);
                 });

@@ -251,18 +251,16 @@ namespace VZF.Utils.Helpers
             {
                 platform = "FreeBSD";
             }
-            else
-            {
-                // check if it's a search engine spider or an ignored UI string...
-                string san = SearchEngineSpiderName(userAgent);
-                if (san.IsSet())
-                {
-                    browser = san;
-                }
 
-                isSearchEngine = san.IsSet() || isCrawler;
-                isIgnoredForDisplay = IsIgnoredForDisplay(userAgent) | isSearchEngine;
+            // check if it's a search engine spider or an ignored UI string...
+            string san = SearchEngineSpiderName(userAgent);
+            if (san.IsSet())
+            {
+                browser = san;
             }
+
+            isSearchEngine = san.IsSet() || isCrawler;
+            isIgnoredForDisplay = IsIgnoredForDisplay(userAgent) || isSearchEngine;
         }
 
         /// <summary>

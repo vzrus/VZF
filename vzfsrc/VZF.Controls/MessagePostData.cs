@@ -292,11 +292,13 @@ namespace VZF.Controls
                     // add attached files control...
                     var attached = new MessageAttached { MessageID = this.DataRow["MessageID"].ToType<int>() };
 
-                    if (this.DataRow["UserDisplayName"] != DBNull.Value
+                    var displayNameO = this.DataRow.Table.Columns.Contains("UserDisplayName") ? this.DataRow["UserDisplayName"] : this.DataRow["DisplayName"];
+
+                    if (displayNameO != DBNull.Value
                         && YafContext.Current.Get<YafBoardSettings>().EnableDisplayName)
                     {
                         attached.UserName =
-                           this.DataRow["UserDisplayName"].ToString();
+                           displayNameO.ToString();
                     }
                     else
                     {

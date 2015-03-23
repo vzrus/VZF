@@ -19,7 +19,7 @@
                 return dtnode.node.key;
             });
             var s = selKeys.join('!');
-            (selector).get(jsonData + '=-100' + '&selected=' + s, function(data) {
+          $.get(jsonData + '=-100' + '&selected=' + s, function(data) {
             });
         },
         lazyLoad: function(event, dtnode) {

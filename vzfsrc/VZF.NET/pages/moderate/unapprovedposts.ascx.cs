@@ -139,11 +139,21 @@ namespace YAF.Pages.moderate
         /// <param name="sender">The sender.</param>
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
-        {
+        {          
             // do this just on page load, not postbacks
             if (this.IsPostBack)
             {
                 return;
+            }
+
+            // check if the user has access to the page.
+            using (DataSet ds = CommonDb.forum_moderatelist(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageBoardID))
+            {
+                if (ds.Tables["Category"] == null || ds.Tables["Category"].Rows.Count <= 0)
+                {
+                    YafBuildLink.RedirectInfoPage(InfoMessage.AccessDenied);
+                }
+
             }
 
             // create page links

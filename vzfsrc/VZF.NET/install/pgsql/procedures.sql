@@ -4143,7 +4143,7 @@ FOR _rec IN
     IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted" IS NULL) THEN
 	 _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_ns_lasttopic(_rec."left_key",_rec."right_key", _rec."CategoryID", _rec."PageUserID"); 
     END IF; 
-    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL AND _rec."TopicMovedID" IS NOT NULL) THEN	 
+    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted" IS NULL AND _rec."TopicMovedID" IS NOT NULL) THEN	 
             _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_ns_lasttopic(_rec."left_key",_rec."right_key", _rec."CategoryID", _rec."PageUserID");   
     END IF;	  	
      SELECT    t.lastposted, 
@@ -7411,11 +7411,11 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}message_save(
                            i_topicid integer, 
                            i_userid integer, 
                            i_message text, 
-                           i_username varchar, 
-                           i_ip varchar, 
+                           i_username varchar(255), 
+                           i_ip varchar(100), 
                            i_posted timestamp, 
                            i_replyto integer, 
-                           i_blogpostid varchar, 
+                           i_blogpostid varchar(128), 
                            i_externalmessageid varchar(255),
                            i_referencemessageid varchar(255),                         
 						   i_messagedescription  varchar(255),
@@ -8023,64 +8023,59 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}nntptopic_addmessage(
                            i_nntpforumid integer, 
-                           i_topic varchar, 
+                           i_topic varchar(255), 
                            i_body text, 
                            i_userid integer, 
-                           i_username varchar, 
-                           i_ip varchar, 
+                           i_username varchar(255), 
+                           i_ip varchar(100), 
                            i_posted timestamp, 
                            i_externalmessageid varchar(255),
                            i_referencemessageid varchar(255),
                            i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
-             ici_ForumID	integer;
-             ici_topicid	integer := null;
-             ici_MessageID	integer;
-             ici_ParentID integer;
-          -- ici_thread char(32)=i_thread;
-             ici_replyto	integer:=null;
-             varchardummy varchar(128):=NULL;
+             ici_forumid	integer;
+             ici_topicid	integer;
+             ici_MessageID	integer;                 
+             ici_replyto	integer;
+             varchardummy varchar(128);
 BEGIN 	
  
-    SELECT forumid INTO ici_ForumID 
+    SELECT forumid INTO ici_forumid 
     FROM {databaseSchema}.{objectQualifier}nntpforum WHERE nntpforumid=i_nntpforumid;
 
-    IF exists(select 1 from {databaseSchema}.{objectQualifier}message where externalmessageid = i_referencemessageid) THEN	
-        -- referenced message exists
-        select  topicid, messageid 
+	select  topicid, messageid 
         INTO ici_topicid, ici_ReplyTo
         from 
         {databaseSchema}.{objectQualifier}message 
         where externalmessageid = i_referencemessageid;
-    else
-        IF not exists(select 1 from {databaseSchema}.{objectQualifier}message where  externalmessageid = i_externalmessageid) THEN
-        -- thread doesn't exists
-        IF (i_referencemessageid IS NULL) THEN
+
+    -- referenced message doesn't exist
+    IF (ici_topicid is null and i_referencemessageid IS NULL and not exists(select 1 from {databaseSchema}.{objectQualifier}message where  externalmessageid = i_externalmessageid)) then     
+      -- thread doesn't exists
+      
         INSERT INTO {databaseSchema}.{objectQualifier}topic(forumid,
         userid,username,userdisplayname,posted,topic,views,priority,numposts,LastMessageFlags)
-        VALUES(ici_ForumID,i_userid,i_username,i_username,i_posted,i_topic,0,0,0,17) returning topicid into ici_topicid;	
-            
-      --  SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}topic','topicid')) INTO ici_topicid;  		
+        VALUES(ici_forumid,i_userid,i_username,i_username,i_posted,i_topic,0,0,0,17) 
+		returning topicid into ici_topicid;   
+     
 
         INSERT INTO {databaseSchema}.{objectQualifier}nntptopic(nntpforumid,thread,topicid)
-        VALUES (i_nntpforumid,'',ici_topicid);
-        END IF;
-        END IF;
+        VALUES (i_nntpforumid,'',ici_topicid);  
     END IF;  
 
     IF ici_topicid IS NOT NULL THEN
         SELECT {databaseSchema}.{objectQualifier}message_save(ici_topicid, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, NULL, 17, i_utctimestamp)
         INTO ici_MessageID;
-    END IF;
-    -- update user 
+
+		 -- update user if this is a count post forum 
     IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}forum
-     WHERE forumid=ici_ForumID AND (flags & 4)=0) THEN 	
+     WHERE forumid=ici_ForumID AND (flags & 4)=0 limit 1) THEN 	
         UPDATE {databaseSchema}.{objectQualifier}user
         SET numposts=numposts+1 WHERE userid=i_userid;
     END IF;
     
-    -- update topic 
+    -- update topic last post
         UPDATE {databaseSchema}.{objectQualifier}topic SET 
         lastposted		= i_posted,
         lastmessageid	= ici_MessageID,
@@ -8096,34 +8091,12 @@ BEGIN
         lastuserid		= i_userid,
         lastusername	= i_username,
         lastuserdisplayname	= i_username
-    WHERE forumid=ici_ForumID AND (lastposted IS NULL OR lastposted< i_posted); 
+    WHERE forumid=ici_ForumID; 
         
-    -- PERFORM {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_topicid);
-    
-    SELECT DISTINCT parentid
-         INTO ici_ParentID
-          FROM  {databaseSchema}.{objectQualifier}forum 
-           WHERE forumid = ici_ForumID;
-  if ici_ParentID IS NOT NULL THEN         
-WHILE ici_ParentID > 0 LOOP
+    -- PERFORM {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_topicid); 
+    -- PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
 
-UPDATE {databaseSchema}.{objectQualifier}forum SET
-        lastposted		= i_posted::timestamp,
-        lasttopicid	= ici_topicid,
-        lastmessageid	= ici_MessageID,
-        lastuserid		= i_userid,
-        lastusername	= i_username,
-        lastuserdisplayname	= i_username
-    WHERE forumid=ici_ParentID AND (lastposted IS NULL OR lastposted < i_posted);
-    
-    SELECT parentid
-         INTO ici_ParentID
-          FROM  {databaseSchema}.{objectQualifier}forum 
-           WHERE parentid = ici_ParentID LIMIT 1;	 	 
-END LOOP; 
-END IF;    
-   -- PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
-RETURN;
+    END IF;   
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -13056,36 +13029,34 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}user_nntp(
                            i_boardid integer, 
-                           i_username varchar,
+                           i_username varchar(255),
                            i_email varchar, 
                            i_timezone integer,
                            i_utctimestamp timestamp)
                   RETURNS integer AS
 $BODY$DECLARE
-             ici_UserName varchar(128):=i_username;
-             ici_userid integer;
-             ici_Count integer:=0;
+            
+             ici_userid integer;       
              intnull integer;
              varcharnull varchar;
              charnull varchar(10);
 BEGIN
-    ici_UserName := ici_UserName || ' (NNTP)';
+    i_username := i_username || ' (NNTP)';
  
     SELECT
-        a.userid,COUNT(a.userid) INTO ici_userid,ici_Count
+        a.userid INTO ici_userid
     FROM
         {databaseSchema}.{objectQualifier}user a
     WHERE
         a.boardid=i_boardid and
-        a.name=ici_UserName GROUP BY a.userid;
-        
-   GET DIAGNOSTICS ici_Count = ROW_COUNT;
-    IF ici_Count <=0 THEN 	 		              
+        a.name=i_username limit 1;        
+
+    IF ici_userid is null THEN 	 		              
         SELECT {databaseSchema}.{objectQualifier}user_save 
         (intnull,
 		i_boardid,
-		ici_UserName,
-		ici_UserName,
+		i_username,
+		i_username,
 		i_email,
 		i_timezone,
 		varcharnull,
@@ -16091,12 +16062,12 @@ CREATE OR REPLACE FUNCTION  {databaseSchema}.{objectQualifier}user_lazydata(
 $BODY$DECLARE
              G_UsrAlbums integer :=0;
              R_UsrAlbums integer :=0;         
-             ici_grouppersonalforums integer :=0;
+             ici_grouppersonalforums integer :=0;			
              ici_grouppersonalmasks integer :=0;
              ici_grouppersonalgroups integer :=0;
              _rec {databaseSchema}.{objectQualifier}user_lazydata_return_type%ROWTYPE;
-BEGIN 
-
+			 _recgr RECORD;
+BEGIN  
     SELECT  COALESCE(MAX(c.usrpersonalgroups),0),COALESCE(MAX(c.usrpersonalmasks),0),COALESCE(MAX(c.usrpersonalforums),0)
     INTO  ici_grouppersonalgroups,ici_grouppersonalmasks,ici_grouppersonalforums
     FROM {databaseSchema}.{objectQualifier}user a 
@@ -16163,7 +16134,7 @@ BEGIN
         (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}group gr   WHERE gr.createdbyuserid = i_userid and gr.isusergroup),
         ici_grouppersonalgroups,
         ici_grouppersonalmasks,
-        ici_grouppersonalforums,
+        ici_grouppersonalforums,		
         a.commonviewtype,
         a.topicsperpage,
         a.postsperpage
@@ -17262,7 +17233,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) 
 	 AND (t.flags & 8) <> 8 
 	 AND
-      tg.tag LIKE CASE 
+      tg.tag ILIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
             ELSE '%' END ; 
@@ -17277,7 +17248,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid)
 	AND (t.flags & 8) <> 8
     AND
-      tg.tag LIKE CASE 
+      tg.tag ILIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
             ELSE '%' END ; 
@@ -17292,7 +17263,7 @@ FOR _rec IN SELECT DISTINCT(tt.tagid),tg.tag,tg.tagcount,_maxcount AS MaxTagCoun
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.forumid = t.forumid AND aa.userid = i_pageuserid)
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) 
 	AND (t.flags & 8) <> 8 AND
-      tg.tag LIKE CASE 
+      tg.tag ILIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
             ELSE '%' END

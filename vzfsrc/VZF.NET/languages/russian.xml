@@ -5026,6 +5026,13 @@ Spoiler Content
     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
     <Resource tag="TITLE">Board Tags</Resource>
   </page>
+  <page name="TASKS_RUNNING">
+    <Resource tag="CLEANUPTASK">Задача очистки</Resource>
+    <Resource tag="DIGESTSENDTASK">Отправка дайджеста</Resource>
+    <Resource tag="MAILSENDTASK">Отправка почты</Resource>
+    <Resource tag="SYNCNNTPTASK">Бот групп новостей (Nntp)</Resource>
+    <Resource tag="USERCLEANUPTASK">Задача чистки пользователей</Resource>
+  </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Администраторы</Resource>
     <Resource tag="FORUMS">Форумы</Resource>

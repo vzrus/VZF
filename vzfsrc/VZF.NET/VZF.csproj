@@ -2638,7 +2638,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3465,15 +3465,33 @@
     <Content Include="resources\images\title-bg.gif" />
     <Content Include="resources\js\DataPanel.js" />
     <Content Include="resources\js\fancytree.vzf.nodesadmincategorylist.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadmincategorylist.min.js">
+      <DependentUpon>fancytree.vzf.nodesadmincategorylist.js</DependentUpon>
+    </Content>
     <Content Include="resources\js\fancytree.vzf.nodesadminsetgroupaccess.js" />
-    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadminsetgroupaccess.min.js">
+      <DependentUpon>fancytree.vzf.nodesadminsetgroupaccess.js</DependentUpon>
+    </Content>
     <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.js" />
+    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js">
+      <DependentUpon>fancytree.vzf.nodesadmintreelazy.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodesjumplazy.min.js">
+      <DependentUpon>fancytree.vzf.nodesjumplazy.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js">
+      <DependentUpon>fancytree.vzf.nodeslazy.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodeslazyprofileaccess.min.js">
+      <DependentUpon>fancytree.vzf.nodeslazyprofileaccess.js</DependentUpon>
+    </Content>
     <Content Include="resources\js\fancytree.vzf.nodessearch.js" />
     <Content Include="resources\js\fancytree.vzf.nodeslazyprofileaccess.js" />
+    <Content Include="resources\js\fancytree.vzf.nodessearch.min.js">
+      <DependentUpon>fancytree.vzf.nodessearch.js</DependentUpon>
+    </Content>
     <Content Include="resources\js\fancytree.vzf.togglejump.js" />
-    <Content Include="resources\js\fancytree.vzf.nodesjumplazy.min.js" />
     <Content Include="resources\js\fancytree.vzf.nodesjumplazy.js" />
-    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js" />
     <Content Include="resources\js\i18n\defaults-cs_CZ.js" />
     <Content Include="resources\js\i18n\defaults-cs_CZ.min.js" />
     <Content Include="resources\js\i18n\defaults-de_DE.js" />
@@ -4142,7 +4160,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
@@ -4155,8 +4173,11 @@
     <Content Include="resources\css\fancytree\skin-win8\ui.fancytree.less" />
     <Content Include="resources\css\fancytree\skin-xp\ui.fancytree.less" />
     <Content Include="packages.config" />
-    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js.map">
-      <DependentUpon>fancytree.vzf.nodeslazy.min.js</DependentUpon>
+    <Content Include="resources\js\fancytree.vzf.nodesadmincategorylist.min.js.map">
+      <DependentUpon>fancytree.vzf.nodesadmincategorylist.min.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodesadminsetgroupaccess.min.js.map">
+      <DependentUpon>fancytree.vzf.nodesadminsetgroupaccess.min.js</DependentUpon>
     </Content>
     <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js.map">
       <DependentUpon>fancytree.vzf.nodesadmintreelazy.min.js</DependentUpon>
@@ -4164,7 +4185,16 @@
     <Content Include="resources\js\fancytree.vzf.nodesjumplazy.min.js.map">
       <DependentUpon>fancytree.vzf.nodesjumplazy.min.js</DependentUpon>
     </Content>
-    <None Include="web_pg.config">
+    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js.map">
+      <DependentUpon>fancytree.vzf.nodeslazy.min.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodeslazyprofileaccess.min.js.map">
+      <DependentUpon>fancytree.vzf.nodeslazyprofileaccess.min.js</DependentUpon>
+    </Content>
+    <Content Include="resources\js\fancytree.vzf.nodessearch.min.js.map">
+      <DependentUpon>fancytree.vzf.nodessearch.min.js</DependentUpon>
+    </Content>
+    <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
@@ -4920,7 +4950,7 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web.config">
+    <Content Include="web_ms.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

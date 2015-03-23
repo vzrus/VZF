@@ -188,7 +188,7 @@ public class SyncNntpTask : IntermittentBackgroundTask
                                 if (YafContext.Current.BoardSettings.CreateNntpUsers)
                                 {
                                     guestUserId = CommonDb.user_nntp(YafContext.Current.PageModuleID, boardId, fromName,
-                                        string.Empty, article.Header.TimeZoneOffset);
+                                         "{0}@changeme.zz".FormatWith(Guid.NewGuid().ToString().Replace("-", string.Empty)), article.Header.TimeZoneOffset);
                                 }
 
                                 string body = article.Body.Text.Trim();

@@ -5379,4 +5379,11 @@ Visit {forumname} at {forumlink}
      <Resource tag="HONORED">Honored</Resource>
      <Resource tag="EXALTED">Exalted</Resource>
    </page>
+ <page name="TASKS_RUNNING">
+     <Resource tag="MAILSENDTASK">Sending mail</Resource>
+     <Resource tag="SYNCNNTPTASK">Nntp crawler</Resource>
+     <Resource tag="CLEANUPTASK">Cleaning Task</Resource>
+     <Resource tag="USERCLEANUPTASK">User Cleaning Task</Resource>
+     <Resource tag="DIGESTSENDTASK">Digest Sending Task</Resource>
+   </page>
 </Resources>

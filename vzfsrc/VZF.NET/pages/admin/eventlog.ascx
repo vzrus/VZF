@@ -1,5 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="True" EnableViewState="true" Inherits="YAF.Pages.Admin.eventlog"
     CodeBehind="eventlog.ascx.cs" %>
+<%@ Import Namespace="YAF.Providers.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
    
 <VZF:PageLinks runat="server" ID="PageLinks" />
@@ -92,7 +93,7 @@ function toggleItem(detailId)
                               <%# HtmlEncode(Eval( "Name")) %>
                             </td>
                             <td width="8%">
-                              <%# Eval( "EventTime") %>
+                              <%# this.Get<IDateTime>().FormatDateTimeShort((System.DateTime)Eval( "EventTime")) %>
                             </td>
                             <td>
                               <%# HtmlEncode(Eval( "Source")) %>

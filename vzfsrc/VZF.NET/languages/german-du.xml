@@ -5003,6 +5003,13 @@ Durch das Abschließen der Registrierung stimmst Du diesen Nutzungsbedingungen z
     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
     <Resource tag="TITLE">Board Tags</Resource>
   </page>
+  <page name="TASKS_RUNNING">
+    <Resource tag="CLEANUPTASK">Cleaning Task</Resource>
+    <Resource tag="DIGESTSENDTASK">Digest Sending Task</Resource>
+    <Resource tag="MAILSENDTASK">Sending mail</Resource>
+    <Resource tag="SYNCNNTPTASK">Nntp crawler</Resource>
+    <Resource tag="USERCLEANUPTASK">User Cleaning Task </Resource>
+  </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Admins</Resource>
     <Resource tag="FORUMS">Foren</Resource>

@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Text;
+
 namespace YAF.Pages
 {
     #region Using
@@ -501,22 +503,22 @@ namespace YAF.Pages
             }
 
             bool doSearch = false;
-
-            string searchString = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("search");
-            if (searchString.IsSet() && searchString.Length < 50)
-            {
-                this.txtSearchStringWhat.Text = searchString;
+            
+            string searchString = this.Request.QueryString.GetFirstOrDefault("search");
+            if (searchString.IsSet() && searchString.Length < 80){
+                
+                this.txtSearchStringWhat.Text = HttpUtility.UrlDecode(searchString);
                 doSearch = true;
             }
 
-            string forumString = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("forum");
+            string forumString = this.Request.QueryString.GetFirstOrDefault("forum");
             if (!Config.LargeForumTree)
             {
                 if (searchString.IsSet() && this.listForum.Enabled)
                 {
                     try
                     {
-                        this.listForum.SelectedValue = HttpUtility.UrlDecode(forumString);
+                        this.listForum.SelectedValue = forumString;
                     }
                     catch (Exception)
                     {
@@ -525,7 +527,7 @@ namespace YAF.Pages
                 }
             }
 
-            var postedBy = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("postedby");
+            var postedBy = this.Request.QueryString.GetFirstOrDefault("postedby");
 
             if (postedBy.IsSet() && postedBy.Length < 50)
             {

@@ -27,7 +27,8 @@
                 <tr>
                     <td>
                         <strong>
-                            <%# Eval("Key") %></strong>
+                            <%# this.GetText("TASKS_RUNNING", Eval("Key").ToString().ToUpperInvariant()) %>
+                        </strong>
                             <asp:PlaceHolder ID="StopTaskHolder" runat="server" Visible="<%# Container.ToDataItemType<KeyValuePair<string, IBackgroundTask>>().Value.IsStoppable() %>">
                             [<asp:LinkButton ID="stop" runat="server" CommandName="stop" CommandArgument='<%# Eval("Key") %>'><VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="STOP_TASK" LocalizedPage="ADMIN_TASKMANAGER" /></asp:LinkButton>]
                         </asp:PlaceHolder>
