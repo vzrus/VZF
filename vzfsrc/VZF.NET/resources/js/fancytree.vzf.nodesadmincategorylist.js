@@ -2,13 +2,12 @@
     var categoryList = {};
     categoryList = JSON.parse(categories);
     $('#' + treeId).fancytree(
-    {
-        title: 'Fancy Tree',
-        toggleEffect: { height: 'toggle', duration: 200 },
+    { title: 'Fancy Tree',
+        toggleEffect: { height: 'toggle', duration: 100 },
         autoFocus: false,
         checkbox: false,
         source: categoryList,   
-        beforeExpand: function(event, data) {
+        beforeExpand: function (event, data) {
             return false;
         },
         activate: function(event, dtnode) {

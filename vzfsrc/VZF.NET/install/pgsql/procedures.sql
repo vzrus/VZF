@@ -1864,8 +1864,7 @@ BEGIN
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid) 
   VALUES(l_GroupIDGuest,l_ForumID,l_AccessMaskIDReadOnly);
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid) 
-  VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember);
-   perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
+  VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember); 
  RETURN ici_boardid;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 

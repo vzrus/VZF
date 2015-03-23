@@ -1,5 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.members" CodeBehind="members.ascx.cs" %>
 <%@ Register TagPrefix="VZF" Namespace="VZF.Controls" %>
+<%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
@@ -55,7 +56,7 @@
     </tr>
 </table>
 <br />
-<VZF:AlphaSort ID="AlphaSort1" runat="server" />
+<VZF:AlphaSort ID="AlphaSort1" PagerPage='<%# ForumPages.members %>' runat="server" />
 <VZF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>

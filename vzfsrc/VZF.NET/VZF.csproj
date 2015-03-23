@@ -1002,6 +1002,10 @@
     </Compile>
     <Content Include="advanced.aspx" />
     <Content Include="App_Data\vzf.mdf" />
+    <Content Include="App_Data\vzf1.mdf" />
+    <Content Include="App_Data\vzf1_log.ldf">
+      <DependentUpon>vzf1.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\vzf_log.ldf">
       <DependentUpon>vzf.mdf</DependentUpon>
     </Content>
@@ -2638,7 +2642,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app_ms.config" />
+    <Content Include="app.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3528,6 +3532,9 @@
     <Content Include="resources\js\jquery.ceebox.js" />
     <Content Include="resources\js\jquery.fancytree-all.min.js" />
     <Content Include="resources\js\jquery.hovercard.js" />
+    <Content Include="resources\js\jquery.hovercard.min.js">
+      <DependentUpon>jquery.hovercard.js</DependentUpon>
+    </Content>
     <Content Include="resources\js\jquery.min.js" />
     <Content Include="resources\js\jquery.msDropDown.js" />
     <Content Include="resources\js\jquery.notification.js" />
@@ -4160,7 +4167,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
@@ -4173,20 +4180,20 @@
     <Content Include="resources\css\fancytree\skin-win8\ui.fancytree.less" />
     <Content Include="resources\css\fancytree\skin-xp\ui.fancytree.less" />
     <Content Include="packages.config" />
+    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js.map">
+      <DependentUpon>fancytree.vzf.nodesadmintreelazy.min.js</DependentUpon>
+    </Content>
     <Content Include="resources\js\fancytree.vzf.nodesadmincategorylist.min.js.map">
       <DependentUpon>fancytree.vzf.nodesadmincategorylist.min.js</DependentUpon>
     </Content>
     <Content Include="resources\js\fancytree.vzf.nodesadminsetgroupaccess.min.js.map">
       <DependentUpon>fancytree.vzf.nodesadminsetgroupaccess.min.js</DependentUpon>
     </Content>
-    <Content Include="resources\js\fancytree.vzf.nodesadmintreelazy.min.js.map">
-      <DependentUpon>fancytree.vzf.nodesadmintreelazy.min.js</DependentUpon>
+    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js.map">
+      <DependentUpon>fancytree.vzf.nodeslazy.min.js</DependentUpon>
     </Content>
     <Content Include="resources\js\fancytree.vzf.nodesjumplazy.min.js.map">
       <DependentUpon>fancytree.vzf.nodesjumplazy.min.js</DependentUpon>
-    </Content>
-    <Content Include="resources\js\fancytree.vzf.nodeslazy.min.js.map">
-      <DependentUpon>fancytree.vzf.nodeslazy.min.js</DependentUpon>
     </Content>
     <Content Include="resources\js\fancytree.vzf.nodeslazyprofileaccess.min.js.map">
       <DependentUpon>fancytree.vzf.nodeslazyprofileaccess.min.js</DependentUpon>
@@ -4194,7 +4201,10 @@
     <Content Include="resources\js\fancytree.vzf.nodessearch.min.js.map">
       <DependentUpon>fancytree.vzf.nodessearch.min.js</DependentUpon>
     </Content>
-    <None Include="web.config">
+    <Content Include="resources\js\jquery.hovercard.min.js.map">
+      <DependentUpon>jquery.hovercard.min.js</DependentUpon>
+    </Content>
+    <None Include="web_pg.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
@@ -4950,7 +4960,7 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web_ms.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

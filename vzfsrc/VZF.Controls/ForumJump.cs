@@ -80,10 +80,10 @@ namespace VZF.Controls
     /// </returns>
     public virtual bool LoadPostData([NotNull] string postDataKey, [NotNull] NameValueCollection postCollection)
     {
-      int forumID;
-      if (int.TryParse(postCollection[postDataKey], out forumID) && forumID != this.ForumID)
+      int forumId;
+      if (int.TryParse(postCollection[postDataKey], out forumId) && forumId != this.ForumID)
       {
-        this.ForumID = forumID;
+        this.ForumID = forumId;
         return true;
       }
 

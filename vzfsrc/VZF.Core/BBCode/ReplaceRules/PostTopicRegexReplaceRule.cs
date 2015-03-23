@@ -71,16 +71,15 @@ namespace YAF.Core.BBCode.ReplaceRules
     {
       if (variableName == "post" || variableName == "topic")
       {
-        int id = 0;
+        int id;
         if (int.TryParse(variableValue, out id))
         {
-          if (variableName == "post")
+          switch (variableName)
           {
-            return YafBuildLink.GetLink(ForumPages.posts, "m={0}#post{0}", id);
-          }
-          else if (variableName == "topic")
-          {
-            return YafBuildLink.GetLink(ForumPages.posts, "t={0}", id);
+              case "post":
+                  return YafBuildLink.GetLink(ForumPages.posts, "m={0}#post{0}", id);
+              case "topic":
+                  return YafBuildLink.GetLink(ForumPages.posts, "t={0}", id);
           }
         }
       }

@@ -225,7 +225,7 @@ IF (:ici_left_key IS NULL OR :ici_left_key = 0) THEN
 			ici_left_key = 1;
 	
 		ici_level = 0;
-		new_parentid = 0; 
+		new_parentid = NULL; 
 	END
 -- setting figured out keys for the node
 	new_left_key = :ici_left_key;

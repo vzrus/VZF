@@ -103,11 +103,10 @@ namespace VZF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Back_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            var ti = this.Request.QueryString.GetFirstOrDefault("ti");
+         
             int tii;
-
             // check if it's a link from topic edit
-            if (ti != null && int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out tii))
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out tii))
             {
                 YafBuildLink.Redirect(ForumPages.posts, "t={0}".FormatWith(tii));
             }
@@ -133,10 +132,9 @@ namespace VZF.Controls
         /// </summary>
         private void DeleteFiles()
         {
-            var ti = this.Request.QueryString.GetFirstOrDefault("ti");
             int tii;
 
-            if (ti == null || !int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out tii))
+            if (!int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out tii))
             {
                 return;
             }
@@ -201,13 +199,8 @@ namespace VZF.Controls
                 this._currentUserID = this.PageContext.PageUserID;
             }
 
-            var ti = this.Request.QueryString.GetFirstOrDefault("ti");
-
             // check if it's a link from topic edit
-            if (ti != null)
-            {
-                int.TryParse(ti, out this._currentTopicId);
-            }
+            int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out this._currentTopicId);
 
             if (this.IsPostBack)
             {
@@ -276,13 +269,9 @@ namespace VZF.Controls
             {
                 this.TopicImage.Text = "http://{0}".FormatWith(this.TopicImage.Text);
             }
-            var ti = this.Request.QueryString.GetFirstOrDefault("ti");
 
             // check if it's a link from topic edit
-            if (ti != null)
-            {
-                int.TryParse(ti, out this._currentTopicId);
-            }
+            int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out this._currentTopicId);
 
             // update
             CommonDb.topic_imagesave(

@@ -4811,8 +4811,8 @@ namespace VZF.Data.Common
             using (var sc = new VzfSqlCommand(mid))
             {
                 int sortOrderOut;
-                bool result = int.TryParse(sortOrder.ToString(), out sortOrderOut);
-                if (result)
+               
+                if (int.TryParse(sortOrder.ToString(), out sortOrderOut))
                 {
                     if (sortOrderOut >= 255)
                     {

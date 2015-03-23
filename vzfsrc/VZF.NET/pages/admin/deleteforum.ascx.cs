@@ -60,6 +60,10 @@ namespace YAF.Pages.Admin
         protected int? GetQueryStringAsInt([NotNull] string name)
         {
             int value;
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
+            {
+                return value;
+            }
 
             if (this.Request.QueryString.GetFirstOrDefault(name) != null)
             {
@@ -68,11 +72,6 @@ namespace YAF.Pages.Admin
 
                     return TreeViewUtils.GetParcedTreeNode(this.Request.QueryString.GetFirstOrDefault(name)).ForumId;
 
-                }
-
-                if (int.TryParse(this.Request.QueryString.GetFirstOrDefault(name), out value))
-                {
-                    return value;
                 }
             }
 

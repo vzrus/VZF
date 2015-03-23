@@ -239,7 +239,7 @@ namespace VZF.Controls
 
                 switch (sc.DataSource.Information.DataSourceProductName)
                 {
-                    case "MS SQL Server":
+                    case "Microsoft SQL Server":
                         footer.Append(
                             @"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(
                                 this.PageContext.Get<ITheme>()

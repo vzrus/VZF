@@ -19,200 +19,204 @@
 
 namespace YAF.Pages.Admin
 {
-  #region Using
+    #region Using
 
-  using System;
-  using System.Data;
+    using System;
+    using System.Data;
 
-  using VZF.Data.Common;
+    using VZF.Data.Common;
 
-  
-  using YAF.Core;
-  using YAF.Core.BBCode;
-  using YAF.Core.Services;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Interfaces;
-  using VZF.Utils;
-  using VZF.Utils.Helpers;
 
-  #endregion
-
-  /// <summary>
-  /// The bbcode_edit.
-  /// </summary>
-  public partial class bbcode_edit : AdminPage
-  {
-    #region Constants and Fields
-
-    /// <summary>
-    ///   The _bbcode id.
-    /// </summary>
-    private int? _bbcodeId;
+    using YAF.Core;
+    using YAF.Core.BBCode;
+    using YAF.Core.Services;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
-    #region Properties
-
     /// <summary>
-    ///   Gets BBCodeID.
+    /// The bbcode_edit.
     /// </summary>
-    protected int? BBCodeID
+    public partial class bbcode_edit : AdminPage
     {
-      get
-      {
-        if (this._bbcodeId != null)
-        {
-          return this._bbcodeId;
-        }
+        #region Constants and Fields
 
-        if (this.Request.QueryString.GetFirstOrDefault("b") != null)
+        /// <summary>
+        ///   The _bbcode id.
+        /// </summary>
+        private int? _bbcodeId;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///   Gets BBCodeID.
+        /// </summary>
+        protected int? BBCodeID
         {
-            int id;
-            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("b"), out id))
+            get
             {
-                this._bbcodeId = id;
-                return id;
+                if (this._bbcodeId != null)
+                {
+                    return this._bbcodeId;
+                }
+
+                if (this.Request.QueryString.GetFirstOrDefault("b") == null)
+                    return null;
+
+                int id;
+                if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("b"), out id))
+                {
+                    this._bbcodeId = id;
+                    return id;
+                }
+
+                return null;
             }
         }
 
-          return null;
-      }
-    }
+        #endregion
 
-    #endregion
+        #region Methods
 
-    #region Methods
-
-    /// <summary>
-    /// The add_ click.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    protected void Add_Click([NotNull] object sender, [NotNull] EventArgs e)
-    {
-      short sortOrder;
-
-      if (!ValidationHelper.IsValidPosShort(this.txtExecOrder.Text.Trim()))
-      {
-          this.PageContext.AddLoadMessage(this.GetText("ADMIN_BBCODE_EDIT", "MSG_POSITIVE_VALUE"));
-        return;
-      }
-
-      if (!short.TryParse(this.txtExecOrder.Text.Trim(), out sortOrder))
-      {
-          this.PageContext.AddLoadMessage(this.GetText("ADMIN_BBCODE_EDIT", "MSG_NUMBER"));
-        return;
-      }
-
-      CommonDb.bbcode_save(PageContext.PageModuleID, this.BBCodeID, 
-        this.PageContext.PageBoardID, 
-        this.txtName.Text.Trim(), 
-        this.txtDescription.Text, 
-        this.txtOnClickJS.Text, 
-        this.txtDisplayJS.Text, 
-        this.txtEditJS.Text, 
-        this.txtDisplayCSS.Text, 
-        this.txtSearchRegEx.Text, 
-        this.txtReplaceRegEx.Text, 
-        this.txtVariables.Text, 
-        this.chkUseModule.Checked, 
-        this.txtModuleClass.Text, 
-        sortOrder);
-      
-      this.Get<IDataCache>().Remove(Constants.Cache.CustomBBCode);
-      this.Get<IObjectStore>().RemoveOf<IProcessReplaceRules>();
-
-      YafBuildLink.Redirect(ForumPages.admin_bbcode);
-    }
-
-    /// <summary>
-    /// The bind data.
-    /// </summary>
-    protected void BindData()
-    {
-        if (this.BBCodeID == null)
+        /// <summary>
+        /// The add_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Add_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            return;
+            short sortOrder;
+
+            if (!ValidationHelper.IsValidPosShort(this.txtExecOrder.Text.Trim()))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_BBCODE_EDIT", "MSG_POSITIVE_VALUE"));
+                return;
+            }
+
+            if (!short.TryParse(this.txtExecOrder.Text.Trim(), out sortOrder))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_BBCODE_EDIT", "MSG_NUMBER"));
+                return;
+            }
+
+            CommonDb.bbcode_save(PageContext.PageModuleID, this.BBCodeID,
+                this.PageContext.PageBoardID,
+                this.txtName.Text.Trim(),
+                this.txtDescription.Text,
+                this.txtOnClickJS.Text,
+                this.txtDisplayJS.Text,
+                this.txtEditJS.Text,
+                this.txtDisplayCSS.Text,
+                this.txtSearchRegEx.Text,
+                this.txtReplaceRegEx.Text,
+                this.txtVariables.Text,
+                this.chkUseModule.Checked,
+                this.txtModuleClass.Text,
+                sortOrder);
+
+            this.Get<IDataCache>().Remove(Constants.Cache.CustomBBCode);
+            this.Get<IObjectStore>().RemoveOf<IProcessReplaceRules>();
+
+            YafBuildLink.Redirect(ForumPages.admin_bbcode);
         }
 
-        DataRow row = CommonDb.bbcode_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.BBCodeID.Value).Rows[0];
+        /// <summary>
+        /// The bind data.
+        /// </summary>
+        protected void BindData()
+        {
+            if (this.BBCodeID == null)
+            {
+                return;
+            }
 
-        // fill the control values...
-        this.txtName.Text = row["Name"].ToString();
-        this.txtExecOrder.Text = row["ExecOrder"].ToString();
-        this.txtDescription.Text = row["Description"].ToString();
-        this.txtOnClickJS.Text = row["OnClickJS"].ToString();
-        this.txtDisplayJS.Text = row["DisplayJS"].ToString();
-        this.txtEditJS.Text = row["EditJS"].ToString();
-        this.txtDisplayCSS.Text = row["DisplayCSS"].ToString();
-        this.txtSearchRegEx.Text = row["SearchRegex"].ToString();
-        this.txtReplaceRegEx.Text = row["ReplaceRegex"].ToString();
-        this.txtVariables.Text = row["Variables"].ToString();
-        this.txtModuleClass.Text = row["ModuleClass"].ToString();
-        this.chkUseModule.Checked = Convert.ToBoolean((row["UseModule"] == DBNull.Value) ? false : row["UseModule"]);
+            DataRow row =
+                CommonDb.bbcode_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.BBCodeID.Value).Rows[0
+                    ];
 
+            // fill the control values...
+            this.txtName.Text = row["Name"].ToString();
+            this.txtExecOrder.Text = row["ExecOrder"].ToString();
+            this.txtDescription.Text = row["Description"].ToString();
+            this.txtOnClickJS.Text = row["OnClickJS"].ToString();
+            this.txtDisplayJS.Text = row["DisplayJS"].ToString();
+            this.txtEditJS.Text = row["EditJS"].ToString();
+            this.txtDisplayCSS.Text = row["DisplayCSS"].ToString();
+            this.txtSearchRegEx.Text = row["SearchRegex"].ToString();
+            this.txtReplaceRegEx.Text = row["ReplaceRegex"].ToString();
+            this.txtVariables.Text = row["Variables"].ToString();
+            this.txtModuleClass.Text = row["ModuleClass"].ToString();
+            this.chkUseModule.Checked = Convert.ToBoolean((row["UseModule"] == DBNull.Value) ? false : row["UseModule"]);
+
+        }
+
+        /// <summary>
+        /// The cancel_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            YafBuildLink.Redirect(ForumPages.admin_bbcode);
+        }
+
+        /// <summary>
+        /// The page_ load.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            string strAddEdit = (this.BBCodeID == null) ? this.GetText("COMMON", "ADD") : this.GetText("COMMON", "EDIT");
+
+            if (!this.IsPostBack)
+            {
+                this.PageLinks.AddLink(this.PageContext.BoardSettings.Name, YafBuildLink.GetLink(ForumPages.forum));
+                this.PageLinks.AddLink(this.GetText("ADMIN_ADMIN", "Administration"),
+                    YafBuildLink.GetLink(ForumPages.admin_admin));
+                this.PageLinks.AddLink(this.GetText("ADMIN_BBCODE", "TITLE"),
+                    YafBuildLink.GetLink(ForumPages.admin_bbcode));
+                this.PageLinks.AddLink(this.GetText("ADMIN_BBCODE_EDIT", "TITLE").FormatWith(strAddEdit), string.Empty);
+
+                this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
+                    this.GetText("ADMIN_ADMIN", "Administration"),
+                    this.GetText("ADMIN_BBCODE", "TITLE"),
+                    this.GetText("ADMIN_BBCODE_EDIT", "TITLE").FormatWith(strAddEdit));
+                this.save.Text = this.GetText("ADMIN_COMMON", "SAVE");
+                this.cancel.Text = this.GetText("ADMIN_COMMON", "CANCEL");
+                this.BindData();
+            }
+
+            this.txtName.Attributes.Add("style", "width:99%");
+            this.txtDescription.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtOnClickJS.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtDisplayJS.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtEditJS.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtDisplayCSS.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtSearchRegEx.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtReplaceRegEx.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtVariables.Attributes.Add("style", "width:99%;height:75px;");
+            this.txtModuleClass.Attributes.Add("style", "width:99%");
+        }
+
+        #endregion
     }
-
-    /// <summary>
-    /// The cancel_ click.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
-    {
-      YafBuildLink.Redirect(ForumPages.admin_bbcode);
-    }
-
-    /// <summary>
-    /// The page_ load.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
-    {
-        string strAddEdit = (this.BBCodeID == null) ? this.GetText("COMMON", "ADD") : this.GetText("COMMON", "EDIT");
-
-      if (!this.IsPostBack)
-      {
-        this.PageLinks.AddLink(this.PageContext.BoardSettings.Name, YafBuildLink.GetLink(ForumPages.forum));
-        this.PageLinks.AddLink(this.GetText("ADMIN_ADMIN", "Administration"), YafBuildLink.GetLink(ForumPages.admin_admin));
-        this.PageLinks.AddLink(this.GetText("ADMIN_BBCODE", "TITLE"), YafBuildLink.GetLink(ForumPages.admin_bbcode));
-        this.PageLinks.AddLink(this.GetText("ADMIN_BBCODE_EDIT", "TITLE").FormatWith(strAddEdit), string.Empty);
-
-        this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-              this.GetText("ADMIN_ADMIN", "Administration"),
-              this.GetText("ADMIN_BBCODE", "TITLE"),
-              this.GetText("ADMIN_BBCODE_EDIT", "TITLE").FormatWith(strAddEdit));
-          this.save.Text = this.GetText("ADMIN_COMMON", "SAVE");
-          this.cancel.Text = this.GetText("ADMIN_COMMON", "CANCEL");
-        this.BindData();
-      }
-
-      this.txtName.Attributes.Add("style", "width:99%");
-      this.txtDescription.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtOnClickJS.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtDisplayJS.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtEditJS.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtDisplayCSS.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtSearchRegEx.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtReplaceRegEx.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtVariables.Attributes.Add("style", "width:99%;height:75px;");
-      this.txtModuleClass.Attributes.Add("style", "width:99%");
-    }
-
-    #endregion
-  }
 }

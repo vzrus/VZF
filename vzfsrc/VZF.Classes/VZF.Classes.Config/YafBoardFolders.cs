@@ -74,7 +74,7 @@ namespace YAF.Classes
         {
             get
             {
-                return string.Concat(BoardFolder,this.Topics, this.PathSeparator, "Attachments");
+                return string.Concat(BoardFolder, this.Uploads, this.PathSeparator, "Attachments");
             }
         }
 

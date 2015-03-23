@@ -61,7 +61,7 @@
 
                 if (Config.DatabaseCollation != null)
                 {
-                    type += " COLLATE " + Config.DatabaseEncoding + "_" + Config.DatabaseCollation;
+                    type += " COLLATE " + Config.DatabaseCollation;
                 }
             }
 

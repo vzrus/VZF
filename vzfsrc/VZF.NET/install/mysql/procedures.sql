@@ -2213,9 +2213,7 @@ MODIFIES SQL DATA
   END;
 --GO
 
-
   /* STORED PROCEDURE CREATED BY VZ-TEAM */
-
   CREATE  PROCEDURE {databaseSchema}.{objectQualifier}board_delete(
   i_BoardID INT)
   MODIFIES SQL DATA
@@ -6466,47 +6464,31 @@ declare ici_ReplyTo	INT DEFAULT NULL;
 
     SELECT ForumID INTO ici_ForumID 
     FROM {databaseSchema}.{objectQualifier}NntpForum 
-    WHERE NntpForumID=i_NntpForumID;    
+    WHERE NntpForumID=i_NntpForumID;  
+	
+	select TopicID,  MessageID into ici_TopicID, ici_ReplyTo
+         from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId;
 
- if exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId limit 1) then
-
-        /* thread exists */
-        -- message exists
-        select TopicID,  MessageID into ici_TopicID, ici_ReplyTo
-         from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId; 	
-     ELSE 
-        if not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId limit 1) then
-        /* thread doesn't exists */
-        if (i_ReferenceMessageId IS NULL)
-        then
+ if ici_TopicID IS NULL AND i_ReferenceMessageId IS NULL and not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId limit 1) 
+     then        
         INSERT INTO {databaseSchema}.{objectQualifier}Topic(ForumID,UserID,UserName,UserDisplayName,Posted,Topic,Views,Priority,NumPosts,LastMessageFlags)
         VALUES(ici_ForumID,i_UserID,i_UserName,i_UserName,i_Posted,i_Topic,0,0,0,22);
         SELECT LAST_INSERT_ID() INTO ici_TopicID; 
 
         INSERT INTO {databaseSchema}.{objectQualifier}NntpTopic(NntpForumID,Thread,TopicID)
-        VALUES (i_NntpForumID,'',ici_TopicID);		
-			
-        end if;
-        end if;
+        VALUES (i_NntpForumID,'',ici_TopicID);     
     END IF;	
     IF ici_TopicID IS NOT NULL
     then
 	 CALL {databaseSchema}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Body,i_UserName,i_IP,i_Posted,ici_ReplyTo,null, i_ExternalMessageId, i_ReferenceMessageId, null,17,i_UTCTIMESTAMP,ici_MessageID);
 
-   
-    END if;	
-
- 
-    /* update user */
+	 /* update user */
     IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}Forum 
-    WHERE ForumID=ici_ForumID AND (Flags & 4)=0) THEN
-    
-        UPDATE {databaseSchema}.{objectQualifier}User SET NumPosts=NumPosts+1 WHERE UserID=i_UserID;
-		
+    WHERE ForumID=ici_ForumID AND (Flags & 4)=0) THEN    
+        UPDATE {databaseSchema}.{objectQualifier}User SET NumPosts=NumPosts+1 WHERE UserID=i_UserID;		
     END IF;    
 
-    CALL {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
-    UPDATE {databaseSchema}.{objectQualifier}Topic SET 
+     UPDATE {databaseSchema}.{objectQualifier}Topic SET 
         LastPosted		= i_Posted,
         LastMessageID	= ici_MessageID,
         LastUserID		= i_UserID,
@@ -6520,41 +6502,16 @@ declare ici_ReplyTo	INT DEFAULT NULL;
         LastUserID		= i_UserID,
         LastUserName	= i_UserName
     WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted))); 
+    END if;	
+
+ 
+    
+
+  
+  
 
 
--- CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_TopicID);
--- CALL {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
 
-
-    /* update forum 
-
-SELECT ParentID 
-INTO ici_ParentID
-FROM {databaseSchema}.{objectQualifier}Forum
-WHERE ForumID = ici_ForumID;
-
-    UPDATE {databaseSchema}.{objectQualifier}Forum SET
-        LastPosted		= i_Posted,
-        LastTopicID	= ici_TopicID,
-        LastMessageID	= ici_MessageID,
-        LastUserID		= i_UserID,
-        LastUserName	= i_UserName
-    WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted)));
-CALL {databaseSchema}.{objectQualifier}topic_updatelasttopic(ici_ForumID,ici_TopicID);
-CALL {databaseSchema}.{objectQualifier}forum_updatelasttopic(ici_ForumID);
-WHILE ici_ParentID > 0 DO
-        UPDATE {databaseSchema}.{objectQualifier}Forum SET
-                LastPosted = i_Posted,
-                LastTopicID = ici_TopicID,
-                LastMessageID = ici_MessageID,
-                LastUserID = i_UserID,
-                LastUserName = i_UserName
-            WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR UNIX_TIMESTAMP(LastPosted)<UNIX_TIMESTAMP(i_Posted));    
-         SELECT DISTINCTROW ParentID INTO  ici_ParentID
-  FROM  {databaseSchema}.{objectQualifier}Forum
-  WHERE ForumID = ici_ParentID;  
-  END WHILE; 	
-END IF;*/ 
 END;
 --GO
 CREATE procedure {databaseSchema}.{objectQualifier}activeaccess_reset() 
@@ -6694,8 +6651,7 @@ BEGIN
         WHERE
             a.ForumID = i_ForumID and
             b.BoardID = i_BoardID;
-    END IF;
-    
+    END IF;   
   
 
         -- ensure that access right are in place		

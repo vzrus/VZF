@@ -372,7 +372,7 @@ BEGIN
 			_left_key := 1;
 		END IF;
 		_level := 0;
-		NEW.parentid := 0; 
+		NEW.parentid := NULL; 
 	END IF;
 -- Устанавливаем полученные ключи для узла:
 	NEW.left_key := _left_key;

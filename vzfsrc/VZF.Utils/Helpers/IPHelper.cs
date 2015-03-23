@@ -357,7 +357,7 @@ namespace VZF.Utils.Helpers
             }
 
             byte[] ipBytes = ipAddress.GetAddressBytes();
-            int bits = 0;
+            int bits;
             if (!int.TryParse(ipAddressSplit[1], out bits))
             {
                 bits = 0;

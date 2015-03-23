@@ -203,20 +203,19 @@ namespace YAF.Pages
             }
 
             int forumId = 0;
-            bool ok = this.Request.QueryString.GetFirstOrDefault("f") != null
-            && !int.TryParse(this.Request.QueryString.GetFirstOrDefault("f"), out forumId);
+            bool ok = !int.TryParse(this.Request.QueryString.GetFirstOrDefault("f"), out forumId);
            
-            if (this.Request.QueryString.GetFirstOrDefault("f") != null && int.TryParse(this.Request.QueryString.GetFirstOrDefault("f"), out this.forumIdb))
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("f"), out this.forumIdb))
             {
                 this.retBtnArgs = "f={0}".FormatWith(this.forumIdb);
             }
 
-            if (this.Request.QueryString.GetFirstOrDefault("t") != null && int.TryParse(this.Request.QueryString.GetFirstOrDefault("t"), out topicIdb))
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("t"), out topicIdb))
             {
                 this.retBtnArgs = "t={0}".FormatWith(this.topicIdb);
             }
 
-            if (this.Request.QueryString.GetFirstOrDefault("b") != null && int.TryParse(this.Request.QueryString.GetFirstOrDefault("b"), out this.boardIdb))
+            if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("b"), out this.boardIdb))
             {
                 this.retBtnArgs = "b={0}".FormatWith(this.boardIdb);
             }

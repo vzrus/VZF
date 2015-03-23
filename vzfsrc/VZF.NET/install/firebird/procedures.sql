@@ -6180,22 +6180,14 @@ CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_ADDMESSAGE(
     FROM {objectQualifier}NNTPFORUM 
     WHERE NNTPFORUMID=:I_NNTPFORUMID
     INTO :ici_ForumID ;
-        
-    IF (EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}MESSAGE 
-    WHERE EXTERNALMESSAGEID=:I_REFERENCEMESSAGEID)) THEN 
-        
-                -- referenced message exists		
-        SELECT TOPICID, REPLYTO  
+
+	 SELECT TOPICID, REPLYTO  
         FROM {objectQualifier}MESSAGE
         WHERE EXTERNALMESSAGEID=:I_REFERENCEMESSAGEID 
         INTO :ici_TopicID, :ici_ReplyTo;
-    
-
-     ELSE
-     if (NOT EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}MESSAGE WHERE EXTERNALMESSAGEID=:I_EXTERNALMESSAGEID)) THEN
-     BEGIN 
-        if (I_REFERENCEMESSAGEID IS NULL) THEN
-        BEGIN
+        
+    IF (ici_TopicID IS NULL AND I_REFERENCEMESSAGEID IS NULL AND (NOT EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}MESSAGE WHERE EXTERNALMESSAGEID=:I_EXTERNALMESSAGEID))) THEN 
+      BEGIN       
             -- thread doesn't exists
         SELECT NEXT VALUE FOR SEQ_{objectQualifier}TOPIC_TOPICID FROM RDB$DATABASE INTO :ici_TopicID;
         INSERT INTO {objectQualifier}TOPIC(TOPICID,FORUMID,USERID,USERNAME,USERDISPLAYNAME,POSTED,TOPIC,VIEWS,"PRIORITY",NUMPOSTS)
@@ -6204,10 +6196,10 @@ CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_ADDMESSAGE(
         SELECT NEXT VALUE FOR SEQ_{objectQualifier}NNTPTOPIC_NNTPTOPICID FROM RDB$DATABASE INTO :ici_NntpTopicID;
         INSERT INTO {objectQualifier}NNTPTOPIC(NNTPTOPICID,NNTPFORUMID,"THREAD",TOPICID)
         VALUES (:ici_NntpTopicID,:I_NNTPFORUMID,'',:ici_TopicID);
-        END
+    END
         /*thread doesn't exists*/
         
-     END
+    
 
      IF (ici_TopicID IS NOT NULL) THEN
      BEGIN
@@ -6225,22 +6217,15 @@ CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_ADDMESSAGE(
 		 NULL,
          17,		
          :I_UTCTIMESTAMP
-         RETURNING_VALUES :ici_MessageID;       
-        
-     END	
- 
-    /*save message*/
-    
-     
- 
-    /* UPDATE user */
+         RETURNING_VALUES :ici_MessageID;     
+		 
+		      /* UPDATE user */
     IF (EXISTS(SELECT 1 FROM {objectQualifier}FORUM 
     WHERE FORUMID=:ici_ForumID AND BIN_AND(FLAGS, 4)=0)) THEN 	
         UPDATE {objectQualifier}USER 
         SET NUMPOSTS=NUMPOSTS+1 WHERE USERID=:I_USERID;
-    
-    
-    /* UPDATE topic */
+
+		    /* UPDATE topic */
     UPDATE {objectQualifier}TOPIC SET 
         LASTPOSTED		= :I_POSTED,
         LASTMESSAGEID	= :ici_MessageID,
@@ -6255,40 +6240,8 @@ CREATE PROCEDURE  {objectQualifier}NNTPTOPIC_ADDMESSAGE(
         LASTMESSAGEID	= :ici_MessageID,
         LASTUSERID		= :I_USERID,
         LASTUSERNAME	= :I_USERNAME
-    WHERE FORUMID=:ici_ForumID AND (LASTPOSTED IS NULL OR LASTPOSTED < :I_POSTED);
-EXECUTE PROCEDURE {objectQualifier}TOPIC_UPDATELASTPOST(:ici_ForumID,:ici_TopicID);
-EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATELASTPOST(:ici_ForumID);
-EXECUTE PROCEDURE {objectQualifier}FORUM_UPDATESTATS(:ici_ForumID);
-
-    /* UPDATE forum 
-
-SELECT ParentID 
-INTO ici_ParentID
-FROM {objectQualifier}FORUM
-WHERE ForumID = ici_ForumID;
-
-    UPDATE {objectQualifier}FORUM SET
-        LastPosted		= I_POSTED,
-        LastTopicID	= ici_TopicID,
-        LastMessageID	= ici_MessageID,
-        LastUserID		= I_USERID,
-        LastUserName	= I_USERNAME
-    WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(I_POSTED)));
-EXECUTE PROCEDURE {objectQualifier}topic_updatelasttopic(ici_ForumID,ici_TopicID);
-EXECUTE PROCEDURE {objectQualifier}forum_updatelasttopic(ici_ForumID);
-WHILE ici_ParentID > 0 DO
-        UPDATE {objectQualifier}FORUM SET
-                LastPosted = I_POSTED,
-                LastTopicID = ici_TopicID,
-                LastMessageID = ici_MessageID,
-                LastUserID = I_USERID,
-                LastUserName = I_USERNAME
-            WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR UNIX_TIMESTAMP(LastPosted)<UNIX_TIMESTAMP(I_POSTED));    
-         SELECT DISTINCTROW ParentID INTO  ici_ParentID
-  FROM  {objectQualifier}FORUM
-  WHERE ForumID = ici_ParentID;  
-  END WHILE; 	
-END IF;*/ 
+    WHERE FORUMID=:ici_ForumID AND (LASTPOSTED IS NULL OR LASTPOSTED < :I_POSTED);        
+  END
 END;
 --GO
 

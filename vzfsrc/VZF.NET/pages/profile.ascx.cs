@@ -862,7 +862,7 @@ namespace YAF.Pages
             {
                 var hoverCardLoadJs = new StringBuilder();
 
-                YafContext.Current.PageElements.RegisterJsResourceInclude("hovercard", "js/jquery.hovercard.js");
+                YafContext.Current.PageElements.RegisterJsResourceInclude("hovercard", "js/jquery.hovercard.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("css/jquery.hovercard.css");
 
                 hoverCardLoadJs.Append(

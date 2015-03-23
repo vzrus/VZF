@@ -56,13 +56,13 @@ namespace YAF.Pages.Admin
         {
             get
             {
-                if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("b").IsSet())
+                if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("b").IsNotSet()) 
+                    return null;
+
+                int boardId;
+                if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("b"), out boardId))
                 {
-                    int boardId;
-                    if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("b"), out boardId))
-                    {
-                        return boardId;
-                    }
+                    return boardId;
                 }
 
                 return null;

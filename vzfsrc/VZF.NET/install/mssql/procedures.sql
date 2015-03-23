@@ -12681,10 +12681,10 @@ declare @LastSelectRowNumber int
             WHEN (@BeginsWith = 1 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN LOWER(@SearchText) + '%'             
             ELSE '%' END 
     AND aa.UserID = @PageUserID);
-           
+         
            with TagsIds as
            (
-             select ROW_NUMBER() over (order by tg.Tag) as RowNum, tg.TagID
+             select distinct tg.TagID, DENSE_RANK() over (order by tg.Tag) as RowNum 
 			 from
              [{databaseSchema}].[{objectQualifier}Tags] tg 
             JOIN [{databaseSchema}].[{objectQualifier}TopicTags] tt ON tt.TagID = tg.TagID 
