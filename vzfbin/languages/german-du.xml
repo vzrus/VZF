@@ -13,6 +13,7 @@
     <Resource tag="ADMIN_BBCODE_IMPORT">Importiert BBCodes</Resource>
     <Resource tag="ADMIN_BOARDS">Betrachtet Boardliste</Resource>
     <Resource tag="ADMIN_BOARDSETTINGS">Betrachtet Boardeinstellungen</Resource>
+    <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource>
     <Resource tag="ADMIN_DELETEFORUM">Löscht Foren</Resource>
     <Resource tag="ADMIN_EDITACCESSMASK">Bearbeitet Zugriffsmasken</Resource>
     <Resource tag="ADMIN_EDITBOARD">Bearbeitet Boards</Resource>
@@ -87,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Betrachtet Foren in einer Kategorie</Resource>
     <Resource tag="HELP_INDEX">Betrachtet den Hilfeindex</Resource>
     <Resource tag="HELP_RECOVER">Keine Daten</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">Benutzt AIM</Resource>
     <Resource tag="IM_EMAIL">Benutzt Email</Resource>
     <Resource tag="IM_ICQ">Benutzt ICQ</Resource>
@@ -107,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Betrachtet Moderatoren Index</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Betrachtet gemeldete Beiträge</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Betrachtet nichtgenehmigte Beiträge</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">Verschiebt eine Nachricht</Resource>
     <Resource tag="MOVETOPIC">Verschiebt ein Thema</Resource>
     <Resource tag="MYTOPICS">Betrachtet seine Favoriten und aktiven Themen</Resource>
@@ -326,6 +329,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">Ist die Liste der Dateierweiterungen erlaubt oder nicht erlaubt Dateien Dateien (weniger sicher)?</Resource>
     <Resource tag="BOARD_JQ_THEME">jQuery-UI Skin:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">Das jQuery UI Skin das in diesem Board verwendet werden soll für die Reiter und das Admin Menu Accordion.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">Mobiles Skin:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">Das Mobile Skin das in diesem Board verwendet wird</Resource>
     <Resource tag="BOARD_NAME">Boardname:</Resource>
@@ -359,6 +363,21 @@
     <Resource tag="NO">Nein </Resource>
     <Resource tag="SAVE">Speichern</Resource>
     <Resource tag="YES">Ja</Resource>
+  </page>
+  <page name="ADMIN_DELETECATEGORY">
+    <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+    <Resource tag="DELETE_FORUM">Delete category</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
+    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    <Resource tag="DELETE_TITLE">Deleting category</Resource>
+    <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
+    <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
+    <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
+    <Resource tag="NEW_FORUM">New Forum:</Resource>
+    <Resource tag="NEW_FORUM_HELP">Select the new category for the forums.</Resource>
+    <Resource tag="TITLE">Delete category</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Forum löschen</Resource>
@@ -544,6 +563,8 @@
     <Resource tag="PRE_MODERATED_HELP">Wenn dieses Forum moderiert wird, müssen Beiträge von einem Moderator bestätigt werden.</Resource>
     <Resource tag="REMOTE_URL">Remote-URL:</Resource>
     <Resource tag="REMOTE_URL_HELP">Wenn Sie hier eine Url eingeben, wird diese Url aufgerufen wenn man das Forum öffnet.</Resource>
+    <Resource tag="SAVING_TITLE">Saving forum</Resource>
+    <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
     <Resource tag="SORT_ORDER">Sortiert nach:</Resource>
     <Resource tag="SORT_ORDER_HELP">Sortierung unter diese Kategorie.</Resource>
     <Resource tag="STYLES">Stile:</Resource>
@@ -814,6 +835,7 @@
     <Resource tag="TYPE">Typ</Resource>
     <Resource tag="TYPES">Typen</Resource>
     <Resource tag="TYPES_HELP">Wählen Sie ein Ereignislog Typ um nur bestimmte Ereignisse anzuzeigen.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Erlaubt</Resource>
@@ -907,6 +929,8 @@
     <Resource tag="NEW_CATEGORY">Neue Kategorie</Resource>
     <Resource tag="NEW_FORUM">Neues Forum</Resource>
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+    <Resource tag="TREEVIEW_MENUTIP">Created on </Resource>
+    <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Zu YAF hinzufügen</Resource>
@@ -1250,6 +1274,10 @@
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Anzal an Themen pro Seite die in der Meine Themen Seite angezeigt werden. </Resource>
     <Resource tag="NAME_LENGTH">Benutzername Max Länge:</Resource>
     <Resource tag="NAME_LENGTH_HELP">Max erlaubt Benutzernamelänge oder Benutzer Anzeigenamenlänge.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Time to fetch every news group in seconds:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">To protect server limit the time to a short period of several dozens of seconds.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Fetch NNTP articles in time:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">This is an interval when articles can be fetched again, in minutes.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">"nofollow" Tags in Links verwenden:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">Wenn aktiviert, werden alle Links ein "nofollow"-Tag haben.</Resource>
     <Resource tag="NOTIFICATION_BAR">Benachrichtigunsleiste</Resource>
@@ -1544,6 +1572,7 @@
     <Resource tag="LAST_MESSAGE">Letzte Nachricht</Resource>
     <Resource tag="LAST_UPDATE">Letztes Update</Resource>
     <Resource tag="RETRIEVE">Abrufen</Resource>
+    <Resource tag="RETRIEVE_SERVICE">To retrieve articles a service is running. Set parameters in Host Settings and wait some time. Articles will be fetched in background.</Resource>
     <Resource tag="Retrieved">{0} Artikel empfangen. {1:N2} Artikel pro Sekunde.</Resource>
     <Resource tag="SECONDS">Sekunden</Resource>
     <Resource tag="TIME">Geben Sie an, wie viel Zeit für den Artikel Empfang verwendet werden soll.</Resource>
@@ -1987,6 +2016,7 @@
     <Resource tag="MAXNUMBEROF">Maximale Anzahl an Zeichen in jedem Beitrag ist: {0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">After</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Album Bild einfügen...</Resource>
     <Resource tag="ALLOWED">Erlaubt</Resource>
     <Resource tag="BACK">Zurück</Resource>
@@ -1997,6 +2027,7 @@
     <Resource tag="BBCODE_QUOTEPOSTED">Zitat von: {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">Gehe zum zitierten Beitrag</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} schrieb:</Resource>
+    <Resource tag="BEFORE">Before</Resource>
     <Resource tag="CAL_JQ_CULTURE">de</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">dd.MM.YYYY</Resource>
     <Resource tag="CAL_JQ_TT">Klicken Sie Um Datum zu wählen</Resource>
@@ -2016,6 +2047,7 @@
     <Resource tag="CAPTCHA_ENTER">Die Buchstaben des Sicherheitscode eingeben</Resource>
     <Resource tag="CAPTCHA_IMAGE">Sicherheitscode</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">E-Mail geändert</Resource>
+    <Resource tag="CHILD">Child</Resource>
     <Resource tag="COMMON_WORDS">aus, bitte, ein, in der Lage, über, überall, nachdem alle, fast, auch bin, unter ein, und alle sind, wie, bei,, da werden, aber durch kann, kann nicht, könnte, lieber habe, zu tun, ist, entweder, sonst, je, jede, für, von, zu bekommen, bekam, hatte, hat, haben er, sie, ihr, ihn, seine, wie ich jedoch, wenn, in, in, ist, es, seine, gerade, zumindest lassen, wie, wahrscheinlich, kann mir vielleicht die meisten, muss, meiner, weder, nein, noch nicht, der, aus, oft auf, nur, oder andere, unsere, eigene, sondern sagte, sagen wir, sagt, sie sollten, da so einige, als, dass das, ihr, sie, dann gibt es diese, sie, diese, zu, Auch was, uns will, war, wir wurden, was, wann, wo, was, während, wer, wen, warum, wird mit, wäre doch, Sie, Ihre</Resource>
     <Resource tag="CONTINUE">Weiter</Resource>
     <Resource tag="COPY">Kopieren</Resource>
@@ -2048,6 +2080,7 @@
     <Resource tag="HIDDEN">Versteckt</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">Ihre eingegebenen Daten sollten keine HTML-Tags enthalten.</Resource>
     <Resource tag="HTMLTAG_WRONG">Ihre eingegebenen Daten enthält verbotenen {0} HTML-Tag.</Resource>
+    <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
     <Resource tag="LOADING">Lade...</Resource>
     <Resource tag="MAX_ONLINE">Mitgliederrekord: {0} gleichzeitig online ({1}).</Resource>
     <Resource tag="MESSAGE">Nachricht</Resource>
@@ -2056,6 +2089,7 @@
     <Resource tag="MODAL_NOTIFICATION_HEADER">Mitteilung</Resource>
     <Resource tag="MODERATOR">Moderator</Resource>
     <Resource tag="NAME">Name</Resource>
+    <Resource tag="NEW">New</Resource>
     <Resource tag="NO">Nein</Resource>
     <Resource tag="NONE">Keine</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">Sie haben eine Auszeichnung erhalten im {0} Forum</Resource>
@@ -2611,6 +2645,7 @@
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Abonnieren Sie Ihre Lieblings-Themen über Atom.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Abonnieren Sie Forum Atom-Feed.</Resource>
     <Resource tag="BY">von {0}</Resource>
+    <Resource tag="CATEGORY">Category</Resource>
     <Resource tag="CURRENT_TIME">Aktuelle Zeit: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">Der Benutzer wurde nicht gefunden.</Resource>
     <Resource tag="ERROR_HOVERCARD">Keine Daten gefunden oder etwas ist schief gelaufen.</Resource>
@@ -4258,6 +4293,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Neues Thema aus Beitrag erstellen</Resource>
     <Resource tag="EMPTY_TOPIC">Der Name des Themas ist leer</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE">Beitrag verschieben</Resource>
     <Resource tag="MOVE_MESSAGE">Beitrag verschieben</Resource>
     <Resource tag="MOVE_TITLE">Beitrag in anderes Thema verschieben.</Resource>
@@ -4968,6 +5005,13 @@ Durch das Abschließen der Registrierung stimmst Du diesen Nutzungsbedingungen z
   <page name="TAGSBOARD">
     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
     <Resource tag="TITLE">Board Tags</Resource>
+  </page>
+  <page name="TASKS_RUNNING">
+    <Resource tag="CLEANUPTASK">Cleaning Task</Resource>
+    <Resource tag="DIGESTSENDTASK">Digest Sending Task</Resource>
+    <Resource tag="MAILSENDTASK">Sending mail</Resource>
+    <Resource tag="SYNCNNTPTASK">Nntp crawler</Resource>
+    <Resource tag="USERCLEANUPTASK">User Cleaning Task </Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Admins</Resource>

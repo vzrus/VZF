@@ -1,17 +1,57 @@
-﻿To switch between databases simply rename configs:
-
-For PostgreSQL 
+﻿To switch between databases:
+/*************************************************
+1.For PostgreSQL 
+1.1 Rename configs.
 app_pg.conf -> app.conf
 web_pg.conf -> web.conf
+1.2.Create a new postgre database and  a schema. 
+You user should be owner of the schema or have privilages on it.
+If you are using a hosting provider you can set  schema name to you database name in connection string 
+in db config.
+ 
+<add key="YAF.DatabaseObjectQualifier" value="rrr_" />
+<add key="YAF.DatabaseOwner" value="rrr_" />
+<add key="YAF.DatabaseSchemaName" value="myschema" />
+1.3. Change database name and connection string in db.config
 
-For Firebird
+1.4.It's strongly recommended to use utf-8 encoding for you database.
+You can set any locale in the case.
+/**************************************************
+2.For Firebird
+2.1. Rename configs. 
 app_fb.conf -> app.conf
 web_fb.conf -> web.conf
-
-For MySQL
+2.3. Create a new firebird database. 
+Use UTF8 encoding. Page size should be no less than 8192, 16384 is strongly recommended.
+2.3. Change db.config file connection string. 
+Schema name in app.conf file should be the same as database name in db.config file.
+/**************************************************
+3.For MySQL
+3.1. Rename configs.
 app_my.conf -> app.conf
 web_my.conf -> web.conf
+3.2.Create a new mysql database. 
+3.3. Change db.config file connection string. 
+Schema name in app.conf file should be the same as database name in db.config file.  
+ <add key="YAF.DatabaseSchemaName" value="vzfnet" />
+...;Database=vzfnet;...
+3.4. Set encodings to unicode. Notice the encodings should be the same as you database encodings.
+ <add key="YAF.DatabaseCollation" value="utf8_general_ci" />
+ <add key="YAF.DatabaseEncoding" value="utf8" />
+ It's strongly recommended to use unicode.
+/**************************************************
+4.For MsSQL
+app_ms.conf -> app.conf
+web_ms.conf -> web.conf
 
+/********************************************************
 All default connection strings are in db.config file.
+
+!!!! Notice, that in development code you can find already renamed files. 
+If a file like app_my.conf is missing this means that it was currently renamed into app.conf.
+!!!! Important - connection string name sometimes present in web.config too. Don't forget to set it.
+ Some providers work automatically and don't require it. 
+The connection string name is required for your own provider. 
+
 
 

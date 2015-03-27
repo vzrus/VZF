@@ -1,5 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="YAF.ForumPageBase" %>
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="YAF.ForumPageBase" %>
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
+<%@ Register TagPrefix="VZF" Namespace="YAF" Assembly="VZF" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <script runat="server">
     public void Page_PreRender(object sender, System.EventArgs e)
@@ -23,7 +24,7 @@
 </head>
 <body class="PopupBody">
     <form id="form1" runat="server" enctype="multipart/form-data">
-    <VZF:Forum runat="server" ID="forum" Popup="true">
+    <YAF:Forum runat="server" ID="forum" Popup="true">
     </YAF:Forum>
     </form>
 </body>

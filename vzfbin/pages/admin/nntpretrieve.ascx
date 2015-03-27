@@ -40,15 +40,9 @@
 			</ItemTemplate>
 		</asp:Repeater>
 		<tr>
-			<td colspan="2" class="postheader" width="50%">
-                <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="TIME" LocalizedPage="ADMIN_NNTPRETRIEVE" />
-				</td>
-			<td class="post" width="50%">
-				<asp:TextBox runat="server" ID="Seconds" Text="30" />&nbsp;<VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="SECONDS" LocalizedPage="ADMIN_NNTPRETRIEVE" /></td>
-		</tr>
-		<tr>
-			<td colspan="3" align="center" class="footer1">
-				<asp:Button runat="server" ID="Retrieve" Text="Retrieve" CssClass="pbutton" OnClick="Retrieve_Click" /></td>
+		    <td colspan="3" align="center" class="footer1">
+             <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="RETRIEVE_SERVICE" LocalizedPage="ADMIN_NNTPRETRIEVE" />
+			</td>
 		</tr>
 	</table>
 </VZF:AdminMenu>

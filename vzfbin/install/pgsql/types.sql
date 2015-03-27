@@ -407,7 +407,8 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_listallmymoderated_return_ty
 CREATE TYPE {databaseSchema}.{objectQualifier}forum_listpath_return_type AS
 (
 "ForumID" integer,
-"Name" varchar(255)
+"Name" varchar(255),
+"Level" integer
 );
 
 CREATE TYPE {databaseSchema}.{objectQualifier}forumid_return_type AS
@@ -439,6 +440,45 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_listread_return_type AS
 "ImageUrl"  varchar(128),
 "PollGroupID" integer,
 "IsUserForum" boolean,
+/*"LastTopicID" integer,*/
+"Topics" integer,
+"Posts" integer,
+/* "Subforums" integer, */
+"LastTopicID" integer,
+"LastTopicStatus" varchar(255),
+"LastTopicStyles" varchar(255),
+"TopicMovedID" integer,
+"LastPosted" timestamp,
+"LastMessageID" integer,
+"LastMessageFlags" integer,
+"LastUserID" integer,
+"LastTopicName"  varchar(128),
+"LastUser"  varchar(128),
+"LastUserDisplayName" varchar(128),
+"Flags" integer,
+"Style"  varchar(255),
+"Viewing" integer,
+"RemoteURL" varchar(255),
+"ReadAccess" integer,
+"LastForumAccess"  timestamp,
+"LastTopicAccess"  timestamp 
+);
+--GO
+
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_listread_return_type AS
+(
+"CategoryID" integer,
+"Category" varchar(128),
+"ForumID" integer,
+"ParentID" integer,
+"Forum" varchar(128),
+"Description" varchar(255),
+"ImageUrl"  varchar(128),
+"PollGroupID" integer,
+"IsUserForum" boolean,
+left_key integer,
+right_key integer,
+"PageUserID" integer,
 /*"LastTopicID" integer,*/
 "Topics" integer,
 "Posts" integer,
@@ -2222,10 +2262,11 @@ CREATE TYPE {databaseSchema}.{objectQualifier}topic_favorite_details_return_type
 );
 --GO
 
-CREATE TYPE {databaseSchema}.{objectQualifier}buddy_addrequest_return_type AS
+CREATE TYPE {databaseSchema}.{objectQualifier}buddy_addrequest_rt AS
 (
-	"i_paramoutput" varchar(128),
-	"i_approved" boolean
+    "i_approved" boolean,
+	"i_paramoutput" varchar(255)
+	
 );
 --GO
 
@@ -2455,11 +2496,40 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getsubtree_rt AS
 (
 "ForumID"  integer,
 "ParentID" integer,
-"Level" integer 
+"Level" integer
+);
+--GO
+
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getch_accgroup_rt AS
+(
+"BoardID" integer,
+"BoardName" varchar(255),
+"CategoryID" integer,
+"CategoryName" varchar(255),
+"Title" varchar(255),
+"ForumID"  integer,
+"AccessMaskID" integer,
+"ParentID" integer,
+"Level" integer,
+"HasChildren"  boolean
 );
 --GO
 
 CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt AS
+(
+"BoardID" integer,
+"BoardName" varchar(255),
+"CategoryID"  integer,
+"CategoryName" varchar(255),
+"Title" varchar(255),
+"ForumID"  integer,
+"ParentID" integer,
+"Level" integer,
+"HasChildren" boolean 
+);
+--GO
+
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getch_user_rt AS
 (
 "BoardID" integer,
 "BoardName" varchar(255),
@@ -2474,10 +2544,11 @@ CREATE TYPE {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt AS
 );
 --GO
 
-CREATE TYPE {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser_rt AS
+CREATE TYPE {databaseSchema}.{objectQualifier}forum_cataccess_actuser_rt AS
 (
 "CategoryID"  integer,
-"CategoryName" varchar(255)
+"CategoryName" varchar(255),
+"SortOrder" integer
 );
 --GO
 
@@ -2537,13 +2608,6 @@ i_paramoutput integer
 );
 --GO
 
-CREATE TYPE {databaseSchema}.{objectQualifier}buddy_addrequest_rt AS
-(
-"ForumID" integer,
-"SortOrder" integer
-);
---GO
-
 CREATE TYPE {databaseSchema}.{objectQualifier}pollgroup_save_rt AS
 (
 "PollGroupID" integer,
@@ -2562,5 +2626,14 @@ CREATE TYPE {databaseSchema}.{objectQualifier}user_listtodaysbirthdays_rt AS
 );
 --GO
 
-
-
+CREATE TYPE {databaseSchema}.{objectQualifier}digest_topicactivenew_rt AS
+(
+"ForumName" varchar(255),
+				 "Subject" varchar(255),
+				 "StartedUserName" varchar(255),
+				 "LastUserName"  varchar(255),
+				 "LastMessageID" integer,
+				 "LastMessage" text,
+				 "Replies" integer
+);
+--GO

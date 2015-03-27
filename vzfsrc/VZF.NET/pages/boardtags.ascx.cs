@@ -269,10 +269,7 @@ namespace YAF.Pages
         /// </summary>
         private void BindData()
         {
-            this.AlphaSort1.PagerPage = ForumPages.boardtags;
-            this.PagerTop.PageSize = this.Get<YafBoardSettings>().BoardTagsPerPage;     
-           
-
+            this.PagerTop.PageSize = this.Get<YafBoardSettings>().BoardTagsPerPage; 
             char selectedCharLetter = this.AlphaSort1.CurrentLetter;
             bool beginsWith = this.UserSearchName.Text.IsNotSet()
                               || !(selectedCharLetter == char.MinValue || selectedCharLetter == '#');

@@ -1,29 +1,5 @@
 /* Version 1.0.2 */
 
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}drop_defaultconstraint_oncolumn]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}drop_defaultconstraint_oncolumn]
-GO
-
-CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}drop_defaultconstraint_oncolumn](@tablename varchar(255), @columnname varchar(255)) as
-BEGIN
-DECLARE @DefName sysname
-
-SELECT
-  @DefName = o1.name
-FROM
-  sys.objects o1
-  INNER JOIN sys.columns c ON
-  o1.object_id = c.default_object_id
-  INNER JOIN sys.objects o2 ON
-  c.object_id = o2.object_id
-WHERE
-  o2.name = @tablename AND
-  c.name = @columnname
-  
-IF @DefName IS NOT NULL
-  EXECUTE ('ALTER TABLE ' + @tablename + ' DROP CONSTRAINT [' + @DefName + ']')
-END
-GO
 
 /*
 ** Create missing tables
@@ -36,7 +12,7 @@ CREATE TABLE [{databaseSchema}].[{objectQualifier}Thanks](
 	[ThanksFromUserID] [int] NOT NULL,
 	[ThanksToUserID] [int] NOT NULL,
 	[MessageID] [int] NOT NULL,
-	[ThanksDate] [smalldatetime] NOT NULL
+	[ThanksDate] [smalldatetime] NOT NULL,
 	constraint [PK_{objectQualifier}Thanks] primary key(ThanksID)
 	)
 GO
@@ -48,7 +24,7 @@ CREATE TABLE [{databaseSchema}].[{objectQualifier}Buddy](
 	[FromUserID] [int] NOT NULL,
 	[ToUserID] [int] NOT NULL,
 	[Approved] [bit] NOT NULL,
-	[Requested] [datetime] NOT NULL
+	[Requested] [datetime] NOT NULL,
 	constraint [PK_{objectQualifier}Buddy] primary key(ID)
 	)
 GO
@@ -58,7 +34,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 CREATE TABLE [{databaseSchema}].[{objectQualifier}FavoriteTopic](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[UserID] [int] NOT NULL,
-	[TopicID] [int] NOT NULL
+	[TopicID] [int] NOT NULL,
 	constraint [PK_{objectQualifier}FavoriteTopic] primary key(ID)
 	)
 GO
@@ -70,7 +46,7 @@ CREATE TABLE [{databaseSchema}].[{objectQualifier}UserAlbum](
 	[UserID] [int] NOT NULL,
 	[Title] [NVARCHAR](255),
 	[CoverImageID] [INT],
-	[Updated] [DATETIME] NOT NULL
+	[Updated] [DATETIME] NOT NULL,
 	constraint [PK_{objectQualifier}User_Album] primary key(AlbumID)
 	)
 GO
@@ -84,7 +60,7 @@ CREATE TABLE [{databaseSchema}].[{objectQualifier}UserAlbumImage](
 	[Bytes] [INT] NOT NULL,
 	[ContentType] [NVARCHAR](50),
 	[Uploaded] [DATETIME] NOT NULL,
-	[Downloads] [INT] NOT NULL
+	[Downloads] [INT] NOT NULL,
 	constraint [PK_{objectQualifier}User_AlbumImage] primary key(ImageID)
 	)
 GO
@@ -93,15 +69,17 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		SessionID		nvarchar (24) NOT NULL ,
 		BoardID			int NOT NULL ,
 		UserID			int NOT NULL ,
-		IP				nvarchar (15) NOT NULL ,
+		IP				varchar (39) NOT NULL ,
 		[Login]			datetime NOT NULL ,
 		LastActive		datetime NOT NULL ,
-		Location		nvarchar (50) NOT NULL ,
+		Location		nvarchar (255) NOT NULL ,
 		ForumID			int NULL ,
 		TopicID			int NULL ,
 		Browser			nvarchar (50) NULL ,
 		[Platform]		nvarchar (50) NULL,
-		Flags           int NULL
+		Flags           int NULL,
+		[ForumPage]     nvarchar (255) NULL,  
+    constraint [PK_{objectQualifier}Active] PRIMARY KEY CLUSTERED ([SessionID] ASC, [BoardID] ASC)
 	)
 GO
 
@@ -126,14 +104,16 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		DeleteAccess		bit NOT NULL,
 		UploadAccess		bit NOT NULL,		
 		DownloadAccess		bit NOT NULL,
-		UserForumAccess     bit NOT NULL		
+		UserForumAccess     bit NOT NULL,
+    constraint [PK_{objectQualifier}ActiveAccess] PRIMARY KEY CLUSTERED ([UserID] ASC, [ForumID] ASC) WITH (FILLFACTOR = 90)		
 	)
 GO
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}AdminPageUserAccess]') and type in (N'U'))
 	create table [{databaseSchema}].[{objectQualifier}AdminPageUserAccess](
 		UserID		    int NOT NULL,		
-		PageName		nvarchar (128) NOT NULL
+		PageName		nvarchar (128) NOT NULL,
+    constraint [PK_{objectQualifier}AdminPageUserAccess] PRIMARY KEY CLUSTERED ([UserID] ASC, [PageName] ASC)
 	)
 GO
 
@@ -142,7 +122,8 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		GroupID		    int NOT NULL,	
 		EventTypeID     int NOT NULL,  	
 		EventTypeName	nvarchar (128) NOT NULL,
-		DeleteAccess    bit NOT NULL constraint [DF_{objectQualifier}EventLogGroupAccess_DeleteAccess] default (0)
+		DeleteAccess    bit NOT NULL constraint [DF_{objectQualifier}EventLogGroupAccess_DeleteAccess] default (0),
+    constraint [PK_{objectQualifier}EventLogGroupAccess] PRIMARY KEY CLUSTERED ([GroupID] ASC, [EventTypeID] ASC)
 	)
 GO
 
@@ -153,9 +134,10 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		Mask			nvarchar (15) NOT NULL ,
 		Since			datetime NOT NULL,
 		Reason          nvarchar (128) NULL,
-		UserID			int null
+		UserID			int null,
+    constraint [PK_{objectQualifier}BannedIP] PRIMARY KEY CLUSTERED ([ID] ASC)
 	)
-GO
+GO  
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Category]') and type in (N'U'))
 	create table [{databaseSchema}].[{objectQualifier}Category](
@@ -1352,6 +1334,35 @@ GO
 if exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'UserID')
 begin
 	alter table [{databaseSchema}].[{objectQualifier}Forum] drop column [UserID]
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'left_key')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add [left_key] int NULL
+end
+GO
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'right_key')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add [right_key] int NULL
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'level')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add [level] int NULL
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'trigger_for_delete')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add trigger_for_delete int not null constraint [DF_{objectQualifier}Forum_TriggerDel] default (0)
+end
+GO
+
+if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Forum]') and name=N'trigger_lock_update')
+begin
+	alter table [{databaseSchema}].[{objectQualifier}Forum] add trigger_lock_update int not null constraint [DF_{objectQualifier}Forum_TriggerUpd] default (0)
 end
 GO
 

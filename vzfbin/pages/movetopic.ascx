@@ -12,7 +12,8 @@
 		</td>
 		<td class="post" width="50%">
 			<asp:DropDownList ID="ForumList" runat="server" DataValueField="ForumID" DataTextField="Title" />
-		</td>
+		  <div id="jumpList" visible="false" runat="server"> <div id="treemovetopic" data-source="ajax"  ></div></div>
+        </td>
     </tr>
 		<tr id="trLeaveLink" runat="server">
 			<td class="postheader" width="50%">

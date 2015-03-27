@@ -153,32 +153,30 @@ namespace YAF.Classes
         {
             get
             {
-                if (!string.IsNullOrEmpty(GetConfigValueAsString("VZF.CrawlerUserAgentTokens")))
-                {
-                    return GetConfigValueAsString("VZF.CrawlerUserAgentTokens").Split();
-                }
+                var bots =
+                    (!string.IsNullOrEmpty(GetConfigValueAsString("VZF.CrawlerUserAgentTokens"))
+                        ? GetConfigValueAsString("VZF.CrawlerUserAgentTokens")
+                        : string.Empty) +
+                    "Googlebot:Google,OceanSpiders:Google,AhrefsBot:Ahrefs,Mail.RU,abachoBOT,"
+                    + "abcdatos_botlink,ah-ha.com crawler,Alexa,antibot"
+                    + "appie,AltaVista-Intranet,Acoon Robot,Atomz,Arachnoidea,AESOP_com_SpiderMan"
+                    + "AxmoRobot,ArchitextSpider,AlkalineBOT,Aranha,asterias,Baidu,Bingbot:Bing"
+                    + "Buscaplus Robi,CanSeek,ChristCRAWLER,Clushbot,CrawlerBoy"
+                    + "DeepIndex,DefaultCrawler,DittoSpyder,DIIbot,EZResult,EARTHCOM.info"
+                    + "EuripBot,ESISmartSpider,FAST-WebCrawler,FyberSearch,Findexa Crawler,Fluffy"
+                    + "geckobot,GenCrawler,GeonaBot,getRAX,Gulliver,Hubater"
+                    + "ia_archiver,Slurp,Scooter,Mercator,RaBot,Jack,Speedy Spider,moget"
+                    + "Toutatis,IlTrovatore-Setaccio,IncyWincy,UltraSeek,InfoSeek Sidewinder"
+                    + "Mole2,MP3Bot,Knowledge.com,kuloko-bot,LNSpiderguy,Linknzbot,lookbot"
+                    + "MantraAgent,NetResearchServer,Lycos,JoocerBot,HenryTheMiragoRobot"
+                    + "MojeekBot,mozDex,MSNBOT,Navadoo Crawler,ObjectsSearch,OnetSzukaj"
+                    + "PicoSearch,PJspider,nttdirectory_robot,maxbot.com,Openfind,psbot"
+                    + "QweeryBot,StackRambler,SeznamBot,Search-10,Scrubby,speedfind ramBot xtreme"
+                    + "Kototoi,SearchByUsa,Searchspider,SightQuestBot,Sogou,Spider_Monkey"
+                    + "Surfnomore,teoma,UK Searcher Spider,Nazilla,MuscatFerret,ZyBorg"
+                    + "WIRE WebRefiner,WSCbot,Yandex,Yellopet-Spider,YBSbot,Crawler,MozSpider";
 
-                return new[]
-                           {
-                               "Googlebot", "abachoBOT", "abcdatos_botlink", "ah-ha.com crawler", "Alexa", "antibot",
-                               "appie", "AltaVista-Intranet", "Acoon Robot", "Atomz", "Arachnoidea", "AESOP_com_SpiderMan", 
-                               "AxmoRobot", "ArchitextSpider", "AlkalineBOT", "Aranha", "asterias", "Baidu", "Bingbot",
-                               "Buscaplus Robi", "CanSeek", "ChristCRAWLER", "Clushbot", "Crawler", "CrawlerBoy",
-                               "DeepIndex", "DefaultCrawler", "DittoSpyder", "DIIbot", "EZResult", "EARTHCOM.info",
-                               "EuripBot", "ESISmartSpider", "FAST-WebCrawler", "FyberSearch", "Findexa Crawler", "Fluffy",
-                               "Googlebot", "geckobot", "GenCrawler", "GeonaBot", "getRAX", "Gulliver", "Hubater",
-                               "ia_archiver", "Slurp", "Scooter", "Mercator", "RaBot", "Jack", "Speedy Spider", "moget",
-                               "Toutatis", "IlTrovatore-Setaccio", "IncyWincy", "UltraSeek", "InfoSeek Sidewinder",
-                               "Mole2", "MP3Bot", "Knowledge.com", "kuloko-bot", "LNSpiderguy", "Linknzbot", "lookbot",
-                               "MantraAgent", "NetResearchServer", "Lycos", "JoocerBot", "HenryTheMiragoRobot",
-                               "MojeekBot", "mozDex", "MSNBOT", "Navadoo Crawler", "ObjectsSearch", "OnetSzukaj",
-                               "PicoSearch", "PJspider", "nttdirectory_robot", "maxbot.com", "Openfind", "psbot",
-                               "QweeryBot", "StackRambler", "SeznamBot", "Search-10", "Scrubby", "speedfind ramBot xtreme", 
-                               "Kototoi", "SearchByUsa", "Searchspider", "SightQuestBot", "Sogou", "Spider_Monkey",
-                               "Surfnomore", "teoma", "UK Searcher Spider", "Nazilla", "MuscatFerret", "ZyBorg",
-                               "WIRE WebRefiner", "WSCbot", "Yandex", "Yellopet-Spider", "YBSbot", "OceanSpiders",
-                               "MozSpider"
-                           };
+                return bots.Split(new[] {','});
             }
         }
 
@@ -672,6 +670,14 @@ namespace YAF.Classes
             }
         }
 
+        public static string ProviderExceptionXML
+        {
+            get
+            {
+                return GetConfigValueAsString("YAF.ProviderExceptionXML") ?? "ProviderExceptions.xml";
+            }
+        }
+
         /// <summary>
         ///     Gets ProfileProvider.
         /// </summary>
@@ -808,12 +814,12 @@ namespace YAF.Classes
         {
             get
             {
-                return GetConfigValueAsString("YAF.URLRewritingMode") ?? string.Empty;
+                return GetConfigValueAsString("YAF.URLRewritingMode") ?? "";
             }
         }
 
         /// <summary>
-        ///     Gets the Prefix used for Url Rewriting -- default is "vzf_"
+        ///  Gets the Prefix used for Url Rewriting -- default is "vzf_"
         /// </summary>
         public static string UrlRewritingPrefix
         {
@@ -824,7 +830,7 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets a value indicating whether UseRadEditorToolsFile.
+        ///  Gets a value indicating whether UseRadEditorToolsFile.
         /// </summary>
         public static bool UseRadEditorToolsFile
         {
@@ -883,7 +889,6 @@ namespace YAF.Classes
         /// <param name="configKey"> The config key. </param>
         /// <param name="defaultValue"> if set to <c>true</c> [default value]. </param>
         /// <returns> Returns Bool Value </returns>
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         public static bool GetConfigValueAsBool([NotNull] string configKey, bool defaultValue)
         {
             string value = GetConfigValueAsString(configKey);

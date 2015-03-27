@@ -13,6 +13,7 @@
     <Resource tag="ADMIN_BBCODE_IMPORT">Importeert BBCodes</Resource>
     <Resource tag="ADMIN_BOARDS">Bekijkt board lijst</Resource>
     <Resource tag="ADMIN_BOARDSETTINGS">Bekijkt board configuratie</Resource>
+    <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource>
     <Resource tag="ADMIN_DELETEFORUM">Verwijder forums</Resource>
     <Resource tag="ADMIN_EDITACCESSMASK">Bewerkt toegangsmaskers</Resource>
     <Resource tag="ADMIN_EDITBOARD">Bewerkt boards</Resource>
@@ -87,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Bekijkt forums in een categorie</Resource>
     <Resource tag="HELP_INDEX">Gebruikt help index</Resource>
     <Resource tag="HELP_RECOVER">Onbekend</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">Gebruikt AIM</Resource>
     <Resource tag="IM_EMAIL">Gebruikt Email</Resource>
     <Resource tag="IM_ICQ">Gebruikt ICQ</Resource>
@@ -107,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Bekijkt moderatie index</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Bekijkt gerapporteerde berichten</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Bekijkt niet-goedgekeurde berichten</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">Verplaatst bericht</Resource>
     <Resource tag="MOVETOPIC">Verplaatst een topic</Resource>
     <Resource tag="MYTOPICS">Bekijkt zijn favoriete en actieve topics</Resource>
@@ -326,6 +329,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">Is de lijst van bestandstypen voor goed- of afgekeurde typen. (minder veilig)?</Resource>
     <Resource tag="BOARD_JQ_THEME">jQuery UI Thema:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">Het jQuery UI Thema om op dit board te gebruiken voor de Tabs en de Accordion.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">Mobiel Thema:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">Mobiel thema om op dit board te gebruiken.</Resource>
     <Resource tag="BOARD_NAME">Board Naam:</Resource>
@@ -359,6 +363,21 @@
     <Resource tag="NO">Nee</Resource>
     <Resource tag="SAVE">Bewaar</Resource>
     <Resource tag="YES">Ja</Resource>
+  </page>
+  <page name="ADMIN_DELETECATEGORY">
+    <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+    <Resource tag="DELETE_FORUM">Delete category</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
+    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    <Resource tag="DELETE_TITLE">Deleting category</Resource>
+    <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
+    <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
+    <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
+    <Resource tag="NEW_FORUM">New Forum:</Resource>
+    <Resource tag="NEW_FORUM_HELP">Select the new category for the forums.</Resource>
+    <Resource tag="TITLE">Delete category</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Verwijder Forum</Resource>
@@ -544,6 +563,8 @@
     <Resource tag="PRE_MODERATED_HELP">Berichten moeten worden goedgekeurd door een moderator.</Resource>
     <Resource tag="REMOTE_URL">Externe URL:</Resource>
     <Resource tag="REMOTE_URL_HELP">Voer hier een url in, waardoor gebruikers in plaats van naar het forum, naar een externe url gaan.</Resource>
+    <Resource tag="SAVING_TITLE">Saving forum</Resource>
+    <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
     <Resource tag="SORT_ORDER">Sorteervolgorde:</Resource>
     <Resource tag="SORT_ORDER_HELP">Sorteervolgorde van deze categorie.</Resource>
     <Resource tag="STYLES">Stijlen:</Resource>
@@ -814,6 +835,7 @@
     <Resource tag="TYPE">Type</Resource>
     <Resource tag="TYPES">Type</Resource>
     <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>
@@ -907,6 +929,8 @@
     <Resource tag="NEW_CATEGORY">Nieuwe Categorie</Resource>
     <Resource tag="NEW_FORUM">Nieuw Forum</Resource>
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+    <Resource tag="TREEVIEW_MENUTIP">Created on </Resource>
+    <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Rol Toevoegen aan Forum</Resource>
@@ -1251,6 +1275,10 @@
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Aanta items op de 'Mijn Topics' pagina. </Resource>
     <Resource tag="NAME_LENGTH">Maximale lengte van de gebruikersnaam:</Resource>
     <Resource tag="NAME_LENGTH_HELP">Maximale lengte van de gebruikersnaam of de weergave naam.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Time to fetch every news group in seconds:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">To protect server limit the time to a short period of several dozens of seconds.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Fetch NNTP articles in time:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">This is an interval when articles can be fetched again, in minutes.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">Gebruik "NoFollow" Tag in Links:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">Als deze is aangevinkt, zullen alle links de "nofollow tag" gebruiken.</Resource>
     <Resource tag="NOTIFICATION_BAR">Notification Bar</Resource>
@@ -1553,6 +1581,7 @@
     <Resource tag="LAST_MESSAGE">Laatste Bericht</Resource>
     <Resource tag="LAST_UPDATE">Laatste Update</Resource>
     <Resource tag="RETRIEVE">Haal op</Resource>
+    <Resource tag="RETRIEVE_SERVICE">To retrieve articles a service is running. Set parameters in Host Settings and wait some time. Articles will be fetched in background.</Resource>
     <Resource tag="Retrieved">{0} artikelen opgehaald. {1:N2} artikelen per seconde.</Resource>
     <Resource tag="SECONDS">seconden</Resource>
     <Resource tag="TIME">Geef aan hoe lang het ophalen moet duren:</Resource>
@@ -1996,6 +2025,7 @@
     <Resource tag="MAXNUMBEROF">Het maximaal aantal tekens in een bericht is: {0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">After</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Voeg Album plaatje toe...</Resource>
     <Resource tag="ALLOWED">Toegestaan</Resource>
     <Resource tag="BACK">Terug</Resource>
@@ -2006,6 +2036,7 @@
     <Resource tag="BBCODE_QUOTEPOSTED">Eerst geschreven door: {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">Ga naar gequote bericht</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} schreef:</Resource>
+    <Resource tag="BEFORE">Before</Resource>
     <Resource tag="CAL_JQ_CULTURE">nl</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">MM/dd/YY</Resource>
     <Resource tag="CAL_JQ_TT">Klik hier om een datum te kiezen</Resource>
@@ -2025,6 +2056,7 @@
     <Resource tag="CAPTCHA_ENTER">Geeft de letters in van het anti-spam plaatje:</Resource>
     <Resource tag="CAPTCHA_IMAGE">Anti-spam plaatje:</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">Veranderde Email</Resource>
+    <Resource tag="CHILD">Child</Resource>
     <Resource tag="COMMON_WORDS">uit,alsjeblieft,een,in staat,over,over,na,alle,bijna,ook,ik,onder,een,en,eventuele,worden,zoals,op,zijn,want,geweest,maar door,kan,kan niet,kon,lieve,ik,doe,doet,ofwel,anders,ooit,elke,voor,van,krijgen,kreeg,had,heeft,hebben,hij,haar,haar,hem,zijn,hoe echter,i,indien,in,naar,is het,haar,maar,althans,laten,waarschijnlijk zoals,,kan ik,misschien,de meeste,moet,mijn,noch,en ook niet,niet,van,uit,vaak op,alleen,of,andere,onze,eigen,nogal,zei,laten we zeggen,zegt ze,zou moeten,omdat,ja,sommigen dan,dat,de,hun,hen dan,daar,deze,zij,deze,tis,om,ook het was,ons,wil,was,we waren,wat,wanneer,waar,welke,terwijl die,wie,waarom,wil,met,zou,maar toch,u,uw</Resource>
     <Resource tag="CONTINUE">Ga verder</Resource>
     <Resource tag="COPY">Kopi&amp;euml;er</Resource>
@@ -2057,6 +2089,7 @@
     <Resource tag="HIDDEN">Verborgen</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">Je tekst mag geen HTML tags bevatten.</Resource>
     <Resource tag="HTMLTAG_WRONG">Je tekst bevat een verboden {0} HTML tag.</Resource>
+    <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
     <Resource tag="LOADING">Bezig met laden...</Resource>
     <Resource tag="MAX_ONLINE">Grootste aantal gebruikers ooit online was {0}, {1}.</Resource>
     <Resource tag="MESSAGE">Bericht</Resource>
@@ -2065,6 +2098,7 @@
     <Resource tag="MODAL_NOTIFICATION_HEADER">Mededeling</Resource>
     <Resource tag="MODERATOR">Moderator</Resource>
     <Resource tag="NAME">Naam</Resource>
+    <Resource tag="NEW">New</Resource>
     <Resource tag="NO">Nee</Resource>
     <Resource tag="NONE">Geen</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">You have been award on the {0} Forum</Resource>
@@ -2618,6 +2652,7 @@
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Meld je aan via Atom voor je favoriete topics.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Meld je aan bij de forum Atom feed.</Resource>
     <Resource tag="BY">door {0}</Resource>
+    <Resource tag="CATEGORY">Category</Resource>
     <Resource tag="CURRENT_TIME">Huidige tijd: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">The requested user could not be found.</Resource>
     <Resource tag="ERROR_HOVERCARD">Sorry, no data found or something went wrong.</Resource>
@@ -4272,6 +4307,8 @@ Spoiler Inhoud
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Maak topic van bericht</Resource>
     <Resource tag="EMPTY_TOPIC">Naam topic is leeg</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE" />
     <Resource tag="MOVE_MESSAGE">Verplaats bericht</Resource>
     <Resource tag="MOVE_TITLE">Verplaats naar een ander Topic.</Resource>
@@ -4994,6 +5031,13 @@ Spoiler Inhoud
   <page name="TAGSBOARD">
     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
     <Resource tag="TITLE">Board Tags</Resource>
+  </page>
+  <page name="TASKS_RUNNING">
+    <Resource tag="CLEANUPTASK">Cleaning Task</Resource>
+    <Resource tag="DIGESTSENDTASK">Digest Sending Task</Resource>
+    <Resource tag="MAILSENDTASK">Sending mail</Resource>
+    <Resource tag="SYNCNNTPTASK">Nntp crawler</Resource>
+    <Resource tag="USERCLEANUPTASK">User Cleaning Task </Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Beheerders</Resource>

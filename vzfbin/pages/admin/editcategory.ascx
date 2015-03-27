@@ -36,7 +36,7 @@
 			<img align="middle" alt="Preview" runat="server" id="Preview" />
 			</td>
 		</tr>
-		<tr>
+		<tr id="rowSortOrder" runat="server">
 			<td class="postheader">
 			  <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="SORT_ORDER" LocalizedPage="ADMIN_EDITCATEGORY" />
 			</td>

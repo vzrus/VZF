@@ -27,15 +27,15 @@
         return false;
     }
 
-    function refreshShoutBoxFailed(err)
+    function refreshShoutBoxFailed(XMLHttpRequest, textStatus, errorThrown)
     {
-        jQuery('#shoutBoxChatArea').html("Error refreshing chat: " + err);
+        jQuery('#shoutBoxChatArea').html("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown  );
     }
 
     function checkForNewMessages() {
         <%=YAF.Classes.Config.JQueryAlias %>.PageMethod('<%= YafForumInfo.ForumClientFileRoot %>YafAjax.asmx', 'RefreshShoutBox', refreshShoutBoxPanel, refreshShoutBoxFailed, 'boardId', <%=this.PageContext.PageBoardID %>);
 
-        setTimeout('checkForNewMessages()', 2000);
+        setTimeout('checkForNewMessages()', '<%= YafContext.Current.IsGuest ? 120000 : 10000 %>');
     }
 
     function refreshShoutBoxPanel(success) {

@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="~/Classes/YafAjax.cs" Class="YAF.Classes.YafAjax" %>
+﻿<%@ WebService Language="C#" CodeBehind="~/Classes/WebServices/YafAjax.cs" Class="YAF.Classes.YafAjax" %>

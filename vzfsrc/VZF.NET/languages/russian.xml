@@ -88,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Просматривает форум из категории </Resource>
     <Resource tag="HELP_INDEX">Просматривает главную страницу помощи</Resource>
     <Resource tag="HELP_RECOVER">Просматривает помощь по восстановлению</Resource>
+    <Resource tag="HELPINDEX">Просматривает помощь</Resource>
     <Resource tag="IM_AIM">Использует AIM</Resource>
     <Resource tag="IM_EMAIL">Использует Email</Resource>
     <Resource tag="IM_ICQ">Использует ICQ</Resource>
@@ -108,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Просматривает страницу модерирования</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Просматривает посты с жалобами</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Просматривает неодобреннные посты</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Просматривает страницу наиболее активных пользователей</Resource>
     <Resource tag="MOVEMESSAGE">Перемещает сообщение</Resource>
     <Resource tag="MOVETOPIC">Перемещает тему</Resource>
     <Resource tag="MYTOPICS">Просматривает избранные/активные темы</Resource>
@@ -828,6 +830,7 @@
     <Resource tag="TYPE">Тип</Resource>
     <Resource tag="TYPES">Тип</Resource>
     <Resource tag="TYPES_HELP">Выбор ограничения журнала при определённых событиях.</Resource>
+    <Resource tag="USER">Пользователь</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Доступ</Resource>

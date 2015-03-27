@@ -608,7 +608,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}accessmask_save
                   RETURNS void AS
 $BODY$DECLARE
 ici_UserName  VARCHAR(255);
-ici_UserDisplayName  VARCHAR(255);
+ici_userdisplayname  VARCHAR(255);
              ici_flags integer:=0;
 BEGIN
 IF i_readaccess IS NOT FALSE THEN 
@@ -648,12 +648,12 @@ IF i_userforumaccess IS NOT FALSE THEN
 ici_flags := ici_flags | 32768;
 END IF;
  IF i_userid IS NOT NULL THEN   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
+    SELECT Name, DisplayName INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
   end if;
 IF i_accessmaskid IS NULL THEN
        INSERT INTO {databaseSchema}.{objectQualifier}accessmask
          (name,boardid,flags,sortorder,isusermask, isadminmask,createdbyuserid,createdbyusername,createdbyuserdisplayname, createddate)
-       VALUES(substr(i_name,1,128),i_boardid,ici_flags, i_sortorder,i_isusermask, i_isadminmask, i_userid,ici_UserName,ici_UserDisplayName,i_utctimestamp)
+       VALUES(substr(i_name,1,128),i_boardid,ici_flags, i_sortorder,i_isusermask, i_isadminmask, i_userid,ici_UserName,ici_userdisplayname,i_utctimestamp)
        returning accessmaskid into i_accessmaskid;
 ELSE
        UPDATE {databaseSchema}.{objectQualifier}accessmask
@@ -662,22 +662,22 @@ ELSE
 END IF;
 
  IF i_userid IS NOT NULL THEN   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
+    SELECT Name, DisplayName INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
        -- guests should not create forums
     ELSE
    
     SELECT boardid INTO i_boardid FROM {databaseSchema}.{objectQualifier}category WHERE CategoryID = i_CategoryID;
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where BoardID = i_boardid and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    SELECT Name, DisplayName INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where BoardID = i_boardid and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
     END IF;
     if exists (select 1 from {databaseSchema}.{objectQualifier}accessmaskhistory where accessmaskid = i_accessmaskid and changeddate = i_utctimestamp LIMIT 1) THEN
     update {databaseSchema}.{objectQualifier}accessmaskhistory set 
            changeduserid = i_userid,	
            changedusername = ici_UserName,
-           changeddisplayname = ici_UserDisplayName
+           changeddisplayname = ici_userdisplayname
      where accessmaskid = i_accessmaskid and changeddate = i_utctimestamp; 
     else    
     INSERT INTO {databaseSchema}.{objectQualifier}accessmaskhistory(accessmaskid,ChangedUserID,ChangedUserName,changeddisplayname,ChangedDate)
-    VALUES (i_accessmaskid,i_UserID,ici_UserName,ici_UserDisplayName,i_utctimestamp);
+    VALUES (i_accessmaskid,i_UserID,ici_UserName,ici_userdisplayname,i_utctimestamp);
     end IF;
 
 RETURN;
@@ -1855,17 +1855,16 @@ BEGIN
   l_CategoryID := (SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}category','categoryid')));	
 
  -- Forum
-  INSERT INTO {databaseSchema}.{objectQualifier}forum(categoryid,name,description,sortorder,numtopics,numposts,flags)
-  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4);
-  l_ForumID := (SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}forum','forumid')));	
+  INSERT INTO {databaseSchema}.{objectQualifier}forum(categoryid,name,description,sortorder,numtopics,numposts,flags, left_key, right_key,"level")
+  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4,1,2,0) returning forumid into l_ForumID; 
+
  --  ForumAccess 
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid) 
   VALUES(l_GroupIDAdmin,l_ForumID,l_AccessMaskIDAdmin);
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid) 
   VALUES(l_GroupIDGuest,l_ForumID,l_AccessMaskIDReadOnly);
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid) 
-  VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember);
-
+  VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember); 
  RETURN ici_boardid;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
@@ -1895,7 +1894,7 @@ BEGIN
  LOOP
   FETCH board_cursor  INTO itmpForumID ;
   EXIT WHEN NOT FOUND;
-  PERFORM {databaseSchema}.{objectQualifier}forum_delete(itmpForumID);
+  PERFORM {databaseSchema}.{objectQualifier}forum_delete(itmpForumID, false, false);
   EXIT WHEN NOT FOUND;
 END LOOP;
   CLOSE board_cursor; 
@@ -1905,6 +1904,7 @@ END LOOP;
   FROM   {databaseSchema}.{objectQualifier}group x
   WHERE  x.GroupID = {databaseSchema}.{objectQualifier}forumaccess.groupid
   AND x.boardid = i_boardid);
+  -- a trigger works here to rebuild tree - double work
   DELETE FROM {databaseSchema}.{objectQualifier}forum
   WHERE       EXISTS (SELECT 1
   FROM   {databaseSchema}.{objectQualifier}category x
@@ -1950,6 +1950,7 @@ END LOOP;
   WHERE       boardid = i_boardid;
   DELETE FROM {databaseSchema}.{objectQualifier}board
   WHERE       boardid = i_boardid;
+  perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
   RETURN;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
@@ -2246,21 +2247,25 @@ END;$BODY$
 -- DROP FUNCTION objectQualifier_category_delete(integer);
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}category_delete(
-                           i_categoryid integer)
+                           i_categoryid integer, i_newcategoryid integer)
                   RETURNS integer AS
 $BODY$DECLARE 
              i_flag integer;
 BEGIN
-       
+        if (i_newcategoryid is not null) then		  
+	         update {databaseSchema}.{objectQualifier}forum set categoryid = i_newcategoryid where categoryid = i_categoryid;
+			 perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
+		  end if;
         IF EXISTS (SELECT 1
                    FROM   {databaseSchema}.{objectQualifier}forum
                    WHERE  categoryid = i_categoryid) THEN       
             i_flag = 0;       
-        ELSE
+        ELSE		 
             DELETE FROM  {databaseSchema}.{objectQualifier}category
             WHERE       categoryid = i_categoryid;
             i_flag = 1;
         END IF;
+
         RETURN i_flag;
     END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -2466,50 +2471,63 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}category_save(
                            i_name varchar, 
                            i_sortorder integer, 
                            i_categoryimage varchar,
-                           i_canhavepersforums boolean)
+                           i_canhavepersforums boolean,
+						   i_adjacentcategoryid integer,
+						   i_adjacentcategorymode integer)
                   RETURNS integer AS
-$BODY$DECLARE
-             ici_sortorder smallint:=i_sortorder;
-             ici_categoryid integer :=i_categoryid ;
+$BODY$DECLARE                    
+			 _rec record;
+			 ici_cntr int :=0;
+			 afterset boolean;
 BEGIN
- IF ici_sortorder > 0 THEN 
-    IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}category 
-    WHERE sortorder = ici_sortorder) THEN
-    UPDATE {databaseSchema}.{objectQualifier}category
-            SET sortorder = sortorder+1				
-        WHERE sortorder BETWEEN ici_sortorder AND 254;
-    END IF;
-    ELSE
-     SELECT MAX(sortorder) INTO ici_sortorder FROM {databaseSchema}.{objectQualifier}category;
-    IF ici_sortorder IS NULL 
-    THEN ici_sortorder:=1; 
-    ELSE
-    ici_sortorder :=ici_sortorder+1;
-    END IF;
-    END IF;
+    -- set new sort order for categories if adjacent category was supplied 
+	-- i_adjacentcategorymode can be over(1) or before(2).
+	-- -1 mode means that category sortorder will not be updated.  
+	 if (i_adjacentcategoryid is not null) then	 
+	              -- over doesn't possible 	
+	            
+	   for _rec in select categoryid from {databaseSchema}.{objectQualifier}category 
+		  where boardid = i_boardid  
+		  order by sortorder	     
+	     LOOP 
+               if (i_adjacentcategoryid = _rec.categoryid) THEN	          	
+		        -- before
+		             if (i_adjacentcategorymode = 1) THEN		               
+		               i_sortorder := ici_cntr;
+					   ici_cntr := ici_cntr + 1;	               
+		               end if;                 
+		       -- after
+		           if (i_adjacentcategorymode = 2) THEN		               
+		               i_sortorder := ici_cntr + 1;
+					   afterset := true;	
+		               end if;              
+		       end if;
+			if (i_sortorder = ici_cntr and afterset) THEN 
+			 ici_cntr := ici_cntr + 1;
+			end if;
+	    	update	{databaseSchema}.{objectQualifier}category
+		    set sortorder = ici_cntr where categoryid = _rec.categoryid;
+		    
+		    ici_cntr := ici_cntr + 1;	
+		
+    END LOOP;
+	end if;	
 
-
-IF i_categoryid > 0 THEN
-
-UPDATE {databaseSchema}.{objectQualifier}category
-SET    name = i_name ,
-categoryimage = i_categoryimage,
-sortorder = ici_sortorder, canhavepersforums = i_canhavepersforums
-WHERE  categoryid = i_categoryid ;
-ELSE
-INSERT INTO {databaseSchema}.{objectQualifier}category
-(boardid,
-name,
-categoryimage,
-sortorder,
-canhavepersforums)
-VALUES     (i_boardid,
-substr(i_name, 1, 128),
-i_categoryimage,
-ici_sortorder,i_canhavepersforums);
-  SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}category','categoryid')) INTO ici_categoryid; 
-END IF;
-RETURN  ici_categoryid;
+   IF i_categoryid > 0 THEN
+             UPDATE {databaseSchema}.{objectQualifier}category
+             SET     name = i_name ,
+                     categoryimage = i_categoryimage,
+                     sortorder = (case when i_adjacentcategorymode != -1 THEN i_sortorder else sortorder  end), 
+					 canhavepersforums = i_canhavepersforums
+             WHERE  categoryid = i_categoryid;
+   ELSE
+            INSERT INTO {databaseSchema}.{objectQualifier}category
+                        (boardid,name,categoryimage,sortorder,canhavepersforums)
+            VALUES     (i_boardid,substr(i_name, 1, 255),i_categoryimage,i_sortorder,i_canhavepersforums)
+            returning categoryid INTO i_categoryid; 
+   END IF;
+  
+   RETURN  i_categoryid;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
@@ -3007,7 +3025,7 @@ END;$BODY$
 -- Function: {databaseSchema}.{objectQualifier}forum_delete(integer)
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_delete(
-                           i_forumid integer)
+                           i_forumid integer, i_movechildren boolean, i_rebuildtree boolean)
                   RETURNS void AS
 $BODY$DECLARE
              itmpTopicID integer;
@@ -3050,11 +3068,8 @@ BEGIN
 
         DELETE FROM {databaseSchema}.{objectQualifier}watchforum
         WHERE       forumid = i_forumid;
-
         
-       --Delete topics, messages and attachments        
-      
-
+       --Delete topics, messages and attachments  
         OPEN topic_cursor FOR  SELECT   topicid
         FROM     {databaseSchema}.{objectQualifier}topic
         WHERE    forumid = i_forumid
@@ -3062,7 +3077,7 @@ BEGIN
 LOOP
   FETCH topic_cursor INTO itmpTopicID;
   EXIT WHEN NOT FOUND;
-  PERFORM {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, null, false , true);
+  PERFORM {databaseSchema}.{objectQualifier}topic_delete(itmpTopicID, null, true , true);
   EXIT WHEN NOT FOUND;
 END LOOP;        
            CLOSE topic_cursor;
@@ -3073,14 +3088,19 @@ END LOOP;
         WHERE       forumid = i_forumid;
       
         -- Delete UserForums
-
+		-- a trigger works to rebuild tree
         DELETE FROM {databaseSchema}.{objectQualifier}userforum
         WHERE       forumid = i_forumid;
 
      --And after this we can delete Forum itself-
-
+	
         DELETE FROM {databaseSchema}.{objectQualifier}forum
         WHERE       forumid = i_forumid;
+
+		if (i_rebuildtree) then
+        i_forumid := i_forumid;
+		-- perform {databaseSchema}.{objectQualifier}forum_ns_recreate();
+		end if;
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
@@ -3101,7 +3121,7 @@ BEGIN
 
         UPDATE {databaseSchema}.{objectQualifier}active 
         SET forumid=NULL 
-        WHERE forumid=i_ForumOldID;
+        WHERE forumid=i_forumoldid;
 
         update {databaseSchema}.{objectQualifier}NntpForum set forumid=i_forumnewid where forumid=i_forumoldid;
         update {databaseSchema}.{objectQualifier}WatchForum set forumid=i_forumnewid where forumid=i_forumoldid;
@@ -3118,21 +3138,24 @@ BEGIN
 LOOP
   FETCH topic_cursor INTO itmpTopicID;
   EXIT WHEN NOT FOUND;
-  PERFORM {databaseSchema}.{objectQualifier}topic_move(itmpTopicID, i_forumnewid, false,-1, current_timestamp);
+  PERFORM {databaseSchema}.{objectQualifier}topic_move(itmpTopicID, i_forumnewid, false, -1, current_timestamp at time zone 'utc');
   EXIT WHEN NOT FOUND;
 END LOOP;        
            CLOSE topic_cursor;      
         -- TopicDelete finished       
         DELETE FROM {databaseSchema}.{objectQualifier}forumaccess
-        WHERE       forumid = i_forumid;
+        WHERE       forumid = i_forumoldid;
+
+		  --Update UserForums Too 
+      -- update {databaseSchema}.{objectQualifier}userforum set forumid = i_forumnewid where forumid = i_forumoldid
       
         -- Delete UserForums
 
-        DELETE FROM {databaseSchema}.{objectQualifier}userforum
-        WHERE       forumid = i_forumid;
+       DELETE FROM {databaseSchema}.{objectQualifier}userforum
+       WHERE       forumid = i_forumoldid;
 
-     --And after this we can delete Forum itself-
-
+     -- And after this we can delete Forum itself-
+	 -- a trigger works here to rebuild tree
         DELETE FROM {databaseSchema}.{objectQualifier}forum
         WHERE       forumid = i_forumoldid;
 END;$BODY$
@@ -4017,7 +4040,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_listread(
                            i_showpersonalforums boolean,
                            i_forumcreatedbyuserid integer,
                            i_UTCTIMESTAMP timestamp)
-                  RETURNS SETOF {databaseSchema}.{objectQualifier}forum_listread_return_type AS
+                  RETURNS SETOF {databaseSchema}.{objectQualifier}forum_ns_listread_return_type AS
 $BODY$DECLARE
 ici_lasttopicid integer;
 ici_topicmovedid integer;
@@ -4032,12 +4055,33 @@ ici_lastuser varchar(255);
 ici_pollgroupid integer; 
 ici_style varchar(255):='';
 ici_lasttopicstatus  varchar(255):='';
-ici_lasttopicaccess  timestamp ;
+ici_lasttopicaccess  timestamp;
+lvl integer := 0;
+rk integer; 
+lk integer;
 intcnt integer:=0; 
 _rectemp {databaseSchema}.{objectQualifier}forum_listread_tmp%ROWTYPE;
-_rec {databaseSchema}.{objectQualifier}forum_listread_return_type%ROWTYPE; 
+_rec {databaseSchema}.{objectQualifier}forum_ns_listread_return_type%ROWTYPE; 
 BEGIN	
+ 
 
+ IF i_parentid IS NOT NULL THEN
+ SELECT "level",left_key + 1, right_key - 1 into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum   
+ where forumid = i_parentid limit 1;
+ END IF;
+ IF i_parentid IS NULL AND i_categoryid > 0 THEN
+ SELECT -1, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum n
+ where n.categoryid = i_categoryid;; 
+ END IF;
+ IF i_parentid IS NULL AND i_categoryid IS NULL THEN
+ SELECT -1, min(n.left_key), max(n.right_key) into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum n 
+ join {databaseSchema}.{objectQualifier}category c
+ on c.categoryid = n.categoryid
+ where c.boardid = i_boardid;
+ END IF;
 
 FOR _rec IN
     SELECT 
@@ -4049,9 +4093,14 @@ FOR _rec IN
         b.description, 		
         b.imageurl,		
         b.pollgroupid, 
-        b.isuserforum,		
-        {databaseSchema}.{objectQualifier}forum_topics(b.forumid) AS Topics,
-        {databaseSchema}.{objectQualifier}forum_posts(b.forumid) AS Posts,
+        b.isuserforum,	
+		b.left_key,
+		b.right_key,
+		i_userid,	
+        (select sum(fp.NumTopics) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Topics,
+        (select sum(fp.NumPosts) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Posts,	
         b.lasttopicid,
         ici_lasttopicstatus,
         ici_lasttopicstyles,
@@ -4076,29 +4125,27 @@ FOR _rec IN
              when true THEN
                (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}forumreadtracking x WHERE x.forumid=b.forumid AND x.userid = i_userid LIMIT 1)
              else null	 end) AS LastForumAccess,
-             ici_lasttopicaccess  AS LastTopicAccess		
+             ici_lasttopicaccess  AS LastTopicAccess			 		
     FROM 
         {databaseSchema}.{objectQualifier}category a
-        JOIN {databaseSchema}.{objectQualifier}forum b on b.categoryid=a.categoryid
-        JOIN {databaseSchema}.{objectQualifier}activeaccess x on x.forumid=b.forumid		 
-        JOIN {databaseSchema}.{objectQualifier}forum_ns_getchildren(i_boardid, 0, COALESCE(i_parentid,0), true, false) q ON q."ForumID" = b.forumid
+        JOIN {databaseSchema}.{objectQualifier}forum b on (b.categoryid=a.categoryid and a.boardid = i_boardid)
+		JOIN {databaseSchema}.{objectQualifier}activeaccess x on (x.forumid=b.forumid and x.userid = i_userid) 
     WHERE
-        (i_categoryid IS NULL OR a.categoryid=i_categoryid) AND
-         x.userid = i_userid  and
-         q."ForumID" > 0			
-        and ((b.flags & 2)=0 OR x.readaccess IS NOT FALSE ) 	
-    ORDER BY 
-        a.sortorder,
-        b.sortorder,
-        q."Level"
+        (i_categoryid IS NULL OR a.categoryid = i_categoryid) AND
+		(b."level" >= lvl-1) and		 
+		((b.flags & 2)=0 OR x.readaccess) and         	
+        b.left_key >= lk and b.right_key <= rk 	
+    ORDER BY
+	    a.sortorder,
+	    b.left_key
     LOOP 	 
-                    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL) THEN	 
-                     _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_lasttopic(_rec."ForumID",i_userid,_rec."LastTopicID",_rec."LastPosted");
-    END IF;
-    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL AND _rec."TopicMovedID" IS NOT NULL) THEN	 
-     _rec."LastTopicID":={databaseSchema}.{objectQualifier}forum_lasttopic(_rec."ForumID",i_userid,_rec."TopicMovedID",_rec."LastPosted");
+    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted" IS NULL) THEN
+	 _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_ns_lasttopic(_rec."left_key",_rec."right_key", _rec."CategoryID", _rec."PageUserID"); 
+    END IF; 
+    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted" IS NULL AND _rec."TopicMovedID" IS NOT NULL) THEN	 
+            _rec."LastTopicID" := {databaseSchema}.{objectQualifier}forum_ns_lasttopic(_rec."left_key",_rec."right_key", _rec."CategoryID", _rec."PageUserID");   
     END IF;	  	
-     SELECT    t.lastposted , 
+     SELECT    t.lastposted, 
                t.lastmessageid, 
                t.lastmessageflags, 
                t.lastuserid,
@@ -4134,6 +4181,114 @@ FOR _rec IN
     RETURN NEXT _rec;	
 END LOOP;
 
+END;
+
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
+  --GO 
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_listread_test(
+                           i_boardid integer,
+                           i_userid integer,
+                           i_categoryid integer,
+                           i_parentid integer,
+                           i_stylednicks boolean,
+                           i_findlastunread boolean,
+						   i_showcommonforums boolean,
+                           i_showpersonalforums boolean,
+                           i_forumcreatedbyuserid integer,
+                           i_UTCTIMESTAMP timestamp)
+                  RETURNS SETOF {databaseSchema}.{objectQualifier}forum_ns_listread_return_type AS
+$BODY$DECLARE
+lvl integer := 0;
+rk integer; 
+lk integer;
+_rec {databaseSchema}.{objectQualifier}forum_ns_listread_return_type%ROWTYPE; 
+BEGIN
+ IF i_parentid IS NOT NULL THEN
+ SELECT "level",left_key + 1, right_key - 1 into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum   
+ where forumid = i_parentid limit 1;
+ END IF;
+ IF i_parentid IS NULL AND i_categoryid > 0 THEN
+ SELECT 0, min(n.left_key), max(n.right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum n
+ where n.categoryid = i_categoryid; 
+ END IF;
+ IF i_parentid IS NULL AND i_categoryid IS NULL THEN
+ SELECT 0, min(n.left_key), max(n.right_key) into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}forum n 
+ join {databaseSchema}.{objectQualifier}category c
+ on c.categoryid = n.categoryid
+ where c.boardid = i_boardid;
+ END IF;
+ lvl := lvl -1;
+FOR _rec IN
+    SELECT 
+        a.categoryid, 
+        a.name AS Category, 
+        b.forumid AS ForumID,
+        b.parentid,
+        b.name AS Forum, 
+        b.description, 		
+        b.imageurl,		
+        b.pollgroupid, 
+        b.isuserforum,	
+		b.left_key,
+		b.right_key,
+		i_userid,	
+        (select sum(fp.NumTopics) from {databaseSchema}.{objectQualifier}Forum fp	
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Topics,
+        (select sum(fp.NumPosts) from {databaseSchema}.{objectQualifier}Forum fp		
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Posts,		
+        t.topicid,
+        t.status,
+        t.styles,
+        t.topicmovedid,
+        t.lastposted, 
+        t.lastmessageid, 
+        t.lastmessageflags, 
+        t.lastuserid,
+        t.topic,
+        COALESCE(t.lastusername,(SELECT u2.name FROM   {databaseSchema}.{objectQualifier}user u2 WHERE  u2.userid = t.lastuserid LIMIT 1)),
+        COALESCE(t.lastuserdisplayname,(SELECT u2.name FROM   {databaseSchema}.{objectQualifier}user u2 WHERE  u2.userid = t.lastuserid LIMIT 1)),
+        b.flags,
+        (case(i_stylednicks)
+            when true THEN (SELECT us.userstyle FROM {databaseSchema}.{objectQualifier}user us where us.userid = _rec."LastUserID")   
+            else ''	 end) as "Style",
+    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}active xz 
+    JOIN {databaseSchema}.{objectQualifier}user usr 
+    ON xz.userid = usr.userid 
+    WHERE xz.forumid=b.forumid 
+    AND usr.isactiveexcluded IS FALSE) AS Viewing, 
+        b.remoteurl,
+        x.readaccess::integer,
+        (case(i_findlastunread)
+             when true THEN
+               (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}forumreadtracking x WHERE x.forumid=b.forumid AND x.userid = i_userid LIMIT 1)
+             else null	 end) AS LastForumAccess,
+             (case when (i_findlastunread IS TRUE)
+               THEN
+               (SELECT lastaccessdate FROM {databaseSchema}.{objectQualifier}topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid)
+               else null end)  AS LastTopicAccess			 		
+    FROM 
+        {databaseSchema}.{objectQualifier}category a
+        JOIN {databaseSchema}.{objectQualifier}forum b on (b.categoryid=a.categoryid and a.boardid = i_boardid)
+		JOIN {databaseSchema}.{objectQualifier}activeaccess x on (x.forumid=b.forumid and x.userid = i_userid) 
+		left outer join {databaseSchema}.{objectQualifier}topic t ON t.topicid = {databaseSchema}.{objectQualifier}forum_ns_lasttopic(b.left_key,b.right_key, a.categoryid, i_userid)
+    WHERE
+        (i_categoryid IS NULL OR a.categoryid = i_categoryid) AND
+		(b."level" >= lvl) and		 
+		((b.flags & 2)=0 OR x.readaccess) and         	
+        b.left_key >= lk and b.right_key <= rk 	
+    ORDER BY
+	    a.sortorder,
+	    b.left_key
+    LOOP     
+    RETURN NEXT _rec;	
+    END LOOP;
 END;
 
 $BODY$
@@ -4619,36 +4774,66 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_save(
                            i_userid integer,
                            i_isuserforum boolean,
                            i_canhavepersforums boolean,
+						   i_adjacentforumid int,
+						   i_adjacentforummode int,
                            i_utctimestamp timestamp)
                    RETURNS integer AS
 $BODY$DECLARE 
-ici_ForumID integer:=i_forumid;
-ici_boardid	integer;
-ici_parentid integer := i_parentid;
-ici_flags		integer:=0 ;	
-ici_sortorder smallint:=i_sortorder;
-ici_nid		integer;
-ici_UserName  VARCHAR(255);
-ici_UserDisplayName  VARCHAR(255);
+      ici_ForumID integer:=i_forumid;
+      ici_boardid	integer;
+      ici_flags		integer:=0 ;	
+      ici_nid		integer;
+      ici_UserName  VARCHAR(255);
+      ici_userdisplayname  VARCHAR(255);
+      l_ForumId integer;
+      ici_cntr integer := 0;
+      _rec RECORD;
+      afterset bool;
+	  newlk integer;
 BEGIN
-     IF ici_sortorder > 0 THEN 
-    IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}forum  
-    WHERE sortorder = ici_sortorder AND categoryid = i_categoryid) THEN
-    UPDATE {databaseSchema}.{objectQualifier}forum
-            SET sortorder = sortorder+1				
-        WHERE (sortorder BETWEEN ici_sortorder AND 254) AND sortorder > ici_sortorder and forumid != ici_ForumID;
+    IF i_parentid = 0 THEN 
+	   i_parentid = null;     
     END IF;
-    ELSE
-     SELECT MAX(sortorder) INTO ici_sortorder FROM {databaseSchema}.{objectQualifier}forum WHERE categoryid = i_categoryid;
-    IF ici_sortorder IS NULL 
-    THEN ici_sortorder:=1; 
-    ELSE
-    ici_sortorder :=ici_sortorder+1;
-    END IF;
-    END IF;	
-    IF i_parentid = 0 THEN ici_parentid = null; 
-    ELSE ici_parentid :=i_parentid;
-    END IF;
+  -- set new sort order for categories if adjacent category was supplied 
+	-- i_adjacentforummode can be before(1), after(2) and over(3)
+	-- -1 mode means that forum sortorder will not be updated. 
+
+     if (i_adjacentforumid is not null) then	 
+	   -- over  	
+	              if (i_adjacentforummode = 3) THEN		               
+		               i_sortorder := 0;
+					   ici_cntr := 1;
+		          end if;   
+	   FOR _rec in select f.forumid from {databaseSchema}.{objectQualifier}forum f
+		   join {databaseSchema}.{objectQualifier}category c
+		   on c.categoryid = f.categoryid
+		   where c.categoryid = i_categoryid and (i_parentid is null or f.parentid = i_parentid)   
+		   order by f.sortorder	     
+	     LOOP 
+               if (i_adjacentforumid = _rec.forumid) THEN	          	
+		        -- before
+		             if (i_adjacentforummode = 1) THEN		               
+		               i_sortorder := ici_cntr;
+					   ici_cntr := ici_cntr + 1;	               
+		               end if;                 
+		       -- after
+		           if (i_adjacentforummode = 2) THEN		               
+		               i_sortorder := ici_cntr + 1;
+					   afterset := true;	
+		               end if;              
+		       end if;
+			if (i_sortorder::integer = ici_cntr and afterset) THEN 
+			 ici_cntr := ici_cntr + 1;
+			end if;
+	    	update	{databaseSchema}.{objectQualifier}forum
+		    set sortorder = ici_cntr where forumid = _rec.forumid;
+		    
+		    ici_cntr := ici_cntr + 1;	
+		
+    END LOOP;
+	end if;	
+   
+
     IF i_locked IS NOT FALSE THEN ici_flags := ici_flags | 1;END IF;
     IF i_hidden IS NOT FALSE THEN  ici_flags := ici_flags | 2;END IF;
     IF i_istest IS NOT FALSE THEN  ici_flags := ici_flags | 4;END IF;
@@ -4657,21 +4842,32 @@ BEGIN
     WHERE categoryid=i_categoryid;
 
  IF i_userid IS NOT NULL THEN   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
+    SELECT Name, DisplayName INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
        -- guests should not create forums
     ELSE
     SELECT BoardID INTO ici_BoardID FROM {databaseSchema}.{objectQualifier}category  WHERE categoryid=i_categoryid;
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where BoardID = ici_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    SELECT Name, DisplayName INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where BoardID = ici_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
     END IF;
 
 
   IF ici_ForumID > 0 THEN
+   if (i_adjacentforumid is not null)  then  
+    if (i_adjacentforummode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;
+	end if;
+	-- after 
+	if (i_adjacentforummode = 2) then 
+	select right_key into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;	
+	end if;
+
+  end if;
+  
   UPDATE {databaseSchema}.{objectQualifier}forum
   SET
-  parentid=i_parentid,
-  name= substr(i_name, 1, 128),
+  parentid = i_parentid,
+  name= substr(i_name, 1, 255),
   description=i_description,
-  sortorder=ici_sortorder,
+  sortorder= (case when i_adjacentforummode != -1 THEN i_sortorder else sortorder  end),
   categoryid=i_categoryid,
   remoteurl = i_remoteurl,
   themeurl = i_themeurl,
@@ -4679,14 +4875,30 @@ BEGIN
   imageurl = i_imageurl,
   styles = i_styles,
   isuserforum = i_isuserforum,
-  canhavepersforums = i_canhavepersforums
-  WHERE forumid=ici_ForumID;
+  canhavepersforums = i_canhavepersforums 
+  WHERE forumid=ici_ForumID; 
+  -- temporary total rebuilding
+  perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
   ELSE
+   -- tree rebuilding is being made by {databaseSchema}_{objectQualifier}forum_before_insert_tr, drop constraint first
+  -- alter table only {databaseSchema}.{objectQualifier}forum drop constraint fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid;
+  
+  if (i_adjacentforumid is not null)  then  
+    if (i_adjacentforummode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;
+	end if;
+	-- after 
+	if (i_adjacentforummode = 2) then 
+	select right_key+1 into newlk from {databaseSchema}.{objectQualifier}forum where forumid = i_adjacentforumid;	
+	end if;
+  end if;
   INSERT INTO {databaseSchema}.{objectQualifier}forum(categoryid,parentid,name,description,sortorder,
-  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhavepersforums)
+  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhavepersforums, left_key)
   VALUES(i_categoryid,i_parentid,i_name,i_description,
-  ici_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_UserDisplayName,i_utctimestamp,i_canhavepersforums) returning forumid INTO ici_ForumID; 
- 
+  i_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_userdisplayname,i_utctimestamp,i_canhavepersforums, newlk) returning forumid INTO ici_ForumID; 
+--   ALTER TABLE ONLY {databaseSchema}.{objectQualifier}forum
+ --  ADD CONSTRAINT fk_{databaseSchema}_{objectQualifier}_forum_{objectQualifier}_forum_parentid FOREIGN KEY (parentid) REFERENCES {databaseSchema}.{objectQualifier}forum(forumid);
+  
   INSERT INTO {databaseSchema}.{objectQualifier}forumaccess(groupid,forumid,accessmaskid)
   SELECT groupid,ici_ForumID,i_accessmaskid
   FROM {databaseSchema}.{objectQualifier}group
@@ -4696,7 +4908,7 @@ BEGIN
   -- move node to it's place by recreteating table. We make it only when the forum was already saved with access mask 
  -- if (i_accessmaskid > 0) then
 
- -- PERFORM {databaseSchema}.{objectQualifier}fillin_or_check_ns_tables();
+ -- perform  {databaseSchema}.{objectQualifier}forum_ns_recreate();
  -- end if;   
    
 
@@ -4704,11 +4916,11 @@ BEGIN
     update {databaseSchema}.{objectQualifier}forumhistory set 
            ChangedUserID = i_UserID,	
            ChangedUserName = ici_UserName,
-           changeddisplayname = ici_UserDisplayName
+           changeddisplayname = ici_userdisplayname
      where forumid = ici_ForumID and changeddate = i_utctimestamp; 
     else    
     INSERT INTO {databaseSchema}.{objectQualifier}forumhistory(forumid,ChangedUserID,ChangedUserName,changeddisplayname,ChangedDate)
-    VALUES (ici_ForumID,i_UserID,ici_UserName,ici_UserDisplayName,i_utctimestamp);
+    VALUES (ici_ForumID,i_UserID,ici_UserName,ici_userdisplayname,i_utctimestamp);
     end IF;
   
 RETURN ici_ForumID;
@@ -5223,10 +5435,10 @@ FOR _rec IN
                INNER JOIN {databaseSchema}.{objectQualifier}group b ON b.groupid=a.groupid
         WHERE  a.forumid = i_forumid   
        AND 
-		b.IsUserGroup = (case when i_includeusergroups and not i_includecommongroups AND b.CreatedByUserID = i_personalgroupuserid then true
+		b.isusergroup = (case when i_includeusergroups and not i_includecommongroups AND b.CreatedByUserID = i_personalgroupuserid then true
 		else false end)
 		AND 
-		b.IsHidden = (case when i_includeadmingroups and not i_includecommongroups then true else false end) 
+		((i_includeadmingroups AND i_includecommongroups) OR b.ishidden = i_includeadmingroups) 
        LOOP
     RETURN NEXT _rec;
     END LOOP;   
@@ -5635,7 +5847,7 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}group_save(
                   RETURNS int AS
 $BODY$DECLARE
              ici_UserName  VARCHAR(255);
-             ici_UserDisplayName  VARCHAR(255);
+             ici_userdisplayname  VARCHAR(255);
              ici_groupid integer:=i_groupid;
              iciFlags integer:=0;
 BEGIN         
@@ -5654,12 +5866,12 @@ BEGIN
     i_style := null; 
     END IF;
         
-        SELECT name,displayname into ici_UserName,ici_UserDisplayName from {databaseSchema}.{objectQualifier}user where userid = i_userid; 
+        SELECT name,displayname into ici_UserName,ici_userdisplayname from {databaseSchema}.{objectQualifier}user where userid = i_userid; 
                   IF i_UserID IS NOT NULL THEN   
-    SELECT name,displayname INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
+    SELECT name,displayname INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where userid = i_userid LIMIT  1;
        -- guests should not create forums
     ELSE    
-    SELECT name,displayname INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}user where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    SELECT name,displayname INTO ici_UserName, ici_userdisplayname FROM {databaseSchema}.{objectQualifier}user where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
     END IF;
         IF i_groupid > 0 THEN        
             UPDATE {databaseSchema}.{objectQualifier}group
@@ -5717,7 +5929,7 @@ BEGIN
                         i_isusergroup,
                         i_userid,
                         ici_UserName,
-                        ici_UserDisplayName,
+                        ici_userdisplayname,
                         i_utctimestamp,
                         i_personalaccessmasksnumber,
                         i_personalgroupsnumber,
@@ -5742,11 +5954,11 @@ BEGIN
     update {databaseSchema}.{objectQualifier}grouphistory set 
            ChangedUserID = i_UserID,	
            ChangedUserName = ici_UserName,
-           ChangedDisplayName = ici_UserDisplayName
+           ChangedDisplayName = ici_userdisplayname
      where  groupid = ici_groupid  and changeddate = i_utctimestamp; 
     else    
     INSERT INTO {databaseSchema}.{objectQualifier}grouphistory(GroupID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
-    VALUES (i_GroupID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+    VALUES (i_GroupID, i_UserID,ici_UserName,ici_userdisplayname,i_UTCTIMESTAMP);
     end IF; */
     -- group styles override user styles, don't sync if style is not present here
    IF (i_style is not null and char_length(i_style) > 2) THEN
@@ -5901,7 +6113,7 @@ $BODY$DECLARE
              intervaladd integer :=5;
              timesendattempt timestamp ;
 BEGIN
-timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
+timesendattempt :=i_utctimestamp + (intervaladd || ' minute')::interval;
 
       UPDATE {databaseSchema}.{objectQualifier}mail  
       SET processid = NULL 
@@ -5937,9 +6149,21 @@ $BODY$DECLARE
              intervaladd integer :=5;
              timesendattempt timestamp ;
 BEGIN
-timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
+timesendattempt :=i_utctimestamp + (intervaladd || ' minute')::interval;
 
-      
+        UPDATE {databaseSchema}.{objectQualifier}mail
+        SET 
+            ProcessID = NULL
+        WHERE
+            ProcessID IS NOT NULL AND SendAttempt > i_utctimestamp;
+
+        UPDATE {databaseSchema}.{objectQualifier}Mail
+        SET 
+            SendTries = SendTries + 1,
+            SendAttempt = timesendattempt,
+            ProcessID = i_processid
+        WHERE
+            MailID IN (SELECT MailID FROM {databaseSchema}.{objectQualifier}Mail WHERE SendAttempt < i_utctimestamp OR SendAttempt IS NULL ORDER BY SendAttempt, Created limit 10);
          
     -- now SELECT all mail reserved for this process...
     FOR _rec IN
@@ -5959,7 +6183,9 @@ timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
     WHERE processid = i_processid  ORDER BY sendattempt, created LIMIT 10
 LOOP
 RETURN NEXT _rec;
-END LOOP; 	
+END LOOP; 
+
+	 
         
  END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -6322,7 +6548,7 @@ $BODY$DECLARE
              ici_topicid	integer;
              ici_Posted	    timestamp;
              ici_UserName	varchar(128);
-             ici_UserDisplayName	varchar(128);
+             ici_userdisplayname	varchar(128);
              ici_NewFlag    integer;
              ici_parentid   integer;
 BEGIN 	
@@ -6334,7 +6560,7 @@ BEGIN
          a.username,
          a.userdisplayname,
          a.flags
-        INTO ici_userid,ici_topicid,ici_ForumID,ici_Posted,ici_UserName,ici_UserDisplayName,ici_NewFlag
+        INTO ici_userid,ici_topicid,ici_ForumID,ici_Posted,ici_UserName,ici_userdisplayname,ici_NewFlag
     FROM
         {databaseSchema}.{objectQualifier}message a
         inner join {databaseSchema}.{objectQualifier}topic b on b.topicid=a.topicid
@@ -6365,7 +6591,7 @@ BEGIN
         lastmessageid = i_messageid,
         lastuserid = ici_userid,
         lastusername = ici_UserName,
-        lastuserdisplayname = ici_UserDisplayName,
+        lastuserdisplayname = ici_userdisplayname,
         lastmessageflags = ici_NewFlag,
         numposts = 
         (select count(1) 
@@ -6387,7 +6613,7 @@ BEGIN
         lastmessageid = i_messageid,
         lastuserid = ici_userid,
         lastusername = ici_UserName,
-        lastuserdisplayname = ici_UserDisplayName
+        lastuserdisplayname = ici_userdisplayname
     WHERE forumid = ici_ForumID;
 
     -- update forum stats
@@ -6401,7 +6627,7 @@ BEGIN
                 lastmessageid = i_messageid,
                 lastuserid = ici_userid,
                 lastusername = ici_UserName,
-                lastuserdisplayname = ici_UserDisplayName
+                lastuserdisplayname = ici_userdisplayname
             WHERE
                 forumid = ici_parentid
         AND ((lastposted < ici_Posted)
@@ -6488,13 +6714,11 @@ BEGIN
     WHERE userid = ici_userid;
     
     -- Delete topic IF there are no more messages
-    SELECT COUNT(1) INTO ici_MessageCount 
+   if not exists (select 1 INTO ici_MessageCount 
     FROM {databaseSchema}.{objectQualifier}message 
-    WHERE topicid = ici_topicid 
-    AND (flags & 8)=0;
-    IF ici_MessageCount=0 
-    THEN PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_topicid, null, false, i_erasemessage); 
-    END IF;
+    WHERE topicid = ici_topicid limit 1) then  
+     PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_topicid, null, i_erasemessage, false); 
+   END IF;
  
     -- UPDATE lastpost
     PERFORM {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_topicid);
@@ -6977,7 +7201,7 @@ IF ici_Position IS NULL THEN  ici_Position := 0; END IF;
     WHERE topicid = ici_OldTopicID and (flags & 8)=8) THEN	
  ici_eraseoldtopic = true;
  end if;
-	PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_OldTopicID,null, false,ici_eraseoldtopic); 
+	PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_OldTopicID,null, ici_eraseoldtopic, true); 
 	END IF;
  
      -- update lastpost
@@ -7186,11 +7410,11 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}message_save(
                            i_topicid integer, 
                            i_userid integer, 
                            i_message text, 
-                           i_username varchar, 
-                           i_ip varchar, 
+                           i_username varchar(255), 
+                           i_ip varchar(100), 
                            i_posted timestamp, 
                            i_replyto integer, 
-                           i_blogpostid varchar, 
+                           i_blogpostid varchar(128), 
                            i_externalmessageid varchar(255),
                            i_referencemessageid varchar(255),                         
 						   i_messagedescription  varchar(255),
@@ -7796,66 +8020,61 @@ $BODY$
 
 -- DROP FUNCTION {databaseSchema}.{objectQualifier}nntptopic_savemessage(integer, varchar, text, integer, varchar, varchar, timestamp, varchar);
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}nntptopic_savemessage(
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}nntptopic_addmessage(
                            i_nntpforumid integer, 
-                           i_topic varchar, 
+                           i_topic varchar(255), 
                            i_body text, 
                            i_userid integer, 
-                           i_username varchar, 
-                           i_ip varchar, 
+                           i_username varchar(255), 
+                           i_ip varchar(100), 
                            i_posted timestamp, 
                            i_externalmessageid varchar(255),
                            i_referencemessageid varchar(255),
                            i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
-             ici_ForumID	integer;
-             ici_topicid	integer := null;
-             ici_MessageID	integer;
-             ici_ParentID integer;
-          -- ici_thread char(32)=i_thread;
-             ici_replyto	integer:=null;
-             varchardummy varchar(128):=NULL;
+             ici_forumid	integer;
+             ici_topicid	integer;
+             ici_MessageID	integer;                 
+             ici_replyto	integer;
+             varchardummy varchar(128);
 BEGIN 	
  
-    SELECT forumid INTO ici_ForumID 
+    SELECT forumid INTO ici_forumid 
     FROM {databaseSchema}.{objectQualifier}nntpforum WHERE nntpforumid=i_nntpforumid;
 
-    IF exists(select 1 from {databaseSchema}.{objectQualifier}message where externalmessageid = i_referencemessageid) THEN	
-        -- referenced message exists
-        select  topicid, messageid 
+	select  topicid, messageid 
         INTO ici_topicid, ici_ReplyTo
         from 
         {databaseSchema}.{objectQualifier}message 
         where externalmessageid = i_referencemessageid;
-    else
-        IF not exists(select 1 from {databaseSchema}.{objectQualifier}message where  externalmessageid = i_externalmessageid) THEN
-        -- thread doesn't exists
-        IF (i_referencemessageid IS NULL) THEN
+
+    -- referenced message doesn't exist
+    IF (ici_topicid is null and i_referencemessageid IS NULL and not exists(select 1 from {databaseSchema}.{objectQualifier}message where  externalmessageid = i_externalmessageid)) then     
+      -- thread doesn't exists
+      
         INSERT INTO {databaseSchema}.{objectQualifier}topic(forumid,
         userid,username,userdisplayname,posted,topic,views,priority,numposts,LastMessageFlags)
-        VALUES(ici_ForumID,i_userid,i_username,i_username,i_posted,i_topic,0,0,0,17) returning topicid into ici_topicid;	
-            
-      --  SELECT CURRVAL(pg_get_serial_sequence('{databaseSchema}.{objectQualifier}topic','topicid')) INTO ici_topicid;  		
+        VALUES(ici_forumid,i_userid,i_username,i_username,i_posted,i_topic,0,0,0,17) 
+		returning topicid into ici_topicid;   
+     
 
         INSERT INTO {databaseSchema}.{objectQualifier}nntptopic(nntpforumid,thread,topicid)
-        VALUES (i_nntpforumid,'',ici_topicid);
-        END IF;
-        END IF;
+        VALUES (i_nntpforumid,'',ici_topicid);  
     END IF;  
 
     IF ici_topicid IS NOT NULL THEN
         SELECT {databaseSchema}.{objectQualifier}message_save(ici_topicid, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, NULL, 17, i_utctimestamp)
         INTO ici_MessageID;
-    END IF;
-    -- update user 
+
+		 -- update user if this is a count post forum 
     IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}forum
-     WHERE forumid=ici_ForumID AND (flags & 4)=0) THEN 	
+     WHERE forumid=ici_ForumID AND (flags & 4)=0 limit 1) THEN 	
         UPDATE {databaseSchema}.{objectQualifier}user
         SET numposts=numposts+1 WHERE userid=i_userid;
     END IF;
     
-    -- update topic 
+    -- update topic last post
         UPDATE {databaseSchema}.{objectQualifier}topic SET 
         lastposted		= i_posted,
         lastmessageid	= ici_MessageID,
@@ -7871,34 +8090,12 @@ BEGIN
         lastuserid		= i_userid,
         lastusername	= i_username,
         lastuserdisplayname	= i_username
-    WHERE forumid=ici_ForumID AND (lastposted IS NULL OR lastposted< i_posted); 
+    WHERE forumid=ici_ForumID; 
         
-    -- PERFORM {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_topicid);
-    
-    SELECT DISTINCT parentid
-         INTO ici_ParentID
-          FROM  {databaseSchema}.{objectQualifier}forum 
-           WHERE forumid = ici_ForumID;
-  if ici_ParentID IS NOT NULL THEN         
-WHILE ici_ParentID > 0 LOOP
+    -- PERFORM {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_topicid); 
+    -- PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
 
-UPDATE {databaseSchema}.{objectQualifier}forum SET
-        lastposted		= i_posted::timestamp,
-        lasttopicid	= ici_topicid,
-        lastmessageid	= ici_MessageID,
-        lastuserid		= i_userid,
-        lastusername	= i_username,
-        lastuserdisplayname	= i_username
-    WHERE forumid=ici_ParentID AND (lastposted IS NULL OR lastposted < i_posted);
-    
-    SELECT parentid
-         INTO ici_ParentID
-          FROM  {databaseSchema}.{objectQualifier}forum 
-           WHERE parentid = ici_ParentID LIMIT 1;	 	 
-END LOOP; 
-END IF;    
-   -- PERFORM {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
-RETURN;
+    END IF;   
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -11660,13 +11857,13 @@ CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}user_delete(
 $BODY$DECLARE
              ici_GuestUserID	integer;
              ici_UserName	varchar(128);
-             ici_UserDisplayName	varchar(128);
+             ici_userdisplayname	varchar(128);
              ici_GuestCount	integer;
 
 BEGIN	
  
     SELECT name,displayname 
-    INTO ici_UserName, ici_UserDisplayName
+    INTO ici_UserName, ici_userdisplayname
     FROM {databaseSchema}.{objectQualifier}user WHERE userid=i_userid;
  
     SELECT 
@@ -11688,10 +11885,10 @@ BEGIN
 
     IF NOT (ici_GuestUserID = i_userid AND ici_GuestCount = 1) THEN
 
-    UPDATE {databaseSchema}.{objectQualifier}message SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID,editedby = ici_GuestUserID WHERE userid = i_userid;
-    UPDATE {databaseSchema}.{objectQualifier}topic SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID WHERE userid = i_userid;
-    UPDATE {databaseSchema}.{objectQualifier}topic SET lastusername=ici_UserName,userdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
-    UPDATE {databaseSchema}.{objectQualifier}forum SET lastusername=ici_UserName,lastuserdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
+    UPDATE {databaseSchema}.{objectQualifier}message SET username=ici_UserName,userdisplayname=ici_userdisplayname,userid=ici_GuestUserID,editedby = ici_GuestUserID WHERE userid = i_userid;
+    UPDATE {databaseSchema}.{objectQualifier}topic SET username=ici_UserName,userdisplayname=ici_userdisplayname,userid=ici_GuestUserID WHERE userid = i_userid;
+    UPDATE {databaseSchema}.{objectQualifier}topic SET lastusername=ici_UserName,userdisplayname=ici_userdisplayname,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
+    UPDATE {databaseSchema}.{objectQualifier}forum SET lastusername=ici_UserName,lastuserdisplayname=ici_userdisplayname,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
 
 	DELETE FROM {databaseSchema}.{objectQualifier}activeaccess WHERE userid = i_userid;
     DELETE FROM {databaseSchema}.{objectQualifier}active WHERE userid = i_userid;
@@ -12831,36 +13028,34 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}user_nntp(
                            i_boardid integer, 
-                           i_username varchar,
+                           i_username varchar(255),
                            i_email varchar, 
                            i_timezone integer,
                            i_utctimestamp timestamp)
                   RETURNS integer AS
 $BODY$DECLARE
-             ici_UserName varchar(128):=i_username;
-             ici_userid integer;
-             ici_Count integer:=0;
+            
+             ici_userid integer;       
              intnull integer;
              varcharnull varchar;
              charnull varchar(10);
 BEGIN
-    ici_UserName := ici_UserName || ' (NNTP)';
+    i_username := i_username || ' (NNTP)';
  
     SELECT
-        a.userid,COUNT(a.userid) INTO ici_userid,ici_Count
+        a.userid INTO ici_userid
     FROM
         {databaseSchema}.{objectQualifier}user a
     WHERE
         a.boardid=i_boardid and
-        a.name=ici_UserName GROUP BY a.userid;
-        
-   GET DIAGNOSTICS ici_Count = ROW_COUNT;
-    IF ici_Count <=0 THEN 	 		              
+        a.name=i_username limit 1;        
+
+    IF ici_userid is null THEN 	 		              
         SELECT {databaseSchema}.{objectQualifier}user_save 
         (intnull,
 		i_boardid,
-		ici_UserName,
-		ici_UserName,
+		i_username,
+		i_username,
 		i_email,
 		i_timezone,
 		varcharnull,
@@ -14866,7 +15061,7 @@ $BODY$
 
 
   CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}readtopic_lastread(
-                           i_userid integer, i_topicid integer,i_utctimestamp timestamp)				 
+                           i_userid integer, i_topicid integer)				 
                   RETURNS timestamp  AS
 $BODY$
 BEGIN
@@ -15140,8 +15335,8 @@ $BODY$
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}buddy_addrequest(
                            i_fromuserid integer,
                            i_touserid integer,
-						   i_usedisplayname boolean,
-					       i_utctimestamp timestamp)
+			   i_usedisplayname boolean,
+			   i_utctimestamp timestamp)
                   RETURNS  {databaseSchema}.{objectQualifier}buddy_addrequest_rt AS
 $BODY$
 DECLARE 
@@ -15333,7 +15528,7 @@ $BODY$
         DELETE  FROM   {databaseSchema}.{objectQualifier}buddy
         WHERE   fromuserid = i_fromuserid
                   AND touserid = i_touserid;
-      RETURN  (SELECT  (case when i_usedisplayname then displayname else name end) into i_paramoutput 
+      RETURN  (SELECT  (case when i_usedisplayname then displayname else name end)  
                              FROM   {databaseSchema}.{objectQualifier}user
                              WHERE  userid = i_touserid );
                            
@@ -15352,8 +15547,7 @@ $BODY$
         DELETE  FROM   {databaseSchema}.{objectQualifier}buddy
         WHERE   fromuserid = i_fromuserid
                 AND touserid = i_touserid;
-    RETURN   (SELECT  (case when i_usedisplayname then displayname else name end) INTO i_paramoutput
-                             FROM   {databaseSchema}.{objectQualifier}user
+    RETURN   (SELECT  (case when i_usedisplayname then displayname else name end)                              FROM   {databaseSchema}.{objectQualifier}user
                              WHERE   userid = i_fromuserid );
 END;
 $BODY$
@@ -15867,12 +16061,12 @@ CREATE OR REPLACE FUNCTION  {databaseSchema}.{objectQualifier}user_lazydata(
 $BODY$DECLARE
              G_UsrAlbums integer :=0;
              R_UsrAlbums integer :=0;         
-             ici_grouppersonalforums integer :=0;
+             ici_grouppersonalforums integer :=0;			
              ici_grouppersonalmasks integer :=0;
              ici_grouppersonalgroups integer :=0;
              _rec {databaseSchema}.{objectQualifier}user_lazydata_return_type%ROWTYPE;
-BEGIN 
-
+			 _recgr RECORD;
+BEGIN  
     SELECT  COALESCE(MAX(c.usrpersonalgroups),0),COALESCE(MAX(c.usrpersonalmasks),0),COALESCE(MAX(c.usrpersonalforums),0)
     INTO  ici_grouppersonalgroups,ici_grouppersonalmasks,ici_grouppersonalforums
     FROM {databaseSchema}.{objectQualifier}user a 
@@ -15939,7 +16133,7 @@ BEGIN
         (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}group gr   WHERE gr.createdbyuserid = i_userid and gr.isusergroup),
         ici_grouppersonalgroups,
         ici_grouppersonalmasks,
-        ici_grouppersonalforums,
+        ici_grouppersonalforums,		
         a.commonviewtype,
         a.topicsperpage,
         a.postsperpage
@@ -16963,18 +17157,20 @@ END;$BODY$
     COST 100 ROWS 1000;  
 --GO
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser(i_boardid integer, i_userid integer)
-                   RETURNS SETOF {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser_rt AS
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_cataccess_actuser(i_boardid integer, i_userid integer)
+                   RETURNS SETOF {databaseSchema}.{objectQualifier}forum_cataccess_actuser_rt AS
 $BODY$DECLARE
-_rec {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser_rt%ROWTYPE;
+_rec {databaseSchema}.{objectQualifier}forum_cataccess_actuser_rt%ROWTYPE;
 _nid integer; 
 BEGIN
 
-FOR _rec IN SELECT DISTINCT(f.categoryid), c.name, c.sortorder 
+FOR _rec IN SELECT DISTINCT(f.categoryid) as CategoryID, c.name as CategoryName, c.sortorder 
 FROM {databaseSchema}.{objectQualifier}forum f 
 JOIN {databaseSchema}.{objectQualifier}category c on c.categoryid = f.categoryid
 JOIN {databaseSchema}.{objectQualifier}activeaccess access ON (f.forumid = access.forumid and access.userid = i_userid)  
-WHERE c.boardid = i_boardid and f.parentid IS NULL and  (access.readaccess is true or (access.readaccess is false and f.flags & 2 <> 2)) ORDER BY c.sortorder, f.categoryid, c.name
+WHERE c.boardid = i_boardid and f.parentid IS NULL 
+and  (access.readaccess is true or (access.readaccess is false and f.flags & 2 <> 2)) 
+ORDER BY c.sortorder, CategoryID, c.name
 LOOP
 RETURN NEXT _rec;
 END LOOP;
@@ -16983,7 +17179,7 @@ $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
-COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser(integer,integer) IS 'Returns categories where a user has access.';
+COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_cataccess_actuser(integer,integer) IS 'Returns categories where a user has access.';
 --GO
 
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_tags(i_boardid integer, i_pageuserid integer, i_topicid integer)
@@ -17036,7 +17232,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) 
 	 AND (t.flags & 8) <> 8 
 	 AND
-      tg.tag LIKE CASE 
+      tg.tag ILIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
             ELSE '%' END ; 
@@ -17051,7 +17247,7 @@ SELECT MAX(distinct(tg.tagcount)) INTO _maxcount
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid)
 	AND (t.flags & 8) <> 8
     AND
-      tg.tag LIKE CASE 
+      tg.tag ILIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
             ELSE '%' END ; 
@@ -17066,7 +17262,7 @@ FOR _rec IN SELECT DISTINCT(tt.tagid),tg.tag,tg.tagcount,_maxcount AS MaxTagCoun
             JOIN  {databaseSchema}.{objectQualifier}activeaccess aa ON (aa.forumid = t.forumid AND aa.userid = i_pageuserid)
     WHERE aa.boardid=i_boardid and (i_forumid is null OR t.forumid=i_forumid) 
 	AND (t.flags & 8) <> 8 AND
-      tg.tag LIKE CASE 
+      tg.tag ILIKE CASE 
             WHEN (not i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN ('%' || i_searchtext || '%') 
             WHEN (i_beginswith and i_searchtext IS NOT NULL AND LENGTH(i_searchtext) > 0) THEN (i_searchtext  || '%')  
             ELSE '%' END
@@ -17295,4 +17491,91 @@ BEGIN
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100; 
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}digest_topicnew(
+                 i_boardid integer,
+                 i_pageuserid integer,
+                 i_sincedate timestamp,
+                 i_todate timestamp,              
+                 i_stylednicks boolean,               
+				 i_utctimestamp timestamp)
+        
+RETURNS SETOF {databaseSchema}.{objectQualifier}digest_topicactivenew_rt
+					AS
+ $BODY$DECLARE
+  _rec {databaseSchema}.{objectQualifier}digest_topicactivenew_rt%ROWTYPE;
+ BEGIN
+ for _rec in SELECT
+        d.name AS "ForumName",
+		c.topic AS "Subject",
+		c.userdisplayname AS "StartedUserName",		
+	    c.lastuserdisplayname as "LastUserName" ,
+	    c.lastmessageid as "LastMessageID",
+		(SELECT x.message FROM {databaseSchema}.{objectQualifier}message x 
+          WHERE x.topicid=c.topicid and x.messageid = c.lastmessageid) as "LastMessage",
+	    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}message x 
+          WHERE x.topicid=c.topicid and (x.flags & 8) = 0) as "Replies"    
+    FROM
+        {databaseSchema}.{objectQualifier}topic c  
+        JOIN {databaseSchema}.{objectQualifier}forum d ON d.forumid=c.forumid 
+		JOIN {databaseSchema}.{objectQualifier}category cat ON cat.categoryid = d.categoryid     
+        join {databaseSchema}.{objectQualifier}vaccess x on (x.forumid=d.forumid AND x.userid = i_pageuserid AND x.readaccess <> 0)      
+    WHERE
+	   cat.boardid = i_boardid AND  
+       c.posted > i_sincedate   and      
+      (c.flags & 8) = 0
+    ORDER BY
+	d.sortorder,
+    c.lastposted desc 
+	loop
+	return next _rec;
+	end loop;
+END;$BODY$
+ LANGUAGE 'plpgsql' STABLE SECURITY DEFINER 
+ COST 100 ROWS 1000; 
+ --GO
+
+CREATE OR REPLACE FUNCTION  {databaseSchema}.{objectQualifier}digest_topicactive(
+                 i_boardid integer,
+                 i_pageuserid integer,
+                 i_sincedate timestamp,
+                 i_todate timestamp,              
+                 i_stylednicks boolean,               
+				 i_utctimestamp timestamp)
+        
+RETURNS SETOF {databaseSchema}.{objectQualifier}digest_topicactivenew_rt
+					AS
+ $BODY$DECLARE
+  _rec {databaseSchema}.{objectQualifier}digest_topicactivenew_rt%ROWTYPE;
+ BEGIN
+ for _rec in SELECT
+        d.name AS "ForumName",
+		c.topic AS "Subject",
+		c.userdisplayname AS "StartedUserName",		
+	    c.lastuserdisplayname as "LastUserName" ,
+	    c.lastmessageid as "LastMessageID",
+		(SELECT x.message FROM {databaseSchema}.{objectQualifier}message x 
+          WHERE x.topicid=c.topicid and x.messageid = c.lastmessageid) as "LastMessage",
+	    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}message x 
+          WHERE x.topicid=c.topicid and (x.flags & 8) = 0) as "Replies"    
+    FROM
+        {databaseSchema}.{objectQualifier}topic c  
+        JOIN {databaseSchema}.{objectQualifier}forum d ON d.forumid=c.forumid 
+		JOIN {databaseSchema}.{objectQualifier}category cat ON cat.categoryid = d.categoryid     
+        join {databaseSchema}.{objectQualifier}vaccess x on (x.forumid=d.forumid AND x.userid = i_pageuserid AND x.readaccess <> 0)      
+    WHERE
+	   cat.boardid = i_boardid AND    
+	   c.lastposted > i_sincedate and
+       c.lastposted < i_todate   and  
+      (c.flags & 8) = 0
+    ORDER BY
+	d.sortorder,
+    c.lastposted desc 
+	loop
+	return next _rec;
+	end loop;
+END;$BODY$
+   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER 
+   COST 100 ROWS 1000;   
 --GO

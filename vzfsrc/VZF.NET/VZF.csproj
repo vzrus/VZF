@@ -2642,7 +2642,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <Content Include="App_Browsers\ie.browser" />
     <Content Include="App_Browsers\ie11.browser" />
     <Content Include="App_Browsers\MozillaPatch.browser" />
@@ -3164,47 +3164,6 @@
     <Content Include="resources\images\closelabel.png" />
     <Content Include="resources\images\dd_arrow.gif" />
     <Content Include="resources\images\DialogBackground.png" />
-    <Content Include="resources\images\dynatree\cbChecked.gif" />
-    <Content Include="resources\images\dynatree\cbChecked_hover.gif" />
-    <Content Include="resources\images\dynatree\cbIntermediate.gif" />
-    <Content Include="resources\images\dynatree\cbIntermediate_hover.gif" />
-    <Content Include="resources\images\dynatree\cbUnchecked.gif" />
-    <Content Include="resources\images\dynatree\cbUnchecked_hover.gif" />
-    <Content Include="resources\images\dynatree\collapsed.gif" />
-    <Content Include="resources\images\dynatree\collapsed_hover.gif" />
-    <Content Include="resources\images\dynatree\customDoc1.gif" />
-    <Content Include="resources\images\dynatree\customFolder1.gif" />
-    <Content Include="resources\images\dynatree\document.gif" />
-    <Content Include="resources\images\dynatree\doc_with_children.gif" />
-    <Content Include="resources\images\dynatree\empty.gif" />
-    <Content Include="resources\images\dynatree\expanded.gif" />
-    <Content Include="resources\images\dynatree\expanded_hover.gif" />
-    <Content Include="resources\images\dynatree\folder.gif" />
-    <Content Include="resources\images\dynatree\folder_docs.gif" />
-    <Content Include="resources\images\dynatree\folder_images.gif" />
-    <Content Include="resources\images\dynatree\folder_page.gif" />
-    <Content Include="resources\images\dynatree\ltDoc.gif" />
-    <Content Include="resources\images\dynatree\ltD_ne.gif" />
-    <Content Include="resources\images\dynatree\ltD_nes.gif" />
-    <Content Include="resources\images\dynatree\ltError.gif" />
-    <Content Include="resources\images\dynatree\ltFld.gif" />
-    <Content Include="resources\images\dynatree\ltFld_o.gif" />
-    <Content Include="resources\images\dynatree\ltL_.gif" />
-    <Content Include="resources\images\dynatree\ltL_ne.gif" />
-    <Content Include="resources\images\dynatree\ltL_nes.gif" />
-    <Content Include="resources\images\dynatree\ltL_ns.gif" />
-    <Content Include="resources\images\dynatree\ltM_ne.gif" />
-    <Content Include="resources\images\dynatree\ltM_nes.gif" />
-    <Content Include="resources\images\dynatree\ltP_ne.gif" />
-    <Content Include="resources\images\dynatree\ltP_nes.gif" />
-    <Content Include="resources\images\dynatree\ltWait.gif" />
-    <Content Include="resources\images\dynatree\rbChecked.gif" />
-    <Content Include="resources\images\dynatree\rbChecked_hover.gif" />
-    <Content Include="resources\images\dynatree\rbIntermediate.gif" />
-    <Content Include="resources\images\dynatree\rbIntermediate_hover.gif" />
-    <Content Include="resources\images\dynatree\rbUnchecked.gif" />
-    <Content Include="resources\images\dynatree\rbUnchecked_hover.gif" />
-    <Content Include="resources\images\dynatree\ui.dynatree.css" />
     <Content Include="resources\images\firebird_small.png" />
     <Content Include="resources\images\flags\ad.png" />
     <Content Include="resources\images\flags\ae.png" />
@@ -4167,7 +4126,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
@@ -4204,7 +4163,7 @@
     <Content Include="resources\js\jquery.hovercard.min.js.map">
       <DependentUpon>jquery.hovercard.min.js</DependentUpon>
     </Content>
-    <None Include="web_pg.config">
+    <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
@@ -4960,7 +4919,7 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_fb.config" />
-    <Content Include="web.config">
+    <Content Include="web_ms.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

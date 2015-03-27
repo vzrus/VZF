@@ -88,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY"> المنتدى </Resource>
     <Resource tag="HELP_INDEX">عرض محتوى المساعدة</Resource>
     <Resource tag="HELP_RECOVER">لا يوجد بيانات</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM"> AIM استخدام</Resource>
     <Resource tag="IM_EMAIL"> Email استخدام</Resource>
     <Resource tag="IM_ICQ"> ICQ استخدام</Resource>
@@ -108,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">عرض محتوى الاشراف</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">عرض التقارير عن المشاركات </Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">عرض المشاركات الغير مثبتة</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">نفل رسالة</Resource>
     <Resource tag="MOVETOPIC">نقل الموضوع </Resource>
     <Resource tag="MYTOPICS">عرض القائمة المفضلة والمواضيع النشطة</Resource>
@@ -833,6 +835,7 @@
     <Resource tag="TYPE">Type</Resource>
     <Resource tag="TYPES">Type</Resource>
     <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>

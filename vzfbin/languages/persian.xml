@@ -13,6 +13,7 @@
     <Resource tag="ADMIN_BBCODE_IMPORT">در حال وارد کردن BBCodes</Resource>
     <Resource tag="ADMIN_BOARDS">در حال مشاهده لیست بوردها </Resource>
     <Resource tag="ADMIN_BOARDSETTINGS">در حال مشاهده تنظیمات بورد</Resource>
+    <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource>
     <Resource tag="ADMIN_DELETEFORUM">Delete forums</Resource>
     <Resource tag="ADMIN_EDITACCESSMASK">در حال ویرایش سطوح دسترسی</Resource>
     <Resource tag="ADMIN_EDITBOARD">در حال ویرایش بردها</Resource>
@@ -87,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">نمایش انجمن در یک رده</Resource>
     <Resource tag="HELP_INDEX">نمایش فهرست راهنما</Resource>
     <Resource tag="HELP_RECOVER">بدون داده</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">استفاده از AIM</Resource>
     <Resource tag="IM_EMAIL">استفاده از پست الکترونیک</Resource>
     <Resource tag="IM_ICQ">استفاده از ICQ</Resource>
@@ -107,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">نمایش لیست محدودیت ها</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">نمایش ارسال ها گزارش شده</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">نمایش ارسال های تائید نشده</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">انتقال یک پیامe</Resource>
     <Resource tag="MOVETOPIC">انتقال یک موضوع</Resource>
     <Resource tag="MYTOPICS">نمایش موضوعات فعال و موردعلاقه او</Resource>
@@ -326,6 +329,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">لیست پسوند فایل ها فایل ها را مجاز یا غیر مجاز کند (امنیت پائین تر)؟</Resource>
     <Resource tag="BOARD_JQ_THEME">شمای ظاهری jQuery:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">شمای ظاهری jQuery برای استفاده در تابلو برای زبانه ها و ریل ها.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">شمای موبایل:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">شمای موبایل برای استفاده در این تابلو.</Resource>
     <Resource tag="BOARD_NAME">نام تابلو:</Resource>
@@ -359,6 +363,21 @@
     <Resource tag="NO">خیر</Resource>
     <Resource tag="SAVE">ذخیره</Resource>
     <Resource tag="YES">بلی</Resource>
+  </page>
+  <page name="ADMIN_DELETECATEGORY">
+    <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+    <Resource tag="DELETE_FORUM">Delete category</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
+    <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    <Resource tag="DELETE_TITLE">Deleting category</Resource>
+    <Resource tag="HEADER1">Delete the category:</Resource>
+    <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>
+    <Resource tag="MOVE_TOPICS">Move all forums, before deleting?</Resource>
+    <Resource tag="MOVE_TOPICS_HELP">Move all forums inside the category to the category selected Bellow.</Resource>
+    <Resource tag="NEW_FORUM">New Forum:</Resource>
+    <Resource tag="NEW_FORUM_HELP">Select the new category for the forums.</Resource>
+    <Resource tag="TITLE">Delete category</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Delete Forum</Resource>
@@ -544,6 +563,8 @@
     <Resource tag="PRE_MODERATED_HELP">اگر انجمنی محدود شود ، ارسال های می بایست توسط یک محدود کننده کنترل شود.</Resource>
     <Resource tag="REMOTE_URL">آدرس راه دور :</Resource>
     <Resource tag="REMOTE_URL_HELP">آدرسی را وارد کنید و از طریق آن مستقیم وارد انجمن شوید.</Resource>
+    <Resource tag="SAVING_TITLE">Saving forum</Resource>
+    <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
     <Resource tag="SORT_ORDER">ترتیب مرتب سازی:</Resource>
     <Resource tag="SORT_ORDER_HELP">ترتیب در این رده.</Resource>
     <Resource tag="STYLES">حالت :</Resource>
@@ -814,6 +835,7 @@
     <Resource tag="TYPE">نوع</Resource>
     <Resource tag="TYPES">Type</Resource>
     <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>
@@ -912,6 +934,8 @@
     <Resource tag="NEW_CATEGORY">رده جدید</Resource>
     <Resource tag="NEW_FORUM">انجمن جدید</Resource>
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+    <Resource tag="TREEVIEW_MENUTIP">Created on </Resource>
+    <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">افزودن به YAF</Resource>
@@ -1257,6 +1281,10 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Number entries on a page on the My Topics page. </Resource>
     <Resource tag="NAME_LENGTH">حداکثر طول نام کاربری:</Resource>
     <Resource tag="NAME_LENGTH_HELP">حداکثر طول نام کاربری یا نام نمایشی.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Time to fetch every news group in seconds:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">To protect server limit the time to a short period of several dozens of seconds.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Fetch NNTP articles in time:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">This is an interval when articles can be fetched again, in minutes.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">استفاده از برچسب "دنبال نکنید" در پیوند ها:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">در صورت علامت خوردن همه پیوند ها برچسب " دنبال نکنید" خواهند خورد.</Resource>
     <Resource tag="NOTIFICATION_BAR">Notification Bar</Resource>
@@ -1559,6 +1587,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="LAST_MESSAGE">آخرین پیام</Resource>
     <Resource tag="LAST_UPDATE">آخرین بروز رسانی</Resource>
     <Resource tag="RETRIEVE">بازیابی</Resource>
+    <Resource tag="RETRIEVE_SERVICE">To retrieve articles a service is running. Set parameters in Host Settings and wait some time. Articles will be fetched in background.</Resource>
     <Resource tag="Retrieved">بازیابی {0} مقاله.{1:N2} مقاله در ثانیه.</Resource>
     <Resource tag="SECONDS">ثانیه</Resource>
     <Resource tag="TIME">مشخص کنید چند بار بازیابی مقاله باید استفاده شود.</Resource>
@@ -2010,6 +2039,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="MAXNUMBEROF">حداكثر تعداد كاراكتر مجاز در هر ارسال‌:{0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">After</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Insert Album Image...</Resource>
     <Resource tag="ALLOWED">مجاز</Resource>
     <Resource tag="BACK">برگشت</Resource>
@@ -2020,6 +2050,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED">اصل ارسال توسط : {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">برو به اراسل نقل قول شده</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} نوشته است:</Resource>
+    <Resource tag="BEFORE">Before</Resource>
     <Resource tag="CAL_JQ_CULTURE">fa</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">YYYY/mm/dd</Resource>
     <Resource tag="CAL_JQ_TT">برای انتخاب تاریخ کلیک کنید.</Resource>
@@ -2039,6 +2070,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="CAPTCHA_ENTER">حروف نمایش داده شده در عکس را وارد کنید</Resource>
     <Resource tag="CAPTCHA_IMAGE">تصویر امنیتی</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">پست الکترونیک تغییر پیدا کرده</Resource>
+    <Resource tag="CHILD">Child</Resource>
     <Resource tag="COMMON_WORDS">out,please,a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your</Resource>
     <Resource tag="CONTINUE">ادامه</Resource>
     <Resource tag="COPY">کپی</Resource>
@@ -2071,6 +2103,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="HIDDEN">مخفی</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">داده های ورود شما نمی بایست دارای تگ HTML باشند.</Resource>
     <Resource tag="HTMLTAG_WRONG">داده های ورود شما شامل تگ های {0} غیر مجاز HTML  میباشد.</Resource>
+    <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
     <Resource tag="LOADING">در حال بارگذاری...</Resource>
     <Resource tag="MAX_ONLINE">بیشترین تعداد کاربرانی که بطور همزمان آنلاین بوده اند {0}, {1}.</Resource>
     <Resource tag="MESSAGE">پیام</Resource>
@@ -2079,6 +2112,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="MODAL_NOTIFICATION_HEADER">توجه</Resource>
     <Resource tag="MODERATOR">محدودکننده</Resource>
     <Resource tag="NAME">نام</Resource>
+    <Resource tag="NEW">New</Resource>
     <Resource tag="NO">بلی</Resource>
     <Resource tag="NONE">تهی</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">You have been award on the {0} Forum</Resource>
@@ -2620,6 +2654,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="ATOMICONTOOLTIPFAVORITE">اشتراک عناوین مورد علاقه تان از طریق اتم</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">خوراک اتم انجمن را بگیرید.</Resource>
     <Resource tag="BY">بوسیله {0}</Resource>
+    <Resource tag="CATEGORY">Category</Resource>
     <Resource tag="CURRENT_TIME">زمان فعلی: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">The requested user could not be found.</Resource>
     <Resource tag="ERROR_HOVERCARD">Sorry, no data found or something went wrong.</Resource>
@@ -4323,6 +4358,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">ایجاد عنوان از روی پیغام</Resource>
     <Resource tag="EMPTY_TOPIC">نام عنوان خالی است</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE">انتقال</Resource>
     <Resource tag="MOVE_MESSAGE">انتقال پیغام</Resource>
     <Resource tag="MOVE_TITLE">Move Message to a Different Topic</Resource>
@@ -5031,6 +5068,13 @@ Spoiler Content
   <page name="TAGSBOARD">
     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
     <Resource tag="TITLE">Board Tags</Resource>
+  </page>
+  <page name="TASKS_RUNNING">
+    <Resource tag="CLEANUPTASK">Cleaning Task</Resource>
+    <Resource tag="DIGESTSENDTASK">Digest Sending Task</Resource>
+    <Resource tag="MAILSENDTASK">Sending mail</Resource>
+    <Resource tag="SYNCNNTPTASK">Nntp crawler</Resource>
+    <Resource tag="USERCLEANUPTASK">User Cleaning Task </Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">مدیران</Resource>

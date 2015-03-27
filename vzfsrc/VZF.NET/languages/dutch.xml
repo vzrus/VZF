@@ -88,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Bekijkt forums in een categorie</Resource>
     <Resource tag="HELP_INDEX">Gebruikt help index</Resource>
     <Resource tag="HELP_RECOVER">Onbekend</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">Gebruikt AIM</Resource>
     <Resource tag="IM_EMAIL">Gebruikt Email</Resource>
     <Resource tag="IM_ICQ">Gebruikt ICQ</Resource>
@@ -108,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Bekijkt moderatie index</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Bekijkt gerapporteerde berichten</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Bekijkt niet-goedgekeurde berichten</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">Verplaatst bericht</Resource>
     <Resource tag="MOVETOPIC">Verplaatst een topic</Resource>
     <Resource tag="MYTOPICS">Bekijkt zijn favoriete en actieve topics</Resource>
@@ -833,6 +835,7 @@
     <Resource tag="TYPE">Type</Resource>
     <Resource tag="TYPES">Type</Resource>
     <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>

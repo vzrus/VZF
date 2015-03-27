@@ -24,6 +24,13 @@ GO
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}adminpageaccess_list]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}adminpageaccess_list]
 GO
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}digest_topicnew]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicnew]
+GO
+
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}digest_topicactive]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicactive]
+GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}eventloggroupaccess_save]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}eventloggroupaccess_save]
@@ -324,8 +331,8 @@ IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{data
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}extension_list]
 GO
 
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_categoryaccess_activeuser]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_categoryaccess_activeuser]
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_cataccess_actuser]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_cataccess_actuser]
 GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}extension_save]') and type in (N'P', N'PC'))
@@ -366,6 +373,9 @@ GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_listread]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_listread]
+GO
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_ns_listread]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}forum_ns_listread]
 GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}forum_listSubForums]') and type in (N'P', N'PC'))
@@ -586,6 +596,10 @@ GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}nntptopic_savemessage]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseSchema}].[{objectQualifier}nntptopic_savemessage]
+GO
+
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}nntptopic_addmessage]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseSchema}].[{objectQualifier}nntptopic_addmessage]
 GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}pageaccess]') and type in (N'P', N'PC'))
@@ -2557,15 +2571,15 @@ begin
     set @CategoryID = SCOPE_IDENTITY()
     
     -- Forum
-    INSERT INTO [{databaseSchema}].[{objectQualifier}Forum](CategoryID,Name,Description,SortOrder,NumTopics,NumPosts,Flags)
-    VALUES(@CategoryID,'Test Forum','A test forum',1,0,0,4)
+    INSERT INTO [{databaseSchema}].[{objectQualifier}Forum](CategoryID,Name,Description,SortOrder,NumTopics,NumPosts,Flags, left_key, right_key, [level])
+    VALUES(@CategoryID,'Test Forum','A test forum',1,0,0,4,1,2,0)
     set @ForumID = SCOPE_IDENTITY()
 
     -- ForumAccess
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) VALUES(@GroupIDAdmin,@ForumID,@AccessMaskIDAdmin)
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) VALUES(@GroupIDGuest,@ForumID,@AccessMaskIDReadOnly)
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) VALUES(@GroupIDMember,@ForumID,@AccessMaskIDMember)
-
+	
     SELECT @BoardID;
 end
 GO
@@ -2573,6 +2587,7 @@ GO
 create procedure [{databaseSchema}].[{objectQualifier}board_delete](@BoardID int) as
 begin
         declare @tmpForumID int;
+
     declare forum_cursor cursor for
         select ForumID 
         from [{databaseSchema}].[{objectQualifier}Forum] a join [{databaseSchema}].[{objectQualifier}Category] b on a.CategoryID=b.CategoryID
@@ -2583,7 +2598,7 @@ begin
     fetch next from forum_cursor into @tmpForumID
     while @@FETCH_STATUS = 0
     begin
-        exec [{databaseSchema}].[{objectQualifier}forum_delete] @tmpForumID;
+        exec [{databaseSchema}].[{objectQualifier}forum_delete] @tmpForumID, 0, 0;
         fetch next from forum_cursor into @tmpForumID
     end
     close forum_cursor
@@ -2608,7 +2623,7 @@ begin
     delete from [{databaseSchema}].[{objectQualifier}NntpServer] where BoardID=@BoardID
     delete from [{databaseSchema}].[{objectQualifier}BannedIP] where BoardID=@BoardID
     delete from [{databaseSchema}].[{objectQualifier}Registry] where BoardID=@BoardID
-    delete from [{databaseSchema}].[{objectQualifier}Board] where BoardID=@BoardID
+    delete from [{databaseSchema}].[{objectQualifier}Board] where BoardID=@BoardID	
 end
 GO
 
@@ -2753,19 +2768,26 @@ begin
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}category_delete](@CategoryID int) as
+create procedure [{databaseSchema}].[{objectQualifier}category_delete](@CategoryID int, @NewCategoryID int) as
 begin
-        declare @flag int
- 
+   declare @flag int
+   if (@NewCategoryID is not null) 
+		  begin
+	         update [{databaseSchema}].[{objectQualifier}Forum] set CategoryID = @NewCategoryID where CategoryID = @CategoryID;
+			 execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null, @CategoryID	
+			 execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null, @NewCategoryID	
+		  end
+
     if exists(select 1 from [{databaseSchema}].[{objectQualifier}Forum] where CategoryID = @CategoryID)
     begin
         set @flag = 0
     end else
-    begin
+    begin	  
         delete from [{databaseSchema}].[{objectQualifier}Category] where CategoryID = @CategoryID
-        set @flag = 1
+        set @flag = 1		
     end
-
+	
+	
     select @flag
 end
 GO
@@ -2851,17 +2873,77 @@ CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}category_save]
     @Name       NVARCHAR(128),	
     @SortOrder  SMALLINT,
     @CategoryImage NVARCHAR(255) = NULL,
-	@CanHavePersForums BIT
+	@CanHavePersForums BIT,
+	@AdjacentCategoryID INT,
+	@AdjacentCategoryMode INT
 )
 AS
 BEGIN
+declare @OldSortOrder int;
+declare @OldBoardID   int;
+declare @tmp int;
+declare @cntr int = 0;
+declare @afterset bit;
+
+  select @OldBoardID = BoardID, @OldSortOrder = SortOrder 
+			from [{databaseSchema}].[{objectQualifier}Category]
+            WHERE  CategoryID = @CategoryID
+
+    -- re-order categories removing gaps, create sortorder gap for a category
+	 if (@AdjacentCategoryID is not null) 	
+	 begin
+	  	  -- over doesn't possible 	
+	declare c cursor for
+		select CategoryID from [{databaseSchema}].[{objectQualifier}Category]
+		where BoardID = @BoardID order by SortOrder, CategoryID
+		
+		open c
+		
+		fetch next from c into @tmp
+		while @@FETCH_STATUS = 0
+		begin
+		if (@AdjacentCategoryID = @tmp) 
+		begin
+		-- before
+		if (@AdjacentCategoryMode = 1) 
+		begin
+		select @SortOrder = @cntr;
+		select @cntr = @cntr + 1;
+		end
+		-- after
+		if (@AdjacentCategoryMode = 2) 
+		begin
+		select @SortOrder = @cntr + 1;
+		select @afterset = 1;	
+		end
+		end 
+		-- this is after gap
+		if (@SortOrder = @cntr and @afterset = 1)
+		begin
+		select @cntr = @cntr + 1;
+		select @afterset = 0;
+		end
+		update	[{databaseSchema}].[{objectQualifier}Category]
+		set SortOrder = @cntr where CategoryID = @tmp;
+		select @cntr = @cntr + 1;
+		
+			fetch next from c into @tmp
+		end
+		close c
+		deallocate c
+
+      end
         IF @CategoryID > 0
-    BEGIN
+        BEGIN
+	    select @OldBoardID = BoardID, @OldSortOrder = SortOrder 
+			from [{databaseSchema}].[{objectQualifier}Category]
+            WHERE  CategoryID = @CategoryID
+
         UPDATE [{databaseSchema}].[{objectQualifier}Category]
         SET    Name = @Name,
                CategoryImage = @CategoryImage,
 			   CanHavePersForums = @CanHavePersForums,
-               SortOrder = @SortOrder
+               SortOrder = (CASE WHEN @AdjacentCategoryMode = -1  THEN SortOrder ELSE @SortOrder END)
         WHERE  CategoryID = @CategoryID
         SELECT CategoryID = @CategoryID
     END
@@ -2878,8 +2960,9 @@ BEGIN
                     @CategoryImage,
 					@CanHavePersForums,
                     @SortOrder)
-        SELECT CategoryID = Scope_identity()
+        SELECT @CategoryID = Scope_identity()		
     END
+	SELECT CategoryID = @CategoryID	
 END
 GO
 
@@ -3210,8 +3293,8 @@ begin
 end
 GO
 
-CREATE procedure [{databaseSchema}].[{objectQualifier}forum_delete](@ForumID int) as
-begin
+CREATE procedure [{databaseSchema}].[{objectQualifier}forum_delete](@ForumID int, @MoveChildren bit, @RebuildTree bit) as
+begin  
         -- Maybe an idea to use cascading foreign keys instead? Too bad they don't work on MS SQL 7.0...
     update [{databaseSchema}].[{objectQualifier}Forum] set LastMessageID=null,LastTopicID=null where ForumID=@ForumID
     update [{databaseSchema}].[{objectQualifier}Topic] set LastMessageID=null where ForumID=@ForumID
@@ -3258,8 +3341,26 @@ begin
     --Delete UserForums Too 
     delete from [{databaseSchema}].[{objectQualifier}UserForum] where ForumID = @ForumID
     --END ABOT CHANGED 09.04.2004
-    delete from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @ForumID
-end
+ 
+    declare  @old_categoryid int, @old_left_key int, @old_right_key int, @old_level int, @old_parentid int;
+	select @old_categoryid = categoryid, @old_left_key = left_key, @old_right_key = right_key, @old_level = [level], @old_parentid = parentid
+	from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @ForumID
+-- rebuild tree
+	if (@RebuildTree = 1)
+	begin	
+	delete from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @ForumID	
+	if @MoveChildren = 1 
+	begin
+	-- select @RebuildTree = 1;
+	-- move children 1 level higher before deleting a forum
+	  execute  [{databaseSchema}].[{objectQualifier}forum_after_del2_func] @old_categoryid, @old_left_key, @old_right_key, @old_level, @old_parentid
+	end	
+	  execute  [{databaseSchema}].[{objectQualifier}forum_after_del_func] @old_categoryid, @old_left_key, @old_right_key, @old_level, @old_parentid
+	--  execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate];	
+	end
+	else
+	  delete from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @ForumID	
+	end
 GO
 
 create procedure [{databaseSchema}].[{objectQualifier}forum_byuserlist](@BoardID INT,@ForumID INT, @UserID INT, @IsUserForum bit) 
@@ -3609,15 +3710,99 @@ select
     from 
         [{databaseSchema}].[{objectQualifier}Category] a with(nolock)
         join [{databaseSchema}].[{objectQualifier}Forum] b with(nolock) on b.CategoryID=a.CategoryID
-        join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on x.ForumID=b.ForumID
+        join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on (x.ForumID=b.ForumID and  x.UserID = @UserID)
         left outer join [{databaseSchema}].[{objectQualifier}Topic] t with(nolock) ON t.TopicID = [{databaseSchema}].[{objectQualifier}forum_lasttopic](b.ForumID,@UserID,b.LastTopicID,b.LastPosted)
     where 		
-        (@CategoryID is null or a.CategoryID=@CategoryID) and		
-         x.UserID = @UserID and		
+        (@CategoryID is null or a.CategoryID=@CategoryID) and        		
         (b.ForumID IN (SELECT ForumID FROM @tbl) )
     order by
         a.SortOrder,
         b.SortOrder
+end
+GO
+
+create procedure [{databaseSchema}].[{objectQualifier}forum_ns_listread](@BoardID int,@UserID int,@CategoryID int=null,@ParentID int=null, @StyledNicks bit=null,	@FindLastRead bit = 0, @ShowCommonForums bit = 1, @ShowPersonalForums bit = 1, @ForumCreatedByUserId int, @UTCTIMESTAMP datetime) as
+begin
+ DECLARE @lvl INT = 0; 
+ DECLARE @rk INT; 
+ DECLARE @lk INT; 
+
+ -- these are a forum subforums from a forum topics
+ IF (@ParentID IS NOT NULL) 
+ begin
+ SELECT @lvl = [level], @lk = left_key + 1, @rk = right_key - 1 
+ from [{databaseSchema}].[{objectQualifier}Forum]  with(nolock)
+ where ForumID = @ParentID;
+ end
+ -- thiese are forums from a category
+ IF (@ParentID IS NULL AND @CategoryID > 0) 
+ begin
+ SELECT @lvl = 0, @lk = min(left_key), @rk = max(right_key) 
+ from [{databaseSchema}].[{objectQualifier}Forum] with(nolock)
+ where CategoryID = @CategoryID;
+ end
+ -- this is a board view
+ IF (@ParentID IS NULL AND @CategoryID IS NULL)
+ begin 
+  SELECT @lvl = 0, @lk = min(f.left_key), @rk = max(f.right_key) 
+  from [{databaseSchema}].[{objectQualifier}Forum] f with(nolock)
+  join [{databaseSchema}].[{objectQualifier}Category] c with(nolock)
+  on c.CategoryID = f.CategoryID
+  where c.BoardID = @BoardID;
+ end
+ select @lvl = @lvl - 1;
+
+        select 
+        a.CategoryID, 
+        Category		= a.Name, 
+        ForumID			= b.ForumID,
+        Forum			= b.Name, 
+        b.[Description],
+        b.ImageUrl,
+        b.Styles,
+        b.ParentID,
+        b.PollGroupID,
+        Topics			= [{databaseSchema}].[{objectQualifier}forum_ns_topics](b.left_key,b.right_key,a.CategoryID),
+        Posts			= [{databaseSchema}].[{objectQualifier}forum_ns_posts](b.left_key,b.right_key, a.CategoryID),		
+        LastPosted		= t.LastPosted,
+        LastMessageID	= t.LastMessageID,
+        LastMessageFlags = t.LastMessageFlags,
+        LastUserID		= t.LastUserID,
+        LastUser		= IsNull(t.LastUserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID=t.LastUserID)),
+        LastUserDisplayName	= IsNull(t.LastUserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID=t.LastUserID)),
+        LastTopicID		= t.TopicID,
+        TopicMovedID    = t.TopicMovedID,
+        LastTopicName	= t.Topic,
+        LastTopicStatus = t.Status,
+        LastTopicStyles = t.Styles,
+        b.Flags,
+        Viewing			= (select count(1) from [{databaseSchema}].[{objectQualifier}Active] x with(nolock) JOIN [{databaseSchema}].[{objectQualifier}User] usr with(nolock) ON x.UserID = usr.UserID where x.ForumID=b.ForumID AND usr.IsActiveExcluded = 0),
+        b.RemoteURL,		
+        ReadAccess = CONVERT(int,x.ReadAccess),
+        Style = case(@StyledNicks)
+            when 1 then  (select top 1 usr.[UserStyle] from [{databaseSchema}].[{objectQualifier}User] usr with(nolock) where usr.UserID = t.LastUserID)
+            else ''	 end,
+        LastForumAccess = case(@FindLastRead)
+             when 1 then
+               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}ForumReadTracking] x with(nolock) WHERE x.ForumID=b.ForumID AND x.UserID = @UserID)
+             else ''	 end,
+        LastTopicAccess = case(@FindLastRead)
+             when 1 then
+               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}TopicReadTracking] y with(nolock) WHERE y.TopicID=t.TopicID AND y.UserID = @UserID)
+             else ''	 end 					
+    from 
+        [{databaseSchema}].[{objectQualifier}Category] a with(nolock)
+        join [{databaseSchema}].[{objectQualifier}Forum] b with(nolock) on b.CategoryID=a.CategoryID
+		join [{databaseSchema}].[{objectQualifier}ActiveAccess] x with(nolock) on (x.ForumID=b.ForumID and  x.UserID = @UserID)
+        left outer join [{databaseSchema}].[{objectQualifier}Topic] t with(nolock) ON t.TopicID = [{databaseSchema}].[{objectQualifier}forum_ns_lasttopic](b.left_key,b.right_key,a.CategoryID,@UserID,b.LastTopicID,b.LastPosted)
+    where 		
+        (@CategoryID is null or a.CategoryID = @CategoryID) and
+	    (b.[level] >= @lvl) and
+		((b.Flags & 2)=0 or x.ReadAccess <>0 ) and
+		b.left_key >= @lk and b.right_key <= @rk      	
+    order by
+	   a.SortOrder,
+	   b.left_key;  
 end
 GO
 
@@ -3752,13 +3937,82 @@ CREATE procedure [{databaseSchema}].[{objectQualifier}forum_save](
     @UserID         int = null,
     @IsUserForum    bit,
 	@CanHavePersForums bit,
+	@AdjacentForumID int,
+	@AdjacentForumMode int,
     @UTCTIMESTAMP   datetime
 ) as
-begin
+begin			
     declare @BoardID	int
     declare @Flags		int	
+	declare @NewForum bit = 0
     declare @UserName  nvarchar(255), @UserDisplayName  nvarchar(255)
-    
+
+	declare @OldParentID	int
+	declare @OldCategoryID	int
+	declare @OldSortOrder		int
+	declare @OldLeftKey	int
+	declare @OldRightKey	int
+	declare @OldLevel	int
+	declare @OldNid	int
+	declare @cntr int = 0;
+	declare @tmp int;
+	declare @afterset bit;
+
+	    -- re-order forums removing gaps, create sortorder gap for a forum
+    if (@AdjacentForumID is not null)
+	begin
+	-- over
+		if (@AdjacentForumMode = 3) 
+		begin
+		select @SortOrder = 0;
+		select @cntr = @cntr + 1;
+		end
+	declare c cursor for
+		select f.ForumID from [{databaseSchema}].[{objectQualifier}Forum] f
+		join [{databaseSchema}].[{objectQualifier}Category] c
+		on c.CategoryID = f.CategoryID
+		where c.CategoryID = @CategoryID and (@ParentID is null or f.ParentID = @ParentID)   
+		order by c.SortOrder, f.SortOrder, f.ForumID
+		
+		open c
+		
+		fetch next from c into @tmp
+		while @@FETCH_STATUS = 0
+		begin
+		if (@AdjacentForumID = @tmp) 
+		begin
+		-- before
+		if (@AdjacentForumMode = 1) 
+		begin
+		select @SortOrder = @cntr;
+		select @cntr = @cntr + 1;
+		end
+		-- after
+		if (@AdjacentForumMode = 2) 
+		begin
+		select @SortOrder = @cntr + 1;	
+		select @afterset = 1;
+		end
+		end 
+				
+		-- this is after gap
+		if (@SortOrder = @cntr)
+		begin
+		select @cntr = @cntr + 1;
+		select @afterset = 0;
+		end
+
+		update	[{databaseSchema}].[{objectQualifier}Forum]
+		set SortOrder = @cntr where ForumID = @tmp;
+		select @cntr = @cntr + 1;
+		
+			fetch next from c into @tmp
+		end
+		close c
+		deallocate c
+   end
+  
+
     set @Flags = 0
     if @Locked<>0 set @Flags = @Flags | 1
     if @Hidden<>0 set @Flags = @Flags | 2
@@ -3767,13 +4021,40 @@ begin
     
     if @ForumID = 0 set @ForumID = null
     if @ParentID = 0 set @ParentID = null
-    
-    if @ForumID is not null begin	
+    	SELECT @BoardID = BoardID FROM [{databaseSchema}].[{objectQualifier}Category] WHERE CategoryID = @CategoryID
+    if @ForumID is not null begin
+	select @OldParentID = f.ParentID, @OldCategoryID = f.CategoryID, 
+   @OldSortOrder = f.SortOrder, @OldLeftKey = f.left_key, 
+   @OldRightKey = f.right_key,@OldLevel = f.[level]
+   from [{databaseSchema}].[{objectQualifier}Forum]  f 
+   where f.ForumID=@ForumID;
+
+	-- rebuild tree
+	/* if (@CategoryID != @OldCategoryID OR @SortOrder != @OldSortOrder OR @OldParentID != @ParentID)
+	begin
+	declare @newlk int;
+	 if (@AdjacentForumID is not null)
+   begin
+ 
+    if (@AdjacentForumMode = 1)  
+	select @newlk = left_key from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;
+	if (@AdjacentForumMode = 2)  
+	select @newlk = right_key+1  from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;	
+	declare @o_lk int, @o_rk int, @o_lv int;
+
+    execute	[{databaseSchema}].[{objectQualifier}forum_before_update_func] 
+    @ForumID, @CategoryID, @newlk, null, null, @ParentID,0,0, 
+    @ForumID, @OldCategoryID, @OldLeftKey, @OldRightKey, @OldLevel, @OldParentID,
+	@o_lk output,@o_rk output,@o_lv output; 
+
+	end 
+	end */
+	
         update [{databaseSchema}].[{objectQualifier}Forum] set 
             ParentID=@ParentID,
             Name=@Name,
             [Description]=@Description,
-            SortOrder=@SortOrder,
+            SortOrder=(CASE WHEN @AdjacentForumMode = -1  THEN SortOrder ELSE @SortOrder END),
             CategoryID=@CategoryID,
             RemoteURL = @RemoteURL,
             ThemeURL = @ThemeURL,
@@ -3783,25 +4064,53 @@ begin
             IsUserForum = @IsUserForum,
             CanHavePersForums = @CanHavePersForums
         where ForumID=@ForumID
+		if (@OldCategoryID <> @CategoryID)
+		execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null,@OldCategoryID;
+
+		execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null,@CategoryID;
+
     end
-    else begin    
+    else begin 
+
         insert into [{databaseSchema}].[{objectQualifier}Forum](ParentID,Name,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,Flags,ImageURL,Styles,IsUserForum, CanHavePersForums, CreatedByUserID,CreatedByUserName, CreatedByUserDisplayName, CreatedDate)
         values(@ParentID,@Name,@Description,@SortOrder,@CategoryID,0,0,@RemoteURL,@ThemeURL,@Flags,@ImageURL,@Styles,@IsUserForum,@CanHavePersForums,@UserID,(SELECT TOP 1 Name FROM [{databaseSchema}].[{objectQualifier}User] where UserID = @UserID),(SELECT TOP 1 DisplayName FROM [{databaseSchema}].[{objectQualifier}User] where UserID = @UserID),@UTCTIMESTAMP)
         select @ForumID = SCOPE_IDENTITY()
+		-- rebuild tree 
+	   select @OldParentID = f.ParentID, @OldCategoryID = f.CategoryID, 
+              @OldSortOrder = f.SortOrder, @OldLeftKey = f.left_key, 
+              @OldRightKey = f.right_key,@OldLevel = f.[level]
+        from [{databaseSchema}].[{objectQualifier}Forum]  f 
+         where f.ForumID=@ForumID;
 
+   if (@AdjacentForumID is not null)
+   begin
+   declare @nlk int;
+    if (@AdjacentForumMode = 1)  
+	select @nlk = left_key from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;
+	if (@AdjacentForumMode = 2)  
+	select @nlk = right_key + 1  from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @AdjacentForumID;	
+    
+	execute [{databaseSchema}].[{objectQualifier}forum_before_insert_func] 
+	@OldCategoryID, @ForumID,@OldCategoryID, @nlk, null, null, @OldParentID, @SortOrder,0, 0
+
+   end	
+		-- tree rebuiled
         insert into [{databaseSchema}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) 
         select GroupID,@ForumID,@AccessMaskID
         from [{databaseSchema}].[{objectQualifier}Group]
-        where BoardID IN (select BoardID from [{databaseSchema}].[{objectQualifier}Category] where CategoryID=@CategoryID)
-    end
+        where BoardID IN (select BoardID from [{databaseSchema}].[{objectQualifier}Category] where CategoryID=@CategoryID) 
+
+		
+    end 
+
+     
     IF @UserID IS NOT NULL
     BEGIN	
     SELECT TOP 1 @UserName = Name,  @UserDisplayName = DisplayName FROM [{databaseSchema}].[{objectQualifier}User] where UserID = @UserID
     END
     -- guests should not create forums
     ELSE
-    BEGIN 
-    SELECT @BoardID = BoardID FROM [{databaseSchema}].[{objectQualifier}Category] WHERE CategoryID = @CategoryID
+    BEGIN     
     SELECT TOP 1 @UserName = Name,  @UserDisplayName = DisplayName FROM [{databaseSchema}].[{objectQualifier}User] where BoardID = @BoardID and (Flags & 4) = 4  ORDER BY Joined DESC
     END
     if exists (select top 1 1 from [{databaseSchema}].[{objectQualifier}ForumHistory] where ForumID = @ForumID and ChangedDate = @UTCTIMESTAMP)
@@ -3817,6 +4126,11 @@ begin
     INSERT INTO [{databaseSchema}].[{objectQualifier}ForumHistory](ForumID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
     VALUES (@ForumID,@UserID,@UserName,@UserDisplayName,@UTCTIMESTAMP)
     end
+	
+	-- if (@CategoryID != @OldCategoryID OR @SortOrder != @OldSortOrder OR @OldParentID != @ParentID)
+	-- begin
+	-- execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate];
+	-- end
     select ForumID = @ForumID
 end
 GO
@@ -3879,7 +4193,7 @@ begin
 		b.IsUserGroup = (case when @IncludeUserGroups = 1 and @IncludeCommonGroups = 0 AND b.CreatedByUserID = @PersonalGroupUserID then 1
 		else 0 end)
 		AND 
-		b.IsHidden = (case when @IncludeAdminGroups = 1 and @IncludeCommonGroups = 0 then 1  else 0 end);	
+		((@IncludeAdminGroups = 1 AND @IncludeCommonGroups = 1) OR b.IsHidden = @IncludeAdminGroups);	
 end
 GO
 
@@ -4996,7 +5310,7 @@ begin
 end
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}nntptopic_savemessage](
+create procedure [{databaseSchema}].[{objectQualifier}nntptopic_addmessage](
     @NntpForumID	int,
     @Topic 			nvarchar(100),
     @Body 			ntext,
@@ -7347,35 +7661,35 @@ BEGIN
         t.TopicID,
         t.TopicMovedID,
         t.UserID,
-        UserName = IsNull(t.UserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.UserID)),
-        UserDisplayName = IsNull(t.UserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.UserID)),		
+        UserName = IsNull(t.UserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.UserID)),
+        UserDisplayName = IsNull(t.UserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.UserID)),		
         t.LastMessageID,
         t.LastMessageFlags,
         t.LastUserID,
         t.NumPosts,
         t.Posted,		
-        LastUserName = IsNull(t.LastUserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.LastUserID)),
-        LastUserDisplayName = IsNull(t.LastUserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x where x.UserID = t.LastUserID)),
+        LastUserName = IsNull(t.LastUserName,(select x.[Name] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.LastUserID)),
+        LastUserDisplayName = IsNull(t.LastUserDisplayName,(select x.[DisplayName] from [{databaseSchema}].[{objectQualifier}User] x with(nolock) where x.UserID = t.LastUserID)),
         LastUserStyle = case(@StyledNicks)
             when 1 then  (select top 1 usr.[UserStyle] from [{databaseSchema}].[{objectQualifier}User] usr with(nolock) where usr.UserID = t.LastUserID)
             else ''	 end,
         LastForumAccess = case(@FindLastUnread)
              when 1 then
-               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}ForumReadTracking] x WHERE x.ForumID=f.ForumID AND x.UserID = @PageUserID)
+               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}ForumReadTracking] x with(nolock) WHERE x.ForumID=f.ForumID AND x.UserID = @PageUserID)
              else ''	 end,
         LastTopicAccess = case(@FindLastUnread)
              when 1 then
-               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}TopicReadTracking] y WHERE y.TopicID=t.TopicID AND y.UserID = @PageUserID)
+               (SELECT top 1 LastAccessDate FROM [{databaseSchema}].[{objectQualifier}TopicReadTracking] y with(nolock) WHERE y.TopicID=t.TopicID AND y.UserID = @PageUserID)
              else ''	 end
             
     FROM	
-        [{databaseSchema}].[{objectQualifier}Topic] t 
+        [{databaseSchema}].[{objectQualifier}Topic] t with(nolock)
     INNER JOIN
-        [{databaseSchema}].[{objectQualifier}Forum] f ON t.ForumID = f.ForumID	
+        [{databaseSchema}].[{objectQualifier}Forum] f with(nolock) ON t.ForumID = f.ForumID	
     INNER JOIN
-        [{databaseSchema}].[{objectQualifier}Category] c ON c.CategoryID = f.CategoryID
+        [{databaseSchema}].[{objectQualifier}Category] c with(nolock) ON c.CategoryID = f.CategoryID
     JOIN
-        [{databaseSchema}].[{objectQualifier}ActiveAccess] v ON v.ForumID=f.ForumID
+        [{databaseSchema}].[{objectQualifier}ActiveAccess] v with(nolock) ON v.ForumID=f.ForumID
     WHERE	
         c.BoardID = @BoardID
         AND t.TopicMovedID is NULL
@@ -7384,7 +7698,7 @@ BEGIN
         AND t.IsDeleted != 1
         AND t.LastPosted IS NOT NULL
         AND
-        f.Flags & 4 <> (CASE WHEN @ShowNoCountPosts > 0 THEN -1 ELSE 4 END)
+        (@ShowNoCountPosts = 1  or (f.Flags & 4) <> 4)
     ORDER BY
         t.LastPosted DESC;
 END
@@ -12001,6 +12315,8 @@ begin
     update [{databaseSchema}].[{objectQualifier}UserForum] set ForumID=@ForumNewID where ForumID=@ForumOldID
     --END ABOT CHANGED 09.04.2004
     delete from [{databaseSchema}].[{objectQualifier}Forum] where ForumID = @ForumOldID
+
+	execute [{databaseSchema}].[{objectQualifier}forum_ns_recreate] null, null	
 end
 GO
 
@@ -12315,12 +12631,12 @@ GO
 exec('[{databaseSchema}].[{objectQualifier}user_savestyle] null,null')
 GO
 
-create procedure [{databaseSchema}].[{objectQualifier}forum_categoryaccess_activeuser](@BoardID int,@UserID int) as
+create procedure [{databaseSchema}].[{objectQualifier}forum_cataccess_actuser](@BoardID int,@UserID int) as
 begin      
 
     select 
       DISTINCT(f.CategoryID),
-      c.Name, c.SortOrder   
+      c.Name as CategoryName, c.SortOrder   
     from
         [{databaseSchema}].[{objectQualifier}Forum] f
         join [{databaseSchema}].[{objectQualifier}Category] c on c.CategoryID = f.CategoryID
@@ -12365,10 +12681,10 @@ declare @LastSelectRowNumber int
             WHEN (@BeginsWith = 1 and @SearchText IS NOT NULL AND LEN(@SearchText) > 0) THEN LOWER(@SearchText) + '%'             
             ELSE '%' END 
     AND aa.UserID = @PageUserID);
-           
+         
            with TagsIds as
            (
-             select ROW_NUMBER() over (order by tg.Tag) as RowNum, tg.TagID
+             select distinct tg.TagID, DENSE_RANK() over (order by tg.Tag) as RowNum 
 			 from
              [{databaseSchema}].[{objectQualifier}Tags] tg 
             JOIN [{databaseSchema}].[{objectQualifier}TopicTags] tt ON tt.TagID = tg.TagID 
@@ -12478,5 +12794,74 @@ declare @ForumID int;
 		SELECT @ForumID = ForumID FROM [{databaseSchema}].[{objectQualifier}Topic] where TopicID = @TopicID;
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatelastpost] @ForumID    
         EXEC  [{databaseSchema}].[{objectQualifier}forum_updatestats] @ForumID
+end
+GO
+
+CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicnew](
+                 @boardid integer,
+                 @pageuserid integer,
+                 @sincedate datetime,
+                 @todate datetime,              
+                 @stylednicks bit,               
+				 @utctimestamp datetime)
+				 as
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName" ,
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        [{databaseSchema}].[{objectQualifier}Topic] c  
+        JOIN [{databaseSchema}].[{objectQualifier}Forum] d ON d.ForumID=c.ForumID 
+		JOIN [{databaseSchema}].[{objectQualifier}Category] cat ON cat.CategoryID = d.CategoryID     
+        join [{databaseSchema}].[{objectQualifier}vaccess] x on (x.ForumID=d.ForumID AND x.UserID = @pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = @boardid and  
+       c.Posted > @sincedate and        
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
+end
+GO
+
+CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}digest_topicactive](
+                 @boardid integer,
+                 @pageuserid integer,
+                 @sincedate datetime,
+                 @todate datetime,              
+                 @stylednicks bit,               
+				 @utctimestamp datetime)
+				 as
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName" ,
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM [{databaseSchema}].[{objectQualifier}Message] x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        [{databaseSchema}].[{objectQualifier}Topic] c  
+        JOIN [{databaseSchema}].[{objectQualifier}Forum] d ON d.ForumID=c.ForumID 
+		JOIN [{databaseSchema}].[{objectQualifier}Category] cat ON cat.CategoryID = d.CategoryID     
+        join [{databaseSchema}].[{objectQualifier}vaccess] x on (x.ForumID=d.ForumID AND x.UserID = @pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = @boardid and  
+	   c.lastposted > @sincedate and
+       c.lastposted < @todate  and           
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
 end
 GO

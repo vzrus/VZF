@@ -20,6 +20,10 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}vaccess_combo;
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}vaccess_s_moderatoraccess_list;
 --GO
 -- eof vaccess procedure
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}digest_topicnew;
+--GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}digest_topicactive;
+--GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_tagsave;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_tags;
@@ -142,7 +146,7 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}extension_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}extension_save;
 --GO
-DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser;
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_cataccess_actuser;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_delete;
 --GO
@@ -161,6 +165,8 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listallmymodera
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listpath;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listread;
+--GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_ns_listread;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}forum_listreadpersonal;
 --GO
@@ -297,6 +303,8 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntpserver_save;
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntptopic_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntptopic_savemessage;
+--GO
+DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}nntptopic_addmessage;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}activeaccess_reset;
 --GO
@@ -740,6 +748,172 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}user_lazydata;
 --GO
 
 /* Create vaccess procedures */
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+CREATE  PROCEDURE {databaseSchema}.{objectQualifier}eventlog_create(
+i_UserID      INT,
+i_Source      VARCHAR(128),
+i_Description TEXT,
+i_Type        INT,
+i_UTCTIMESTAMP DATETIME)
+MODIFIES SQL DATA
+BEGIN
+
+INSERT INTO {databaseSchema}.{objectQualifier}EventLog
+(UserID,
+Source,
+Description,
+`Type`)
+VALUES     (i_UserID,
+i_Source,
+i_Description,
+i_Type);
+    
+    END;
+--GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+CREATE  PROCEDURE {databaseSchema}.{objectQualifier}eventlog_delete
+ (
+    i_EventLogID INT, 
+    i_BoardID  INT,
+    i_PageUserID INT
+ )
+ MODIFIES SQL DATA
+ BEGIN
+     /*either EventLogID or BoardID must be null, not both at the same time*/
+    if i_EventLogID IS NULL THEN 
+        /* delete all events of this board*/
+        DELETE FROM {databaseSchema}.{objectQualifier}EventLog
+        WHERE
+            (UserID IS NULL or
+            UserID IN (SELECT UserID FROM {databaseSchema}.{objectQualifier}User WHERE BoardID=i_BoardID));
+    
+    ELSE 
+         /*delete just one event*/
+        DELETE FROM {databaseSchema}.{objectQualifier}EventLog WHERE EventLogID=i_EventLogID;
+    END IF;
+ END;
+--GO
+
+create procedure {databaseSchema}.{objectQualifier}eventlog_list(
+                 i_BoardID INT, i_PageUserID int, i_MaxRows int, i_MaxDays int,  i_PageIndex int,
+                 i_PageSize int, i_SinceDate datetime, i_ToDate datetime, i_EventIDs VARCHAR(8000),
+                 i_UTCTIMESTAMP datetime) 
+begin
+   DECLARE ici_TotalRows INT ;
+   DECLARE ici_FirstSelectRowNumber INT DEFAULT 0;
+   DECLARE ici_FirstSelectRowID INT;
+   DECLARE ici_EventID VARCHAR(11);
+   DECLARE ici_Pos INT;
+   DECLARE topLogID INT;
+   DECLARE Version VARCHAR(128);
+
+   --  delete entries older than i_MaxDays days
+   
+   DELETE FROM {databaseSchema}.{objectQualifier}EventLog
+   WHERE DATEDIFF(i_UTCTIMESTAMP,EventTime) > i_MaxDays;
+
+   -- or if there are more then i_MaxRows
+   IF ((SELECT COUNT(1) FROM   {databaseSchema}.{objectQualifier}EventLog) >= (i_MaxRows+50)) THEN
+   SELECT VERSION() INTO Version;
+   
+   IF LOCATE('5.1',Version)<>0 OR LOCATE('5.4',Version)<>0 OR LOCATE('6.0',Version)<>0 THEN
+
+   -- DELETE FROM {databaseSchema}.{objectQualifier}EventLog WHERE EventLogID IN (SELECT EventLogID FROM {databaseSchema}.{objectQualifier}EventLog ORDER BY EventTime LIMIT 100) ; 
+   SELECT EventLogID INTO topLogID  FROM  {databaseSchema}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1;
+   DELETE FROM {databaseSchema}.{objectQualifier}EventLog
+            WHERE  EventLogID BETWEEN  topLogID  AND topLogID +100;
+   ELSE 
+   SELECT EventLogID INTO topLogID  FROM  {databaseSchema}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1;
+   DELETE FROM {databaseSchema}.{objectQualifier}EventLog WHERE EventLogID BETWEEN  topLogID  AND topLogID + 100;
+   END IF;
+   END IF;    
+  
+   CREATE TEMPORARY TABLE IF NOT EXISTS  {objectQualifier}tmp_ParsedEventIDs
+   (
+   EventID int
+   );
+   
+   TRUNCATE TABLE {objectQualifier}tmp_ParsedEventIDs;
+   
+   SET i_EventIDs = (CONCAT(TRIM(i_EventIDs), ','));
+   SET ici_Pos = (LOCATE(',', i_EventIDs, 1));
+   IF REPLACE(i_EventIDs, ',', '') <> '' THEN
+        WHILE ici_Pos > 0 DO SET ici_EventID = LTRIM(RTRIM(LEFT(i_EventIDs, ici_Pos - 1)));
+        IF ici_EventID <> '' THEN
+        INSERT INTO {objectQualifier}tmp_ParsedEventIDs(EventID) VALUES (CAST(ici_EventID AS SIGNED)); 
+        -- Use Appropriate conversion
+        END IF;
+        
+        SET i_EventIDs = RIGHT(i_EventIDs, CHAR_LENGTH(i_EventIDs) - ici_Pos);
+        SET ici_Pos = LOCATE(',', i_EventIDs, 1);
+        END WHILE;
+        -- to be sure that last value is inserted
+        IF (CHAR_LENGTH(ici_EventID) > 0) THEN
+         INSERT INTO {objectQualifier}tmp_ParsedEventIDs (MessageID)
+          VALUES (CAST(ici_EventID AS SIGNED)); 
+        END IF;
+        END IF;
+        
+        set i_PageIndex = i_PageIndex + 1;
+        
+        if (exists (select 1 from {databaseSchema}.{objectQualifier}User where ((Flags & 1) = 1 and UserID = i_PageUserID) limit 1)) then
+        select  count(1) into  ici_TotalRows from {databaseSchema}.{objectQualifier}EventLog a		
+        left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
+        where  (b.UserID IS NULL or b.BoardID = i_BoardID)	
+        and ((i_EventIDs IS NULL )  
+              OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  
+        and EventTime between i_SinceDate and i_ToDate;
+        
+        select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber; 
+        
+        set @elprep = CONCAT('select
+        a.*,		
+        IFNULL(b.`Name`,''System'') as `Name`,
+        {databaseSchema}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+        from
+        {databaseSchema}.{objectQualifier}EventLog a		
+        left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
+        where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between ''',i_SinceDate,''' and ''',i_ToDate,''' 
+        order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+        
+       PREPARE stmt_els FROM @elprep;
+       EXECUTE stmt_els;
+       DEALLOCATE PREPARE stmt_els;     
+else
+       select  count(1) into  ici_TotalRows 
+       from  {databaseSchema}.{objectQualifier}EventLog a
+       left join {databaseSchema}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
+       join {databaseSchema}.{objectQualifier}UserGroup ug on (ug.UserID =  i_PageUserID and ug.GroupID = e.GroupID)
+       left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
+       where	 
+       (b.UserID IS NULL or b.BoardID = i_BoardID)	
+       and ((i_EventIDs IS NULL )  
+             OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  
+       and EventTime between i_SinceDate and i_ToDate;
+    
+       select  (i_PageIndex - 1) * i_PageSize + 1 into ici_FirstSelectRowNumber;
+       -- find first selectedrowid 
+      set @elprep = CONCAT('select
+        a.*,		
+        IFNULL(b.`Name`,''System'') as `Name`,
+        {databaseSchema}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+    from
+        {databaseSchema}.{objectQualifier}EventLog a	
+        left join {databaseSchema}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
+        join {databaseSchema}.{objectQualifier}UserGroup ug on (ug.UserID = ',i_PageUserID,' and ug.GroupID = e.GroupID)
+        left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
+      where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between''',i_SinceDate,''' and ''',i_ToDate,'''
+      order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+
+    PREPARE stmt_els FROM  @elprep;
+    EXECUTE stmt_els;
+    DEALLOCATE PREPARE stmt_els; 
+  
+   end  if;
+end;
+--GO
 
 CREATE PROCEDURE {databaseSchema}.{objectQualifier}vaccess_combo(i_UserID INT, i_ForumID INT)
 READS SQL DATA
@@ -2025,22 +2199,21 @@ MODIFIES SQL DATA
   INSERT INTO {databaseSchema}.{objectQualifier}Category(BoardID,`Name`,SortOrder) VALUES(l_BoardID,'Test Category',1);
   set l_CategoryID = LAST_INSERT_ID();
 
-  /*Forum*/
-  INSERT INTO {databaseSchema}.{objectQualifier}Forum(CategoryID,`Name`,Description,SortOrder,NumTopics,NumPosts,Flags)
-  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4);
+  /* Forum */
+  INSERT INTO {databaseSchema}.{objectQualifier}Forum(CategoryID,`Name`,Description,SortOrder,NumTopics,NumPosts,Flags, left_key, right_key, `level`)
+  VALUES(l_CategoryID,'Test Forum','A test forum',1,0,0,4,1,2,0);
   SET l_ForumID = LAST_INSERT_ID();
   /* ForumAccess */
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID) VALUES(l_GroupIDAdmin,l_ForumID,l_AccessMaskIDAdmin);
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID) VALUES(l_GroupIDGuest,l_ForumID,l_AccessMaskIDReadOnly);
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID) VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember);
+     
   SELECT l_BoardID;
   
   END;
 --GO
 
-
   /* STORED PROCEDURE CREATED BY VZ-TEAM */
-
   CREATE  PROCEDURE {databaseSchema}.{objectQualifier}board_delete(
   i_BoardID INT)
   MODIFIES SQL DATA
@@ -2063,7 +2236,7 @@ MODIFIES SQL DATA
    LOOP
   FETCH board_cursor  INTO itmpForumID ;
   
-  CALL {databaseSchema}.{objectQualifier}forum_delete(itmpForumID);
+  CALL {databaseSchema}.{objectQualifier}forum_delete(itmpForumID, 0, 0);
   END LOOP; 
   END;
   CLOSE board_cursor;
@@ -2450,10 +2623,18 @@ END;*/
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseSchema}.{objectQualifier}category_delete(
-                i_CategoryID INT)
+                i_CategoryID INT, i_NewCategoryID INT)
                MODIFIES SQL DATA 
 BEGIN
         DECLARE  iflag INT;
+
+		 if (i_NewCategoryID is not null) then
+	         update {databaseSchema}.{objectQualifier}Forum set CategoryID = i_NewCategoryID where CategoryID = i_CategoryID;
+			 -- rebuild tree			
+            call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, i_CategoryID); 
+            call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, i_NewCategoryID);
+		 end if;
+
         IF EXISTS (SELECT 1
                    FROM   {databaseSchema}.{objectQualifier}Forum
                    WHERE  CategoryID = i_CategoryID) THEN       
@@ -2461,8 +2642,9 @@ BEGIN
         ELSE
             DELETE FROM {databaseSchema}.{objectQualifier}Category
             WHERE       CategoryID = i_CategoryID;
-            SET iflag = 1;
+            SET iflag = 1;	      
         END IF;
+		
         SELECT iflag;
     END;
 --GO
@@ -2553,30 +2735,84 @@ i_CategoryID INT,
 i_Name       VARCHAR(128),
 i_SortOrder  SMALLINT,
 i_CategoryImage VARCHAR(255),
-i_CanHavePersForums TINYINT(1)
+i_CanHavePersForums TINYINT(1),
+i_AdjacentCategoryID INT,
+i_AdjacentCategoryMode INT
 )
 MODIFIES SQL DATA
 BEGIN
+declare ici_OldSortOrder int;
+declare ici_OldBoardID   int;
+declare tmp int;
+declare cntr int default 0;
+declare afterset tinyint(1);
+  
+
+    -- re-order categories removing gaps, create sortorder gap for a category
+	declare c cursor for
+		select CategoryID from {databaseSchema}.{objectQualifier}Category
+		where BoardID = i_BoardID order by SortOrder, CategoryID;
+	 if (i_AdjacentCategoryID is not null) then	
+	  	  -- over doesn't possible 	
+		open c;
+		
+		BEGIN
+DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
+LOOP	
+	FETCH c INTO tmp;
+		if (i_AdjacentCategoryID = tmp) 
+		then
+		-- before
+		if (i_AdjacentCategoryMode = 1) 
+		then
+		select cntr into i_SortOrder;
+		set cntr = cntr + 1;
+		end if;
+		-- after
+		if (i_AdjacentCategoryMode = 2) 
+		then
+		set i_SortOrder = cntr + 1;	
+		set afterset = 1;
+		end if;
+		end if;
+
+		-- this is after gap
+		if (i_SortOrder = cntr and afterset = 1)
+		then
+		set cntr = cntr + 1;
+		end if;
+		
+		update	{databaseSchema}.{objectQualifier}Category
+		set SortOrder = cntr where CategoryID = tmp;
+		set cntr = cntr + 1;
+		
+		END LOOP;
+        END;
+		close c;   
+		end if;
+
 IF i_CategoryID > 0 THEN
 
-UPDATE {databaseSchema}.{objectQualifier}Category
-SET    `Name` = CONVERT(i_Name USING {databaseEncoding}),
-CategoryImage = i_CategoryImage,
-SortOrder = i_SortOrder,CanHavePersForums = i_CanHavePersForums
-WHERE  CategoryID = i_CategoryID;
-SELECT  i_CategoryID AS CategoryID;
-ELSE
-INSERT INTO {databaseSchema}.{objectQualifier}Category
-(BoardID,
-`Name`,
-`CategoryImage`,
-SortOrder,CanHavePersForums)
-VALUES     (i_BoardID,
-i_Name,
-i_CategoryImage,
-i_SortOrder,i_CanHavePersForums);
-SELECT LAST_INSERT_ID() AS CategoryID;
-END IF;
+        select BoardID, SortOrder 
+		 into ici_OldBoardID, ici_OldSortOrder
+			from {databaseSchema}.{objectQualifier}Category
+              WHERE  CategoryID = i_CategoryID;
+
+        UPDATE {databaseSchema}.{objectQualifier}Category
+         SET    `Name` = CONVERT(i_Name USING {databaseEncoding}),
+                CategoryImage = i_CategoryImage,
+                SortOrder = (CASE WHEN i_AdjacentCategoryMode != -1 THEN i_SortOrder ELSE SortOrder END),
+                CanHavePersForums = i_CanHavePersForums
+         WHERE  CategoryID = i_CategoryID;
+       
+  ELSE
+         INSERT INTO {databaseSchema}.{objectQualifier}Category
+         (BoardID,`Name`,`CategoryImage`,SortOrder,CanHavePersForums)
+		 VALUES     (i_BoardID,i_Name,i_CategoryImage,i_SortOrder,i_CanHavePersForums);
+
+         SELECT LAST_INSERT_ID() into i_CategoryID;
+ END IF;
+	SELECT  i_CategoryID AS CategoryID;
 END;
 --GO
 
@@ -2715,171 +2951,7 @@ END;
 --GO
 
 
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE  PROCEDURE {databaseSchema}.{objectQualifier}eventlog_create(
-i_UserID      INT,
-i_Source      VARCHAR(128),
-i_Description TEXT,
-i_Type        INT,
-i_UTCTIMESTAMP DATETIME)
-MODIFIES SQL DATA
-BEGIN
 
-INSERT INTO {databaseSchema}.{objectQualifier}EventLog
-(UserID,
-Source,
-Description,
-`Type`)
-VALUES     (i_UserID,
-i_Source,
-i_Description,
-i_Type);
-    
-    END;
---GO
-
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE  PROCEDURE {databaseSchema}.{objectQualifier}eventlog_delete
- (
-    i_EventLogID INT, 
-    i_BoardID  INT,
-    i_PageUserID INT
- )
- MODIFIES SQL DATA
- BEGIN
-     /*either EventLogID or BoardID must be null, not both at the same time*/
-    if i_EventLogID IS NULL THEN 
-        /* delete all events of this board*/
-        DELETE FROM {databaseSchema}.{objectQualifier}EventLog
-        WHERE
-            (UserID IS NULL or
-            UserID IN (SELECT UserID FROM {databaseSchema}.{objectQualifier}User WHERE BoardID=i_BoardID));
-    
-    ELSE 
-         /*delete just one event*/
-        DELETE FROM {databaseSchema}.{objectQualifier}EventLog WHERE EventLogID=i_EventLogID;
-    END IF;
- END;
---GO
-
-create procedure {databaseSchema}.{objectQualifier}eventlog_list(
-                 i_BoardID INT, i_PageUserID int, i_MaxRows int, i_MaxDays int,  i_PageIndex int,
-                 i_PageSize int, i_SinceDate datetime, i_ToDate datetime, i_EventIDs VARCHAR(8000),
-                 i_UTCTIMESTAMP datetime) 
-begin
-   DECLARE ici_TotalRows INT ;
-   DECLARE ici_FirstSelectRowNumber INT DEFAULT 0;
-   DECLARE ici_FirstSelectRowID INT;
-   DECLARE ici_EventID VARCHAR(11);
-   DECLARE ici_Pos INT;
-   DECLARE topLogID INT;
-   DECLARE Version VARCHAR(128);
-
-   --  delete entries older than i_MaxDays days
-   
-   DELETE FROM {databaseSchema}.{objectQualifier}EventLog
-   WHERE DATEDIFF(i_UTCTIMESTAMP,EventTime) > i_MaxDays;
-
-   -- or if there are more then i_MaxRows
-   IF ((SELECT COUNT(1) FROM   {databaseSchema}.{objectQualifier}EventLog) >= (i_MaxRows+50)) THEN
-   SELECT VERSION() INTO Version;
-   
-   IF LOCATE('5.1',Version)<>0 OR LOCATE('5.4',Version)<>0 OR LOCATE('6.0',Version)<>0 THEN
-
-   -- DELETE FROM {databaseSchema}.{objectQualifier}EventLog WHERE EventLogID IN (SELECT EventLogID FROM {databaseSchema}.{objectQualifier}EventLog ORDER BY EventTime LIMIT 100) ; 
-   SELECT EventLogID INTO topLogID  FROM  {databaseSchema}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1;
-   DELETE FROM {databaseSchema}.{objectQualifier}EventLog
-            WHERE  EventLogID BETWEEN  topLogID  AND topLogID +100;
-   ELSE 
-   SELECT EventLogID INTO topLogID  FROM  {databaseSchema}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1;
-   DELETE FROM {databaseSchema}.{objectQualifier}EventLog WHERE EventLogID BETWEEN  topLogID  AND topLogID + 100;
-   END IF;
-   END IF;    
-  
-   CREATE TEMPORARY TABLE IF NOT EXISTS  {objectQualifier}tmp_ParsedEventIDs
-   (
-   EventID int
-   );
-   
-   TRUNCATE TABLE {objectQualifier}tmp_ParsedEventIDs;
-   
-   SET i_EventIDs = (CONCAT(TRIM(i_EventIDs), ','));
-   SET ici_Pos = (LOCATE(',', i_EventIDs, 1));
-   IF REPLACE(i_EventIDs, ',', '') <> '' THEN
-        WHILE ici_Pos > 0 DO SET ici_EventID = LTRIM(RTRIM(LEFT(i_EventIDs, ici_Pos - 1)));
-        IF ici_EventID <> '' THEN
-        INSERT INTO {objectQualifier}tmp_ParsedEventIDs(EventID) VALUES (CAST(ici_EventID AS SIGNED)); 
-        -- Use Appropriate conversion
-        END IF;
-        
-        SET i_EventIDs = RIGHT(i_EventIDs, CHAR_LENGTH(i_EventIDs) - ici_Pos);
-        SET ici_Pos = LOCATE(',', i_EventIDs, 1);
-        END WHILE;
-        -- to be sure that last value is inserted
-        IF (CHAR_LENGTH(ici_EventID) > 0) THEN
-         INSERT INTO {objectQualifier}tmp_ParsedEventIDs (MessageID)
-          VALUES (CAST(ici_EventID AS SIGNED)); 
-        END IF;
-        END IF;
-        
-        set i_PageIndex = i_PageIndex + 1;
-        
-        if (exists (select 1 from {databaseSchema}.{objectQualifier}User where ((Flags & 1) = 1 and UserID = i_PageUserID) limit 1)) then
-        select  count(1) into  ici_TotalRows from {databaseSchema}.{objectQualifier}EventLog a		
-        left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
-        where  (b.UserID IS NULL or b.BoardID = i_BoardID)	
-        and ((i_EventIDs IS NULL )  
-              OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  
-        and EventTime between i_SinceDate and i_ToDate;
-        
-        select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber; 
-        
-        set @elprep = CONCAT('select
-        a.*,		
-        IFNULL(b.`Name`,''System'') as `Name`,
-        {databaseSchema}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
-        from
-        {databaseSchema}.{objectQualifier}EventLog a		
-        left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
-        where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between ''',i_SinceDate,''' and ''',i_ToDate,''' 
-        order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
-        
-       PREPARE stmt_els FROM @elprep;
-       EXECUTE stmt_els;
-       DEALLOCATE PREPARE stmt_els;     
-else
-       select  count(1) into  ici_TotalRows 
-       from  {databaseSchema}.{objectQualifier}EventLog a
-       left join {databaseSchema}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
-       join {databaseSchema}.{objectQualifier}UserGroup ug on (ug.UserID =  i_PageUserID and ug.GroupID = e.GroupID)
-       left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
-       where	 
-       (b.UserID IS NULL or b.BoardID = i_BoardID)	
-       and ((i_EventIDs IS NULL )  
-             OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  
-       and EventTime between i_SinceDate and i_ToDate;
-    
-       select  (i_PageIndex - 1) * i_PageSize + 1 into ici_FirstSelectRowNumber;
-       -- find first selectedrowid 
-      set @elprep = CONCAT('select
-        a.*,		
-        IFNULL(b.`Name`,''System'') as `Name`,
-        {databaseSchema}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
-    from
-        {databaseSchema}.{objectQualifier}EventLog a	
-        left join {databaseSchema}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
-        join {databaseSchema}.{objectQualifier}UserGroup ug on (ug.UserID = ',i_PageUserID,' and ug.GroupID = e.GroupID)
-        left join {databaseSchema}.{objectQualifier}User b on b.UserID=a.UserID
-      where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between''',i_SinceDate,''' and ''',i_ToDate,'''
-      order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
-
-    PREPARE stmt_els FROM  @elprep;
-    EXECUTE stmt_els;
-    DEALLOCATE PREPARE stmt_els; 
-  
-   end  if;
-end;
---GO
 
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
@@ -2948,7 +3020,7 @@ end;
 --GO
 
 CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_delete(
-                i_ForumID INT)
+                i_ForumID INT, i_MoveChildren tinyint(1), i_RebuildTree tinyint(1))
 MODIFIES SQL DATA              
 BEGIN
 DECLARE ici_LastTopicID INT;
@@ -2962,20 +3034,23 @@ DECLARE ici_LastMessageID_Check INT;
 DECLARE  itmpTopicID INT;
 DECLARE ici_NntpForumID INT;
 DECLARE ici_WatchTopicID INT;
+declare old_left_key int;
+declare old_right_key int;
+declare old_level int;
+declare old_parentid int;
+declare old_tree int;
 
-       
-        DECLARE topic_cursor CURSOR  FOR
+DECLARE topic_cursor CURSOR  FOR
         SELECT   TopicID
         FROM     {databaseSchema}.{objectQualifier}topic
         WHERE    ForumID = i_ForumID
         ORDER BY TopicID DESC;
                
-/*Here we change Last things in forums */
-SELECT LastMessageID
-INTO ici_LastMessageID
+/* Here we change Last things in forums */
+SELECT LastMessageID, categoryid
+INTO ici_LastMessageID, old_tree
 FROM {databaseSchema}.{objectQualifier}Forum
 WHERE ForumID = i_ForumID;
-
 
         UPDATE {databaseSchema}.{objectQualifier}Forum
         SET    `LastMessageID` = NULL,
@@ -3053,6 +3128,20 @@ WHERE ForumID = i_ForumID;
         CALL {databaseSchema}.{objectQualifier}forum_updatestats(ici_ParentID);
         END IF; 
         END IF; 
+		-- rebuild tree
+	    if (i_RebuildTree = 1) then	
+	      select left_key, right_key, `level`, parentid
+	       into old_left_key, old_right_key, old_level, old_parentid
+	        from {databaseSchema}.{objectQualifier}forum_ns where tree = 0;
+
+	    if i_MoveChildren = 1 then	
+		-- move children 1 level higher before deleting a forum
+	       call  {databaseSchema}.{objectQualifier}forum_after_del2_func(old_tree, old_left_key, old_right_key, old_level, old_parentid);
+	    end	if;
+
+	    call  {databaseSchema}.{objectQualifier}forum_after_del_func(old_tree, old_left_key, old_right_key, old_level, old_parentid);
+	    -- call {databaseSchema}.{objectQualifier}forum_ns_recreate();	
+	    end if;
     END;
 --GO
 CREATE procedure {databaseSchema}.{objectQualifier}forum_move(i_ForumOldID int,i_ForumNewID int) 
@@ -3104,7 +3193,8 @@ DECLARE  itmpTopicID INT;
        /*And after this we can delete Forum itself*/
 
         DELETE FROM {databaseSchema}.{objectQualifier}Forum
-        WHERE       ForumID = i_ForumID;
+        WHERE       ForumID = i_ForumID;	
+        call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, null);
 
         /* Forum on update */
         SELECT ParentID INTO ici_ParentID FROM  {databaseSchema}.{objectQualifier}Forum
@@ -3397,6 +3487,7 @@ BEGIN
 END;
 --GO
 
+
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_listread(
  i_BoardID INT,
@@ -3560,6 +3651,109 @@ select * FROM tbl;
          DROP TEMPORARY TABLE IF EXISTS tmp_flr;
 END;
 --GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+ CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_ns_listread(
+ i_BoardID INT,
+ i_UserID INT,
+ i_CategoryID INT,
+ i_ParentID INT, 
+ i_StyledNicks TINYINT(1),
+ i_FindLastRead TINYINT(1), 
+ i_ShowCommonForums TINYINT(1), 
+ i_ShowPersonalForums  TINYINT(1), 
+ i_ForumCreatedByUserId INT, 
+ i_UTCTIMESTAMP DATETIME
+ ) 
+ BEGIN
+ DECLARE lvl INT DEFAULT 0;
+ DECLARE rk INT; 
+ DECLARE lk INT; 
+
+ IF i_ParentID IS NOT NULL THEN
+ SELECT `level`,left_key + 1, right_key - 1 into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}Forum   
+ where ForumID = i_ParentID;
+ END IF;
+ IF i_ParentID IS NULL AND i_CategoryID > 0 THEN
+ SELECT 0, min(left_key), max(right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}Forum
+ where CategoryID = i_CategoryID;
+ END IF;
+ IF i_ParentID IS NULL AND i_CategoryID IS NULL THEN
+ SELECT  0, min(f.left_key), max(f.right_key)  into lvl, lk, rk 
+ from {databaseSchema}.{objectQualifier}Forum f
+ join {databaseSchema}.{objectQualifier}Category c 
+ on c.CategoryID = f.CategoryID
+ where c.BoardID = i_BoardID;
+ END IF;
+ set lvl = lvl - 1;
+
+   select 
+        a.CategoryID, 
+        a.Name as Category, 
+        b.ForumID as ForumID,
+        b.Name as Forum, 
+        b.Description as `Description`,
+        b.ImageUrl,
+        b.Styles,
+        b.ParentID,
+        b.PollGroupID,
+        (select sum(fp.NumTopics) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Topics,
+        (select sum(fp.NumPosts) from {databaseSchema}.{objectQualifier}Forum fp
+	    where fp.CategoryID = b.CategoryID and fp.left_key >= b.left_key and fp.right_key <= b.right_key) as Posts,		
+        t.LastPosted as LastPosted,
+        t.LastMessageID,
+        t.LastMessageFlags,
+        t.LastUserID,
+          COALESCE(t.LastUserName,(SELECT u2.Name
+             FROM   {databaseSchema}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUser,
+
+          COALESCE(t.LastUserDisplayName,(SELECT u2.DisplayName
+             FROM   {databaseSchema}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUserDisplayName,
+        t.TopicID as LastTopicID,
+        t.TopicMovedID,
+        t.Topic as LastTopicName,
+        t.Status as LastTopicStatus,
+        t.Styles as LastTopicStyles,
+        b.Flags,
+         (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseSchema}.{objectQualifier}Active a1 
+    JOIN {databaseSchema}.{objectQualifier}User usr 
+    ON a1.UserID = usr.UserID     
+    WHERE a1.ForumID=b.ForumID    
+    AND SIGN(usr.Flags & 16) = 0)  AS Viewing,
+        b.RemoteURL,		
+        CAST(x.ReadAccess AS signed) AS ReadAccess,
+         (case(i_StyledNicks)
+            when 1 then (select usr.UserStyle from {databaseSchema}.{objectQualifier}User usr where usr.UserID = t.LastUserID LIMIT 1)
+            else ''	 end)  AS 	Style,		
+      (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}ForumReadTracking y WHERE y.ForumID=t.ForumID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastForumAccess,  
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseSchema}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess   	
+    from 
+        {databaseSchema}.{objectQualifier}Category a 
+        join {databaseSchema}.{objectQualifier}Forum b on b.CategoryID=a.CategoryID		
+        join {databaseSchema}.{objectQualifier}ActiveAccess x  on (x.ForumID=b.ForumID and x.UserID = i_UserID) 
+        left outer join {databaseSchema}.{objectQualifier}Topic t ON t.TopicID = {databaseSchema}.{objectQualifier}forum_ns_lasttopic(b.left_key,b.right_key, a.CategoryId, i_UserID)
+    where 		
+       (i_CategoryID IS NULL OR a.CategoryID = i_CategoryID) AND
+	   	(b.`level` >= lvl) and		 
+		((b.Flags & 2)=0 OR x.ReadAccess) and         	
+        b.left_key >= lk and b.right_key <= rk 		
+    order by
+	    a.SortOrder,
+	    b.left_key;  
+END;
+--GO
+
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE  PROCEDURE {databaseSchema}.{objectQualifier}forum_listreadpersonal(
@@ -3924,6 +4118,8 @@ END;
     i_UserID        INT,
     i_IsUserForum   TINYINT(1),
     i_CanHavePersForums   TINYINT(1),
+	i_AdjacentForumID INT,
+	i_AdjacentForumMode INT,
     i_UTCTIMESTAMP  datetime  
  )
 BEGIN
@@ -3934,6 +4130,68 @@ BEGIN
     DECLARE ici_UserDisplayName  VARCHAR(255);
     DECLARE ici_BoardID INT;
     DECLARE ici_LatestOtherSortOrder INT;  
+
+	declare ici_OldParentID	int;
+	declare ici_OldCategoryID int;
+	declare ici_OldSortOrder int;
+	declare ici_OldLeftKey	int;
+	declare ici_OldRightKey	int;
+	declare ici_OldLevel	int;
+	declare ici_OldNid	int;
+	declare ici_cntr int default 0;
+	declare ici_tmp int;
+	declare ici_newid int;
+	declare ici_nid int;
+	declare parins int;
+	declare ici_ocat int;
+	declare afterset tinyint(1);
+	declare newlk int;
+
+	-- re-order forums removing gaps, create sort order gap for a forum.
+	declare c cursor for
+		select f.ForumID from {databaseSchema}.{objectQualifier}Forum f
+		join {databaseSchema}.{objectQualifier}Category c
+		on c.CategoryID = f.CategoryID
+		where c.CategoryID = i_CategoryID and (i_ParentID is null or f.ParentID = i_ParentID)   
+		order by c.SortOrder, f.ForumID;
+	 if (i_AdjacentForumID is not null) then	 
+	   -- over  	
+	              if (i_AdjacentForumMode = 3) THEN		               
+		             set  i_sortorder = 0;
+					 set  ici_cntr = 1;
+		          end if;   	
+		open c;
+		BEGIN
+        DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;
+         LOOP
+           FETCH c INTO ici_tmp;	
+		
+		if (i_AdjacentForumID = ici_tmp) then
+		-- before
+		if (i_AdjacentForumMode = 1) then
+		select ici_cntr into i_SortOrder;
+		select ici_cntr + 1 into ici_cntr;
+		end if;
+		-- after
+		if (i_AdjacentForumMode = 2) then
+		set i_SortOrder = ici_cntr + 1;	
+		set afterset = 1;
+		end if;
+		end if;
+
+		-- this is after gap
+		if (i_SortOrder = ici_cntr and afterset = 1) then		
+		select ici_cntr + 1 into ici_cntr;
+		end if;
+		
+		update	{databaseSchema}.{objectQualifier}Forum
+		set SortOrder = ici_cntr where ForumID = ici_tmp;
+		select ici_cntr + 1 into ici_cntr;
+		
+		END LOOP;
+        END;
+		close c;
+	end if;	  
 
      -- If this is a personal forum we should override SortOrder 
     -- if (i_IsUserForum = 1 OR ) THEN
@@ -3956,14 +4214,40 @@ BEGIN
     ELSE  
     SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseSchema}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
     END IF;
-  IF i_ForumID IS NOT NULL AND i_ForumID > 0 THEN 
 
+  SET l_BoardID = (SELECT BoardID  
+  from {databaseSchema}.{objectQualifier}Category
+  WHERE CategoryID=i_CategoryID LIMIT 1);
+
+  IF i_ForumID IS NOT NULL AND i_ForumID > 0 THEN 
+  -- rebuild tree
+   select f.ParentID, f.CategoryID, 
+   f.SortOrder, f.left_key, 
+   f.right_key, f.`level`, f.CategoryID
+   INTO ici_OldParentID, ici_OldCategoryID, ici_OldSortOrder, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldNid
+   from {databaseSchema}.{objectQualifier}Forum  f 
+   where f.ForumID=i_ForumID;
+
+  /*  if (i_CategoryID != ici_OldCategoryID OR i_SortOrder != ici_OldSortOrder OR ici_OldParentID != i_ParentID) then	
+	if (i_AdjacentForumID is not null)  then  
+    if (i_AdjacentForumMode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;
+	end if;
+	if (i_AdjacentForumMode = 2) then 
+	select right_key+1 into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;	
+	end if;
+
+    call	{databaseSchema}.{objectQualifier}forum_before_update_func(i_ForumID, i_CategoryID, newlk, null, null, i_ParentID,0,0, 
+            ici_ForumID, ici_OldCategoryID, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldParentID);
+	end if;
+	end if;  */
+	-- tree rebuilded
   UPDATE {databaseSchema}.{objectQualifier}Forum
   SET
   ParentID=(CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),
   `Name`= CONVERT(i_Name USING {databaseEncoding}),
   `Description`=CONVERT(i_Description USING {databaseEncoding}),
-  SortOrder=i_SortOrder,
+  SortOrder=(CASE WHEN i_AdjacentForumMode != -1 THEN i_SortOrder ELSE SortOrder END),
   CategoryID=i_CategoryID,
   RemoteURL = i_RemoteURL,
   ThemeURL = i_ThemeURL,
@@ -3973,14 +4257,38 @@ BEGIN
   IsUserForum = i_IsUserForum,
   CanHavePersForums = i_CanHavePersForums
   WHERE ForumID=i_ForumID;
+  if (i_CategoryID != ici_OldCategoryID) then
+  call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, ici_OldCategoryID);
+  end if;
+   call {databaseSchema}.{objectQualifier}forum_ns_recreate( null, i_CategoryID);
   ELSE
   INSERT INTO {databaseSchema}.{objectQualifier}Forum(ParentID,`Name`,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,ImageURL,Styles,Flags,IsUserForum,CreatedByUserID,CreatedByUserName,CreatedByUserDisplayName,CreatedDate,CanHavePersForums)
   VALUES((CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),CONVERT(i_Name USING {databaseEncoding}),CONVERT(i_Description USING {databaseEncoding}),i_SortOrder,i_CategoryID,0,0,i_RemoteURL,i_ThemeURL,i_ImageURL,i_Styles,l_Flags,i_IsUserForum
   ,i_UserID,ici_UserName, ici_UserDisplayName,i_UTCTIMESTAMP,i_CanHavePersForums);
-  SET i_ForumID = LAST_INSERT_ID();
-  SET l_BoardID = (SELECT BoardID  
-  from {databaseSchema}.{objectQualifier}Category
-  WHERE CategoryID=i_CategoryID LIMIT 1);
+  SET i_ForumID = LAST_INSERT_ID(); 
+
+  -- rebuild tree 
+	 select f.ParentID, f.CategoryID, 
+   f.SortOrder, f.left_key, 
+   f.right_key, f.`level`, f.CategoryID
+   INTO ici_OldParentID, ici_OldCategoryID, ici_OldSortOrder, ici_OldLeftKey, ici_OldRightKey, ici_OldLevel, ici_OldNid
+   from {databaseSchema}.{objectQualifier}Forum  f 
+   where f.ForumID=i_ForumID;
+
+    if (i_CategoryID != ici_OldCategoryID OR i_SortOrder != ici_OldSortOrder OR ici_OldParentID != i_ParentID) then	
+	if (i_AdjacentForumID is not null)  then  
+    if (i_AdjacentForumMode = 1) then 
+	select left_key into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;
+	end if;
+	if (i_AdjacentForumMode = 2) then 
+	select right_key+1 into newlk from {databaseSchema}.{objectQualifier}Forum where ForumID = i_AdjacentForumID;	
+	end if;
+
+   	call {databaseSchema}.{objectQualifier}forum_before_insert_func(ici_OldCategoryID, 
+	i_ForumID,ici_OldCategoryID, nlk, null, null, ici_OldParentID, i_SortOrder,0, 0);
+	end if;
+	end if;
+	-- tree rebuiled
   
   INSERT INTO {databaseSchema}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID)
   SELECT GroupID,i_ForumID,i_AccessMaskID
@@ -4298,8 +4606,8 @@ BEGIN
 		AND 
 		b.IsUserGroup = (case when i_IncludeUserGroups = 1 and i_IncludeCommonGroups = 0 AND b.CreatedByUserID = i_PersonalGroupUserID then 1
 		else 0 end)
-		AND 
-		b.IsHidden = (case when i_IncludeAdminGroups = 1 and i_IncludeCommonGroups = 0 then 1  else 0 end);        
+		AND
+		((i_IncludeCommonGroups = 1 AND i_IncludeAdminGroups = 1) OR b.IsHidden = i_IncludeAdminGroups);	       
 END;
 --GO
 
@@ -4673,9 +4981,9 @@ CREATE PROCEDURE {databaseSchema}.{objectQualifier}mail_create
 
  BEGIN
     INSERT INTO {databaseSchema}.{objectQualifier}Mail
-        (FromUser,FromUserName,ToUser,ToUserName,Created,Subject,Body,BodyHtml)
+        (FromUser,FromUserName,ToUser,ToUserName,Created,Subject,Body,BodyHtml,sendtries)
     VALUES
-        (i_From,i_FromName,i_To,i_ToName,i_UTCTIMESTAMP,i_Subject,i_Body,i_BodyHtml);	
+        (i_From,i_FromName,i_To,i_ToName,i_UTCTIMESTAMP,i_Subject,i_Body,i_BodyHtml,0);	
  END;
 --GO
 
@@ -4773,18 +5081,24 @@ END;
     i_UTCTIMESTAMP DATETIME
  )
  BEGIN
- CREATE TEMPORARY TABLE IF NOT EXISTS tmp_table55 SELECT  MailID FROM {databaseSchema}.{objectQualifier}Mail WHERE SendAttempt < i_UTCTIMESTAMP OR SendAttempt IS NULL ORDER BY SendAttempt desc, Created desc LIMIT 10;
+ CREATE TEMPORARY TABLE IF NOT EXISTS tmp_table55 SELECT  MailID FROM {databaseSchema}.{objectQualifier}Mail WHERE SendAttempt < i_UTCTIMESTAMP OR SendAttempt IS NULL ORDER BY SendAttempt, Created LIMIT 10;
+      UPDATE {databaseSchema}.{objectQualifier}Mail
+	          SET 
+            ProcessID = NULL
+        WHERE
+            ProcessID IS NOT NULL AND SendAttempt > i_UTCTIMESTAMP;
+   
     UPDATE {databaseSchema}.{objectQualifier}Mail
     SET 
         SendTries = SendTries + 1,
         SendAttempt = ADDDATE(i_UTCTIMESTAMP, INTERVAL 5 MINUTE),
         ProcessID = i_ProcessID
     WHERE
-        MailID IN (SELECT MailID FROM tmp_table55 ORDER BY SendAttempt desc, Created desc);
+        MailID IN (SELECT MailID FROM tmp_table55 ORDER BY SendAttempt, Created desc);
  
     /*now select all mail reserved for this process...*/
-    SELECT * FROM {databaseSchema}.{objectQualifier}Mail WHERE ProcessID = i_ProcessID ORDER BY SendAttempt desc, Created desc LIMIT 10;
-           DROP TABLE IF EXISTS tmp_table55;
+    SELECT * FROM {databaseSchema}.{objectQualifier}Mail WHERE ProcessID = i_ProcessID ORDER BY SendAttempt, Created LIMIT 10;
+           DROP TABLE IF EXISTS tmp_table55;  
  END;
 --GO
 
@@ -6123,7 +6437,7 @@ END;
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseSchema}.{objectQualifier}nntptopic_savemessage(
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}nntptopic_addmessage(
     i_NntpForumID	int,
     i_Topic 		VARCHAR(128),
     i_Body 			TEXT,
@@ -6150,47 +6464,31 @@ declare ici_ReplyTo	INT DEFAULT NULL;
 
     SELECT ForumID INTO ici_ForumID 
     FROM {databaseSchema}.{objectQualifier}NntpForum 
-    WHERE NntpForumID=i_NntpForumID;    
+    WHERE NntpForumID=i_NntpForumID;  
+	
+	select TopicID,  MessageID into ici_TopicID, ici_ReplyTo
+         from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId;
 
- if exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId limit 1) then
-
-        /* thread exists */
-        -- message exists
-        select TopicID,  MessageID into ici_TopicID, ici_ReplyTo
-         from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ReferenceMessageId; 	
-     ELSE 
-        if not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId limit 1) then
-        /* thread doesn't exists */
-        if (i_ReferenceMessageId IS NULL)
-        then
+ if ici_TopicID IS NULL AND i_ReferenceMessageId IS NULL and not exists(select 1 from {databaseSchema}.{objectQualifier}Message where ExternalMessageId = i_ExternalMessageId limit 1) 
+     then        
         INSERT INTO {databaseSchema}.{objectQualifier}Topic(ForumID,UserID,UserName,UserDisplayName,Posted,Topic,Views,Priority,NumPosts,LastMessageFlags)
         VALUES(ici_ForumID,i_UserID,i_UserName,i_UserName,i_Posted,i_Topic,0,0,0,22);
         SELECT LAST_INSERT_ID() INTO ici_TopicID; 
 
         INSERT INTO {databaseSchema}.{objectQualifier}NntpTopic(NntpForumID,Thread,TopicID)
-        VALUES (i_NntpForumID,'',ici_TopicID);		
-			
-        end if;
-        end if;
+        VALUES (i_NntpForumID,'',ici_TopicID);     
     END IF;	
     IF ici_TopicID IS NOT NULL
     then
 	 CALL {databaseSchema}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Body,i_UserName,i_IP,i_Posted,ici_ReplyTo,null, i_ExternalMessageId, i_ReferenceMessageId, null,17,i_UTCTIMESTAMP,ici_MessageID);
 
-   
-    END if;	
-
- 
-    /* update user */
+	 /* update user */
     IF EXISTS(SELECT 1 FROM {databaseSchema}.{objectQualifier}Forum 
-    WHERE ForumID=ici_ForumID AND (Flags & 4)=0) THEN
-    
-        UPDATE {databaseSchema}.{objectQualifier}User SET NumPosts=NumPosts+1 WHERE UserID=i_UserID;
-		
+    WHERE ForumID=ici_ForumID AND (Flags & 4)=0) THEN    
+        UPDATE {databaseSchema}.{objectQualifier}User SET NumPosts=NumPosts+1 WHERE UserID=i_UserID;		
     END IF;    
 
-    CALL {databaseSchema}.{objectQualifier}forum_updatestats(ici_ForumID);
-    UPDATE {databaseSchema}.{objectQualifier}Topic SET 
+     UPDATE {databaseSchema}.{objectQualifier}Topic SET 
         LastPosted		= i_Posted,
         LastMessageID	= ici_MessageID,
         LastUserID		= i_UserID,
@@ -6204,41 +6502,16 @@ declare ici_ReplyTo	INT DEFAULT NULL;
         LastUserID		= i_UserID,
         LastUserName	= i_UserName
     WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted))); 
+    END if;	
+
+ 
+    
+
+  
+  
 
 
--- CALL {databaseSchema}.{objectQualifier}topic_updatelastpost(ici_ForumID,ici_TopicID);
--- CALL {databaseSchema}.{objectQualifier}forum_updatelastpost(ici_ForumID);
 
-
-    /* update forum 
-
-SELECT ParentID 
-INTO ici_ParentID
-FROM {databaseSchema}.{objectQualifier}Forum
-WHERE ForumID = ici_ForumID;
-
-    UPDATE {databaseSchema}.{objectQualifier}Forum SET
-        LastPosted		= i_Posted,
-        LastTopicID	= ici_TopicID,
-        LastMessageID	= ici_MessageID,
-        LastUserID		= i_UserID,
-        LastUserName	= i_UserName
-    WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR (UNIX_TIMESTAMP(LastPosted) < UNIX_TIMESTAMP(i_Posted)));
-CALL {databaseSchema}.{objectQualifier}topic_updatelasttopic(ici_ForumID,ici_TopicID);
-CALL {databaseSchema}.{objectQualifier}forum_updatelasttopic(ici_ForumID);
-WHILE ici_ParentID > 0 DO
-        UPDATE {databaseSchema}.{objectQualifier}Forum SET
-                LastPosted = i_Posted,
-                LastTopicID = ici_TopicID,
-                LastMessageID = ici_MessageID,
-                LastUserID = i_UserID,
-                LastUserName = i_UserName
-            WHERE ForumID=ici_ForumID AND (LastPosted IS NULL OR UNIX_TIMESTAMP(LastPosted)<UNIX_TIMESTAMP(i_Posted));    
-         SELECT DISTINCTROW ParentID INTO  ici_ParentID
-  FROM  {databaseSchema}.{objectQualifier}Forum
-  WHERE ForumID = ici_ParentID;  
-  END WHILE; 	
-END IF;*/ 
 END;
 --GO
 CREATE procedure {databaseSchema}.{objectQualifier}activeaccess_reset() 
@@ -6378,8 +6651,7 @@ BEGIN
         WHERE
             a.ForumID = i_ForumID and
             b.BoardID = i_BoardID;
-    END IF;
-    
+    END IF;   
   
 
         -- ensure that access right are in place		
@@ -14174,16 +14446,16 @@ if i_EventTypeID is null   then
 end;
 --GO
 
-create procedure {databaseSchema}.{objectQualifier}forum_categoryaccess_activeuser(i_BoardID int, i_UserID int) 
+create procedure {databaseSchema}.{objectQualifier}forum_cataccess_actuser(i_BoardID int, i_UserID int) 
 begin	
     select 
-    DISTINCT(a.CategoryID),
-    b.Name, b.SortOrder  
+    DISTINCT(a.CategoryID) as CategoryID,
+    b.Name as CategoryName
     from {databaseSchema}.{objectQualifier}Forum a 
     join {databaseSchema}.{objectQualifier}Category b 
     on b.CategoryID=a.CategoryID
-    JOIN {databaseSchema}.{objectQualifier}ActiveAccess access ON (f.ForumID = access.ForumID and access.UserID = i_UserID)  
-    WHERE c.BoardID = i_BoardID and f.ParentID IS NULL and  (access.ReadAccess > 0 or (access.ReadAccess <= 0 and (f.Flags & 2) <> 2)) ORDER BY c.SortOrder, f.CategoryID, c.Name;
+    JOIN {databaseSchema}.{objectQualifier}ActiveAccess access ON (a.ForumID = access.ForumID and access.UserID = i_UserID)  
+    WHERE b.BoardID = i_BoardID and a.ParentID IS NULL and  (access.ReadAccess > 0 or (access.ReadAccess <= 0 and (a.Flags & 2) <> 2)) ORDER BY b.SortOrder, a.CategoryID, b.Name;
 end;
 --GO
 
@@ -14774,3 +15046,69 @@ DECLARE ici_ForumID INT;
 END;
 --GO
 
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}digest_topicnew(
+                 i_boardid integer,
+                 i_pageuserid integer,
+                 i_sincedate datetime,
+                 i_todate datetime,              
+                 i_StyledNicks tinyint(1),               
+				 i_utctimestamp datetime)
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName" ,
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        {databaseSchema}.{objectQualifier}Topic c  
+        JOIN {databaseSchema}.{objectQualifier}Forum d ON d.ForumID=c.ForumID 
+		JOIN {databaseSchema}.{objectQualifier}Category cat ON cat.CategoryID = d.CategoryID     
+        join {databaseSchema}.{objectQualifier}vaccess x on (x.ForumID=d.ForumID AND x.UserID = i_pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = i_boardid AND  
+       c.Posted > i_sincedate and        
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
+end;
+--GO
+
+CREATE PROCEDURE {databaseSchema}.{objectQualifier}digest_topicactive(
+                 i_boardid integer,
+                 i_pageuserid integer,
+                 i_sincedate datetime,
+                 i_todate datetime,              
+                 i_StyledNicks tinyint(1),               
+				 i_utctimestamp datetime)
+ BEGIN
+ SELECT
+        d.Name AS "ForumName",
+		c.Topic AS "Subject",
+		c.UserDisplayName AS "StartedUserName",		
+	    c.LastUserDisplayName as "LastUserName",
+	    c.LastMessageID as "LastMessageID",
+		(SELECT x.Message FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and x.MessageID = c.LastMessageID) as "LastMessage",
+	    (SELECT COUNT(1) FROM {databaseSchema}.{objectQualifier}Message x 
+          WHERE x.TopicID=c.TopicID and (x.Flags & 8) = 0) as "Replies"    
+    FROM
+        {databaseSchema}.{objectQualifier}Topic c  
+        JOIN {databaseSchema}.{objectQualifier}Forum d ON d.ForumID=c.ForumID 
+		JOIN {databaseSchema}.{objectQualifier}Category cat ON cat.CategoryID = d.CategoryID     
+        join {databaseSchema}.{objectQualifier}vaccess x on (x.ForumID=d.ForumID AND x.UserID = i_pageuserid AND x.ReadAccess <> 0)      
+    WHERE
+	   cat.BoardID = i_boardid AND        
+       c.LastPosted > i_sincedate and
+       c.LastPosted < i_todate  and    
+      (c.Flags & 8) = 0
+    ORDER BY
+	d.SortOrder,
+    c.LastPosted desc;	
+end;
+--GO

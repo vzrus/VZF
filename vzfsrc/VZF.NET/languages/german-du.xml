@@ -88,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Betrachtet Foren in einer Kategorie</Resource>
     <Resource tag="HELP_INDEX">Betrachtet den Hilfeindex</Resource>
     <Resource tag="HELP_RECOVER">Keine Daten</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">Benutzt AIM</Resource>
     <Resource tag="IM_EMAIL">Benutzt Email</Resource>
     <Resource tag="IM_ICQ">Benutzt ICQ</Resource>
@@ -108,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Betrachtet Moderatoren Index</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Betrachtet gemeldete Beiträge</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Betrachtet nichtgenehmigte Beiträge</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">Verschiebt eine Nachricht</Resource>
     <Resource tag="MOVETOPIC">Verschiebt ein Thema</Resource>
     <Resource tag="MYTOPICS">Betrachtet seine Favoriten und aktiven Themen</Resource>
@@ -833,6 +835,7 @@
     <Resource tag="TYPE">Typ</Resource>
     <Resource tag="TYPES">Typen</Resource>
     <Resource tag="TYPES_HELP">Wählen Sie ein Ereignislog Typ um nur bestimmte Ereignisse anzuzeigen.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Erlaubt</Resource>

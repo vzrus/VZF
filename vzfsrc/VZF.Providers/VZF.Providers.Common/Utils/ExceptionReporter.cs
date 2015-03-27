@@ -45,10 +45,10 @@ namespace YAF.Providers.Utils
     [NotNull]
     private static string ProviderExceptionFile
     {
-      get
-      {
-        return Config.GetConfigValueAsString("YAF.ProviderExceptionXML") ?? "ProviderExceptions.xml";
-      }
+        get
+        {
+            return Config.ProviderExceptionXML;
+        }
     }
 
     #endregion

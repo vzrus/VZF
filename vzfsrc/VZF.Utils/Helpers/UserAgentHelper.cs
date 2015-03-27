@@ -51,7 +51,7 @@ namespace VZF.Utils.Helpers
         /// <returns>
         /// The is browser i e 6.
         /// </returns>
-        public static bool IsBrowserIE6()
+        public static bool IsBrowserIe6()
         {
             return HttpContext.Current.Request.Browser.Browser.Contains("IE")
                    && HttpContext.Current.Request.Browser.Version.StartsWith("6.");
@@ -68,7 +68,7 @@ namespace VZF.Utils.Helpers
         /// </returns>
         public static bool IsFeedReader([CanBeNull] string userAgent)
         {
-            string[] agentContains = { "Windows-RSS-Platform", "FeedDemon", "Feedreader", "Apple-PubSub" };
+            string[] agentContains = {"Windows-RSS-Platform","FeedDemon","Feedreader","Apple-PubSub"};
 
             return userAgent.IsSet()
                    && agentContains.Any(
@@ -89,7 +89,7 @@ namespace VZF.Utils.Helpers
             if (userAgent.IsSet())
             {
                 // Apple-PubSub - Safary RSS reader
-                string[] stringContains = { "PlaceHolder" };
+                string[] stringContains ={"PlaceHolder"};
 
                 return stringContains.Any(x => userAgent.ToLowerInvariant().Contains(x.ToLowerInvariant()));
             }
@@ -146,8 +146,34 @@ namespace VZF.Utils.Helpers
         /// </returns>
         public static bool IsSearchEngineSpider([CanBeNull] string userAgent)
         {
-            return userAgent.IsSet()
-                   && SpiderContains.Any(x => userAgent.ToLowerInvariant().Contains(x.ToLowerInvariant()));
+            if (userAgent.IsNotSet())
+            {
+                return false;
+            }
+
+            string detectName;
+            userAgent = userAgent.ToLowerInvariant();
+            foreach (string spiderAll in SpiderContains)
+            {
+                if (spiderAll.Contains(":"))
+                {
+                    var namesArr = spiderAll.Split(new[] { ':' });
+                    detectName = namesArr[0].Trim();
+
+                }
+                else
+                {
+                    detectName = spiderAll.Trim();
+
+                }
+                if (userAgent.Contains(detectName.ToLowerInvariant()))
+                {
+                    return true;
+
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -181,7 +207,6 @@ namespace VZF.Utils.Helpers
             CodeContracts.ArgumentNotNull(platform, "platform");
 
             isSearchEngine = false;
-            isIgnoredForDisplay = false;
 
             if (userAgent.IsNotSet())
             {
@@ -253,14 +278,14 @@ namespace VZF.Utils.Helpers
             }
 
             // check if it's a search engine spider or an ignored UI string...
-            string san = SearchEngineSpiderName(userAgent);
+            var san = SearchEngineSpiderName(userAgent);
             if (san.IsSet())
             {
                 browser = san;
             }
 
             isSearchEngine = san.IsSet() || isCrawler;
-            isIgnoredForDisplay = IsIgnoredForDisplay(userAgent) || isSearchEngine;
+            isIgnoredForDisplay = IsIgnoredForDisplay(userAgent) | isSearchEngine;
         }
 
         /// <summary>
@@ -274,9 +299,37 @@ namespace VZF.Utils.Helpers
         /// </returns>
         public static string SearchEngineSpiderName([CanBeNull] string userAgent)
         {
-            return userAgent.IsSet()
-                       ? SpiderContains.FirstOrDefault(x => userAgent.ToLowerInvariant().Contains(x.ToLowerInvariant()))
-                       : null;
+            if (userAgent.IsNotSet())
+            {
+                return null;
+            }
+
+            string detectName;
+            string displayName;
+            userAgent = userAgent.ToLowerInvariant();
+            foreach (string spiderAll in SpiderContains)
+            {
+                if (spiderAll.Contains(":"))
+                {
+                    var namesArr = spiderAll.Split(new[] {':'});
+                    detectName = namesArr[0].Trim();
+                    displayName = namesArr[1].Trim();
+
+                }
+                else
+                {
+                    detectName =
+                        displayName = spiderAll.Trim();
+
+                }
+                if (userAgent.Contains(detectName.ToLowerInvariant()))
+                {
+                    return displayName;
+
+                }
+            }
+
+            return null;
         }
 
         #endregion

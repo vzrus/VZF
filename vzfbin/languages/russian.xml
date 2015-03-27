@@ -13,6 +13,7 @@
     <Resource tag="ADMIN_BBCODE_IMPORT">Импортирует  BB-коды</Resource>
     <Resource tag="ADMIN_BOARDS">Просматривает все конференции</Resource>
     <Resource tag="ADMIN_BOARDSETTINGS">Просматривает/редактирует настройки досок</Resource>
+    <Resource tag="ADMIN_DELETECATEGORY">Удаляет категорию</Resource>
     <Resource tag="ADMIN_DELETEFORUM">Удалить форум</Resource>
     <Resource tag="ADMIN_EDITACCESSMASK">Редактирует маски доступа</Resource>
     <Resource tag="ADMIN_EDITBOARD">Редактирует конференции</Resource>
@@ -87,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Просматривает форум из категории </Resource>
     <Resource tag="HELP_INDEX">Просматривает главную страницу помощи</Resource>
     <Resource tag="HELP_RECOVER">Просматривает помощь по восстановлению</Resource>
+    <Resource tag="HELPINDEX">Просматривает помощь</Resource>
     <Resource tag="IM_AIM">Использует AIM</Resource>
     <Resource tag="IM_EMAIL">Использует Email</Resource>
     <Resource tag="IM_ICQ">Использует ICQ</Resource>
@@ -107,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Просматривает страницу модерирования</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Просматривает посты с жалобами</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Просматривает неодобреннные посты</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Просматривает страницу наиболее активных пользователей</Resource>
     <Resource tag="MOVEMESSAGE">Перемещает сообщение</Resource>
     <Resource tag="MOVETOPIC">Перемещает тему</Resource>
     <Resource tag="MYTOPICS">Просматривает избранные/активные темы</Resource>
@@ -326,6 +329,7 @@
     <Resource tag="BOARD_FILE_EXTENSIONS_HELP">Список разрешённых/запрещённых расширений файлов. Последнее менее безопасно.</Resource>
     <Resource tag="BOARD_JQ_THEME">Тема jQuery UI:</Resource>
     <Resource tag="BOARD_JQ_THEME_HELP">Тема jQuery UI Theme для испольлзования на это даске для вкладок и аккордиона.</Resource>
+    <Resource tag="BOARD_JSTREE_THEME">Тема древовидного представления:</Resource>
     <Resource tag="BOARD_MOBILE_THEME">Мобильная тема:</Resource>
     <Resource tag="BOARD_MOBILE_THEME_HELP">Мобильная тема для использования на этой конференции.</Resource>
     <Resource tag="BOARD_NAME">Название:</Resource>
@@ -346,10 +350,10 @@
     <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Пользователи могут создавать персональные форумы(блоги) как подфорумы. Разрешение должно быть установлено администратором для форума.</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES">Персональные форумы в категориях:</Resource>
     <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Пользователи могут создавать персональные форумы(блоги) прямо в категориях.</Resource>
-    <Resource tag="PERSONALGROUPSONLY">Allow only personal groups for personal forums:</Resource>
-    <Resource tag="PERSONALGROUPSONLY_HELP">Users can't select common groups for personal forums(blogs) access.</Resource>
-    <Resource tag="PERSONALMASKSONLY">Allow only personal masks for personal forums:</Resource>
-    <Resource tag="PERSONALMASKSONLY_HELP">Users can't select common masks for personal forums(blogs) or groups access.</Resource>
+    <Resource tag="PERSONALGROUPSONLY">Разрешать только личные группы для персональных форумов:</Resource>
+    <Resource tag="PERSONALGROUPSONLY_HELP">Пользователи не могут выбирать обычные группы для доступа к персональным форумам(блогам).</Resource>
+    <Resource tag="PERSONALMASKSONLY">Разрешить только личные маски для персональных форумов:</Resource>
+    <Resource tag="PERSONALMASKSONLY_HELP">Пользователи не могут выбирать обычные маски доступа для доступа к персональным форумам(блогам).</Resource>
     <Resource tag="TITLE">Настройки конференции</Resource>
   </page>
   <page name="ADMIN_COMMON">
@@ -359,6 +363,16 @@
     <Resource tag="NO">Нет</Resource>
     <Resource tag="SAVE">Сохранить</Resource>
     <Resource tag="YES">Да</Resource>
+  </page>
+  <page name="ADMIN_DELETECATEGORY">
+    <Resource tag="DELETE_CATEGORY">Удалить категорию</Resource>
+    <Resource tag="DELETE_MOVE_TITLE">Удаление категории и перемещение форумов</Resource>
+    <Resource tag="DELETE_MSG">Пожалуйста, не покидайте страницу, пока идёт удаление...</Resource>
+    <Resource tag="DELETE_TITLE">Удаление категории</Resource>
+    <Resource tag="HEADER1">Удаление категории</Resource>
+    <Resource tag="MOVE_FORUMS1">Выбрать категорию для перемещения форумов:</Resource>
+    <Resource tag="MOVE_FORUMS1_HELP">Вы можете удалить только пустую категорию.</Resource>
+    <Resource tag="TITLE">Удаление категории</Resource>
   </page>
   <page name="ADMIN_DELETEFORUM">
     <Resource tag="DELETE_FORUM">Удалить форум</Resource>
@@ -505,7 +519,7 @@
     <Resource tag="FORUM_IMAGE">Изображение форума:</Resource>
     <Resource tag="FORUM_IMAGE_HELP">Это изображение будет отображаться рядом с названием форума, если поле пустое, то будет отображаться иконка по-умолчанию.</Resource>
     <Resource tag="GROUP">Группа</Resource>
-    <Resource tag="HEADER1">Редактировать маски доступа форума</Resource>
+    <Resource tag="HEADER1">Редактировать форум</Resource>
     <Resource tag="HEADER2">Маски доступа</Resource>
     <Resource tag="HIDE_NOACESS">Скрыть, если нет доступа:</Resource>
     <Resource tag="HIDE_NOACESS_HELP">Если пользователь не имеет разрешение на чтение форума, то он не будет отображаться в списке форумов.</Resource>
@@ -544,6 +558,8 @@
     <Resource tag="PRE_MODERATED_HELP">Если этот форум пре-модерируемый, то сообщение должны быть одобрены модератором перед публикацией.</Resource>
     <Resource tag="REMOTE_URL">Удалённый URL:</Resource>
     <Resource tag="REMOTE_URL_HELP">Если вы введёте ссылку, то вместо форума будет отображаться контент по этой ссылке.</Resource>
+    <Resource tag="SAVING_TITLE">Сохранение форума</Resource>
+    <Resource tag="SAVING_WARNING">Пожалуйста, не покидайте эту страницу, пока форум сохраняется....</Resource>
     <Resource tag="SORT_ORDER">Сортировка:</Resource>
     <Resource tag="SORT_ORDER_HELP">Порядок сортировки для этого форума.</Resource>
     <Resource tag="STYLES">Стили:</Resource>
@@ -814,6 +830,7 @@
     <Resource tag="TYPE">Тип</Resource>
     <Resource tag="TYPES">Тип</Resource>
     <Resource tag="TYPES_HELP">Выбор ограничения журнала при определённых событиях.</Resource>
+    <Resource tag="USER">Пользователь</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Доступ</Resource>
@@ -907,6 +924,8 @@
     <Resource tag="NEW_CATEGORY">Добавить категорию</Resource>
     <Resource tag="NEW_FORUM">Добавить форум</Resource>
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+    <Resource tag="TREEVIEW_MENUTIP">Создан </Resource>
+    <Resource tag="TREEVIEW_MENUTIPS">Для создания, перемещения или удаления форума или категории используйте контекстное меню, вызываемое правой кнопкой мыши на нужном узле дерева. Для перемещения перетащите узел в нужное место мышью.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Добавить к VZF</Resource>
@@ -1248,6 +1267,10 @@
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Количество тем на одной странице  на странице Мои Темы. </Resource>
     <Resource tag="NAME_LENGTH">Максимальное количество символов в нике пользователя:</Resource>
     <Resource tag="NAME_LENGTH_HELP">Максимально разрешённая длина имени пользователя и отображаемого имени пользователя.</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME">Время захвата статей из каждой группы новостей:</Resource>
+    <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">Чтобы защитить сервер ограничивайте это время несколькими десятками секунд.</Resource>
+    <Resource tag="NNTP_TOPICPERIOD">Время между импортом сообщений из каждой группы NNTP:</Resource>
+    <Resource tag="NNTP_TOPICPERIOD_HELP">Разрешённое время в минутах, до следующего захвата.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">Использовать тег "NoFollow" в ссылках:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">Все ссылки будут иметь тег nofollow и большинство ботов не будут уходить по ним.</Resource>
     <Resource tag="NOTIFICATION_BAR">Полоса уведомления</Resource>
@@ -1345,7 +1368,7 @@
     <Resource tag="SERVERTIME_CORRECT_HELP">Введите целое число (минуты) между -720 и 720, только если это время UTC неверно: </Resource>
     <Resource tag="SHOUTBOX_COUNT">Число сообщений в чате:</Resource>
     <Resource tag="SHOUTBOX_COUNT_HELP">Число сообщений, которые будут отображаться в окне чата.</Resource>
-    <Resource tag="SHOUTBOX_DEFAULTSTATE">Состсояние чата по умолчанию (Shout Box):</Resource>
+    <Resource tag="SHOUTBOX_DEFAULTSTATE">Состояние чата по умолчанию (Shout Box):</Resource>
     <Resource tag="SHOUTBOX_DEFAULTSTATE_HELP">Чат может быть открыт или закрыт, для текущего изменения пользователям необходимо удалить куки.</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION">Показывать активные обсуждения:</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION_HELP">Включить или отключить отображение активных обсуждений.</Resource>
@@ -1361,8 +1384,8 @@
     <Resource tag="SHOW_DEL_MESSAGES_HELP">Удалённые сообщения(пустые) будут видны с уведомлением. Не включайте обе опции одновременно.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL">Показывать удалённые сообщения для всех:</Resource>
     <Resource tag="SHOW_DEL_MESSAGES_TOALL_HELP">Это покажет пустое сообщение с уведомлением всем пользователям.&lt;br /&gt; Если не выбрано, то администраторы, модераторы и автор будут видеть это сообщение.</Resource>
-    <Resource tag="SHOW_DELETEDINTOPICS">Show Deleted Topics in common view:</Resource>
-    <Resource tag="SHOW_DELETEDINTOPICS_HELP">If this is checked, deleted topics will be displayed to moderators in common view, otherwise they will see them on moderating page only.</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS">Показывать удалённые темы в общем списке:</Resource>
+    <Resource tag="SHOW_DELETEDINTOPICS_HELP">Удалённые темы будут видны модераторам в общем списке тем, иначе они будут отображаться только на странице модерации.</Resource>
     <Resource tag="SHOW_FORUM_JUMP">Показывать список быстрого перехода:</Resource>
     <Resource tag="SHOW_FORUM_JUMP_HELP">Показывать список быстрого перехода в разных местах форума.</Resource>
     <Resource tag="SHOW_FORUM_STATS">Показывать статистику конференции:</Resource>
@@ -1533,6 +1556,7 @@
     <Resource tag="LAST_MESSAGE">Последнее сообщение</Resource>
     <Resource tag="LAST_UPDATE">Последнее обновление</Resource>
     <Resource tag="RETRIEVE">Получить</Resource>
+    <Resource tag="RETRIEVE_SERVICE">Служба импорта сообщений автоматически импортирует сообщения. Установите параметры захвата в настройках хоста.</Resource>
     <Resource tag="Retrieved">Получено {0} статей. {1:N2} статей в секунду.</Resource>
     <Resource tag="SECONDS">секунд</Resource>
     <Resource tag="TIME">Укажите как долго получать статьи.</Resource>
@@ -1976,6 +2000,7 @@
     <Resource tag="MAXNUMBEROF">Максимальное число символов в каждом сообщении не более {0}</Resource>
   </page>
   <page name="COMMON">
+    <Resource tag="AFTER">После</Resource>
     <Resource tag="ALBUMIMG_BBCODE">Вставить изображение из альбома...</Resource>
     <Resource tag="ALLOWED">Разрешено</Resource>
     <Resource tag="BACK">Назад</Resource>
@@ -1986,6 +2011,7 @@
     <Resource tag="BBCODE_QUOTEPOSTED">Автор: {0}</Resource>
     <Resource tag="BBCODE_QUOTEPOSTED_TT">Перейти к цитате</Resource>
     <Resource tag="BBCODE_QUOTEWROTE">{0} написал:</Resource>
+    <Resource tag="BEFORE">До</Resource>
     <Resource tag="CAL_JQ_CULTURE">ru</Resource>
     <Resource tag="CAL_JQ_CULTURE_DFORMAT">dd.MM.YYYY</Resource>
     <Resource tag="CAL_JQ_TT">Нажмите, чтобы выбрать дату </Resource>
@@ -2005,6 +2031,7 @@
     <Resource tag="CAPTCHA_ENTER">Введите символы на этом изображении:</Resource>
     <Resource tag="CAPTCHA_IMAGE">Изображение для проверки:</Resource>
     <Resource tag="CHANGEEMAIL_SUBJECT">E-mail изменён</Resource>
+    <Resource tag="CHILD">Потомок</Resource>
     <Resource tag="COMMON_WORDS">а,о,или,к,за,у,out,please,a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your</Resource>
     <Resource tag="CONTINUE">Продолжить</Resource>
     <Resource tag="COPY">Клонировать</Resource>
@@ -2013,7 +2040,7 @@
     <Resource tag="DISALLOWED">Запрещено</Resource>
     <Resource tag="DOWNLOAD">Загрузка</Resource>
     <Resource tag="EDIT">Редактировать</Resource>
-    <Resource tag="EDITACCESS">Edit Access</Resource>
+    <Resource tag="EDITACCESS">Доступ к редактированию</Resource>
     <Resource tag="EMAILVERIFICATION_SUBJECT">Проверка Email {0}  </Resource>
     <Resource tag="EXTERNALUSER">(Внешний пользователь)</Resource>
     <Resource tag="FONT_COLOR">Цвет шрифта:</Resource>
@@ -2037,6 +2064,7 @@
     <Resource tag="HIDDEN">Скрыт</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">Вам не разрешены HTML тэги.</Resource>
     <Resource tag="HTMLTAG_WRONG">Введённые данные содержат запрещённый HTML тег {0}.</Resource>
+    <Resource tag="IMPOSSIBLE_ACTION">Действие невозможно!</Resource>
     <Resource tag="LOADING">Загрузка...</Resource>
     <Resource tag="MAX_ONLINE">{1} было больше всего пользователей - {0}.</Resource>
     <Resource tag="MESSAGE">Сообщение</Resource>
@@ -2045,6 +2073,7 @@
     <Resource tag="MODAL_NOTIFICATION_HEADER">Уведомление</Resource>
     <Resource tag="MODERATOR">Модератор</Resource>
     <Resource tag="NAME">Имя</Resource>
+    <Resource tag="NEW">Создать</Resource>
     <Resource tag="NO">Нет</Resource>
     <Resource tag="NONE">Ничего</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">Вам дали медаль на форуме {0}</Resource>
@@ -2616,6 +2645,7 @@
     <Resource tag="ATOMICONTOOLTIPFAVORITE">Подписаться на Ваши избранные темы используя ленту Atom.</Resource>
     <Resource tag="ATOMICONTOOLTIPFORUM">Подписаться на форумы используя ленту Atom.</Resource>
     <Resource tag="BY"> {0}</Resource>
+    <Resource tag="CATEGORY">Категория</Resource>
     <Resource tag="CURRENT_TIME">Текущее время: {0}.</Resource>
     <Resource tag="ERROR_FB_HOVERCARD">Данный пользователь пока не обнаружен.</Resource>
     <Resource tag="ERROR_HOVERCARD">Извините, данные пока не получены.</Resource>
@@ -4290,6 +4320,8 @@ Spoiler Content
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Создать новую тему из сообщения</Resource>
     <Resource tag="EMPTY_TOPIC">Отсутствует название темы</Resource>
+    <Resource tag="ENTER_TOPIC_MOVETO">Введите идентификатор темы в которую нужно переместить сообщение:</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="MOVE" />
     <Resource tag="MOVE_MESSAGE">Переместить сообщение</Resource>
     <Resource tag="MOVE_TITLE">Переместить сообщение в другую тему</Resource>
@@ -4996,6 +5028,13 @@ Spoiler Content
   <page name="TAGSBOARD">
     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
     <Resource tag="TITLE">Board Tags</Resource>
+  </page>
+  <page name="TASKS_RUNNING">
+    <Resource tag="CLEANUPTASK">Задача очистки</Resource>
+    <Resource tag="DIGESTSENDTASK">Отправка дайджеста</Resource>
+    <Resource tag="MAILSENDTASK">Отправка почты</Resource>
+    <Resource tag="SYNCNNTPTASK">Бот групп новостей (Nntp)</Resource>
+    <Resource tag="USERCLEANUPTASK">Задача чистки пользователей</Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Администраторы</Resource>

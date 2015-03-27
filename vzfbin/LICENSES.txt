@@ -1,3 +1,15 @@
 ﻿The main code base is published under GPLv2 license.
-All the code is under compatable licenses except Firebird .NET provider which is under IDPv1 license.
-In this case a special distribution or publishing terms are in action.
+
+Third party libraries:
+
+1. Firebird .NET provider is under IDPv1 license.
+2. Postgre .NET Provider (Npgsql) licence 
+http://npgsql.projects.pgfoundry.org/license.html
+3. MySql .NET provider is under GPLv2 licence 
+http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+4. JQuery and JQueryUI are provided under MIT licence.
+
+Other libraries are provided under GPLv2  compatible licences too.
+
+
+

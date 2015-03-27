@@ -88,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Viser fora i en kategori</Resource>
     <Resource tag="HELP_INDEX">Viser hjælpe index</Resource>
     <Resource tag="HELP_RECOVER">Ingen data</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">Bruger AIM</Resource>
     <Resource tag="IM_EMAIL">Bruger Email</Resource>
     <Resource tag="IM_ICQ">Bruger ICQ</Resource>
@@ -108,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Viser moderator index</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Viser rapporterede indlæg</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Viser ikke godkendte indlæg</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">Flytter en besked</Resource>
     <Resource tag="MOVETOPIC">Flytter et emne</Resource>
     <Resource tag="MYTOPICS">Viser hans favoritter og aktive emner</Resource>
@@ -835,6 +837,7 @@
     <Resource tag="TYPE">Type</Resource>
     <Resource tag="TYPES">Type</Resource>
     <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>

@@ -3,11 +3,9 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_tables()
-                  RETURNS void AS
-$BODY$
+DO 
+$$
 BEGIN
-
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}accessmask' limit 1) THEN
@@ -27,7 +25,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}accessmask
             ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}accessmaskhistory' limit 1) THEN
@@ -41,7 +45,12 @@ CREATE TABLE {databaseSchema}.{objectQualifier}accessmaskhistory
             ) 
        WITH (OIDS={withOIDs});
 END IF;
-
+END
+$$;
+--GO
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}active' limit 1) THEN
@@ -63,7 +72,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}active
             ) 
         WITH (OIDS={withOIDs},fillfactor=10,autovacuum_enabled=true);
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                  AND tablename='{objectQualifier}activeaccess' limit 1) THEN
@@ -92,7 +107,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}activeaccess
              ) 
        WITH (OIDS={withOIDs},fillfactor=10,autovacuum_enabled=true);
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}adminpageuseraccess' limit 1) THEN
@@ -103,7 +124,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}adminpageuseraccess
              ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}eventloggroupaccess' limit 1) THEN
@@ -115,8 +142,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}eventloggroupaccess(
     )
 WITH (OIDS={withOIDs},autovacuum_enabled=true);
 END IF;
+END
+$$;
+--GO
 
-
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}attachment' limit 1) THEN
@@ -133,7 +165,13 @@ CREATE TABLE {databaseSchema}.{objectQualifier}attachment
              ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
 
+DO 
+$$
+BEGIN
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
                AND tablename='{objectQualifier}bannedip' limit 1) THEN
@@ -148,6 +186,14 @@ CREATE TABLE {databaseSchema}.{objectQualifier}bannedip
              ) 
        WITH (OIDS={withOIDs});
 END IF;
+END
+$$;
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}create_or_check_tables()
+                  RETURNS void AS
+$BODY$
+BEGIN
 
 IF NOT EXISTS (select 1 from pg_tables 
                where schemaname='{databaseSchema}' 
@@ -1178,9 +1224,27 @@ BEGIN
          ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN isuserforum  boolean  DEFAULT false NOT NULL ;
      END IF;
 
-         IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','canhavepersforums')) THEN
+     IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','canhavepersforums')) THEN
          ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
-     END IF;     
+     END IF;  
+	 
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','left_key')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN left_key  integer;
+     END IF;    
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','right_key')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN right_key  integer;
+     END IF;
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','level')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN "level"  integer;
+     END IF;
+
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','_trigger_for_delete')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN _trigger_for_delete  boolean  DEFAULT false NOT NULL ;
+     END IF; 
+	 
+	 IF (NOT column_exists('{databaseSchema}.{objectQualifier}forum','_trigger_lock_update')) THEN
+         ALTER TABLE {databaseSchema}.{objectQualifier}forum ADD COLUMN _trigger_lock_update  boolean  DEFAULT false NOT NULL ;
+     END IF;  
 
         if exists (select 1 from information_schema.columns where table_name='{objectQualifier}forum' 
         and table_schema='{databaseSchema}' and column_name ='description' and is_nullable='NO') then
@@ -1334,12 +1398,15 @@ BEGIN
     END IF;
      IF (NOT column_exists('{databaseSchema}.{objectQualifier}activeaccess','userforumaccess')) THEN
          ALTER TABLE {databaseSchema}.{objectQualifier}activeaccess ADD COLUMN userforumaccess  boolean  DEFAULT false NOT NULL ;
-     END IF;
+     END IF;	
 
      UPDATE {databaseSchema}.{objectQualifier}group set style = null where style is not null and char_length(style) <= 2;
      UPDATE {databaseSchema}.{objectQualifier}rank set style = null where style is not null and char_length(style) <= 2;
      UPDATE {databaseSchema}.{objectQualifier}rank set flags = flags | 4 where name like 'Guest';
 	 UPDATE {databaseSchema}.{objectQualifier}message set edited = posted where edited is null;
+
+	
+
     END;	
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER CALLED ON NULL INPUT
@@ -1432,3 +1499,5 @@ BEGIN
     END LOOP;
 END$$;
 --GO
+
+

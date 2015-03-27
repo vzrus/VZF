@@ -87,7 +87,6 @@ begin
 end;
 --GO
 
-
 CREATE PROCEDURE  {objectQualifier}FORUM_LASTPOSTED 
 
 (	
@@ -218,7 +217,7 @@ BEGIN
 
 	-- look for newer topic/message in subforums
 	if (exists(select FIRST 1 1 from {objectQualifier}FORUM 
-	where PARENTID=:I_FORUMID)) THEN
+	where PARENTID=:I_FORUMID)) THEN	
 	BEGIN			
 		FOR
 		SELECT 
@@ -262,6 +261,38 @@ END
 	INTO 
 	  :"LastTopicID";
 SUSPEND;	
+END;
+--GO
+
+CREATE OR ALTER PROCEDURE  {objectQualifier}FORUM_NS_LASTTOPIC
+(
+	I_LK INTEGER,
+	I_RK INTEGER,
+    I_CATEGORYID INTEGER,
+	I_USERID INTEGER
+) RETURNS ("LastTopicID" INTEGER) AS
+BEGIN
+	IF (I_USERID IS NULL) THEN	
+	BEGIN	
+		    select  f.LastTopicID from {objectQualifier}FORUM f 
+			        inner join {objectQualifier}ACTIVEACCESS x 
+					 on f.FORUMID=x.FORUMID
+		             where f.CATEGORYID = :I_CATEGORYID and f.left_key >= :I_LK  and f.right_key <= :I_RK and f.LASTPOSTED IS NOT NULL
+					 and BIN_AND(f.FLAGS, 2)=0		 
+                    order by f.LASTPOSTED desc ROWS 1
+					INTO :"LastTopicID";
+		END     
+		else
+		BEGIN
+			select  f.LastTopicID from {objectQualifier}FORUM f 
+			        inner join {objectQualifier}ACTIVEACCESS x  on f.FORUMID=x.FORUMID
+		            where f.CATEGORYID = :I_CATEGORYID and f.left_key >= :I_LK and f.right_key <= :I_RK and f.LASTPOSTED IS NOT NULL 
+		            and (BIN_AND(f.FLAGS, 2)=0  or x.READACCESS <> 0) 
+		             and x.USERID = :I_USERID		 
+                      order by f.LASTPOSTED desc ROWS 1
+					  INTO :"LastTopicID"; 
+        END
+	 SUSPEND;
 END;
 --GO
 

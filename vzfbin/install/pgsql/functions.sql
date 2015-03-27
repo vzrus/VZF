@@ -116,13 +116,31 @@ $BODY$DECLARE
   COST 100;
 --GO
 
-
-
-
-
-
-
-
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_lasttopic(
+i_lk integer,i_rk integer, i_categoryid integer,i_userid integer)
+				  RETURNS integer AS
+$BODY$DECLARE
+			 ici_LastTopicID integer;		
+ BEGIN
+ 
+	IF (i_userid IS NULL) then		
+		    select  f.lasttopicid into ici_LastTopicID from {databaseSchema}.{objectQualifier}forum f 
+			        inner join {databaseSchema}.{objectQualifier}activeaccess x on f.forumid=x.forumid
+		             where f.categoryid = i_categoryid  and f.left_key >= i_lk and f.right_key <= i_rk and f.lastposted is not null
+					 and (f.flags & 2)=0		 
+                    order by f.lastposted desc limit 1;
+		else
+			select  f.lasttopicid into ici_LastTopicID from {databaseSchema}.{objectQualifier}forum f 
+			        inner join {databaseSchema}.{objectQualifier}activeaccess x on (f.forumid=x.forumid and x.userid= i_userid)
+		            where f.categoryid = i_categoryid and f.left_key >= i_lk and f.right_key <= i_rk and f.lastposted is not null
+		            and ((f.flags & 2)=0 or x.readaccess) 		              		 
+                      order by f.lastposted desc limit 1;  
+		 end if;  
+	RETURN ici_LastTopicID;
+	END;$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
+  COST 100;
+--GO
 
 -- Function: {databaseSchema}.{objectQualifier}forum_lastposted(integer, integer, integer, time with time zone)
 

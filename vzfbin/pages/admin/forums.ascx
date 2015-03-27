@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.forums" Codebehind="forums.ascx.cs" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
-<VZF:AdminMenu runat="server">
+<VZF:AdminMenu runat="server">  
  <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="3">
@@ -9,25 +9,14 @@
         </tr>
         <tr>
         <td colspan="3">
-            <div class="container" ID="tviewcontainer" runat="server">
-            <asp:Label ID="ActionTipLbl" runat="server"></asp:Label>
-            <asp:Label ID="ActionTipLbl2" runat="server"></asp:Label>
+            <div class="container" ID="tviewcontainer" visible="false" runat="server">    
+           
+                <VZF:LocalizedLabel ID="TreeMenuTip" runat="server"></VZF:LocalizedLabel>
             <VZF:PageLinks runat="server" ID="PageLinks1" />
-                  <div id="divactive" class="active" Visible="false" runat="server">
-            <VZF:LocalizedLabel ID="ActiveNodeLbl" runat="server" LocalizedTag="FORUM_SELECTEDNODE_MSG" LocalizedPage="FORUMS_ADMIN" /><b><span id="echoActive">-</span></b>
-            <div id="treebuttons">
-            <VZF:ThemeButton ID="DeleteForumBtn" CssClass="yaflittlebutton" TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON"  OnClick="DeleteForumBtn_Click"  runat="server"/>
-            <VZF:ThemeButton ID="CopyForumBtn" CssClass="yaflittlebutton"  TitleLocalizedTag="COPY" ImageThemePage="ICONS" ImageThemeTag="COPY_SMALL_ICON" OnClick="CopyForumBtn_Click"  runat="server"/>
-            <VZF:ThemeButton ID="EditForumBtn" CssClass="yaflittlebutton" TitleLocalizedTag="EDIT"  ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" OnClick="EditForumBtn_Click"  runat="server"/>
-            </div></div>
+                
              <br />  
-
-
-   <!-- <div id="tree">
-    </div> -->
 </div>
-   <div id="ftree3" data-source="ajax">
-      </div> 
+   <div id="ftree3" data-source="ajax"></div> 
         </td>
         </tr>
         <asp:Repeater ID="CategoryList" runat="server">

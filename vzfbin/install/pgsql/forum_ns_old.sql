@@ -691,7 +691,7 @@ $BODY$
 COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren (integer,integer,integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
 --GO
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren_activeuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getch_actuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
 				   RETURNS SETOF {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt AS
 $BODY$DECLARE
 _rec {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt%ROWTYPE;
@@ -737,10 +737,10 @@ $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
-COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren_activeuser(integer,integer,integer, integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
+COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getch_actuser(integer,integer,integer, integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
 --GO
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren_anyuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getch_anyuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
 				   RETURNS SETOF {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt AS
 $BODY$DECLARE
 _rec {databaseSchema}.{objectQualifier}forum_ns_getchildren_rt%ROWTYPE;
@@ -781,7 +781,7 @@ $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER CALLED ON NULL INPUT
   COST 100;
 --GO
-COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getchildren_anyuser(integer,integer,integer,integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
+COMMENT ON FUNCTION {databaseSchema}.{objectQualifier}forum_ns_getch_anyuser(integer,integer,integer,integer, boolean, boolean) IS 'If i_forumid is null returns all nodes on the first level and their children.';
 --GO
 
 

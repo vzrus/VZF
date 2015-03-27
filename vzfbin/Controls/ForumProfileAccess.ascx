@@ -13,10 +13,46 @@
      <div id="divTree" class="active" Visible="False" runat="server">
         Active node: <b><span id="echoActive">-</span></b></div>
         <div class="container">
-    <div id="tree">
-       
+   
+      <!-- <table id="treetable">
+    <colgroup>  
+    <col width="60px"></col>
+    <col width="20px"></col>
+    <col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+<col width="20px"></col>
+    </colgroup>
+    <thead>
+      <tr> <th>#</th>  
+          <th>RE</th>
+          <th>PO</th>
+          <th>RP</th>
+          <th>PR</th>
+          <th>PL</th>
+          <th>VO</th>
+          <th>MD</th>
+          <th>ED</th>
+          <th>DE</th>
+          <th>UP</th>
+          <th>DL</th>
+          <th>UF</th>        
+      </tr>
+    </thead>
+    <tbody>
+      <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+    </tbody>
+  </table> -->
+<div id="treetable"></div>
     </div>
-    </div>   
+     
         
     <table width="100%" cellspacing="1" cellpadding="0">
     <asp:Repeater ID="ForumList" OnItemDataBound="ForumList_OnItemDataBound" runat="server">

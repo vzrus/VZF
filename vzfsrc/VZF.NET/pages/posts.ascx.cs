@@ -1083,9 +1083,13 @@ namespace YAF.Pages
                 lastRead);
             if (postListDataTable == null || postListDataTable.Rows.Count <= 0)
             {
-                string ex = "this.PageContext.PageUserID={0},messagePosition={1},this.PageContext.PageTopicID={2}".FormatWith(this.PageContext.PageUserID, messagePosition, PageContext.PageTopicID);
-
-                CommonDb.eventlog_create(PageContext.PageModuleID, (int?)YafContext.Current.PageUserID, this, ex, EventLogTypes.Error);
+#if DEBUG
+                string ex = " This is a temporary diagnostic message for developers.Don't report it, simply delete it. It will be gone in future." +
+                            "An access attempt to a forbidden or unexisting topic. " +
+                            "PageUserID={0}, Crawler = {1}, messagePosition={2}, TopicID={3}".FormatWith(this.PageContext.PageUserID,this.PageContext.IsCrawler,  messagePosition, PageContext.PageTopicID);
+                
+                CommonDb.eventlog_create(PageContext.PageModuleID, (int?)YafContext.Current.PageUserID, this, ex, EventLogTypes.Information);
+#endif              
                 YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
                 return;
             }

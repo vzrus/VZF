@@ -1439,6 +1439,41 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `LastUserDisplayName`  VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseCollation} NULL AFTER `LastUserName`;
   END IF; 
 
+     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE TABLE_SCHEMA='{databaseSchema}'  AND
+  TABLE_NAME='{objectQualifier}Forum'
+  AND COLUMN_NAME='left_key' LIMIT 1) THEN
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `left_key`  INT NULL;
+  END IF; 
+
+       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE TABLE_SCHEMA='{databaseSchema}'  AND
+  TABLE_NAME='{objectQualifier}Forum'
+  AND COLUMN_NAME='right_key' LIMIT 1) THEN
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `right_key`  INT NULL;
+  END IF;
+
+       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE TABLE_SCHEMA='{databaseSchema}'  AND
+  TABLE_NAME='{objectQualifier}Forum'
+  AND COLUMN_NAME='level' LIMIT 1) THEN
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `level`  INT NULL;
+  END IF;
+
+   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE TABLE_SCHEMA='{databaseSchema}'  AND
+  TABLE_NAME='{objectQualifier}Forum'
+  AND COLUMN_NAME='trigger_for_delete' LIMIT 1) THEN
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `trigger_for_delete`  INT NOT NULL DEFAULT 0;
+  END IF;
+
+     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE TABLE_SCHEMA='{databaseSchema}'  AND
+  TABLE_NAME='{objectQualifier}Forum'
+  AND COLUMN_NAME='trigger_lock_update' LIMIT 1) THEN
+  ALTER TABLE  {databaseSchema}.{objectQualifier}Forum ADD `trigger_lock_update`  INT NOT NULL DEFAULT 0;
+  END IF;
+
   -- PollVote Table
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE TABLE_SCHEMA='{databaseSchema}'  AND

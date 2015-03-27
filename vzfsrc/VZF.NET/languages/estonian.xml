@@ -88,6 +88,7 @@
     <Resource tag="FORUMFROMCATEGORY">Avab kategooria foorumid</Resource>
     <Resource tag="HELP_INDEX">Avab abiinfo indeksi</Resource>
     <Resource tag="HELP_RECOVER">Andmed puuduvad</Resource>
+    <Resource tag="HELPINDEX">Views help page</Resource>
     <Resource tag="IM_AIM">Kasutab AIM</Resource>
     <Resource tag="IM_EMAIL">Kasutab e-posti</Resource>
     <Resource tag="IM_ICQ">Kasutab ICQ</Resource>
@@ -108,6 +109,7 @@
     <Resource tag="MODERATE_INDEX">Avab modereerimisindeksi</Resource>
     <Resource tag="MODERATE_REPORTEDPOSTS">Avab raporteeritud postitused</Resource>
     <Resource tag="MODERATE_UNAPPROVEDPOSTS">Avab kinnitamata postitused</Resource>
+    <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
     <Resource tag="MOVEMESSAGE">Liigutab sõnumi</Resource>
     <Resource tag="MOVETOPIC">Liigutab teemat</Resource>
     <Resource tag="MYTOPICS">Avab teema lemmik- ja aktiivsed teemad</Resource>
@@ -835,6 +837,7 @@
     <Resource tag="TYPE">Type</Resource>
     <Resource tag="TYPES">Type</Resource>
     <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+    <Resource tag="USER">User</Resource>
   </page>
   <page name="ADMIN_EVENTLOGGROUPS">
     <Resource tag="CANACCESS">Allowed</Resource>

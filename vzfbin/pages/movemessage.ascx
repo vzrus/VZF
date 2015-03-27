@@ -17,14 +17,23 @@
 		</td>
 		<td class="post" width="50%">
 			<asp:DropDownList ID="ForumList" runat="server" CssClass="edit" AutoPostBack="True" OnSelectedIndexChanged="ForumList_SelectedIndexChanged" />
+            <div id="jumpList" visible="false" runat="server"> <div id="treemovemessage" data-source="ajax"  ></div></div>
 		</td>
 	</tr>
-	<tr>
+	<tr id="rowTopicsDdl" runat="server">
 		<td class="postheader" width="50%">
 			<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="select_topic_moveto" />
 		</td>
 		<td class="post" width="50%">
 			<asp:DropDownList ID="TopicsList" runat="server" CssClass="edit" OnSelectedIndexChanged="TopicsList_SelectedIndexChanged" />
+		</td>
+	</tr>
+    <tr id="rowTopicName" Visible="false" runat="server">
+		<td class="postheader" width="50%">
+			<VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="ENTER_TOPIC_MOVETO" />
+		</td>
+		<td class="post" width="50%">
+			<asp:TextBox ID="TopicIDTb" runat="server" CssClass="edit"  />
 		</td>
 	</tr>
 	<tr>

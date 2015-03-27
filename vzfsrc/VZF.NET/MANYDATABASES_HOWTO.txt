@@ -49,6 +49,9 @@ All default connection strings are in db.config file.
 
 !!!! Notice, that in development code you can find already renamed files. 
 If a file like app_my.conf is missing this means that it was currently renamed into app.conf.
+!!!! Important - connection string name sometimes present in web.config too. Don't forget to set it.
+ Some providers work automatically and don't require it. 
+The connection string name is required for your own provider. 
 
 
 

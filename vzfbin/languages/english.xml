@@ -1428,6 +1428,8 @@ Spoiler Content
       <Resource tag="APPROVE">Approves</Resource>
       <Resource tag="IMGPRV">Views an image in a user album</Resource>
       <Resource tag="INFO">Views info page</Resource>
+      <Resource tag="MOSTACTIVEUSERS">Views most activeusers page.</Resource>
+      <Resource tag="HELPINDEX">Views help page</Resource>
       <Resource tag="NODATA">No data available</Resource>
       <Resource tag="RULES">Views forum rules</Resource>
       <Resource tag="REGISTER">Registers</Resource>
@@ -1487,6 +1489,7 @@ Spoiler Content
       <Resource tag="ADMIN_EDITCATEGORY">Edits categories</Resource>
       <Resource tag="ADMIN_EDITFORUM">Edits forums</Resource>
       <Resource tag="ADMIN_DELETEFORUM">Delete forums</Resource> 
+      <Resource tag="ADMIN_DELETECATEGORY">Deletes category</Resource> 
       <Resource tag="ADMIN_EDITGROUP">Edits groups</Resource>
       <Resource tag="ADMIN_EDITMEDAL">Edits medals</Resource>
       <Resource tag="ADMIN_EDITNNTPFORUM">Edits NNTP Forum</Resource>
@@ -1653,6 +1656,9 @@ Spoiler Content
       <Resource tag="BUTTON_RETWEET_TT">Retweet this Message</Resource>      
    </page>
    <page name="COMMON">
+     <Resource tag="AFTER">After</Resource>
+     <Resource tag="BEFORE">Before</Resource>
+     <Resource tag="CHILD">Child</Resource>
      <Resource tag="EXTERNALUSER">(External User)</Resource>
       <Resource tag="OR">or</Resource>
      <Resource tag="SHOWHIDE">Show/Hide</Resource>
@@ -1722,6 +1728,7 @@ Spoiler Content
       <Resource tag="FORUM_JUMP">Forum Jump</Resource>
       <Resource tag="GENERATED">This page was generated in {0:N3} seconds.</Resource>
       <Resource tag="GO">GO</Resource>
+      <Resource tag="IMPOSSIBLE_ACTION">Impossible action!</Resource>
      <Resource tag="YES">Yes</Resource>
      <Resource tag="NO">No</Resource>
     <Resource tag="VIEW_CATEGORY">View category</Resource>
@@ -1742,6 +1749,7 @@ Spoiler Content
       <Resource tag="LOADING">Loading...</Resource>
       <Resource tag="MAX_ONLINE">Most users ever online was {0}, {1}.</Resource>
       <Resource tag="MODAL_NOTIFICATION_HEADER">Notification</Resource>
+     <Resource tag="NEW">New</Resource>
       <Resource tag="OK">OK</Resource>
       <Resource tag="PAGES">Pages</Resource>
       <Resource tag="PM_NOTIFICATION_SUBJECT">New Private Message From {0} at {1}</Resource>
@@ -2242,7 +2250,8 @@ Spoiler Content
       <Resource tag="ACTIVE_USERS_TIME">for last {0:N0} minutes</Resource>
       <Resource tag="BY">by {0}</Resource>
       <Resource tag="CURRENT_TIME">Current time: {0}.</Resource>
-      <Resource tag="FORUM">Forum</Resource>
+     <Resource tag="CATEGORY">Category</Resource>    
+     <Resource tag="FORUM">Forum</Resource>
       <Resource tag="GO_LAST_POST">Go to last post</Resource>
       <Resource tag="GO_LASTUNREAD_POST">Go to first unread</Resource>
       <Resource tag="IN">in {0}</Resource>
@@ -2519,6 +2528,8 @@ Spoiler Content
       <Resource tag="NEW_TOPIC">Create Topic to move to:</Resource>
       <Resource tag="SELECT_FORUM_MOVETO">Select Forum to move to:</Resource>
       <Resource tag="SELECT_TOPIC_MOVETO">Select Topic to move to:</Resource>
+      <Resource tag="ENTER_TOPIC_MOVETO">Enter topic Id to move to:</Resource>
+      <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
     <Resource tag="TITLE">Move Message to a Different Topic or split in to a new Topic</Resource>
     <Resource tag="MOVE_TITLE">Move Message to a Different Topic</Resource>
     <Resource tag="SPLIT_TITLE">Split Message in to a new Topic</Resource>
@@ -3724,6 +3735,7 @@ Visit {forumname} at {forumlink}
      <Resource tag="LAST_UPDATE">Last Update</Resource>
      <Resource tag="TIME">Specify how much time article retrieval should use.</Resource>
      <Resource tag="SECONDS">seconds</Resource>
+     <Resource tag="RETRIEVE_SERVICE">To retrieve articles a service is running. Set parameters in Host Settings and wait some time. Articles will be fetched in background.</Resource>
      <Resource tag="RETRIEVE">Retrieve</Resource>
      <Resource tag="BETA_WARNING">&lt;p style=&quot;color: red&quot;&gt;
       The NNTP feature of Yet Another Forum.net is still beta, and &lt;strong&gt;will&lt;/strong&gt; have bugs.
@@ -4035,6 +4047,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="TODATE_HELP">Select the end date for log to show.</Resource>
       <Resource tag="TYPES">Type</Resource>
       <Resource tag="TYPES_HELP">Choose to restrict the Log to certain types of events.</Resource>
+      <Resource tag="USER">User</Resource>
     </page>
     <page name="ADMIN_BOARDSETTINGS">
       <Resource tag="TITLE">Board Settings</Resource>
@@ -4055,11 +4068,12 @@ Visit {forumname} at {forumlink}
       <Resource tag="BOARD_THEME">Theme:</Resource>
       <Resource tag="COPYRIGHT_REMOVAL_KEY">Copyright Removal Key:</Resource>
       <Resource tag="COPYRIGHT_REMOVAL_KEY_HELP">
-        <![CDATA[Remove the copyright information and link back to YAF from the footer of your entire forum domain. Available <a href="http://yetanotherforum.net/purchase.aspx">from YAF.NET site</a>. ]]>
+        <![CDATA[Remove the copyright information and link back to VZF from the footer of your entire forum domain. Available <a href="http://yetanotherforum.net/purchase.aspx">from YAF.NET site</a>. ]]>
       </Resource>
       <Resource tag="BOARD_MOBILE_THEME">Mobile Theme:</Resource>
       <Resource tag="BOARD_THEME_LOGO">Allow Themed Logo:</Resource>
-      <Resource tag="BOARD_JQ_THEME">jQuery UI Theme:</Resource>
+      <Resource tag="BOARD_JQ_THEME">Java Script UI Theme:</Resource>
+      <Resource tag="BOARD_JSTREE_THEME">Tree view theme:</Resource>
       <Resource tag="BOARD_CDN_HOSTED">Use Google Hosted CDN jQuery UI CSS File?</Resource>
       <Resource tag="BOARD_CULTURE">Culture:</Resource>
       <Resource tag="BOARD_TOPIC_DEFAULT">Show Topic Default:</Resource>
@@ -4092,7 +4106,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="CATEGORY_CANTADDFORUMBEFORE_MSG">You can't add a forum directly before a category, select a category to add after or a forum.</Resource> 
       <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
       <Resource tag="CONFIRM_DELETE">Permanently delete this Forum including ALL topics, polls, attachments and messages associated with it?</Resource>
-      <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>
+      <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>    
       <Resource tag="MSG_NOT_DELETE">You cannot delete this Category as it has at least one forum assigned to it.\nTo move forums click on "Edit" and change the category the forum is assigned to.</Resource>
       <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
       <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
@@ -4119,6 +4133,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="ISGENERALFORUM">General forum</Resource>
       <Resource tag="FORUMAUTHOR">Created by </Resource>
       <Resource tag="CREATEDDATE">Created on </Resource>
+      <Resource tag="TREEVIEW_MENUTIPS">To create, move or delete forum and categories use context menu, activated by right mouse button click at a required node, drag and drop a node to move it.</Resource>
     </page>
     <page name="ADMIN_EDITCATEGORY">
       <Resource tag="TITLE">Add/Edit Category</Resource>
@@ -4174,6 +4189,8 @@ Visit {forumname} at {forumlink}
       <Resource tag="HIDE_NOACESS_HELP">Means that the forum will be hidden when the user don't have read access to it.</Resource>
       <Resource tag="LOCKED">Locked:</Resource>
       <Resource tag="LOCKED_HELP">If the forum is locked, no one can post or reply in this forum.</Resource>
+      <Resource tag="SAVING_TITLE">Saving forum</Resource>
+      <Resource tag="SAVING_WARNING">Please do not navigate away from this page while saving is in progress....</Resource>
       <Resource tag="NO_POSTSCOUNT">No posts count:</Resource>
       <Resource tag="NO_POSTSCOUNT_HELP">If this is checked, posts in this forum will not count in the ladder system/forum statistics.</Resource>
       <Resource tag="PERSONALFORUMS_NUMBER">User Personal Forums(Blogs) number:</Resource>
@@ -4207,6 +4224,16 @@ Visit {forumname} at {forumlink}
       <Resource tag="NEW_FORUM_HELP">Select the new Forum for the Topics.</Resource>
       <Resource tag="DELETE_TITLE">Deleting Forum</Resource>
       <Resource tag="DELETE_MOVE_TITLE">Deleting Forum and Moving Topics</Resource>
+      <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
+    </page>
+    <page name="ADMIN_DELETECATEGORY">
+      <Resource tag="TITLE">Delete category</Resource>
+      <Resource tag="HEADER1">Delete the category:</Resource>    
+      <Resource tag="DELETE_CATEGORY">Delete category</Resource>
+      <Resource tag="MOVE_FORUMS1">Select a category to move forums. </Resource>
+      <Resource tag="MOVE_FORUMS1_HELP">You can delete an empty category only.</Resource>  
+      <Resource tag="DELETE_TITLE">Deleting category</Resource>
+      <Resource tag="DELETE_MOVE_TITLE">Deleting category and moving forums</Resource>
       <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     </page>
     <page name="ADMIN_BOARDS">
@@ -4873,6 +4900,10 @@ Visit {forumname} at {forumlink}
        <Resource tag="REFERRER_CHECK_HELP">Validates all POSTs are from the same domain as the referring domain (No cross domain POSTs).</Resource>
      <Resource tag="CREATE_NNTPNAMES">Create NNTP user names:</Resource>
        <Resource tag="CREATE_NNTPNAMES_HELP">Check to allow users to automatically be created when downloading usenet messages. Only enable this in a test environment, and &lt;em&gt;NEVER&lt;/em&gt; in a production environment. The main purpose of this option is for performance testing.</Resource>
+     <Resource tag="NNTP_TOPICPERIOD">Fetch NNTP articles in time:</Resource>
+       <Resource tag="NNTP_TOPICPERIOD_HELP">This is an interval when articles can be fetched again, in minutes.</Resource>
+      <Resource tag="NNTP_ARTICLESFETCHTIME">Time to fetch every news group in seconds:</Resource>
+       <Resource tag="NNTP_ARTICLESFETCHTIME_HELP">To protect server limit the time to a short period of several dozens of seconds.</Resource>
      <Resource tag="DISABLE_REGISTER">Disable New Registrations:</Resource>
        <Resource tag="DISABLE_REGISTER_HELP">New users won't be able to register.</Resource>
      <Resource tag="LOGIN_REDIR_URL">Custom Login Redirect Url:</Resource>
@@ -5350,5 +5381,12 @@ Visit {forumname} at {forumlink}
      <Resource tag="FRIENDLY">Friendly</Resource>
      <Resource tag="HONORED">Honored</Resource>
      <Resource tag="EXALTED">Exalted</Resource>
+   </page>
+ <page name="TASKS_RUNNING">
+     <Resource tag="MAILSENDTASK">Sending mail</Resource>
+     <Resource tag="SYNCNNTPTASK">Nntp crawler</Resource>
+     <Resource tag="CLEANUPTASK">Cleaning Task</Resource>
+     <Resource tag="USERCLEANUPTASK">User Cleaning Task</Resource>
+     <Resource tag="DIGESTSENDTASK">Digest Sending Task</Resource>
    </page>
 </Resources>
