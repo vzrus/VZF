@@ -68,7 +68,7 @@ namespace VZF.Utils.Helpers
         /// </returns>
         public static bool IsFeedReader([CanBeNull] string userAgent)
         {
-            string[] agentContains = {"Windows-RSS-Platform","FeedDemon","Feedreader","Apple-PubSub"};
+            string[] agentContains = {"Windows-RSS-Platform","FeedDemon","Feedreader","Apple-PubSub","FeedBurner"};
 
             return userAgent.IsSet()
                    && agentContains.Any(

@@ -811,8 +811,8 @@ namespace VZF.Controls
                 case "lastposts":
                     YafBuildLink.Redirect(
                         ForumPages.search,
-                        "postedby={0}",
-                        this.Get<YafBoardSettings>().EnableDisplayName ? this.DataRow["DisplayName"] : this.DataRow["UserName"]);
+                        "u={0}",
+                        this.PostData.UserId);
                     break;
                 case "addbuddy":
                     this.PopMenu1.RemovePostBackItem("addbuddy");

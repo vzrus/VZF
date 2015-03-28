@@ -146,9 +146,9 @@ namespace VZF.Controls
 
         this.ViewPostsLink.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
             ForumPages.search, 
-            "postedby={0}", 
+            "postedby={0}&u={1}", 
             !userData.IsGuest ?  (this.Get<YafBoardSettings>().EnableDisplayName ? userData.DisplayName : userData.UserName)
-            : (UserMembershipHelper.GuestUserName));
+            : (UserMembershipHelper.GuestUserName), userData.UserID);
 
         // bind data
         this.BindData();

@@ -1187,6 +1187,7 @@
     <Resource tag="HOST_LOG">Logs</Resource>
     <Resource tag="HOST_PERMISSION">Permission</Resource>
     <Resource tag="HOST_SEARCH">Search</Resource>
+    <Resource tag="HOST_SYNDICATION">Syndication Feeds</Resource>
     <Resource tag="HOST_TEMPLATES">Templates</Resource>
     <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
     <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
@@ -5396,9 +5397,13 @@ Visit {forumname} at {forumlink}
     <Resource tag="YESTERDAYAT">[b]Ontem[/b] às {0:T}</Resource>
   </page>
   <page name="TOPICSBYTAGS">
+    <Resource tag="DELETE_ALL">Delete tag</Resource>
+    <Resource tag="DELETE_SELECTED">Delete From Selected</Resource>
+    <Resource tag="SELECTIT">Select:</Resource>
     <Resource tag="TAGS_LIST">Tags: {0}</Resource>
     <Resource tag="TAGS_MORE">More Tags:</Resource>
     <Resource tag="TITLE">Topics by tags</Resource>
+    <Resource tag="TOPIC">Topic:</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]No thanks found.[/b]</Resource>

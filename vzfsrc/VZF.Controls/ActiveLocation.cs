@@ -425,6 +425,9 @@ namespace VZF.Controls
                     // an info about user name, etc. 
                     switch (pageParced)
                     {
+                        case  ForumPages.topicsbytags:
+                            outText.Append(this.GetText("ACTIVELOCATION", "TOPICBYTAGS_TOPIC"));
+                            break;
                         case ForumPages.boardtags:
                             outText.Append(this.GetText("ACTIVELOCATION", "TAGS_BOARD"));
                             break;

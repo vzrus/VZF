@@ -193,6 +193,11 @@ namespace VZF.Controls
             }
         }
 
+        public string TopicTags
+        {
+            get { return this.TopicRow["TopicTags"].ToString(); }
+        }
+
         /// <summary>
         ///  Gets the TopicRow.
         /// </summary>

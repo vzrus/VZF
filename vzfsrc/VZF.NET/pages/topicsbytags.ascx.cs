@@ -22,6 +22,9 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Web.UI.WebControls;
+using VZF.Controls;
+
 namespace YAF.Pages
 {
     #region Using
@@ -230,12 +233,17 @@ namespace YAF.Pages
                                                      DateTimeHelper.SqlDbMinTime(),
                                                      this.Pager.CurrentPageIndex,
                                                      this.Pager.PageSize);
-           
+
             if (dtTopics != null && dtTopics.Rows.Count > 0)
             {
                 dtTopics = this.StyleTransformDataTable(dtTopics);
                 this.TopicList.DataSource = dtTopics;
+
                 this.TagsListLLbl.Param0 = dtTopics.Rows[0]["Tags"].ToString();
+            }
+            else
+            {
+                YafBuildLink.Redirect(ForumPages.forum);
             }
 
             this.DataBind();
@@ -268,19 +276,41 @@ namespace YAF.Pages
         /// </param>
         protected void okBtn_click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.OKButon.CommandArgument.Contains("f="))
-            {
-                YafBuildLink.Redirect(ForumPages.topics, "{0}".FormatWith(this.OKButon.CommandArgument));
-            }
+            // it can be null if a tag is deleted from all topics
+           if (this.OKButon.CommandArgument != null)
+           {
+               if (this.OKButon.CommandArgument.Contains("f="))
+               {
+                   YafBuildLink.Redirect(ForumPages.topics, "{0}".FormatWith(this.OKButon.CommandArgument));
+               }
 
-            if (this.OKButon.CommandArgument.Contains("t="))
-            {
-                YafBuildLink.Redirect(ForumPages.posts, "{0}".FormatWith(this.OKButon.CommandArgument));
-            }
+               if (this.OKButon.CommandArgument.Contains("t="))
+               {
+                   YafBuildLink.Redirect(ForumPages.posts, "{0}".FormatWith(this.OKButon.CommandArgument));
 
-            YafBuildLink.Redirect(ForumPages.forum);
+               }
+           }
+
+           YafBuildLink.Redirect(ForumPages.forum);
         }
 
         #endregion
+
+        protected void DeleteSelectedBtn_OnClick(object sender, EventArgs e)
+        {
+            var list =
+                this.TopicList.Controls.OfType<RepeaterItem>().SelectMany(x => x.Controls.OfType<TopicLine>()).Where(
+                    x => x.IsSelected && x.TopicRowID.HasValue).ToList();
+           
+            list.ForEach(x =>  CommonDb.topic_tagsave(PageContext.PageModuleID, (int)x.TopicRowID, x.TopicTags.Replace(this.TagsListLLbl.Param0,string.Empty).Replace(",,",string.Empty)));
+
+            YafBuildLink.Redirect(ForumPages.topicsbytags, "tagid={0}&boardid={1}", this.Request.QueryString.GetFirstOrDefault("tagid"),PageContext.PageBoardID);
+
+        }
+
+        protected void DeleteAllBtn_OnClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -2767,6 +2767,10 @@ Spoiler Content
       <Resource tag="TITLE">Topics by tags</Resource>
       <Resource tag="TAGS_LIST">Tags: {0}</Resource>
       <Resource tag="TAGS_MORE">More Tags:</Resource>
+      <Resource tag="TOPIC">Topic:</Resource>
+      <Resource tag="SELECTIT">Select:</Resource>
+      <Resource tag="DELETE_SELECTED">Delete From Selected</Resource>
+      <Resource tag="DELETE_ALL">Delete tag</Resource>
   </page>
    <page name="POSTS">
       <Resource tag="THANKSFROM">Thanks: {0} times</Resource>
@@ -4829,6 +4833,7 @@ Visit {forumname} at {forumlink}
      <Resource tag="HOST_CACHE">Cache</Resource>
      <Resource tag="HOST_SEARCH">Search</Resource>
      <Resource tag="HOST_LOG">Logs</Resource>
+     <Resource tag="HOST_SYNDICATION">Syndication Feeds</Resource>
      <Resource tag="HEADER_GEOLOCATION">Geolocation Settings</Resource>
      <Resource tag="HEADER_SETUP">Host Setup</Resource>
      <Resource tag="HEADER_FEATURES">Feature Settings</Resource>

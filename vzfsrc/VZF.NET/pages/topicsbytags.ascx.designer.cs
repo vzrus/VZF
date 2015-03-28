@@ -31,6 +31,15 @@ namespace YAF.Pages {
         protected global::VZF.Controls.Pager Pager;
         
         /// <summary>
+        /// thTopicTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell thTopicTitle;
+        
+        /// <summary>
         /// PageTitle control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.Label PageTitle;
         
         /// <summary>
+        /// thTopicSubTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell thTopicSubTitle;
+        
+        /// <summary>
         /// TagsListLLbl control.
         /// </summary>
         /// <remarks>
@@ -47,6 +65,24 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.LocalizedLabel TagsListLLbl;
+        
+        /// <summary>
+        /// thSelectIt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell thSelectIt;
+        
+        /// <summary>
+        /// LocalizedLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// LocalizedLabel6 control.
@@ -103,6 +139,15 @@ namespace YAF.Pages {
         protected global::VZF.Controls.Pager PagerBottom;
         
         /// <summary>
+        /// trButtons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell trButtons;
+        
+        /// <summary>
         /// OKButon control.
         /// </summary>
         /// <remarks>
@@ -110,6 +155,24 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.ThemeButton OKButon;
+        
+        /// <summary>
+        /// DeleteSelectedBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton DeleteSelectedBtn;
+        
+        /// <summary>
+        /// DeleteAllBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton DeleteAllBtn;
         
         /// <summary>
         /// ForumJumpHolder control.

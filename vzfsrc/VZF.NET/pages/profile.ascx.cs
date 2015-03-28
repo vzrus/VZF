@@ -456,8 +456,8 @@ namespace YAF.Pages
 
                 this.SearchUser.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
                     ForumPages.search,
-                    "postedby={0}",
-                    this.Get<YafBoardSettings>().EnableDisplayName ? userData.DisplayName : userData.UserName);
+                    "postedby={0}&u={1}",
+                    (this.Get<YafBoardSettings>().EnableDisplayName ? userData.DisplayName : userData.UserName), this.UserId);
             }
 
             this.DataBind();

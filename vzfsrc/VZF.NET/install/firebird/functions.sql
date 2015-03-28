@@ -491,7 +491,7 @@ END;
 --GO
 
 
-create procedure  {objectQualifier}TOPIC_TAGSAVE(I_TOPICID INTEGER, I_TAGIDS VARCHAR(1024))
+create procedure  {objectQualifier}TOPIC_TAGSAVE(I_TOPICID INTEGER, I_MESSAGEIDSSTR VARCHAR(1024))
 as
 declare variable LASTPOS integer;
 declare variable NEXTPOS integer;

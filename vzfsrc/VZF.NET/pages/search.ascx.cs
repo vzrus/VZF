@@ -527,12 +527,37 @@ namespace YAF.Pages
                 }
             }
 
-            var postedBy = this.Request.QueryString.GetFirstOrDefault("postedby");
+            var userStrId = this.Request.QueryString.GetFirstOrDefault("u");
 
-            if (postedBy.IsSet() && postedBy.Length < 50)
+            // Search by name should be left too because of various guest names.
+            var postedBy = this.Request.QueryString.GetFirstOrDefault("postedby");
+            if (userStrId.IsSet() || postedBy.IsSet())
             {
-                this.txtSearchStringFromWho.Text = postedBy;
-                doSearch = true;
+                int userId;
+                if (userStrId.IsSet() && int.TryParse(userStrId, out userId))
+                {   
+                    var user = CommonDb.UserList(PageContext.PageModuleID, PageContext.PageBoardID, userStrId.ToType<int>(), null, null, null, false);
+                    if (user != null && user.Any())
+                    {
+                        this.txtSearchStringFromWho.Text = PageContext.BoardSettings.EnableDisplayName
+                            ? user.First().DisplayName
+                            : user.First().Name;
+                    }
+                    else
+                    {
+                        YafBuildLink.RedirectInfoPage(InfoMessage.Invalid);
+                    }
+
+                }
+                else if (postedBy.IsSet() && postedBy.Length < 50)
+                {
+                    this.txtSearchStringFromWho.Text = postedBy;
+                }
+
+                if (this.txtSearchStringFromWho.Text.IsSet())
+                {
+                    doSearch = true;
+                }
             }
 
             // set the search box size via the max settings in the boardsettings.

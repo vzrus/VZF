@@ -1367,7 +1367,7 @@ GO
 /***** BEGIN CREATE PROCEDURES ******/
 /*****************************************************************************************************************************/
 CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_tagsave] 
-    @TopicID int, @Tags nvarchar(max)
+    @TopicID int, @MessageIDsStr nvarchar(max)
 AS
 BEGIN
 
@@ -1422,8 +1422,6 @@ WHILE LEN(@Tags) > 0
 END
 END
 GO
-
-
 
 /* Procedures for "Thanks" Mod */
 CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}message_addthanks] 

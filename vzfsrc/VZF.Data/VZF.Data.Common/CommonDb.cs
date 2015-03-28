@@ -11852,6 +11852,19 @@ namespace VZF.Data.Common
             }
         }
 
+        public static DataTable topic_tagsave(int? mid, int topicId, string tags)
+        {
+            using (var sc = new VzfSqlCommand(mid))
+            {
+              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_MessageIDsStr", tags));
+
+                sc.CommandText.AppendObjectQuery("topic_tagsave", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }
+        }
+
         /// <summary>
         /// The topic_bytags.
         /// </summary>

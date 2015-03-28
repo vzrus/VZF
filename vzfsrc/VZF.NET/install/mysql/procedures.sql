@@ -24,8 +24,6 @@ DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}digest_topicnew;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}digest_topicactive;
 --GO
-DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_tagsave;
---GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_tags;
 --GO
 DROP PROCEDURE IF EXISTS {databaseSchema}.{objectQualifier}topic_bytags;
@@ -6147,7 +6145,7 @@ END;
 --GO
 
 CREATE PROCEDURE {databaseSchema}.{objectQualifier}topic_tagsave 
-    (i_TopicID int, i_MessageIDs VARCHAR(4001))
+    (i_TopicID int, i_MessageIDsStr VARCHAR(4001))
 BEGIN
     DECLARE ici_MessageID VARCHAR(11);
     DECLARE ici_MessageIDsChunk VARCHAR(4000);
@@ -9201,7 +9199,12 @@ BEGIN
              m.Message,
              {databaseSchema}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseSchema}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex,
-             (SELECT Tag FROM {databaseSchema}.{objectQualifier}Tags where TagID = CAST(',i_Tags,' AS UNSIGNED) LIMIT 1) AS Tags			 , 
+             (SELECT Tag FROM {databaseSchema}.{objectQualifier}Tags where TagID = CAST(',i_Tags,' AS UNSIGNED) LIMIT 1) AS Tags, 
+			 (SELECT GROUP_CONCAT(tg.tag separator '','') 
+			 FROM {databaseSchema}.{objectQualifier}Tags tg 
+			 JOIN {databaseSchema}.{objectQualifier}TopicTags tt 
+			 on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
+             AS TopicTags,
              c.TopicImage,
              c.TopicImageType,
              c.TopicImageBin,

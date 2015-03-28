@@ -1175,6 +1175,7 @@
     <Resource tag="HOST_LOG">Журналы</Resource>
     <Resource tag="HOST_PERMISSION">Разрешения</Resource>
     <Resource tag="HOST_SEARCH">Поиск</Resource>
+    <Resource tag="HOST_SYNDICATION">Новостные ленты</Resource>
     <Resource tag="HOST_TEMPLATES">Шаблоны</Resource>
     <Resource tag="HOVERCARD_DELAY">Интервал открытия Hover Card(миллисекунды):</Resource>
     <Resource tag="HOVERCARD_DELAY_HELP">Задержка перед открытием визитной карточки при наведении на ник пользователя.</Resource>
@@ -5332,7 +5333,7 @@ Spoiler Content
     <Resource tag="TOPIC_STARTER">Автор темы</Resource>
     <Resource tag="TOPICS">Темы</Resource>
     <Resource tag="UNWATCHFORUM">Не отслеживать форум</Resource>
-    <Resource tag="USER_AVATAR">{0}'s Avatar</Resource>
+    <Resource tag="USER_AVATAR">Аватар пользователя {0} </Resource>
     <Resource tag="VIEWS">Просмотров</Resource>
     <Resource tag="WARN_FORUM_LOCKED">Форум закрыт.</Resource>
     <Resource tag="WARN_LOGIN_FORUMWATCH">Для просмотра форумов Вы должны быть зарегистрированным пользователем.</Resource>
@@ -5340,9 +5341,13 @@ Spoiler Content
     <Resource tag="YESTERDAYAT">[b]Вчера[/b] в {0:T}</Resource>
   </page>
   <page name="TOPICSBYTAGS">
+    <Resource tag="DELETE_ALL">Удалить тег</Resource>
+    <Resource tag="DELETE_SELECTED">Удалить из выбранных тем</Resource>
+    <Resource tag="SELECTIT">Выбор:</Resource>
     <Resource tag="TAGS_LIST">Теги: {0}</Resource>
     <Resource tag="TAGS_MORE">Ещё теги:</Resource>
     <Resource tag="TITLE">Темы с тегом</Resource>
+    <Resource tag="TOPIC">Topic:</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]«Спасибо» не найдены.[/b]</Resource>

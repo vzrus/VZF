@@ -10694,7 +10694,7 @@ varchar(4000)) AS FirstMessage,
              else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
         (case(i_gettags)
              when true THEN
-        (SELECT string_agg(tag, ',') FROM {databaseSchema}.{objectQualifier}tags tg join {databaseSchema}.{objectQualifier}topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid)
+        (SELECT string_agg(tag, ',') FROM {databaseSchema}.{objectQualifier}tags tg join {databaseSchema}.{objectQualifier}topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid)
          else '' end),	
         t.topicimage,
         t.topicimagetype,
@@ -11240,7 +11240,8 @@ varchar(4000)) AS FirstMessage,
                COALESCE((SELECT lastaccessdate FROM {databaseSchema}.{objectQualifier}topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_pageuserid), current_timestamp)
              else TIMESTAMP '-infinity' end) AS LastTopicAccess,		
         (SELECT tag FROM {databaseSchema}.{objectQualifier}tags where tagid = i_tags::integer limit 1),
-        t.topicimage,
+        (SELECT string_agg(tag, ',') FROM {databaseSchema}.{objectQualifier}tags tg join {databaseSchema}.{objectQualifier}topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid),
+	    t.topicimage,
         t.topicimagebin,
         t.topicimagetype,
         0 as HasAttachments, 	
@@ -17578,4 +17579,52 @@ RETURNS SETOF {databaseSchema}.{objectQualifier}digest_topicactivenew_rt
 END;$BODY$
    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER 
    COST 100 ROWS 1000;   
+--GO
+
+CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_tagsave(i_topicid integer,
+						   i_messageidsstr text)
+				  RETURNS void AS
+$BODY$
+DECLARE 
+i_messageids varchar[];
+i integer :=1;
+i_tagid INT;
+i_tagids int[];
+BEGIN
+ -- first we should reset tag count for a topic
+ UPDATE {databaseSchema}.{objectQualifier}tags SET tagcount = tagcount - 1 WHERE tagid IN (SELECT tagid FROM  {databaseSchema}.{objectQualifier}topictags where topicid = i_topicid);
+   -- delete tags
+	DELETE FROM {databaseSchema}.{objectQualifier}topictags where topicid = i_topicid;
+
+ i_messageids = string_to_array(i_messageidsstr,',');
+ -- i := 1; 
+  WHILE i_messageids[i] IS NOT NULL LOOP
+		UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where lower(tag) = lower(i_messageids[i]) returning tagid into i_tagid ;
+		IF NOT found THEN
+		BEGIN
+			INSERT INTO {databaseSchema}.{objectQualifier}tags(tag) VALUES (i_messageids[i]) returning tagid into i_tagid ;
+		EXCEPTION WHEN unique_violation THEN
+			UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where lower(tag) = lower(i_messageids[i]) returning tagid into i_tagid ;
+		END;
+		END IF;
+
+		UPDATE {databaseSchema}.{objectQualifier}topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
+		IF NOT found THEN
+		BEGIN
+			INSERT INTO {databaseSchema}.{objectQualifier}topictags(tagid, topicid) VALUES (i_tagid, i_topicid);
+			-- increase tag count
+			
+		EXCEPTION WHEN unique_violation THEN
+			UPDATE {databaseSchema}.{objectQualifier}topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
+		    
+		END;
+		END IF;
+			UPDATE {databaseSchema}.{objectQualifier}tags SET tagcount = (SELECT Count(tagid) from {databaseSchema}.{objectQualifier}topictags WHERE tagid = i_tagid) where tagid = i_tagid;	
+  i := i + 1; 
+ END LOOP;
+
+RETURN;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
