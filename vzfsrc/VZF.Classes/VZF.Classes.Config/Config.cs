@@ -157,7 +157,7 @@ namespace YAF.Classes
                     (!string.IsNullOrEmpty(GetConfigValueAsString("VZF.CrawlerUserAgentTokens"))
                         ? GetConfigValueAsString("VZF.CrawlerUserAgentTokens") + "," 
                         : string.Empty) +
-                    "Googlebot:Google,OceanSpiders:Google,AhrefsBot:Ahrefs,Mail.RU,"
+                    "Googlebot:Google,OceanSpiders:Google,AhrefsBot:Ahrefs,AdvBot,Mail.RU,"
                     + "MJ12bot:MJ12,Exabot:Exa,abachoBOT,Nerdybot:Nerdy,"
                     + "abcdatos_botlink,ah-ha.com crawler,Alexa,antibot,"
                     + "appie,AltaVista-Intranet,Acoon Robot,Atomz,Arachnoidea,AESOP_com_SpiderMan,"
@@ -169,15 +169,29 @@ namespace YAF.Classes
                     + "ia_archiver,Slurp,Scooter,Mercator,RaBot,Jack,Speedy Spider,moget,"
                     + "Toutatis,IlTrovatore-Setaccio,IncyWincy,UltraSeek,InfoSeek Sidewinder,"
                     + "Mole2,MP3Bot,Knowledge.com,kuloko-bot,LNSpiderguy,Linknzbot,lookbot,"
-                    + "MantraAgent,NetResearchServer,Lycos,JoocerBot,HenryTheMiragoRobot,"
+                    + "MantraAgent,MeanPathBot:MeanPath,MegaIndex.ru:MegaIndex,NetResearchServer,Lycos,JoocerBot,HenryTheMiragoRobot,"
                     + "MojeekBot,mozDex,MSNBOT,Navadoo Crawler,ObjectsSearch,OnetSzukaj,"
-                    + "PicoSearch,PJspider,nttdirectory_robot,maxbot.com,Openfind,psbot,"
+                    + "Porkbun,PicoSearch,PJspider,nttdirectory_robot,maxbot.com,Openfind,psbot,"
                     + "QweeryBot,StackRambler,SeznamBot,Search-10,Scrubby,speedfind ramBot xtreme,"
                     + "Kototoi,SearchByUsa,Searchspider,SightQuestBot,Sogou,Spider_Monkey,"
-                    + "Surfnomore,teoma,UK Searcher Spider,Nazilla,MuscatFerret,ZyBorg,"
+                    + "Surfnomore,teoma,UK Searcher Spider,Synaps,Nazilla,MuscatFerret,ZyBorg,"
                     + "WIRE WebRefiner,WSCbot,Yandex,Yellopet-Spider,YBSbot,YisouSpider:Yisou,Crawler,MozSpider";
 
                 return bots.Split(new[] {','});
+            }
+        }
+
+        public static string[] AdBotsForbiddenSignatures
+        {
+            get
+            {
+                var bots =
+                    (!string.IsNullOrEmpty(GetConfigValueAsString("VZF.AdBotsForbiddenSignatures"))
+                        ? GetConfigValueAsString("VZF.AdBotsForbiddenSignatures") + ","
+                        : string.Empty) +
+                    "Mozilla/4.0 (compatible; Synapse),Indy Library";
+
+                return bots.Split(new[] { ',' });
             }
         }
 

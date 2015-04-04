@@ -566,6 +566,11 @@
             Gets Topics.
             </summary>
         </member>
+        <member name="P:YAF.Classes.YafBoardFolders.TopicImages">
+            <summary>
+            Gets path to topic image folder with slash.
+            </summary>
+        </member>
         <member name="T:YAF.Classes.YafBoardSettings">
             <summary>
             The yaf board settings.
@@ -967,6 +972,16 @@
             Gets or sets TopicImageHeight.
             </summary>
         </member>
+        <member name="P:YAF.Classes.YafBoardSettings.TopicImageThumbnailWidth">
+            <summary>
+            Gets or sets TopicImageThumbnailWidth.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.YafBoardSettings.TopicImageThumbnailHeight">
+            <summary>
+            Gets or sets TopicImageThumbnailHeight.
+            </summary>
+        </member>
         <member name="P:YAF.Classes.YafBoardSettings.AllowCreateTopicsSameName">
             <summary>
             Gets or sets AllowCreateTopicsSameName.
@@ -1298,6 +1313,11 @@
         <member name="P:YAF.Classes.YafBoardSettings.AllowForumsWithSameName">
             <summary>
             Gets or sets a value indicating whether [allow forums with same name].
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.YafBoardSettings.TopicImageDirectThumbnail">
+            <summary>
+            Gets or sets a value indicating whether TopicImageDirectThumbnail.
             </summary>
         </member>
         <member name="P:YAF.Classes.YafBoardSettings.UseFullTextSearch">

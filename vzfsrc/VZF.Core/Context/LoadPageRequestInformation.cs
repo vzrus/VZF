@@ -98,6 +98,11 @@ namespace YAF.Core
 
             string userAgent = this.HttpRequestBase.UserAgent;
 
+            if (UserAgentHelper.IsForbiddenAdBot(userAgent))
+            {
+                this.Get<HttpResponseBase>().Redirect("/error.aspx", true);
+            }
+
             bool isMobileDevice = UserAgentHelper.IsMobileDevice(userAgent)
                                   || this.HttpRequestBase.Browser.IsMobileDevice;
             
@@ -119,6 +124,7 @@ namespace YAF.Core
                 dontTrack = UserAgentHelper.IsFeedReader(userAgent);
             }
 
+          
             @event.Data.DontTrack = dontTrack;
             @event.Data.UserAgent = userAgent;
             @event.Data.IsSearchEngine = isSearchEngine;

@@ -16,12 +16,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 namespace YAF.Pages
 {
     #region Using
 
     using System;
-    using System.Collections.Generic;
     using System.Data;
     using System.IO;
     using System.Web;
@@ -29,6 +29,9 @@ namespace YAF.Pages
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Kernel;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     
@@ -38,8 +41,6 @@ namespace YAF.Pages
     using YAF.Types.Constants;
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -324,7 +325,7 @@ namespace YAF.Pages
         {
             try
             {
-                if (this.CheckValidFile(this.File))
+                if (FileUploadHelper.CheckValidImageFile(this.File.PostedFile))
                 {
                     this.SaveAttachment(this.File);
                 }
@@ -396,42 +397,6 @@ namespace YAF.Pages
             this.DataBind();
         }
 
-        /// <summary>
-        /// Check to see if the user is trying to upload a valid file.
-        /// </summary>
-        /// <param name="uploadedFile">
-        /// the uploaded file.
-        /// </param>
-        /// <returns>
-        /// true if file is valid for uploading. otherwise false.
-        /// </returns>
-        private bool CheckValidFile([NotNull] HtmlInputFile uploadedFile)
-        {
-            string filePath = uploadedFile.PostedFile.FileName.Trim();
-
-            if (filePath.IsNotSet() || uploadedFile.PostedFile.ContentLength == 0)
-            {
-                return false;
-            }
-
-            string extension = Path.GetExtension(filePath).ToLower();
-
-            // remove the "period"
-            extension = extension.Replace(".", string.Empty);
-            string[] aImageExtensions = { "jpg", "gif", "png", "bmp" };
-
-            // If we don't get a match from the db, then the extension is not allowed
-            var dt = CommonDb.extension_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, extension);
-
-            // also, check to see an image is being uploaded.
-            if (Array.IndexOf(aImageExtensions, extension) == -1 || dt.Rows.Count == 0)
-            {
-                this.PageContext.AddLoadMessage(this.GetTextFormatted("FILEERROR", extension));
-                return false;
-            }
-
-            return true;
-        }
 
         /// <summary>
         /// Save the attached file both physically and in the db.

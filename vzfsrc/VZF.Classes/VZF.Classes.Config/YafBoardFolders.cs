@@ -187,5 +187,17 @@ namespace YAF.Classes
                 return string.Concat(BoardFolder, this.Images, this.PathSeparator, "Topics");
             }
         }
+        /// <summary>
+        /// Gets path to topic image folder with slash.
+        /// </summary>
+        public string TopicImages
+        {
+            get
+            {
+                return string.Concat(BoardFolder, this.Uploads, this.PathSeparator, "Images", this.PathSeparator, "Topics", this.PathSeparator);
+            }
+        }
+
+
     }
 }

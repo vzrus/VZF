@@ -472,7 +472,7 @@ namespace VZF.Controls
                 strReturn = this.GetText("MOVED");
             } */
 
-            if (this.ShowIconBar())
+            if (this.ShowTopicImages())
             {
                 if (row["PollID"].ToString() != string.Empty)
                 {
@@ -532,26 +532,39 @@ namespace VZF.Controls
             CodeContracts.ArgumentNotNull(imgTitle, "imgTitle");
 
             var row = (DataRowView)o;
-            if (this.ShowIconBar())
+            if (this.ShowTopicImages())
             {
+
+                if (row["TopicImage"].ToString().Length > 0)
+                {
+                   
+                    // remote
+                    imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
+                    if (this.Get<YafBoardSettings>().TopicImageDirectThumbnail)
+                    {
+                        return
+                            "{0}resource.ashx?ti={1}&thumb={2}&type={3}".FormatWith(
+                                YafForumInfo.ForumClientFileRoot,
+                                row["TopicID"].ToType<int>(),
+                                this.Server.UrlEncode(row["TopicImage"].ToString()),
+                                row["TopicImageType"]);
+                    }
+                    if (row["TopicImage"].ToString().Contains("http"))
+                    {
+                        return
+                            "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
+                                YafForumInfo.ForumClientFileRoot,
+                                row["TopicID"].ToType<int>(),
+                                this.Server.UrlEncode(row["TopicImage"].ToString()),
+                                this.Get<YafBoardSettings>().TopicImageWidth,
+                                this.Get<YafBoardSettings>().TopicImageHeight);
+                    }
+                }
                 if (row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
                 {
                     imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
                     return "{0}resource.ashx?ti={1}".FormatWith(
                         YafForumInfo.ForumClientFileRoot, row["TopicID"].ToType<int>());
-                }
-
-                if (row["TopicImage"].ToString().Length > 0)
-                {
-                    // remote
-                    imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
-                    return
-                        "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
-                            YafForumInfo.ForumClientFileRoot,
-                            row["TopicID"].ToType<int>(),
-                            this.Server.UrlEncode(row["TopicImage"].ToString()),
-                            this.Get<YafBoardSettings>().TopicImageWidth,
-                            this.Get<YafBoardSettings>().TopicImageHeight);
                 }
             }
 
@@ -659,7 +672,7 @@ namespace VZF.Controls
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private bool ShowIconBar()
+        private bool ShowTopicImages()
         {
             return this.Get<YafBoardSettings>().AllowTopicImages || this.TopicRow["TopicMovedID"].ToString().Length <= 0;
         }

@@ -1453,6 +1453,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox AllowTopicImages;
         
         /// <summary>
+        /// HelpLabel242 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel242;
+        
+        /// <summary>
+        /// TopicImageDirectThumbnail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox TopicImageDirectThumbnail;
+        
+        /// <summary>
         /// HelpLabel228 control.
         /// </summary>
         /// <remarks>
@@ -1469,6 +1487,42 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox AlowRemoteTopicImages;
+        
+        /// <summary>
+        /// HelpLabel240 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel240;
+        
+        /// <summary>
+        /// TopicImageThumbnailWidth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TopicImageThumbnailWidth;
+        
+        /// <summary>
+        /// HelpLabel241 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel241;
+        
+        /// <summary>
+        /// TopicImageThumbnailHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TopicImageThumbnailHeight;
         
         /// <summary>
         /// HelpLabel226 control.

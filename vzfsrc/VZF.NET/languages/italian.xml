@@ -1495,6 +1495,10 @@
     <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">The max width of the topic thumbnail images in px.</Resource>
     <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
     <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Topics Per Page:</Resource>

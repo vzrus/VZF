@@ -4812,8 +4812,10 @@ Visit {forumname} at {forumlink}
      <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
      <Resource tag="ALLOW_TOPICIMAGES">Allow users add image to a topic line icon.</Resource>
      <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add images instead of standard topic icons in topic line everywhere.</Resource>
-     <Resource tag="ALLOW_TOPICIMAGES">Allow users add remote image to a topic line icon.</Resource>
-     <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add remote images instead of standard topic icons in topic line everywhere.</Resource>
+     <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow users add remote image to a topic line icon.</Resource>
+     <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">If enabled users can add remote images instead of standard topic icons in topic line everywhere.</Resource>
+     <Resource tag="TOPICIMAGE_THUMB">Use topic image thumbnail.</Resource>
+     <Resource tag="TOPICIMAGE_THUMB">If enabled a thumbnail will be added instead of resizing.</Resource>
      <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
      <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
      <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
@@ -5149,6 +5151,10 @@ Visit {forumname} at {forumlink}
        <Resource tag="SHOW_RELATIVE_TIME_HELP">If checked, client-side "Time Ago" library will be used to show "relative times" to users instead of UTC and or imperfect server-side times.</Resource>
      <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow remote topic images:</Resource>
        <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">You can use remote topic images.</Resource>
+      <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>
+       <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">The max width of the topic thumbnail images in px.</Resource>
+     <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
+       <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
      <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
        <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
      <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>

@@ -609,12 +609,21 @@
                         <td class="post">
                             <asp:CheckBox ID="EnableUserInfoHoverCards" runat="server"></asp:CheckBox>
                         </td>
-                    </tr><tr>
+                    </tr>
+                    <tr>
                         <td class="postheader" style="width:50%">
                             <VZF:HelpLabel ID="HelpLabel225" runat="server" LocalizedTag="ALLOW_TOPICIMAGES" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="AllowTopicImages" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel242" runat="server" LocalizedTag="TOPICIMAGE_THUMB" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="TopicImageDirectThumbnail" runat="server"></asp:CheckBox>
                         </td>
                     </tr>
                                <tr>
@@ -623,6 +632,22 @@
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="AlowRemoteTopicImages" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel240" runat="server" LocalizedTag="TOPICIMAGE_THUMB_WIDTH" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox ID="TopicImageThumbnailWidth" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel241" runat="server" LocalizedTag="TOPICIMAGE_THUMB_HEIGHT" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox ID="TopicImageThumbnailHeight" runat="server"></asp:TextBox>
                         </td>
                     </tr>
                      <tr>

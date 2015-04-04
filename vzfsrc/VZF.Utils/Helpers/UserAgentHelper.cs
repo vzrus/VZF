@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Web.Configuration;
+
 namespace VZF.Utils.Helpers
 {
     #region Using
@@ -75,6 +78,15 @@ namespace VZF.Utils.Helpers
                        agentContain => userAgent.ToLowerInvariant().Contains(agentContain.ToLowerInvariant()));
         }
 
+        public static string FeedReaderName([CanBeNull] string userAgent)
+        {
+            string[] agentContains = { "Windows-RSS-Platform", "FeedDemon", "Feedreader", "Apple-PubSub", "FeedBurner" };
+
+            return userAgent.IsSet()
+                   ? agentContains.FirstOrDefault(
+                   agentContain => userAgent.ToLowerInvariant().Contains(agentContain.ToLowerInvariant())) : string.Empty;
+        }
+
         /// <summary>
         /// Validates if the user agent is a known ignored UA string
         /// </summary>
@@ -113,6 +125,24 @@ namespace VZF.Utils.Helpers
 
             return userAgent.IsSet()
                    && mobileContains.Any(s => userAgent.IndexOf(s, StringComparison.OrdinalIgnoreCase) > 0);
+        }
+
+        /// <summary>
+        /// Returns if a forbidden bot.
+        /// </summary>
+        /// <param name="userAgent">
+        /// The user agent.
+        /// </param>
+        /// <returns>
+        /// The is forbidden ad bot.
+        /// </returns>
+        public static bool IsForbiddenAdBot([CanBeNull] string userAgent)
+        {
+            var botSignatures =
+                Config.AdBotsForbiddenSignatures.Where(m => m.IsSet()).Select(m => m.Trim().ToLowerInvariant());
+
+            return userAgent.IsSet()
+                   && botSignatures.Any(s => userAgent.IndexOf(s, StringComparison.OrdinalIgnoreCase) > 0);
         }
 
         /// <summary>
@@ -215,7 +245,7 @@ namespace VZF.Utils.Helpers
 
                 return;
             }
-
+           
             if (userAgent.IndexOf("Windows NT 6.1", StringComparison.Ordinal) >= 0)
             {
                 platform = "Win7";
@@ -283,11 +313,15 @@ namespace VZF.Utils.Helpers
             {
                 browser = san;
             }
+            if (FeedReaderName(userAgent).IsSet())
+            {
+                browser = FeedReaderName(userAgent);
+            }
 
             isSearchEngine = san.IsSet() || isCrawler;
             isIgnoredForDisplay = IsIgnoredForDisplay(userAgent) | isSearchEngine;
         }
-
+        
         /// <summary>
         /// Validates if the user agent is a search engine spider
         /// </summary>
@@ -331,6 +365,7 @@ namespace VZF.Utils.Helpers
 
             return null;
         }
+
 
         #endregion
     }

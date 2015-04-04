@@ -17,14 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Globalization;
+
 namespace YAF.Pages
 {
   // YAF.Pages
   #region Using
 
   using System;
-  using System.Collections;
-  using System.Collections.Generic;
   using System.Data;
   using System.IO;
   using System.Linq;
@@ -33,6 +34,8 @@ namespace YAF.Pages
   using System.Web.UI.WebControls;
 
   using VZF.Data.Common;
+  using VZF.Kernel;
+  using VZF.Utils;
 
   using YAF.Classes;
   
@@ -41,7 +44,6 @@ namespace YAF.Pages
   using YAF.Types.Constants;
   using YAF.Types.Flags;
   using YAF.Types.Interfaces;
-  using VZF.Utils;
 
   using YAF.Types.Objects;
 
@@ -291,7 +293,7 @@ namespace YAF.Pages
       {
         this.UploadNodePlaceHold.Visible = true;
         this.UploadNote.Text = this.GetTextFormatted(
-          "UPLOAD_NOTE", (this.Get<YafBoardSettings>().MaxFileSize / 1024).ToString());
+          "UPLOAD_NOTE", (this.Get<YafBoardSettings>().MaxFileSize / 1024).ToString(CultureInfo.InvariantCulture));
       }
       else
       {
@@ -314,7 +316,7 @@ namespace YAF.Pages
     {
       try
       {
-        if (this.CheckValidFile(this.File))
+        if (FileUploadHelper.CheckValidFile(this.File.PostedFile))
         {
           this.SaveAttachment(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), this.File);
         }
@@ -325,7 +327,6 @@ namespace YAF.Pages
       {
         CommonDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, x);
         this.PageContext.AddLoadMessage(x.Message);
-        return;
       }
     }
 
@@ -356,61 +357,7 @@ namespace YAF.Pages
       this.DataBind();
     }
 
-    /// <summary>
-    /// The check valid file.
-    /// </summary>
-    /// <param name="uploadedFile">
-    /// The uploaded file.
-    /// </param>
-    /// <returns>
-    /// Returns if the File Is Valid
-    /// </returns>
-    private bool CheckValidFile([NotNull] HtmlInputFile uploadedFile)
-    {
-      string filePath = uploadedFile.PostedFile.FileName.Trim();
-
-      if (filePath.IsNotSet() || uploadedFile.PostedFile.ContentLength == 0)
-      {
-        return false;
-      }
-
-      string extension = Path.GetExtension(filePath).ToLower();
-
-      // remove the "period"
-      extension = extension.Replace(".", string.Empty);
-
-      // If we don't get a match from the db, then the extension is not allowed
-      DataTable dt = CommonDb.extension_list(PageContext.PageModuleID, this.PageContext.PageBoardID, extension);
-
-      bool bInList = dt.Rows.Count > 0;
-      bool bError = false;
-        
-      if (this.Get<YafBoardSettings>().FileExtensionAreAllowed && !bInList)
-      {
-        // since it's not in the list -- it's invalid
-        bError = true;
-      }
-      else if (!this.Get<YafBoardSettings>().FileExtensionAreAllowed && bInList)
-      {
-        // since it's on the list -- it's invalid
-        bError = true;
-      }
-
-      if (filePath.Contains(";."))
-      {
-          // IIS semicolon valnerabilty fix
-          bError = true;
-      }
-
-      if (bError)
-      {
-        // just throw an error that this file is invalid...
-        this.PageContext.AddLoadMessage(this.GetTextFormatted("FILEERROR", extension));
-        return false;
-      }
-
-      return true;
-    }
+    
 
     /// <summary>
     /// The save attachment.

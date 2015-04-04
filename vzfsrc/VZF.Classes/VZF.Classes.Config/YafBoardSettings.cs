@@ -1165,7 +1165,7 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("TopicImageWidth", 32);
+                return this._reg.GetValue("TopicImageWidth", 200);
             }
 
             set
@@ -1181,12 +1181,44 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("TopicImageHeight", 32);
+                return this._reg.GetValue("TopicImageHeight", 200);
             }
 
             set
             {
                 this._reg.SetValue("TopicImageHeight", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets TopicImageThumbnailWidth.
+        /// </summary>
+        public int TopicImageThumbnailWidth
+        {
+            get
+            {
+                return this._reg.GetValue("TopicImageThumbnailWidth", 32);
+            }
+
+            set
+            {
+                this._reg.SetValue("TopicImageThumbnailWidth", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets TopicImageThumbnailHeight.
+        /// </summary>
+        public int TopicImageThumbnailHeight
+        {
+            get
+            {
+                return this._reg.GetValue("TopicImageThumbnailHeight", 32);
+            }
+
+            set
+            {
+                this._reg.SetValue("TopicImageThumbnailHeight", value);
             }
         }
 
@@ -2228,6 +2260,22 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("AllowForumsWithSameName", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether TopicImageDirectThumbnail.
+        /// </summary>
+        public bool TopicImageDirectThumbnail
+        {
+            get
+            {
+                return this._reg.GetValue("TopicImageDirectThumbnail", true);
+            }
+
+            set
+            {
+                this._reg.SetValue("TopicImageDirectThumbnail", value);
             }
         }
 

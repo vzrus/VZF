@@ -1177,9 +1177,9 @@ BEGIN
     
 -- Here we're finding current max users value 
 
-SELECT COALESCE((SELECT  COUNT(DISTINCT a.ip)
+SELECT COALESCE((SELECT COUNT (*) FROM (SELECT DISTINCT a.ip
 FROM   {databaseSchema}.{objectQualifier}active a
-WHERE  a.boardid = i_boardid),1) INTO ici_count;
+WHERE  a.boardid = i_boardid) as  tmp) ,1)  INTO ici_count;
 
 
 -- SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -13246,13 +13246,13 @@ DROP FUNCTION {databaseSchema}.{objectQualifier}user_save(
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}user_save(
                            i_userid integer,
                            i_boardid integer,
-                           i_username varchar,
-                           i_displayname varchar,
-                           i_email varchar,
+                           i_username varchar(255),
+                           i_displayname varchar(255),
+                           i_email varchar(255),
                            i_timezone integer,
-                           i_languagefile varchar,
-                           i_culture varchar,
-                           i_themefile varchar,
+                           i_languagefile varchar(50),
+                           i_culture varchar(12),
+                           i_themefile varchar(50),
                            i_usesinglesignon boolean,
                            i_texteditor varchar,
                            i_overridedefaulttheme boolean,
@@ -13290,9 +13290,10 @@ BEGIN
     IF ici_autowatchtopics IS NULL THEN 
           ici_autowatchtopics:=FALSE; 
     END IF;
- 
-    IF i_userid IS NULL OR i_userid < 1 THEN 	
-       IF i_approved IS TRUE  THEN 
+    -- this is a new user
+    IF i_userid IS NULL THEN 	
+       IF i_approved THEN 
+	   -- set approve flag
        ici_flags := ici_flags | 2; 
        END IF; 
         
@@ -13312,6 +13313,7 @@ BEGIN
         where boardid=i_boardid and (flags & 4)<>0;
 
     ELSE
+	   -- the user is being updated, find old user name and existing flags
        SELECT flags,displayname into ici_flags,ici_OldDisplayName FROM {databaseSchema}.{objectQualifier}user  where userid = ici_userid;
 
         -- isdirty flag -set only		
@@ -13320,14 +13322,14 @@ BEGIN
         END IF;
 
         -- set/remove DST flag
-        IF ((i_dstuser IS TRUE) AND (ici_flags & 32) <> 32) THEN		
+        IF ((i_dstuser) AND (ici_flags & 32) <> 32) THEN		
         ici_flags := ici_flags | 32;
         ELSEIF ((i_dstuser IS NOT TRUE) AND (ici_flags & 32) = 32) THEN
         ici_flags := ici_flags # 32;
         END IF;
 
         -- set/remove hide user flag	
-        IF ((i_hideuser IS TRUE) AND ((ici_flags & 16) <> 16)) THEN 
+        IF ((i_hideuser) AND ((ici_flags & 16) <> 16)) THEN 
         ici_flags := ici_flags | 16;
         ELSEIF ((i_hideuser IS NOT TRUE) AND ((ici_flags & 16) = 16)) THEN
         ici_flags := ici_flags # 16;
@@ -13351,14 +13353,14 @@ BEGIN
                    postsperpage = i_postsperpage
             WHERE userid = ici_userid;
 
-            if (i_DisplayName IS NOT NULL AND COALESCE(ici_OldDisplayName,'') != COALESCE(i_DisplayName,'')) then
+           if (i_displayname IS NOT NULL AND COALESCE(ici_OldDisplayName,'') != COALESCE(i_displayname,'')) then
             -- sync display names everywhere - can run a long time on large forums
-            update {databaseSchema}.{objectQualifier}forum set LastUserDisplayName = i_DisplayName where LastUserID = i_UserID AND (LastUserDisplayName IS NULL OR LastUserDisplayName = ici_OldDisplayName);
-            update {databaseSchema}.{objectQualifier}topic set LastUserDisplayName = i_DisplayName where LastUserID = i_UserID AND (LastUserDisplayName IS NULL OR LastUserDisplayName = ici_OldDisplayName);
-            update {databaseSchema}.{objectQualifier}topic set UserDisplayName = i_DisplayName where LastUserID = i_UserID AND (UserDisplayName IS NULL OR UserDisplayName = ici_OldDisplayName);
-            update {databaseSchema}.{objectQualifier}message set UserDisplayName = i_DisplayName where UserID = i_UserID AND (UserDisplayName IS NULL OR UserDisplayName = ici_OldDisplayName);
-            update {databaseSchema}.{objectQualifier}shoutboxmessage set UserDisplayName = i_DisplayName where UseriD = i_UserID AND (UserDisplayName IS NULL OR UserDisplayName = ici_OldDisplayName);
-            end if;
+            update {databaseSchema}.{objectQualifier}forum set LastUserDisplayName = i_displayname where LastUserID = ici_userid;
+            update {databaseSchema}.{objectQualifier}topic set LastUserDisplayName = i_displayname where LastUserID = ici_userid;
+            update {databaseSchema}.{objectQualifier}topic set UserDisplayName = i_displayname where UserID = ici_userid;
+            update {databaseSchema}.{objectQualifier}message set UserDisplayName = i_displayname where UserID = ici_userid;
+            update {databaseSchema}.{objectQualifier}shoutboxmessage set UserDisplayName = i_displayname where UseriD = ici_userid;
+          end if;
 END IF;
     RETURN ici_userid;
     END;

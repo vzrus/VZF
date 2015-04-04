@@ -112,12 +112,14 @@ namespace YAF.Core
 
             if (string.IsNullOrWhiteSpace(@event.Data.UserAgent))
             {
-                this.Logger.Warn("UserAgent string is empty.");
+                this.Logger.Warn("UserAgent string is empty. IP = {0}".FormatWith(this.HttpRequestBase.UserHostAddress));
             }
           
             if (@event.Data.UserAgent != null && ((string)@event.Data.UserAgent).Length > 0)
             {
-                if ((@event.Data.Platform.ToLowerInvariant().Contains("unknown") || @event.Data.Browser.ToLowerInvariant().Contains("unknown")) && !UserAgentHelper.IsSearchEngineSpider(@event.Data.UserAgent))
+                if ((@event.Data.Platform.ToLowerInvariant().Contains("unknown") 
+                    || @event.Data.Browser.ToLowerInvariant().Contains("unknown"))
+                    && !UserAgentHelper.IsSearchEngineSpider(@event.Data.UserAgent) && !UserAgentHelper.IsFeedReader(@event.Data.UserAgent))
             {
                 this.Logger.Error(
                     "Unhandled UserAgent string:'{0}' \r\nPlatform:'{1}' \r\nBrowser:'{2}' \r\nSupports cookies='{3}' \r\nSupports EcmaScript='{4}' \r\nUserID='{5}'."
