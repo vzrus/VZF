@@ -1367,7 +1367,7 @@ GO
 /***** BEGIN CREATE PROCEDURES ******/
 /*****************************************************************************************************************************/
 CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}topic_tagsave] 
-    @TopicID int, @MessageIDsStr nvarchar(max)
+    @TopicID int, @Tags nvarchar(max)
 AS
 BEGIN
 
