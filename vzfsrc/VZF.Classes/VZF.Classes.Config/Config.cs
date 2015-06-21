@@ -170,7 +170,7 @@ namespace YAF.Classes
                     + "Toutatis,IlTrovatore-Setaccio,IncyWincy,UltraSeek,InfoSeek Sidewinder,"
                     + "Mole2,MP3Bot,Knowledge.com,kuloko-bot,LNSpiderguy,Linknzbot,lookbot,"
                     + "MantraAgent,MeanPathBot:MeanPath,MegaIndex.ru:MegaIndex,NetResearchServer,Lycos,JoocerBot,HenryTheMiragoRobot,"
-                    + "MojeekBot,mozDex,MSNBOT,Navadoo Crawler,ObjectsSearch,OnetSzukaj,"
+                    + "MojeekBot,mozDex,MSNBOT,Navadoo Crawler,NetcraftSurvey,ObjectsSearch,OnetSzukaj,OpenLinkProfiler,"
                     + "Porkbun,PicoSearch,PJspider,nttdirectory_robot,maxbot.com,Openfind,psbot,"
                     + "QweeryBot,StackRambler,SeznamBot,Search-10,Scrubby,speedfind ramBot xtreme,"
                     + "Kototoi,SearchByUsa,Searchspider,SightQuestBot,Sogou,Spider_Monkey,"

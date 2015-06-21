@@ -28,7 +28,7 @@
     <tbody>
     <tr>
         <td>
-         <div ID="TagLinks" class="tagcloud" runat="server"></div>   
+            <div ID="TagLinks" class="tagcloud" runat="server"></div>   
       <!-- <VZF:SimpleTagCloud ID="TagCloudBoard" BoardId='<%# PageContext.PageBoardID %>' runat="server"/> -->
         </td>
     </tr>

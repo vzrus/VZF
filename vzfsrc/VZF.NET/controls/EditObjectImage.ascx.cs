@@ -281,7 +281,7 @@ namespace VZF.Controls
                 return;
             }
 
-            int nImageSize = this.Get<YafBoardSettings>().AvatarSize;
+            int nImageSize = this.Get<YafBoardSettings>().AlbumImagesSizeMax;
 
             Stream resized = null;
             Stream resizedLarge = null;
@@ -358,11 +358,12 @@ namespace VZF.Controls
                     CommonDb.topic_imagesave(
                         PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), null, null, null);
 
+                    var streamI = resized ?? this.File.PostedFile.InputStream;
                     CommonDb.topic_imagesave(
                         PageContext.PageModuleID,
                         this.PageContext.QueryIDs["ti"].ToType<int>(),
                         this.File.PostedFile.FileName.Trim(),
-                        resized ?? this.File.PostedFile.InputStream,
+                        streamI,
                         this.File.PostedFile.ContentType);
 
                 }

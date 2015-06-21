@@ -166,7 +166,7 @@ namespace YAF.Pages
             body = body.Remove(0, body.IndexOf('\n') + 1);
 
             // remove "Username: "
-            body = body.Remove(0, body.IndexOf(": ") + 2);
+            body = body.Remove(0, body.IndexOf(": ", System.StringComparison.Ordinal) + 2);
 
             // get first line which is the username
             string userName = body.Substring(0, body.IndexOf('\n'));
@@ -175,7 +175,7 @@ namespace YAF.Pages
             body = body.Remove(0, body.IndexOf('\n') + 1);
 
             // remove the "Password: " part
-            body = body.Remove(0, body.IndexOf(": ") + 2);
+            body = body.Remove(0, body.IndexOf(": ", System.StringComparison.Ordinal) + 2);
 
             // the rest is the password...
             string password = body.Substring(0, body.IndexOf('\n'));

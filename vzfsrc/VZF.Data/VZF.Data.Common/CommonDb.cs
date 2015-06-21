@@ -11858,7 +11858,7 @@ namespace VZF.Data.Common
             {
               
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_MessageIDsStr", tags));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Tags", tags));
 
                 sc.CommandText.AppendObjectQuery("topic_tagsave", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
