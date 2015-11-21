@@ -233,6 +233,8 @@
     <Resource tag="INVALID_VALUE">Одна из частей IP не содержит значения. Подходящие значения в интервале 0-255 или "*" для определения любого символа.</Resource>
     <Resource tag="MASK">Маска:</Resource>
     <Resource tag="MASK_HELP">Адрес ip для бана. Вы можете использовать звёздочки (127.0.0.*).</Resource>
+    <Resource tag="MASK1">Маска:</Resource>
+    <Resource tag="MASK1_HELP">Адрес ip для бана. Вы можете использовать звёздочки (127.0.0.*) или CIDR.</Resource>
     <Resource tag="REASON">Причина:</Resource>
     <Resource tag="REASON_HELP">Причина запрещения адреса.</Resource>
     <Resource tag="TITLE">Добавить/Изменить запрещённый адрес IP</Resource>
@@ -1481,6 +1483,7 @@
     <Resource tag="TOPICFEED_COUNT_HELP">Максимальное число тем в Atom/Rss лентах форума.</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT">Максимальная высота изображения темы:</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT_HELP">Максимальная высота изображения темы в пикс.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB">Use topic image thumbnail.</Resource>
     <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
     <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
     <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>

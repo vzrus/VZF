@@ -4624,8 +4624,10 @@ Visit {forumname} at {forumlink}
      <Resource tag="INVALID_VALUE">One of the IP section does not have a value. Valid values are 0-255 or "*" for a wildcard.</Resource>
      <Resource tag="INVALID_SECTION">"{0}" is not a valid IP section value.</Resource>
      <Resource tag="INVALID_LESS">"{0}" is not a valid IP section value (must be less then 255).</Resource>
-       <Resource tag="MASK">Mask:</Resource>
+     <Resource tag="MASK">Mask:</Resource>
      <Resource tag="MASK_HELP">The ip address to ban. You can use wildcards (127.0.0.*).</Resource>
+     <Resource tag="MASK1">Mask:</Resource>
+     <Resource tag="MASK1_HELP">The ip address to ban. You can use wildcards (127.0.0.*) or CIDR.</Resource>
      <Resource tag="REASON">Reason:</Resource>
      <Resource tag="REASON_HELP">The reason why the ip was banned.</Resource>
    </page>

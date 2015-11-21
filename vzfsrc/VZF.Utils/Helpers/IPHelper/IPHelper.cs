@@ -225,6 +225,20 @@ namespace VZF.Utils.Helpers
                 chk = "127.0.0.1";
             }
 
+            // CIDR notation
+            if (ban.Contains('/'))
+            {
+                IPNetwork ipnetwork;
+                IPAddress ipaddress;
+                if (IPNetwork.TryParse(ban, out ipnetwork)
+                    && IPAddress.TryParse(chk, out ipaddress)
+                    && IPNetwork.Contains(ipnetwork, ipaddress))
+                {
+                    return true;
+                }
+                return false;
+            }
+
             string[] ipmask = bannedIP.Split('.');
             string[] ip = bannedIP.Split('.');
 

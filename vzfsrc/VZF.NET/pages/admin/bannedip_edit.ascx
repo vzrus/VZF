@@ -13,7 +13,7 @@
 		</tr>
 		<tr>
 			<td class="postheader" width="50%">
-				<VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="MASK" LocalizedPage="ADMIN_EDITACCESSMASKS" />
+				<VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="MASK1" LocalizedPage="ADMIN_EDITACCESSMASKS" />
             </td>
 			<td class="post" width="50%">
 				<asp:TextBox Style="width: 250px" ID="mask" runat="server"></asp:TextBox></td>

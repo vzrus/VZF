@@ -53,6 +53,11 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.IPNetwork, Version=2.0.3.0, Culture=neutral, PublicKeyToken=764160545cf0d618, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Net.IPNetwork.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -70,16 +75,11 @@
     <Compile Include="Extensions\DbFunctionExtensions.cs" />
     <Compile Include="Extensions\JsonExtension.cs" />
     <Compile Include="Extensions\LanguageExtensions.cs" />
-    <Compile Include="Helpers\BitConversionHelper.cs" />
-    <Compile Include="Helpers\DateTimeHelper.cs" />
-    <Compile Include="Helpers\HashHelper.cs" />
-    <Compile Include="Helpers\ImageUtils\CaptchaImage.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DataContainerExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\IRegistrationBuilderExtension.cs" />
-    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Extensions\HtmlWriterExtensions.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -87,17 +87,25 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewStateExtensions.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Helpers\BBCodeHelper.cs" />
+    <Compile Include="Helpers\BitConversionHelper.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\ControlHelper.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\DBHelper.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
+    <Compile Include="Helpers\ImageUtils\CaptchaImage.cs" />
     <Compile Include="Helpers\ImageUtils\GetImageParameters.cs" />
-    <Compile Include="Helpers\IPHelper.cs" />
+    <Compile Include="Helpers\IPHelper\IPAddressCollection.cs" />
+    <Compile Include="Helpers\IPHelper\IPHelper.cs" />
+    <Compile Include="Helpers\IPHelper\IPNetwork.cs" />
+    <Compile Include="Helpers\IPHelper\IPNetworkCollection.cs" />
     <Compile Include="Helpers\JsAndCssHelper.cs" />
-    <Compile Include="Helpers\QueryStringIDHelper.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Helpers\MinifyUtils\JSMinify.cs" />
+    <Compile Include="Helpers\QueryStringIDHelper.cs" />
     <Compile Include="Helpers\StringUtils\Characters.cs" />
     <Compile Include="Helpers\StringUtils\Unidecoder.cs" />
     <Compile Include="Helpers\TreeViewUtils.cs" />

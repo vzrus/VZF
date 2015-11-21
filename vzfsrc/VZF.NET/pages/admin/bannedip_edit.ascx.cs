@@ -105,52 +105,66 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
-      string[] ipParts = this.mask.Text.Trim().Split('.');
-
-      // do some validation...
-      var ipError = new StringBuilder(); 
-
-      if (ipParts.Length != 4)
-      {
-        ipError.AppendLine(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_ADRESS"));
-      }
-
-      foreach (string ip in ipParts)
-      {
-          // see if they are numbers...
-          ulong number;
-          if (!ulong.TryParse(ip, out number))
-        {
-          if (ip.Trim() != "*")
-          {
-            if (ip.Trim().Length == 0)
+            // IPv4
+            if (!System.Text.RegularExpressions.Regex.IsMatch(this.mask.Text.Trim(), @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
             {
-              ipError.AppendLine(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_VALUE"));
-            }
-            else
-            {
-              ipError.AppendFormat(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_SECTION"), ip);
-            }
+                // IPv4 CIDR Range
+                if (!System.Text.RegularExpressions.Regex.IsMatch(this.mask.Text.Trim(), @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                {
+                    // leave it for coptability, checks for * in address for ranges
+                    string[] ipParts = this.mask.Text.Trim().Split('.');
 
-            break;
-          }
-        }
-        else
-        {
-          // try parse succeeded... verify number amount...
-          if (number > 255)
-          {
-              ipError.AppendFormat(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_LESS"), ip);
-          }
-        }
-      }
+                    // do some validation...
+                    var ipError = new StringBuilder();
 
-        // show error(s) if not valid...
-      if (ipError.Length > 0)
-      {
-        this.PageContext.AddLoadMessage(ipError.ToString());
-        return;
-      }
+                    if (ipParts.Length != 4)
+                    {
+                        ipError.AppendLine(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_ADRESS"));
+                    }
+
+                    foreach (string ip in ipParts)
+                    {
+                        // see if they are numbers...
+                        ulong number;
+                        if (!ulong.TryParse(ip, out number))
+                        {
+                            if (ip.Trim() != "*")
+                            {
+                                if (ip.Trim().Length == 0)
+                                {
+                                    ipError.AppendLine(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_VALUE"));
+                                }
+                                else
+                                {
+                                    ipError.AppendFormat(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_SECTION"), ip);
+                                }
+
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // try parse succeeded... verify number amount...
+                            if (number > 255)
+                            {
+                                ipError.AppendFormat(this.GetText("ADMIN_BANNEDIP_EDIT", "INVALID_LESS"), ip);
+                            }
+                        }
+                    }
+
+                    // show error(s) if not valid...
+                    if (ipError.Length > 0)
+                    {
+                        this.PageContext.AddLoadMessage(ipError.ToString());
+                        return;
+                    }
+                }
+            }
+           
+            // IPv6 CIDR Range
+            // System.Text.RegularExpressions.Regex.Matches(this.mask.Text.Trim(), @"^s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            // IPv6 CIDR Range
+            // System.Text.RegularExpressions.Regex.Matches(this.mask.Text.Trim(), @"^s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*(\/(d|dd|1[0-1]d|12[0-8]))$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
       CommonDb.bannedip_save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), 
         this.PageContext.PageBoardID, 
