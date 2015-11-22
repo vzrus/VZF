@@ -55,7 +55,7 @@ using System.Security;
 
 #if (!COMPACT_FRAMEWORK)
 [assembly: AllowPartiallyTrustedCallers]
-[assembly: SecurityRules(SecurityRuleSet.Level1)]
+// [assembly: SecurityRules(SecurityRuleSet.Level1)]
 #endif
 
 #if !NCRUNCH

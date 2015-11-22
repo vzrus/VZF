@@ -99,6 +99,7 @@
     <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\ImageUtils\CaptchaImage.cs" />
     <Compile Include="Helpers\ImageUtils\GetImageParameters.cs" />
+    <Compile Include="Helpers\IPHelper\BigIntegerExt.cs" />
     <Compile Include="Helpers\IPHelper\IPAddressCollection.cs" />
     <Compile Include="Helpers\IPHelper\IPHelper.cs" />
     <Compile Include="Helpers\IPHelper\IPNetwork.cs" />

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Collections;
 using System.Numerics;
 
-namespace System.Net
-{
+namespace System.Net {
     public class IPAddressCollection : IEnumerable<IPAddress>, IEnumerator<IPAddress> {
 
         private IPNetwork _ipnetwork;
@@ -17,7 +12,6 @@ namespace System.Net
             this._ipnetwork = ipnetwork;
             this._enumerator = -1;
         }
-
 
         #region Count, Array, Enumerator
 
@@ -32,7 +26,7 @@ namespace System.Net
                 if (i >= this.Count) {
                     throw new ArgumentOutOfRangeException("i");
                 }
-                byte width = this._ipnetwork.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? (byte)32 : (byte)128;
+                byte width = this._ipnetwork.AddressFamily == Sockets.AddressFamily.InterNetwork ? (byte)32 : (byte)128;
                 IPNetworkCollection ipn = IPNetwork.Subnet(this._ipnetwork, width);
                 return ipn[i].Network;
             }

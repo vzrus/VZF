@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Collections;
 using System.Numerics;
 
-namespace System.Net
-{
+namespace System.Net {
     public class IPNetworkCollection : IEnumerable<IPNetwork>, IEnumerator<IPNetwork> {
 
         private BigInteger _enumerator;
@@ -28,7 +24,7 @@ namespace System.Net
 
         internal IPNetworkCollection(IPNetwork ipnetwork, byte cidrSubnet) {
 
-            int maxCidr = ipnetwork.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 32 : 128;
+            int maxCidr = ipnetwork.AddressFamily == Sockets.AddressFamily.InterNetwork ? 32 : 128;
             if (cidrSubnet > maxCidr) {
                 throw new ArgumentOutOfRangeException("cidrSubnet");
             }
@@ -61,7 +57,7 @@ namespace System.Net
                     throw new ArgumentOutOfRangeException("i");
                 }
 
-                BigInteger last = this._ipnetwork.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6
+                BigInteger last = this._ipnetwork.AddressFamily == Sockets.AddressFamily.InterNetworkV6
                     ? this._lastUsable : this._broadcast;
                 BigInteger increment = (last - this._network) / this.Count;
                 BigInteger uintNetwork = this._network + ((increment + 1) * i);
