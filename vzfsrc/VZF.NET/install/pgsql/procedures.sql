@@ -6714,7 +6714,7 @@ BEGIN
 	WHERE userid = ici_userid;
 	
 	-- Delete topic IF there are no more messages
-   if not exists (select 1 INTO ici_MessageCount 
+   if not exists (select 1 
 	FROM {databaseSchema}.{objectQualifier}message 
 	WHERE topicid = ici_topicid limit 1) then  
 	 PERFORM {databaseSchema}.{objectQualifier}topic_delete (ici_topicid, null, i_erasemessage, false); 

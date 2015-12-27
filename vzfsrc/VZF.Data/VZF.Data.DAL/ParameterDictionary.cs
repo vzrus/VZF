@@ -42,5 +42,12 @@ namespace VZF.Data.DAL
         {
             this.Add(item.ParameterName, item);
         }
-    }
+        public void Add(params DbParameter[] items)
+        {
+            foreach (var p in items)
+            {                
+                this.Add(p.ParameterName, p);
+            }
+        }        
+    }   
 }

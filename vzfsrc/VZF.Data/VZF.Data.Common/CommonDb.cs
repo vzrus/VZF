@@ -67,7 +67,7 @@ namespace VZF.Data.Common
         /// A <see cref="T:System.Boolean"/> with true if access mask was deleted and false if deletion failed.
         /// </returns>
         public static bool accessmask_delete(int? mid, object accessMaskId)
-        {
+        {                
             using (var sc = new VzfSqlCommand(mid))
             {   
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
@@ -127,6 +127,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new VzfSqlCommand(mid))
             {
+               
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
@@ -6809,7 +6810,7 @@ namespace VZF.Data.Common
                 DataTable dtr = sc.ExecuteDataTableFromReader(
                     CommandBehavior.Default,
                     CommandType.StoredProcedure,
-                    true);
+                    false);
 
                 for (int i = 0; i < dtr.Rows.Count; i++)
                 {
@@ -6840,7 +6841,7 @@ namespace VZF.Data.Common
                 DataTable dtr = sc.ExecuteDataTableFromReader(
                     CommandBehavior.Default,
                     CommandType.StoredProcedure,
-                    true);
+                    false);
 
                 for (int i = 0; i < dtr.Rows.Count; i++)
                 {
@@ -9344,8 +9345,9 @@ namespace VZF.Data.Common
         {
             using (var sc = new VzfSqlCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(
+                    sc.CreateParameter(DbType.String, "i_Name", name), 
+                    sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
 
                 sc.CommandText.AppendObjectQuery("registry_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);

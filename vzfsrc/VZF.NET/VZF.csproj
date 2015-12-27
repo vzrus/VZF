@@ -35,10 +35,10 @@
     <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
@@ -185,9 +185,7 @@
     <Compile Include="Classes\Editors\BBCodeEditor.cs" />
     <Compile Include="Classes\Editors\RichClassEditor.cs" />
     <Compile Include="Classes\Editors\TextEditor.cs" />
-    <Compile Include="Classes\Forum.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Classes\Forum.cs" />
     <Compile Include="Classes\ForumPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1019,7 +1017,6 @@
     <Content Include="Bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
     <Content Include="Bin\Mono.Security.dll" />
-    <Content Include="Bin\MySql.Data.dll" />
     <Content Include="Bin\Npgsql.dll" />
     <Content Include="Bin\nStuff.UpdateControls.dll" />
     <Content Include="Controls\AlbumImageList.ascx" />
@@ -4124,11 +4121,8 @@
     <Content Include="themes\Yafmobile\users.png" />
     <Content Include="uploads\input_params.txt" />
     <Content Include="uploads\readme.txt" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="app.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app_my.config" />
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="vzf2015.snk" />
@@ -4165,7 +4159,10 @@
     <Content Include="resources\js\jquery.hovercard.min.js.map">
       <DependentUpon>jquery.hovercard.min.js</DependentUpon>
     </Content>
-    <None Include="web_pg.config">
+    <Content Include="web_my.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="web.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
