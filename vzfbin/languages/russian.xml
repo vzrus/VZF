@@ -233,6 +233,8 @@
     <Resource tag="INVALID_VALUE">Одна из частей IP не содержит значения. Подходящие значения в интервале 0-255 или "*" для определения любого символа.</Resource>
     <Resource tag="MASK">Маска:</Resource>
     <Resource tag="MASK_HELP">Адрес ip для бана. Вы можете использовать звёздочки (127.0.0.*).</Resource>
+    <Resource tag="MASK1">Маска:</Resource>
+    <Resource tag="MASK1_HELP">Адрес ip для бана. Вы можете использовать звёздочки (127.0.0.*) или CIDR.</Resource>
     <Resource tag="REASON">Причина:</Resource>
     <Resource tag="REASON_HELP">Причина запрещения адреса.</Resource>
     <Resource tag="TITLE">Добавить/Изменить запрещённый адрес IP</Resource>
@@ -1175,6 +1177,7 @@
     <Resource tag="HOST_LOG">Журналы</Resource>
     <Resource tag="HOST_PERMISSION">Разрешения</Resource>
     <Resource tag="HOST_SEARCH">Поиск</Resource>
+    <Resource tag="HOST_SYNDICATION">Новостные ленты</Resource>
     <Resource tag="HOST_TEMPLATES">Шаблоны</Resource>
     <Resource tag="HOVERCARD_DELAY">Интервал открытия Hover Card(миллисекунды):</Resource>
     <Resource tag="HOVERCARD_DELAY_HELP">Задержка перед открытием визитной карточки при наведении на ник пользователя.</Resource>
@@ -1480,6 +1483,11 @@
     <Resource tag="TOPICFEED_COUNT_HELP">Максимальное число тем в Atom/Rss лентах форума.</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT">Максимальная высота изображения темы:</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT_HELP">Максимальная высота изображения темы в пикс.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB">Use topic image thumbnail.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">The max width of the topic thumbnail images in px.</Resource>
     <Resource tag="TOPICIMAGE_WIDTH">Максимальная ширина изображения темы:</Resource>
     <Resource tag="TOPICIMAGE_WIDTH_HELP">Максимальная ширина изображения темы в пикс.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Темы на странице:</Resource>
@@ -5332,7 +5340,7 @@ Spoiler Content
     <Resource tag="TOPIC_STARTER">Автор темы</Resource>
     <Resource tag="TOPICS">Темы</Resource>
     <Resource tag="UNWATCHFORUM">Не отслеживать форум</Resource>
-    <Resource tag="USER_AVATAR">{0}'s Avatar</Resource>
+    <Resource tag="USER_AVATAR">Аватар пользователя {0} </Resource>
     <Resource tag="VIEWS">Просмотров</Resource>
     <Resource tag="WARN_FORUM_LOCKED">Форум закрыт.</Resource>
     <Resource tag="WARN_LOGIN_FORUMWATCH">Для просмотра форумов Вы должны быть зарегистрированным пользователем.</Resource>
@@ -5340,9 +5348,13 @@ Spoiler Content
     <Resource tag="YESTERDAYAT">[b]Вчера[/b] в {0:T}</Resource>
   </page>
   <page name="TOPICSBYTAGS">
+    <Resource tag="DELETE_ALL">Удалить тег</Resource>
+    <Resource tag="DELETE_SELECTED">Удалить из выбранных тем</Resource>
+    <Resource tag="SELECTIT">Выбор:</Resource>
     <Resource tag="TAGS_LIST">Теги: {0}</Resource>
     <Resource tag="TAGS_MORE">Ещё теги:</Resource>
     <Resource tag="TITLE">Темы с тегом</Resource>
+    <Resource tag="TOPIC">Topic:</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]«Спасибо» не найдены.[/b]</Resource>

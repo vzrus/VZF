@@ -14,6 +14,37 @@
             The _base urls.
             </summary>
         </member>
+        <member name="P:YAF.Classes.BaseUrlBuilder.BaseUrl">
+            <summary>
+            Gets BaseUrl.
+            </summary>
+            <exception cref="T:YAF.Classes.BaseUrlMaskRequiredException">Since there is no active context, a base url mask is required. Please specify in the AppSettings in your web.config.</exception>
+        </member>
+        <member name="P:YAF.Classes.BaseUrlBuilder.ClientFileRoot">
+            <summary>
+            Gets ClientFileRoot.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.BaseUrlBuilder.ServerFileRoot">
+            <summary>
+            Gets ServerFileRoot.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.BaseUrlBuilder.AppPath">
+            <summary>
+            Gets App Path.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.BaseUrlBuilder.ScriptName">
+            <summary>
+            Gets ScriptName.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.BaseUrlBuilder.ScriptNamePath">
+            <summary>
+            Gets ScriptNamePath.
+            </summary>
+        </member>
         <member name="M:YAF.Classes.BaseUrlBuilder.GetBaseUrlFromVariables">
             <summary>
             The get base url from variables.
@@ -66,37 +97,6 @@
             The treat path str.
             </returns>
         </member>
-        <member name="P:YAF.Classes.BaseUrlBuilder.BaseUrl">
-            <summary>
-            Gets BaseUrl.
-            </summary>
-            <exception cref="T:YAF.Classes.BaseUrlMaskRequiredException">Since there is no active context, a base url mask is required. Please specify in the AppSettings in your web.config.</exception>
-        </member>
-        <member name="P:YAF.Classes.BaseUrlBuilder.ClientFileRoot">
-            <summary>
-            Gets ClientFileRoot.
-            </summary>
-        </member>
-        <member name="P:YAF.Classes.BaseUrlBuilder.ServerFileRoot">
-            <summary>
-            Gets ServerFileRoot.
-            </summary>
-        </member>
-        <member name="P:YAF.Classes.BaseUrlBuilder.AppPath">
-            <summary>
-            Gets App Path.
-            </summary>
-        </member>
-        <member name="P:YAF.Classes.BaseUrlBuilder.ScriptName">
-            <summary>
-            Gets ScriptName.
-            </summary>
-        </member>
-        <member name="P:YAF.Classes.BaseUrlBuilder.ScriptNamePath">
-            <summary>
-            Gets ScriptNamePath.
-            </summary>
-        </member>
         <member name="T:YAF.Classes.BaseUrlMaskRequiredException">
             <summary>
             The base url mask required exception.
@@ -109,53 +109,6 @@
             <param name="message">
             The message.
             </param>
-        </member>
-        <member name="T:VZF.Utils.AreEqualFunc`1">
-            <summary>
-            The are equal func.
-            </summary>
-            <typeparam name="T">
-            </typeparam>
-        </member>
-        <member name="F:VZF.Utils.AreEqualFunc`1._comparer">
-            <summary>
-            The _comparer.
-            </summary>
-        </member>
-        <member name="M:VZF.Utils.AreEqualFunc`1.#ctor(System.Func{`0,`0,System.Boolean})">
-            <summary>
-            Initializes a new instance of the <see cref="T:VZF.Utils.AreEqualFunc`1"/> class.
-            </summary>
-            <param name="comparer">
-            The comparer.
-            </param>
-            <exception cref="T:System.ArgumentNullException">
-            </exception>
-        </member>
-        <member name="M:VZF.Utils.AreEqualFunc`1.Equals(`0,`0)">
-            <summary>
-            The equals.
-            </summary>
-            <param name="x">
-            The x.
-            </param>
-            <param name="y">
-            The y.
-            </param>
-            <returns>
-            The equals.
-            </returns>
-        </member>
-        <member name="M:VZF.Utils.AreEqualFunc`1.GetHashCode(`0)">
-            <summary>
-            The get hash code.
-            </summary>
-            <param name="obj">
-            The obj.
-            </param>
-            <returns>
-            The get hash code.
-            </returns>
         </member>
         <member name="T:YAF.Classes.Pattern.IInstanceFactory">
             <summary>
@@ -195,6 +148,11 @@
               The _instance.
             </summary>
         </member>
+        <member name="P:YAF.Classes.Pattern.PageSingleton`1.Instance">
+            <summary>
+              Gets Instance.
+            </summary>
+        </member>
         <member name="M:YAF.Classes.Pattern.PageSingleton`1.GetInstance">
             <summary>
             The get instance.
@@ -202,50 +160,10 @@
             <returns>
             </returns>
         </member>
-        <member name="P:YAF.Classes.Pattern.PageSingleton`1.Instance">
-            <summary>
-              Gets Instance.
-            </summary>
-        </member>
         <member name="T:YAF.Classes.Pattern.RegistryDictionaryOverride">
             <summary>
             Provides a method for automatic overriding of a base hash...
             </summary>
-        </member>
-        <member name="T:YAF.Classes.Pattern.RegistryDictionary">
-            <summary>
-            The registry dictionary.
-            </summary>
-        </member>
-        <member name="M:YAF.Classes.Pattern.RegistryDictionary.GetValue``1(System.String,``0)">
-            <summary>
-            The get value.
-            </summary>
-            <param name="name">
-            The name.
-            </param>
-            <param name="defaultValue">
-            The default value.
-            </param>
-            <typeparam name="T">
-            The type parameter.
-            </typeparam>
-            <returns>
-            </returns>
-        </member>
-        <member name="M:YAF.Classes.Pattern.RegistryDictionary.SetValue``1(System.String,``0)">
-            <summary>
-            The set value.
-            </summary>
-            <param name="name">
-            The name.
-            </param>
-            <param name="value">
-            The value.
-            </param>
-            <typeparam name="T">
-            The type parameter.
-            </typeparam>
         </member>
         <member name="F:YAF.Classes.Pattern.RegistryDictionaryOverride._defaultGetOverride">
             <summary>
@@ -255,6 +173,21 @@
         <member name="F:YAF.Classes.Pattern.RegistryDictionaryOverride._defaultSetOverride">
             <summary>
             The _default set override.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.Pattern.RegistryDictionaryOverride.DefaultGetOverride">
+            <summary>
+            Gets or sets a value indicating whether DefaultGetOverride.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.Pattern.RegistryDictionaryOverride.DefaultSetOverride">
+            <summary>
+            Gets or sets a value indicating whether DefaultSetOverride.
+            </summary>
+        </member>
+        <member name="P:YAF.Classes.Pattern.RegistryDictionaryOverride.OverrideDictionary">
+            <summary>
+            Gets or sets OverrideDictionary.
             </summary>
         </member>
         <member name="M:YAF.Classes.Pattern.RegistryDictionaryOverride.GetValue``1(System.String,``0)">
@@ -322,20 +255,40 @@
             The type parameter.
             </typeparam>
         </member>
-        <member name="P:YAF.Classes.Pattern.RegistryDictionaryOverride.DefaultGetOverride">
+        <member name="T:YAF.Classes.Pattern.RegistryDictionary">
             <summary>
-            Gets or sets a value indicating whether DefaultGetOverride.
+            The registry dictionary.
             </summary>
         </member>
-        <member name="P:YAF.Classes.Pattern.RegistryDictionaryOverride.DefaultSetOverride">
+        <member name="M:YAF.Classes.Pattern.RegistryDictionary.GetValue``1(System.String,``0)">
             <summary>
-            Gets or sets a value indicating whether DefaultSetOverride.
+            The get value.
             </summary>
+            <param name="name">
+            The name.
+            </param>
+            <param name="defaultValue">
+            The default value.
+            </param>
+            <typeparam name="T">
+            The type parameter.
+            </typeparam>
+            <returns>
+            </returns>
         </member>
-        <member name="P:YAF.Classes.Pattern.RegistryDictionaryOverride.OverrideDictionary">
+        <member name="M:YAF.Classes.Pattern.RegistryDictionary.SetValue``1(System.String,``0)">
             <summary>
-            Gets or sets OverrideDictionary.
+            The set value.
             </summary>
+            <param name="name">
+            The name.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+            <typeparam name="T">
+            The type parameter.
+            </typeparam>
         </member>
         <member name="T:YAF.Classes.Pattern.TypeDictionary">
             <summary>
@@ -408,6 +361,11 @@
             <typeparam name="T">
             </typeparam>
         </member>
+        <member name="P:YAF.Classes.Pattern.ITypeFactoryInstance`1.TypeName">
+            <summary>
+            Gets TypeName.
+            </summary>
+        </member>
         <member name="M:YAF.Classes.Pattern.ITypeFactoryInstance`1.Get">
             <summary>
             Get an instance of the type.
@@ -415,17 +373,20 @@
             <returns>
             </returns>
         </member>
-        <member name="P:YAF.Classes.Pattern.ITypeFactoryInstance`1.TypeName">
-            <summary>
-            Gets TypeName.
-            </summary>
-        </member>
         <member name="T:YAF.Classes.Pattern.TypeFactoryInstanceApplicationBoardScope`1">
             <summary>
             The type board application factory instance.
             </summary>
             <typeparam name="T">
             </typeparam>
+        </member>
+        <member name="M:YAF.Classes.Pattern.TypeFactoryInstanceApplicationBoardScope`1.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:YAF.Classes.Pattern.TypeFactoryInstanceApplicationBoardScope`1"/> class.
+            </summary>
+            <param name="typeName">
+            The type name.
+            </param>
         </member>
         <member name="T:YAF.Classes.Pattern.TypeFactoryInstanceApplicationScope`1">
             <summary>
@@ -458,21 +419,6 @@
             For derived classes
             </summary>
         </member>
-        <member name="M:YAF.Classes.Pattern.TypeFactoryInstanceApplicationScope`1.Get">
-            <summary>
-            The create.
-            </summary>
-            <returns>
-            </returns>
-        </member>
-        <member name="M:YAF.Classes.Pattern.TypeFactoryInstanceApplicationScope`1.CreateTypeInstance">
-            <summary>
-            The create type instance.
-            </summary>
-            <returns>
-            Created type instance.
-            </returns>
-        </member>
         <member name="P:YAF.Classes.Pattern.TypeFactoryInstanceApplicationScope`1.TypeInstanceKey">
             <summary>
             Gets or sets TypeInstanceKey.
@@ -488,13 +434,20 @@
             Gets or sets ApplicationInstance.
             </summary>
         </member>
-        <member name="M:YAF.Classes.Pattern.TypeFactoryInstanceApplicationBoardScope`1.#ctor(System.String)">
+        <member name="M:YAF.Classes.Pattern.TypeFactoryInstanceApplicationScope`1.Get">
             <summary>
-            Initializes a new instance of the <see cref="T:YAF.Classes.Pattern.TypeFactoryInstanceApplicationBoardScope`1"/> class.
+            The create.
             </summary>
-            <param name="typeName">
-            The type name.
-            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:YAF.Classes.Pattern.TypeFactoryInstanceApplicationScope`1.CreateTypeInstance">
+            <summary>
+            The create type instance.
+            </summary>
+            <returns>
+            Created type instance.
+            </returns>
         </member>
         <member name="T:YAF.Classes.YafBoardFolders">
             <summary>
@@ -2147,35 +2100,6 @@
                 Static class that access the app settings in the web.config file
             </summary>
         </member>
-        <member name="M:YAF.Classes.Config.GetConfigValueAsBool(System.String,System.Boolean)">
-            <summary>
-                Gets the config value as bool.
-            </summary>
-            <param name="configKey"> The config key. </param>
-            <param name="defaultValue"> if set to <c>true</c> [default value]. </param>
-            <returns> Returns Bool Value </returns>
-        </member>
-        <member name="M:YAF.Classes.Config.GetConfigValueAsString(System.String)">
-            <summary>
-                Gets the config value as string.
-            </summary>
-            <param name="configKey"> The config key. </param>
-            <returns> Returns String Value </returns>
-        </member>
-        <member name="M:YAF.Classes.Config.GetConfigValueAsStringByPattern(System.String,System.String)">
-            <summary>
-                Gets the config value as string.
-            </summary>
-            <param name="configKey"> The config key. </param>
-            <returns> Returns String Value </returns>
-        </member>
-        <member name="M:YAF.Classes.Config.GetProvider(System.String)">
-            <summary>
-                Gets a Provider type string from the config.
-            </summary>
-            <param name="providerName"> The provider Name. </param>
-            <returns> Provider type string or <see langword="null" /> if none exist. </returns>
-        </member>
         <member name="P:YAF.Classes.Config.AllowLoginAndLogoff">
             <summary>
                 Gets a value indicating whether AllowLoginAndLogoff.
@@ -2496,6 +2420,35 @@
                 Gets WithOIDs.
             </summary>
         </member>
+        <member name="M:YAF.Classes.Config.GetConfigValueAsBool(System.String,System.Boolean)">
+            <summary>
+                Gets the config value as bool.
+            </summary>
+            <param name="configKey"> The config key. </param>
+            <param name="defaultValue"> if set to <c>true</c> [default value]. </param>
+            <returns> Returns Bool Value </returns>
+        </member>
+        <member name="M:YAF.Classes.Config.GetConfigValueAsString(System.String)">
+            <summary>
+                Gets the config value as string.
+            </summary>
+            <param name="configKey"> The config key. </param>
+            <returns> Returns String Value </returns>
+        </member>
+        <member name="M:YAF.Classes.Config.GetConfigValueAsStringByPattern(System.String,System.String)">
+            <summary>
+                Gets the config value as string.
+            </summary>
+            <param name="configKey"> The config key. </param>
+            <returns> Returns String Value </returns>
+        </member>
+        <member name="M:YAF.Classes.Config.GetProvider(System.String)">
+            <summary>
+                Gets a Provider type string from the config.
+            </summary>
+            <param name="providerName"> The provider Name. </param>
+            <returns> Provider type string or <see langword="null" /> if none exist. </returns>
+        </member>
         <member name="T:YAF.Classes.DefaultUrlBuilder">
             <summary>
             Implements URL Builder.
@@ -2665,6 +2618,53 @@
             <summary>
             Gets UserDisplayNameType.
             </summary>
+        </member>
+        <member name="T:VZF.Utils.AreEqualFunc`1">
+            <summary>
+            The are equal func.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+        </member>
+        <member name="F:VZF.Utils.AreEqualFunc`1._comparer">
+            <summary>
+            The _comparer.
+            </summary>
+        </member>
+        <member name="M:VZF.Utils.AreEqualFunc`1.#ctor(System.Func{`0,`0,System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:VZF.Utils.AreEqualFunc`1"/> class.
+            </summary>
+            <param name="comparer">
+            The comparer.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            </exception>
+        </member>
+        <member name="M:VZF.Utils.AreEqualFunc`1.Equals(`0,`0)">
+            <summary>
+            The equals.
+            </summary>
+            <param name="x">
+            The x.
+            </param>
+            <param name="y">
+            The y.
+            </param>
+            <returns>
+            The equals.
+            </returns>
+        </member>
+        <member name="M:VZF.Utils.AreEqualFunc`1.GetHashCode(`0)">
+            <summary>
+            The get hash code.
+            </summary>
+            <param name="obj">
+            The obj.
+            </param>
+            <returns>
+            The get hash code.
+            </returns>
         </member>
     </members>
 </doc>

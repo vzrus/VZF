@@ -79,7 +79,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		[Platform]		nvarchar (50) NULL,
 		Flags           int NULL,
 		[ForumPage]     nvarchar (255) NULL,  
-    constraint [PK_{objectQualifier}Active] PRIMARY KEY CLUSTERED ([SessionID] ASC, [BoardID] ASC)
+	constraint [PK_{objectQualifier}Active] PRIMARY KEY CLUSTERED ([SessionID] ASC, [BoardID] ASC)
 	)
 GO
 
@@ -105,7 +105,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		UploadAccess		bit NOT NULL,		
 		DownloadAccess		bit NOT NULL,
 		UserForumAccess     bit NOT NULL,
-    constraint [PK_{objectQualifier}ActiveAccess] PRIMARY KEY CLUSTERED ([UserID] ASC, [ForumID] ASC) WITH (FILLFACTOR = 90)		
+	constraint [PK_{objectQualifier}ActiveAccess] PRIMARY KEY CLUSTERED ([UserID] ASC, [ForumID] ASC) WITH (FILLFACTOR = 90)		
 	)
 GO
 
@@ -113,7 +113,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 	create table [{databaseSchema}].[{objectQualifier}AdminPageUserAccess](
 		UserID		    int NOT NULL,		
 		PageName		nvarchar (128) NOT NULL,
-    constraint [PK_{objectQualifier}AdminPageUserAccess] PRIMARY KEY CLUSTERED ([UserID] ASC, [PageName] ASC)
+	constraint [PK_{objectQualifier}AdminPageUserAccess] PRIMARY KEY CLUSTERED ([UserID] ASC, [PageName] ASC)
 	)
 GO
 
@@ -123,7 +123,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		EventTypeID     int NOT NULL,  	
 		EventTypeName	nvarchar (128) NOT NULL,
 		DeleteAccess    bit NOT NULL constraint [DF_{objectQualifier}EventLogGroupAccess_DeleteAccess] default (0),
-    constraint [PK_{objectQualifier}EventLogGroupAccess] PRIMARY KEY CLUSTERED ([GroupID] ASC, [EventTypeID] ASC)
+	constraint [PK_{objectQualifier}EventLogGroupAccess] PRIMARY KEY CLUSTERED ([GroupID] ASC, [EventTypeID] ASC)
 	)
 GO
 
@@ -135,7 +135,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		Since			datetime NOT NULL,
 		Reason          nvarchar (128) NULL,
 		UserID			int null,
-    constraint [PK_{objectQualifier}BannedIP] PRIMARY KEY CLUSTERED ([ID] ASC)
+	constraint [PK_{objectQualifier}BannedIP] PRIMARY KEY CLUSTERED ([ID] ASC)
 	)
 GO  
 
@@ -327,7 +327,9 @@ IF NOT EXISTS (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		[LogID] [int] IDENTITY(1,1) NOT NULL,
 		[UserID] [int] NULL,
 		[MessageID] [int] NOT NULL,
-		[Reported] [datetime] NULL
+		[Reported] [datetime] NULL,
+		[ReportedNumber] [int] NOT NULL constraint [DF_{objectQualifier}MessageReportedAudit_ReportedNumber] default (1),
+		[ReportText] nvarchar(4000)  NULL 
 		)
 GO
 
@@ -376,7 +378,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		Code			nvarchar (10) NOT NULL ,
 		Icon			nvarchar (50) NOT NULL ,
 		Emoticon		nvarchar (50) NULL ,
-		SortOrder		tinyint	NOT NULL DEFAULT 0
+		SortOrder		tinyint	NOT NULL  constraint [DF_{objectQualifier}Smiley_SortOrder] default (0)
 	)
 GO
 
@@ -1160,14 +1162,14 @@ END
 GO
 
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}User]') and name=N'TopicsPerPage')
-    begin
+	begin
 	alter table [{databaseSchema}].[{objectQualifier}User] add [TopicsPerPage] int NOT NULL CONSTRAINT [DF_{objectQualifier}User_TopicsPerPage] DEFAULT (20)
-    end
+	end
 GO
 	if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}User]') and name=N'PostsPerPage')
-    begin
+	begin
 	alter table [{databaseSchema}].[{objectQualifier}User] add [PostsPerPage] int NOT NULL CONSTRAINT [DF_{objectQualifier}User_PostsPerPage] DEFAULT (20)
-    end
+	end
 GO
 
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}User]') and name=N'IsGuest')
@@ -2273,9 +2275,26 @@ if exists(select top 1 1 from sys.columns where object_id = object_id(N'[{databa
 GO	
 
 -- Smiley Table
+
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}Smiley]') and name=N'SortOrder')
 begin
-	alter table [{databaseSchema}].[{objectQualifier}Smiley] add SortOrder tinyint NOT NULL DEFAULT 0
+	alter table [{databaseSchema}].[{objectQualifier}Smiley] add SortOrder tinyint NOT NULL constraint [DF_{objectQualifier}Smiley_SortOrder] default (0)
+end
+GO
+
+if exists (SELECT top 1 1
+FROM
+  sys.objects o1
+  INNER JOIN sys.columns c ON
+  o1.object_id = c.default_object_id
+  INNER JOIN sys.objects o2 ON
+  c.object_id = o2.object_id
+WHERE
+  o2.name = '{objectQualifier}Smiley' AND
+  c.name = 'SortOrder' and o1.name != 'DF_{objectQualifier}Smiley_SortOrder')
+  begin
+  exec('[{databaseSchema}].[{objectQualifier}drop_defaultconstraint_oncolumn] {objectQualifier}Smiley, SortOrder')
+  exec('alter table [{databaseSchema}].[{objectQualifier}Smiley] add constraint [DF_{objectQualifier}Smiley_SortOrder] default (0) for SortOrder')
 end
 GO
 
@@ -2295,13 +2314,45 @@ BEGIN
 	ALTER TABLE [{databaseSchema}].[{objectQualifier}Category] ADD [CanHavePersForums] [bit] NOT NULL constraint [DF_{objectQualifier}Category_CanHavePersForums] default (0)
 END
 GO
-
+if exists (select top 1 1
+from 
+  sys.objects WHERE type = 'D' and schema_name(schema_id) = N'{databaseSchema}' 
+  and OBJECT_NAME(parent_object_id) = N'{objectQualifier}MessageReportedAudit'
+  and name != N'DF_{objectQualifier}MessageReportedAudit_ReportedNumber')
 -- MessageReportedAudit Table
+exec('[{databaseSchema}].[{objectQualifier}drop_defaultconstraint_oncolumn] ''{objectQualifier}MessageReportedAudit'', ''ReportedNumber''')
+
+GO
+
+if not exists (select top 1 1
+from 
+  sys.objects WHERE type = 'D' and schema_name(schema_id) = N'{databaseSchema}' 
+  and OBJECT_NAME(parent_object_id) = N'{objectQualifier}MessageReportedAudit'
+  )
+-- MessageReportedAudit Table
+exec('alter table [{databaseSchema}].[{objectQualifier}MessageReportedAudit] add constraint [DF_{objectQualifier}MessageReportedAudit_ReportedNumber] default (1) for ReportedNumber')
+GO
+
 IF NOT exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}MessageReportedAudit]') AND name = N'ReportedNumber')
 BEGIN
-	ALTER TABLE [{databaseSchema}].[{objectQualifier}MessageReportedAudit] ADD [ReportedNumber] int NOT NULL DEFAULT 1
+	ALTER TABLE [{databaseSchema}].[{objectQualifier}MessageReportedAudit] ADD [ReportedNumber] int NOT NULL constraint [DF_{objectQualifier}MessageReportedAudit_ReportedNumber] default (1)
 END
 GO
+
+if exists (SELECT top 1 1
+FROM
+  sys.objects o1
+  INNER JOIN sys.columns c ON
+  o1.object_id = c.default_object_id
+  INNER JOIN sys.objects o2 ON
+  c.object_id = o2.object_id
+WHERE
+  o2.name = '{objectQualifier}MessageReportedAudit' AND
+  c.name = 'ReportedNumber' and o1.name != 'DF_{objectQualifier}MessageReportedAudit_ReportedNumber')
+  begin
+  exec('[{databaseSchema}].[{objectQualifier}drop_defaultconstraint_oncolumn] {objectQualifier}MessageReportedAudit, ReportedNumber')
+  exec('alter table [{databaseSchema}].[{objectQualifier}Smiley] add constraint [DF_{objectQualifier}MessageReportedAudit_ReportedNumber] default (1) for SortOrder')
+end
 
 IF NOT exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseSchema}].[{objectQualifier}MessageReportedAudit]') AND name = N'ReportText')
 BEGIN
@@ -2506,31 +2557,31 @@ GO
 create procedure [{databaseSchema}].[{objectQualifier}forum_initdisplayname] as
  
 begin 
-     update d
-       set d.LastUserDisplayName = ISNULL((select top 1 f.LastUserDisplayName FROM [{databaseSchema}].[{objectQualifier}Forum] f
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.LastUserID where u.UserID = d.LastUserID),
-           (select top 1 f.LastUserName FROM [{databaseSchema}].[{objectQualifier}Forum] f
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.LastUserID where u.UserID = d.LastUserID ))
-       from [{databaseSchema}].[{objectQualifier}Forum] d where d.LastUserDisplayName IS NULL OR d.LastUserDisplayName = d.LastUserName;
-         
-    update d
-       set d.UserDisplayName = ISNULL((select top 1 f.UserDisplayName FROM [{databaseSchema}].[{objectQualifier}ShoutboxMessage] f
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.UserID where u.UserID = d.UserID),
-           (select top 1 f.UserName FROM [{databaseSchema}].[{objectQualifier}ShoutboxMessage] f
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.UserID where u.UserID = d.UserID ))
-       from [{databaseSchema}].[{objectQualifier}ShoutboxMessage] d where d.UserDisplayName IS NULL OR d.UserDisplayName = d.UserName;
-    update d
-       set d.UserDisplayName = ISNULL((select top 1 m.UserDisplayName FROM [{databaseSchema}].[{objectQualifier}Message] m
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = m.UserID where u.UserID = d.UserID),
-           (select top 1 m.UserName FROM [{databaseSchema}].[{objectQualifier}Message] m
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = m.UserID where u.UserID = d.UserID ))
-       from [{databaseSchema}].[{objectQualifier}Message] d where d.UserDisplayName IS NULL OR d.UserDisplayName = d.UserName;
-     update d
-       set d.UserDisplayName = ISNULL((select top 1 t.UserDisplayName FROM [{databaseSchema}].[{objectQualifier}Topic] t
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = t.UserID where u.UserID = d.UserID),
-           (select top 1 t.UserName FROM [{databaseSchema}].[{objectQualifier}Topic] t
-          join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = t.UserID where u.UserID = d.UserID ))
-       from [{databaseSchema}].[{objectQualifier}Message] d where d.UserDisplayName IS NULL OR d.UserDisplayName = d.UserName;
+	 update d
+	   set d.LastUserDisplayName = ISNULL((select top 1 f.LastUserDisplayName FROM [{databaseSchema}].[{objectQualifier}Forum] f
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.LastUserID where u.UserID = d.LastUserID),
+		   (select top 1 f.LastUserName FROM [{databaseSchema}].[{objectQualifier}Forum] f
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.LastUserID where u.UserID = d.LastUserID ))
+	   from [{databaseSchema}].[{objectQualifier}Forum] d where d.LastUserDisplayName IS NULL OR d.LastUserDisplayName = d.LastUserName;
+		 
+	update d
+	   set d.UserDisplayName = ISNULL((select top 1 f.UserDisplayName FROM [{databaseSchema}].[{objectQualifier}ShoutboxMessage] f
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.UserID where u.UserID = d.UserID),
+		   (select top 1 f.UserName FROM [{databaseSchema}].[{objectQualifier}ShoutboxMessage] f
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = f.UserID where u.UserID = d.UserID ))
+	   from [{databaseSchema}].[{objectQualifier}ShoutboxMessage] d where d.UserDisplayName IS NULL OR d.UserDisplayName = d.UserName;
+	update d
+	   set d.UserDisplayName = ISNULL((select top 1 m.UserDisplayName FROM [{databaseSchema}].[{objectQualifier}Message] m
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = m.UserID where u.UserID = d.UserID),
+		   (select top 1 m.UserName FROM [{databaseSchema}].[{objectQualifier}Message] m
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = m.UserID where u.UserID = d.UserID ))
+	   from [{databaseSchema}].[{objectQualifier}Message] d where d.UserDisplayName IS NULL OR d.UserDisplayName = d.UserName;
+	 update d
+	   set d.UserDisplayName = ISNULL((select top 1 t.UserDisplayName FROM [{databaseSchema}].[{objectQualifier}Topic] t
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = t.UserID where u.UserID = d.UserID),
+		   (select top 1 t.UserName FROM [{databaseSchema}].[{objectQualifier}Topic] t
+		  join [{databaseSchema}].[{objectQualifier}User] u on u.UserID = t.UserID where u.UserID = d.UserID ))
+	   from [{databaseSchema}].[{objectQualifier}Message] d where d.UserDisplayName IS NULL OR d.UserDisplayName = d.UserName;
  
 end
 GO

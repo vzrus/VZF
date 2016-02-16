@@ -491,7 +491,7 @@ END;
 --GO
 
 
-create procedure  {objectQualifier}TOPIC_TAGSAVE(I_TOPICID INTEGER, I_TAGIDS VARCHAR(1024))
+create procedure  {objectQualifier}TOPIC_TAGSAVE(I_TOPICID INTEGER, I_TAGS VARCHAR(1024))
 as
 declare variable LASTPOS integer;
 declare variable NEXTPOS integer;
@@ -501,12 +501,12 @@ declare taglowered varchar(4096);
 begin
 
 DELETE FROM {objectQualifier}TOPICTAGS WHERE TOPICID = :I_TOPICID;
-  I_TAGIDS = :I_TAGIDS || ',';
+  I_TAGS = :I_TAGS || ',';
   LASTPOS = 1;
-  NEXTPOS = POSITION(',', :I_TAGIDS, LASTPOS);
+  NEXTPOS = POSITION(',', :I_TAGS, LASTPOS);
   while (:NEXTPOS > 1) do
   begin
-	TEMPSTR = SUBSTRING(:I_TAGIDS from :LASTPOS for :NEXTPOS - :LASTPOS);
+	TEMPSTR = SUBSTRING(:I_TAGS from :LASTPOS for :NEXTPOS - :LASTPOS);
 
 	IF (EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}TAGS where TAG = :TEMPSTR)) THEN
 	BEGIN
@@ -528,7 +528,7 @@ DELETE FROM {objectQualifier}TOPICTAGS WHERE TOPICID = :I_TOPICID;
 	END	
 	UPDATE {objectQualifier}TAGS SET TAGCOUNT = (SELECT COUNT(TAGID) FROM {objectQualifier}TOPICTAGS WHERE  TAGID = :THISID) WHERE  TAGID = :THISID;
 	LASTPOS = :NEXTPOS + 1;
-	NEXTPOS = POSITION(',', :I_TAGIDS, LASTPOS);
+	NEXTPOS = POSITION(',', :I_TAGS, LASTPOS);
   end
   suspend;
 end;

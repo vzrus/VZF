@@ -1150,10 +1150,10 @@
   Tag Cloud
 ------------------------------
 */
-.tagcloud a
+.yafnet .tagcloud a
 {
     font-family:Tahoma,Helvetica,Arial,Verdana;
-
+    float: left;
 }
  .tagcloud .tag0  {font-size: 0.6em}
  .tagcloud .tag1  {font-size: 0.7em}

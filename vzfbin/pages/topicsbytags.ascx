@@ -23,12 +23,12 @@
 <table class="content" width="100%">
     <thead>
     <tr class="topicTitle">
-        <th class="header1" colspan="6">
+        <th id="thTopicTitle" class="header1" colspan='<%# PageContext.IsAdmin ? 7 : 6 %>' runat="server">
             <asp:Label ID="PageTitle" runat="server"></asp:Label>
         </th>
     </tr>
     <tr class="topicSubTitle">
-        <th class="header2" colspan="6">
+        <th id="thTopicSubTitle" class="header2" colspan='<%# PageContext.IsAdmin ? 7 : 6 %>' runat="server">
             <VZF:LocalizedLabel ID="TagsListLLbl" runat="server"/>
         </th>
     </tr>
@@ -36,8 +36,11 @@
         <th class="header2" width="1%">
             &nbsp;
         </th>
+        <th id="thSelectIt"  class="header2 headerTopic" align="left" Visible='<%# PageContext.IsAdmin %>' runat="server">
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="selectit" />
+        </th>
         <th class="header2 headerTopic" align="left">
-            <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
+            <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="TOPIC" />
         </th>
         <th class="header2 headerReplies" align="right" width="7%">
             <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
@@ -54,10 +57,10 @@
         <tr>
             <asp:Repeater ID="TopicList" runat="server">
                 <ItemTemplate>
-                    <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+                <VZF:TopicLine  runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" AllowSelection="<%# PageContext.IsAdmin %>" />
                 </ItemTemplate>
                 <AlternatingItemTemplate>
-                    <VZF:TopicLine runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+                     <VZF:TopicLine runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" AllowSelection="<%# PageContext.IsAdmin %>" />
                 </AlternatingItemTemplate>
             </asp:Repeater>
         </tr>
@@ -71,9 +74,13 @@
             </td>
         </tr>
         <tr>
-            <td align="center" colspan="5">
+            <td id="trButtons" align="center" colspan="5" runat="server" >
                 <VZF:ThemeButton ID="OKButon" runat="server" CssClass="yafcssbigbutton centerItem"
                 OnClick="okBtn_click" TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="OK" CommandName="Action" CommandArgument='<%# this.retBtnArgs %>' />
+                <VZF:ThemeButton ID="DeleteSelectedBtn" runat="server" CssClass="yafcssbigbutton centerItem"
+                 TextLocalizedPage="TOPICSBYTAGS" TextLocalizedTag="DELETE_SELECTED" TitleLocalizedPage="TOPICSBYTAGS" TitleLocalizedTag="DELETE_SELECTED" OnClick="DeleteSelectedBtn_OnClick" Visible='<%# PageContext.IsAdmin %>'  />
+                <VZF:ThemeButton ID="DeleteAllBtn" runat="server" CssClass="yafcssbigbutton centerItem"
+                 TextLocalizedPage="TOPICSBYTAGS" TextLocalizedTag="DELETE_ALL" TitleLocalizedPage="TOPICSBYTAGS" TitleLocalizedTag="DELETE_ALL" OnClick="DeleteAllBtn_OnClick" Visible="False"  />
             </td>
         </tr>
     </tfoot>

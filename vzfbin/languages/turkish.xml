@@ -233,6 +233,8 @@
     <Resource tag="INVALID_VALUE">One of the IP section does not have a value. Valid values are 0-255 or "*" for a wildcard.</Resource>
     <Resource tag="MASK">Mask:</Resource>
     <Resource tag="MASK_HELP">The ip address to ban. You can use wildcards (127.0.0.*).</Resource>
+    <Resource tag="MASK1">Mask:</Resource>
+    <Resource tag="MASK1_HELP">The ip address to ban. You can use wildcards (127.0.0.*) or CIDR.</Resource>
     <Resource tag="REASON">Reason:</Resource>
     <Resource tag="REASON_HELP">The reason why the ip was banned.</Resource>
     <Resource tag="TITLE">Add/Edit Banned IP Address</Resource>
@@ -1187,6 +1189,7 @@
     <Resource tag="HOST_LOG">Logs</Resource>
     <Resource tag="HOST_PERMISSION">Permission</Resource>
     <Resource tag="HOST_SEARCH">Search</Resource>
+    <Resource tag="HOST_SYNDICATION">Syndication Feeds</Resource>
     <Resource tag="HOST_TEMPLATES">Templates</Resource>
     <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
     <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
@@ -1500,6 +1503,11 @@
     <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB">Use topic image thumbnail.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">The max width of the topic thumbnail images in px.</Resource>
     <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
     <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Topics Per Page:</Resource>
@@ -5380,9 +5388,13 @@ Ziyaret için {forumname}  {forumlink}
     <Resource tag="YESTERDAYAT">[b]Dün[/b] : {0:T}</Resource>
   </page>
   <page name="TOPICSBYTAGS">
+    <Resource tag="DELETE_ALL">Delete tag</Resource>
+    <Resource tag="DELETE_SELECTED">Delete From Selected</Resource>
+    <Resource tag="SELECTIT">Select:</Resource>
     <Resource tag="TAGS_LIST">Tags: {0}</Resource>
     <Resource tag="TAGS_MORE">More Tags:</Resource>
     <Resource tag="TITLE">Topics by tags</Resource>
+    <Resource tag="TOPIC">Topic:</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]Teşekkür Bulunamadı.[/b]</Resource>

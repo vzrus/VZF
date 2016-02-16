@@ -1051,7 +1051,7 @@
     <Resource tag="AVATAR_UPLOAD_HELP">Разрешить пользователям загружать аватары в профиле.</Resource>
     <Resource tag="AVATAR_WIDTH">Ширина аватара:</Resource>
     <Resource tag="AVATAR_WIDTH_HELP">Максимальная ширина аватара.</Resource>
-    <Resource tag="BOARDTAGPERPAGE">Number of tags per page.</Resource>
+    <Resource tag="BOARDTAGPERPAGE">Кол-во тэгов на странице.</Resource>
     <Resource tag="BOARDTAGPERPAGE_HELP">The number of tags displayed on board page.</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER">Включить CAPTCHA/reCAPTCHA при регистрации:</Resource>
     <Resource tag="CAPTCHA_FOR_REGISTER_HELP">Требовать от пользователей ввести данные CAPTCHA при регистрации на форуме.</Resource>
@@ -1379,8 +1379,8 @@
     <Resource tag="SHOW_ATOM_LINKS_HELP">Отображать ссылки на ленты Atom по всему форумы. Вы должны также включить индивидуальные ленты.</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS">Показывать аватары в списке тем:</Resource>
     <Resource tag="SHOW_AVATARS_TOPICLISTS_HELP">На страницах со списком тем будут отображены миниатюры аватаров.</Resource>
-    <Resource tag="SHOW_BOARDTAGS">Display board tags.</Resource>
-    <Resource tag="SHOW_BOARDTAGS_HELP">Display board tags on the main page.</Resource>
+    <Resource tag="SHOW_BOARDTAGS">Отображать тэги всей конференции.</Resource>
+    <Resource tag="SHOW_BOARDTAGS_HELP">Отображать тэги конференции на главной странице.</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE">Отображать ботов в активных пользователях:</Resource>
     <Resource tag="SHOW_BOTS_INACTIVE_HELP">Боты будут отображаться в активных пользователях, иначе они будут обрабатываться как гости.</Resource>
     <Resource tag="SHOW_DEL_MESSAGES">Показывать удалённые сообщения:</Resource>
@@ -1483,11 +1483,11 @@
     <Resource tag="TOPICFEED_COUNT_HELP">Максимальное число тем в Atom/Rss лентах форума.</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT">Максимальная высота изображения темы:</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT_HELP">Максимальная высота изображения темы в пикс.</Resource>
-    <Resource tag="TOPICIMAGE_THUMB">Use topic image thumbnail.</Resource>
-    <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
-    <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
-    <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>
-    <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">The max width of the topic thumbnail images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB">Использовать уменьшенные изображения для заголовков тем.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Высота изображения заголовка темы:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">Максимальная высота ихображения темы в px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH">Ширина изображения заголовка темы:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">Максимальная ширина изображения заголовка темы в px.</Resource>
     <Resource tag="TOPICIMAGE_WIDTH">Максимальная ширина изображения темы:</Resource>
     <Resource tag="TOPICIMAGE_WIDTH_HELP">Максимальная ширина изображения темы в пикс.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Темы на странице:</Resource>
@@ -4263,8 +4263,8 @@ Spoiler Content
     <Resource tag="CONFIRM_DELETE">Удалить эту тему?</Resource>
     <Resource tag="CONFIRM_DELETE_USER">Удалить этого пользователя из особого доступа к форуму?</Resource>
     <Resource tag="CONFIRM_DELETETOPICLINK">Удалить эту ссылку на тему? Сама тема удалена не будет.</Resource>
-    <Resource tag="CONFIRM_ERASE">Do you really want completely delete the topic?</Resource>
-    <Resource tag="CONFIRM_RESTORE">Do you really want restore the topic?</Resource>
+    <Resource tag="CONFIRM_ERASE">Вы действительно желаете полностью дуалить эту тему?</Resource>
+    <Resource tag="CONFIRM_RESTORE">Вы действительно желаете восстановить эту тему?</Resource>
     <Resource tag="DELETED">Тема удалена.</Resource>
     <Resource tag="EDIT">Изменить</Resource>
     <Resource tag="INVITE">Пригласить пользователя</Resource>
@@ -4329,7 +4329,7 @@ Spoiler Content
     <Resource tag="CREATE_TOPIC">Создать новую тему из сообщения</Resource>
     <Resource tag="EMPTY_TOPIC">Отсутствует название темы</Resource>
     <Resource tag="ENTER_TOPIC_MOVETO">Введите идентификатор темы в которую нужно переместить сообщение:</Resource>
-    <Resource tag="ENTER_VALID_TOPICID">Enter integer topic Id value!</Resource>
+    <Resource tag="ENTER_VALID_TOPICID">Введите целочисленный идентификатор темы!</Resource>
     <Resource tag="MOVE" />
     <Resource tag="MOVE_MESSAGE">Переместить сообщение</Resource>
     <Resource tag="MOVE_TITLE">Переместить сообщение в другую тему</Resource>
@@ -4391,19 +4391,19 @@ Spoiler Content
     <Resource tag="UPDATE">Обновить</Resource>
   </page>
   <page name="PERSONALFORUM">
-    <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
+    <Resource tag="DELETINGUNDERWAY">Форум запланирован для удаления.</Resource>
     <Resource tag="NEW_FORUM">Новый форум</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="TITLE">Личные форумы</Resource>
   </page>
   <page name="PERSONALFORUM_EDIT">
     <Resource tag="CANCEL">Отмена</Resource>
-    <Resource tag="CATEGORYALLOWED">Select a category:</Resource>
-    <Resource tag="CATEGORYALLOWED_HELP">You can create it directly in the categories from the list.</Resource>
-    <Resource tag="FORUMALLOWED">Select a forum:</Resource>
-    <Resource tag="FORUMALLOWED_HELP">You can create it as subforum? just select a category and then a forum.</Resource>
-    <Resource tag="FORUMCATEGORYALLOWED">Select a category to filter forums:</Resource>
-    <Resource tag="NOTSELECTED">You didn't pick a place to create your personal forum in.</Resource>
+    <Resource tag="CATEGORYALLOWED">Выберите категорию:</Resource>
+    <Resource tag="CATEGORYALLOWED_HELP">Вы можете создавать прямов категории из списка.</Resource>
+    <Resource tag="FORUMALLOWED">Выберите форум:</Resource>
+    <Resource tag="FORUMALLOWED_HELP">Вы можете создать форум как подфорум, выберите категории и затем форум.</Resource>
+    <Resource tag="FORUMCATEGORYALLOWED">Выберите категорию для выбора форума:</Resource>
+    <Resource tag="NOTSELECTED">Вы не выбрали место в котором хотите создать персональный форум(блог).</Resource>
     <Resource tag="SAVE">Сохранить</Resource>
     <Resource tag="TITLE_CREATE">Создание личного форума</Resource>
     <Resource tag="TITLE_EDIT">Редактирование личного форума</Resource>
@@ -4664,7 +4664,7 @@ Spoiler Content
     <Resource tag="SKYPE">SKYPE</Resource>
     <Resource tag="SKYPE_TITLE">Соединиться с {0} через Skype</Resource>
     <Resource tag="STATISTICS">Статистика</Resource>
-    <Resource tag="TAGS_POSTS">Tags:</Resource>
+    <Resource tag="TAGS_POSTS">Тэги:</Resource>
     <Resource tag="THANKSFROM">Сказал(а) «Спасибо»: {0} раз</Resource>
     <Resource tag="THANKSFROM_FEM">Сказала «Спасибо»: {0} раз</Resource>
     <Resource tag="THANKSFROM_MUSC">Сказал «Спасибо»: {0} раз</Resource>
@@ -5034,8 +5034,8 @@ Spoiler Content
     <Resource tag="TITLE">Доступные смайлы</Resource>
   </page>
   <page name="TAGSBOARD">
-    <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
-    <Resource tag="TITLE">Board Tags</Resource>
+    <Resource tag="TAGS_BOARD_LNK">Тэги</Resource>
+    <Resource tag="TITLE">Тэги конференции</Resource>
   </page>
   <page name="TASKS_RUNNING">
     <Resource tag="CLEANUPTASK">Задача очистки</Resource>

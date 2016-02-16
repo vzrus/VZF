@@ -18,6 +18,13 @@
             <param name="persianDate"></param>
             <returns></returns>
         </member>
+        <member name="M:FarsiLibrary.Formatter.ITimeFormat.Format(FarsiLibrary.Formatter.Duration)">
+            <summary>
+            Formats a duration
+            </summary>
+            <param name="duration"></param>
+            <returns></returns>
+        </member>
         <member name="P:FarsiLibrary.Formatter.ITimeUnit.MillisPerUnit">
             <summary>
             The number of milliseconds represented by each 
@@ -45,33 +52,10 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FarsiLibrary.Formatter.ITimeFormat.Format(FarsiLibrary.Formatter.Duration)">
-            <summary>
-            Formats a duration
-            </summary>
-            <param name="duration"></param>
-            <returns></returns>
-        </member>
         <member name="T:FarsiLibrary.Internals.CultureHelper">
             <summary>
             Base culture information
             </summary>
-        </member>
-        <member name="M:FarsiLibrary.Internals.CultureHelper.GetDayOfWeek(System.DateTime,System.Globalization.Calendar)">
-            <summary>
-            Returns the day of week based on calendar.
-            </summary>
-            <param name="dt"></param>
-            <param name="calendar"></param>
-            <returns></returns>
-        </member>
-        <member name="M:FarsiLibrary.Internals.CultureHelper.GetCultureDayOfWeek(System.Int32,System.Globalization.CultureInfo)">
-            <summary>
-            Finds the corresponding DayOfWeek in specified culture
-            </summary>
-            <param name="day"></param>
-            <param name="culture"></param>
-            <returns></returns>
         </member>
         <member name="P:FarsiLibrary.Internals.CultureHelper.CurrentCulture">
             <summary>
@@ -98,10 +82,26 @@
             Instance of Neutral culture
             </summary>
         </member>
+        <member name="M:FarsiLibrary.Internals.CultureHelper.GetDayOfWeek(System.DateTime,System.Globalization.Calendar)">
+            <summary>
+            Returns the day of week based on calendar.
+            </summary>
+            <param name="dt"></param>
+            <param name="calendar"></param>
+            <returns></returns>
+        </member>
         <member name="P:FarsiLibrary.Internals.CultureHelper.CurrentCalendar">
             <summary>
             Returns the default calendar for the current culture.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarsiLibrary.Internals.CultureHelper.GetCultureDayOfWeek(System.Int32,System.Globalization.CultureInfo)">
+            <summary>
+            Finds the corresponding DayOfWeek in specified culture
+            </summary>
+            <param name="day"></param>
+            <param name="culture"></param>
             <returns></returns>
         </member>
         <member name="T:FarsiLibrary.Internals.Guard">
@@ -245,6 +245,21 @@
             
             If the value of the months parameter is negative, the resulting DateTime would be earlier than the specified DateTime.
             </remarks>
+        </member>
+        <member name="P:FarsiLibrary.PersianCalendar.AlgorithmType">
+            <summary>
+            Algorithm Type
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianCalendar.MaxSupportedDateTime">
+            <summary>
+            Maximum supported date time by this calendar.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianCalendar.MinSupportedDateTime">
+            <summary>
+            Minimum supported date time by this calendar.
+            </summary>
         </member>
         <member name="M:FarsiLibrary.PersianCalendar.AddYears(System.DateTime,System.Int32)">
             <summary>
@@ -407,6 +422,19 @@
             <remarks>TwoDigitYearMax is the last year in the 100-year 
             range that can be represented by a two-digit year. The century is determined by finding the sole occurrence of the two-digit year within that 100-year range. For example, if TwoDigitYearMax is set to 1429, the 100-year range is from 1330 to 1429; therefore, a 2-digit value of 30 is interpreted as 1330, while a 2-digit value of 29 is interpreted as 1429.</remarks>
         </member>
+        <member name="P:FarsiLibrary.PersianCalendar.Eras">
+            <summary>
+            Gets the list of eras in the PersianCalendar.
+            </summary>
+            <remarks>The Persian calendar recognizes one era: A.P. (Latin "Anno Persarum", which means "the year of/for Persians").</remarks>
+        </member>
+        <member name="P:FarsiLibrary.PersianCalendar.TwoDigitYearMax">
+            <summary>
+            Gets and sets the last year of a 100-year range that can be represented by a 2-digit year.
+            </summary>
+            <property_value>The last year of a 100-year range that can be represented by a 2-digit year.</property_value>
+            <remarks>This property allows a 2-digit year to be properly translated to a 4-digit year. For example, if this property is set to 1429, the 100-year range is from 1330 to 1429; therefore, a 2-digit value of 30 is interpreted as 1330, while a 2-digit value of 29 is interpreted as 1429.</remarks>
+        </member>
         <member name="M:FarsiLibrary.PersianCalendar.GetCentury(System.DateTime)">
             <summary>
             Gets the century of the specified DateTime.
@@ -423,34 +451,6 @@
             <returns>An integer representing the number of leap years that have occured by the year specified.</returns>
             <remarks>In the Persian calendar leap years are applied every 4 or 5 years according to a certain pattern that iterates in a 2820-year cycle. A common year has 365 days and a leap year has 366 days.</remarks>
         </member>
-        <member name="P:FarsiLibrary.PersianCalendar.AlgorithmType">
-            <summary>
-            Algorithm Type
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianCalendar.MaxSupportedDateTime">
-            <summary>
-            Maximum supported date time by this calendar.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianCalendar.MinSupportedDateTime">
-            <summary>
-            Minimum supported date time by this calendar.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianCalendar.Eras">
-            <summary>
-            Gets the list of eras in the PersianCalendar.
-            </summary>
-            <remarks>The Persian calendar recognizes one era: A.P. (Latin "Anno Persarum", which means "the year of/for Persians").</remarks>
-        </member>
-        <member name="P:FarsiLibrary.PersianCalendar.TwoDigitYearMax">
-            <summary>
-            Gets and sets the last year of a 100-year range that can be represented by a 2-digit year.
-            </summary>
-            <property_value>The last year of a 100-year range that can be represented by a 2-digit year.</property_value>
-            <remarks>This property allows a 2-digit year to be properly translated to a 4-digit year. For example, if this property is set to 1429, the 100-year range is from 1330 to 1429; therefore, a 2-digit value of 30 is interpreted as 1330, while a 2-digit value of 29 is interpreted as 1429.</remarks>
-        </member>
         <member name="T:FarsiLibrary.PersianCultureInfo">
             <summary>
             CultureInfo for "FA-IR" culture, which has correct calendar information.
@@ -460,14 +460,6 @@
             <summary>
             Initializes a new instance of the <see cref="T:FarsiLibrary.PersianCultureInfo"/> class.
             </summary>
-        </member>
-        <member name="M:FarsiLibrary.PersianCultureInfo.Clone">
-            <summary>
-            Creates a copy of the current <see cref="T:System.Globalization.CultureInfo"/>.
-            </summary>
-            <returns>
-            A copy of the current <see cref="T:System.Globalization.CultureInfo"/>.
-            </returns>
         </member>
         <member name="P:FarsiLibrary.PersianCultureInfo.Calendar">
             <summary>
@@ -485,6 +477,14 @@
             <value></value>
             <returns>
             An array of type <see cref="T:System.Globalization.Calendar"/> that represents the calendars that can be used by the culture represented by the current <see cref="T:System.Globalization.CultureInfo"/>.
+            </returns>
+        </member>
+        <member name="M:FarsiLibrary.PersianCultureInfo.Clone">
+            <summary>
+            Creates a copy of the current <see cref="T:System.Globalization.CultureInfo"/>.
+            </summary>
+            <returns>
+            A copy of the current <see cref="T:System.Globalization.CultureInfo"/>.
             </returns>
         </member>
         <member name="P:FarsiLibrary.PersianCultureInfo.DateTimeFormat">
@@ -521,6 +521,71 @@
         <member name="M:FarsiLibrary.PersianDate.#cctor">
             <summary>
             Static constructor initializes Now property of PersianDate and Min/Max values.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Now">
+            <summary>
+            Current date/time in PersianDate format.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Year">
+            <summary>
+            Year value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Month">
+            <summary>
+            Month value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Day">
+            <summary>
+            Day value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Hour">
+            <summary>
+            Hour value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Minute">
+            <summary>
+            Minute value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Second">
+            <summary>
+            Second value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Millisecond">
+            <summary>
+            Millisecond value of PersianDate.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.Time">
+            <summary>
+            Time value of PersianDate in TimeSpan format.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.DayOfWeek">
+            <summary>
+            Returns the DayOfWeek of the date instance
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.LocalizedMonthName">
+            <summary>
+            Localized name of PersianDate months.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.LocalizedWeekDayName">
+            <summary>
+            Weekday names of this instance in localized format.
+            </summary>
+        </member>
+        <member name="P:FarsiLibrary.PersianDate.MonthDays">
+            <summary>
+            Number of days in this month.
             </summary>
         </member>
         <member name="M:FarsiLibrary.PersianDate.#ctor(System.String,System.TimeSpan)">
@@ -781,71 +846,6 @@
             <param name="formatProvider"></param>
             <returns></returns>
         </member>
-        <member name="P:FarsiLibrary.PersianDate.Now">
-            <summary>
-            Current date/time in PersianDate format.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Year">
-            <summary>
-            Year value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Month">
-            <summary>
-            Month value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Day">
-            <summary>
-            Day value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Hour">
-            <summary>
-            Hour value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Minute">
-            <summary>
-            Minute value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Second">
-            <summary>
-            Second value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Millisecond">
-            <summary>
-            Millisecond value of PersianDate.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.Time">
-            <summary>
-            Time value of PersianDate in TimeSpan format.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.DayOfWeek">
-            <summary>
-            Returns the DayOfWeek of the date instance
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.LocalizedMonthName">
-            <summary>
-            Localized name of PersianDate months.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.LocalizedWeekDayName">
-            <summary>
-            Weekday names of this instance in localized format.
-            </summary>
-        </member>
-        <member name="P:FarsiLibrary.PersianDate.MonthDays">
-            <summary>
-            Number of days in this month.
-            </summary>
-        </member>
         <member name="T:FarsiLibrary.PersianDateConverter">
             <summary>Class to convert PersianDate into normal DateTime value and vice versa.
             <seealso cref="T:FarsiLibrary.PersianDate"/>
@@ -928,11 +928,6 @@
             Localizer class used to get string values of Arabic language.
             </summary>
         </member>
-        <member name="T:FarsiLibrary.Resources.FALocalizer">
-            <summary>
-            Farsi Localizer
-            </summary>
-        </member>
         <member name="M:FarsiLibrary.Resources.ARLocalizer.GetLocalizedString(FarsiLibrary.Resources.StringID)">
             <summary>
             Gets a localized string for Arabic culture, for specified <see cref="T:FarsiLibrary.Resources.StringID"/>.
@@ -945,6 +940,11 @@
             Localizer class to work with internal localized strings.
             </summary>
         </member>
+        <member name="E:FarsiLibrary.Resources.FALocalizeManager.LocalizerChanged">
+            <summary>
+            Fired when Localizer has changed.
+            </summary>
+        </member>
         <member name="M:FarsiLibrary.Resources.FALocalizeManager.GetLocalizer">
             <summary>
             Returns an instance of the localized based on CurrentUICulture of the thread.
@@ -954,17 +954,6 @@
         <member name="M:FarsiLibrary.Resources.FALocalizeManager.GetLocalizerByCulture(System.Globalization.CultureInfo)">
             <summary>
             Returns a localizer instance based on the culture.
-            </summary>
-        </member>
-        <member name="M:FarsiLibrary.Resources.FALocalizeManager.OnLocalizerChanged(System.EventArgs)">
-            <summary>
-            Fires the LocalizerChanged event.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="E:FarsiLibrary.Resources.FALocalizeManager.LocalizerChanged">
-            <summary>
-            Fired when Localizer has changed.
             </summary>
         </member>
         <member name="P:FarsiLibrary.Resources.FALocalizeManager.Instance">
@@ -995,6 +984,17 @@
         <member name="P:FarsiLibrary.Resources.FALocalizeManager.CustomLocalizer">
             <summary>
             Gets or Sets a new instance of Localizer. If this value is initialized (default is null), Localize Manager class will use the custom class provided, to interpret localized strings.
+            </summary>
+        </member>
+        <member name="M:FarsiLibrary.Resources.FALocalizeManager.OnLocalizerChanged(System.EventArgs)">
+            <summary>
+            Fires the LocalizerChanged event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:FarsiLibrary.Resources.FALocalizer">
+            <summary>
+            Farsi Localizer
             </summary>
         </member>
         <member name="T:FarsiLibrary.Resources.StringID">

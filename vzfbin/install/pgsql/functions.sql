@@ -434,8 +434,7 @@ begin
 			FROM {databaseSchema}.{objectQualifier}registry
 			WHERE LOWER("name") = LOWER(i_name) and  boardid = i_boardid;    
 	
-	ELSE
-	
+	ELSE	
 		 SELECT "value"::text INTO ici_returnValue
 			FROM {databaseSchema}.{objectQualifier}registry
 			WHERE LOWER("name") = LOWER(i_name) and
@@ -449,48 +448,3 @@ END$BODY$
   COST 100; 
 --GO
 
-CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}topic_tagsave(i_topicid integer,
-						   i_messageidsstr text)
-				  RETURNS void AS
-$BODY$
-DECLARE 
-i_messageids varchar[];
-i integer :=1;
-i_tagid INT;
-i_tagids int[];
-BEGIN
-   -- delete tags
-	DELETE FROM {databaseSchema}.{objectQualifier}topictags where topicid = i_topicid;
-
- i_messageids = string_to_array(i_messageidsstr,',');
- -- i := 1; 
-  WHILE i_messageids[i] IS NOT NULL LOOP
-		UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where lower(tag) = lower(i_messageids[i]) returning tagid into i_tagid ;
-		IF NOT found THEN
-		BEGIN
-			INSERT INTO {databaseSchema}.{objectQualifier}tags(tag) VALUES (i_messageids[i]) returning tagid into i_tagid ;
-		EXCEPTION WHEN unique_violation THEN
-			UPDATE {databaseSchema}.{objectQualifier}tags SET tag = i_messageids[i] where lower(tag) = lower(i_messageids[i]) returning tagid into i_tagid ;
-		END;
-		END IF;
-
-		UPDATE {databaseSchema}.{objectQualifier}topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
-		IF NOT found THEN
-		BEGIN
-			INSERT INTO {databaseSchema}.{objectQualifier}topictags(tagid, topicid) VALUES (i_tagid, i_topicid);
-			-- increase tag count
-			
-		EXCEPTION WHEN unique_violation THEN
-			UPDATE {databaseSchema}.{objectQualifier}topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
-		    
-		END;
-		END IF;
-			UPDATE {databaseSchema}.{objectQualifier}tags SET tagcount = (SELECT Count(tagid) from {databaseSchema}.{objectQualifier}topictags WHERE tagid = i_tagid) where tagid = i_tagid;	
-  i := i + 1; 
- END LOOP;
-
-RETURN;
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
---GO

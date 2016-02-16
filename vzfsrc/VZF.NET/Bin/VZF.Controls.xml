@@ -9,47 +9,6 @@
             Provides Active Users location info
             </summary>
         </member>
-        <member name="M:VZF.Controls.ActiveLocation.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="output">
-            The output.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.ActiveLocation.Album(System.String)">
-            <summary>
-            A method to get album path string.
-            </summary>
-            <param name="forumPageAttributes">
-            A page query string cleared from page name.
-            </param>
-            <returns>
-            The string
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.ActiveLocation.Albums(System.String)">
-            <summary>
-            A method to get albums path string.
-            </summary>
-            <param name="forumPageAttributes">
-            A page query string cleared from page name.
-            </param>
-            <returns>
-            The string
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.ActiveLocation.Profile(System.String)">
-            <summary>
-            The profile.
-            </summary>
-            <param name="forumPageAttributes">
-            The forum page attributes.
-            </param>
-            <returns>
-            The profile.
-            </returns>
-        </member>
         <member name="P:VZF.Controls.ActiveLocation.ForumID">
             <summary>
               Gets or sets the ForumID of the current location
@@ -96,6 +55,47 @@
               Gets or sets the UserName of the current user
             </summary>
         </member>
+        <member name="M:VZF.Controls.ActiveLocation.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="output">
+            The output.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.ActiveLocation.Album(System.String)">
+            <summary>
+            A method to get album path string.
+            </summary>
+            <param name="forumPageAttributes">
+            A page query string cleared from page name.
+            </param>
+            <returns>
+            The string
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.ActiveLocation.Albums(System.String)">
+            <summary>
+            A method to get albums path string.
+            </summary>
+            <param name="forumPageAttributes">
+            A page query string cleared from page name.
+            </param>
+            <returns>
+            The string
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.ActiveLocation.Profile(System.String)">
+            <summary>
+            The profile.
+            </summary>
+            <param name="forumPageAttributes">
+            The forum page attributes.
+            </param>
+            <returns>
+            The profile.
+            </returns>
+        </member>
         <member name="T:VZF.Controls.ActiveUsers">
             <summary>
             Control displaying list of user currently active on a forum.
@@ -105,22 +105,6 @@
             <summary>
               The _active user table.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.ActiveUsers.OnPreRender(System.EventArgs)">
-            <summary>
-            Raises PreRender event and prepares control for rendering by creating links to active users.
-            </summary>
-            <param name="e">
-            The e.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.ActiveUsers.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Implements rendering of control to the client through use of <see cref="T:System.Web.UI.HtmlTextWriter"/>.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
         </member>
         <member name="P:VZF.Controls.ActiveUsers.ActiveUserTable">
             <summary>
@@ -142,6 +126,22 @@
             default to the ID being string.Empty. 
             </remarks> 
         </member>
+        <member name="M:VZF.Controls.ActiveUsers.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises PreRender event and prepares control for rendering by creating links to active users.
+            </summary>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.ActiveUsers.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Implements rendering of control to the client through use of <see cref="T:System.Web.UI.HtmlTextWriter"/>.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
         <member name="T:VZF.Controls.AlbumListPopMenu">
             <summary>
             Albums Image List Selector Menu
@@ -159,7 +159,27 @@
         </member>
         <member name="M:VZF.Controls.AlbumListPopMenu.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.AlbumListPopMenu"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.AlbumListPopMenu" /> class.
+            </summary>
+        </member>
+        <member name="E:VZF.Controls.AlbumListPopMenu.ItemClick">
+            <summary>
+              The item click.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.AlbumListPopMenu.Control">
+            <summary>
+              Gets or sets Control.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.AlbumListPopMenu.ControlOnClick">
+            <summary>
+              Gets ControlOnClick.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.AlbumListPopMenu.ControlOnMouseOver">
+            <summary>
+              Gets ControlOnMouseOver.
             </summary>
         </member>
         <member name="M:VZF.Controls.AlbumListPopMenu.AddClientScriptItem(System.String,System.String,System.String)">
@@ -223,26 +243,6 @@
             <param name="sender">The source of the event.</param>
             <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="E:VZF.Controls.AlbumListPopMenu.ItemClick">
-            <summary>
-              The item click.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.AlbumListPopMenu.Control">
-            <summary>
-              Gets or sets Control.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.AlbumListPopMenu.ControlOnClick">
-            <summary>
-              Gets ControlOnClick.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.AlbumListPopMenu.ControlOnMouseOver">
-            <summary>
-              Gets ControlOnMouseOver.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.InternalAlbumListItem">
             <summary>
             The internal pop menu item.
@@ -288,6 +288,11 @@
         <member name="T:VZF.Controls.ForumJump">
             <summary>
             Summary description for ForumJump.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ForumJump.ForumID">
+            <summary>
+              Gets or sets ForumID.
             </summary>
         </member>
         <member name="M:VZF.Controls.ForumJump.LoadPostData(System.String,System.Collections.Specialized.NameValueCollection)">
@@ -336,11 +341,6 @@
             The e.
             </param>
         </member>
-        <member name="P:VZF.Controls.ForumJump.ForumID">
-            <summary>
-              Gets or sets ForumID.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.PopupPanel">
             <summary>
             The popup panel.
@@ -349,6 +349,26 @@
         <member name="M:VZF.Controls.PopupPanel.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:VZF.Controls.PopupPanel"/> class.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopupPanel.AttachToControl">
+            <summary>
+              Gets or sets Control.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopupPanel.ControlOnClick">
+            <summary>
+              Gets ControlOnClick.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopupPanel.ControlOnMouseOver">
+            <summary>
+              Gets ControlOnMouseOver.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopupPanel.InternalCssClass">
+            <summary>
+            Gets InternalCssClass.
             </summary>
         </member>
         <member name="M:VZF.Controls.PopupPanel.Attach(System.Web.UI.WebControls.WebControl)">
@@ -386,26 +406,6 @@
             The e.
             </param>
         </member>
-        <member name="P:VZF.Controls.PopupPanel.AttachToControl">
-            <summary>
-              Gets or sets Control.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PopupPanel.ControlOnClick">
-            <summary>
-              Gets ControlOnClick.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PopupPanel.ControlOnMouseOver">
-            <summary>
-              Gets ControlOnMouseOver.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PopupPanel.InternalCssClass">
-            <summary>
-            Gets InternalCssClass.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.CountryListBox">
             <summary>
             Custom DropDown List Controls with Images
@@ -426,7 +426,37 @@
         </member>
         <member name="M:VZF.Controls.SimpleTagCloud.#ctor">
             <summary>
-             Initializes a new instance of the <see cref="T:VZF.Controls.SimpleTagCloud"/> class.
+             Initializes a new instance of the <see cref = "T:VZF.Controls.SimpleTagCloud" /> class.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.SimpleTagCloud.TopicId">
+            <summary>
+              Gets or sets TopicId.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.SimpleTagCloud.ForumId">
+            <summary>
+              Gets or sets ForumId.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.SimpleTagCloud.BoardId">
+            <summary>
+             Gets or sets BoardId.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.SimpleTagCloud.TagsData">
+            <summary>
+             Gets or sets TagsData.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.SimpleTagCloud.PageIndex">
+            <summary>
+             Gets or sets PageIndex.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.SimpleTagCloud.PageSize">
+            <summary>
+             Gets or sets PageSize.
             </summary>
         </member>
         <member name="M:VZF.Controls.SimpleTagCloud.GetTagCloudHtml(System.Data.DataTable)">
@@ -473,39 +503,14 @@
             The e.
             </param>
         </member>
-        <member name="P:VZF.Controls.SimpleTagCloud.TopicId">
-            <summary>
-              Gets or sets TopicId.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SimpleTagCloud.ForumId">
-            <summary>
-              Gets or sets ForumId.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SimpleTagCloud.BoardId">
-            <summary>
-             Gets or sets BoardId.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SimpleTagCloud.TagsData">
-            <summary>
-             Gets or sets TagsData.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SimpleTagCloud.PageIndex">
-            <summary>
-             Gets or sets PageIndex.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SimpleTagCloud.PageSize">
-            <summary>
-             Gets or sets PageSize.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.RoleRankStyles">
             <summary>
             Control displaying list of user currently active on a forum.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RoleRankStyles.RawStyles">
+            <summary>
+              Gets or sets styles data string to display in control.
             </summary>
         </member>
         <member name="M:VZF.Controls.RoleRankStyles.Render(System.Web.UI.HtmlTextWriter)">
@@ -515,11 +520,6 @@
             <param name="writer">
             The writer.
             </param>
-        </member>
-        <member name="P:VZF.Controls.RoleRankStyles.RawStyles">
-            <summary>
-              Gets or sets styles data string to display in control.
-            </summary>
         </member>
         <member name="T:VZF.Controls.ILocalizationSupport">
             <summary>
@@ -624,14 +624,6 @@
             The _param 2.
             </summary>
         </member>
-        <member name="M:VZF.Controls.LocalizedCustomValidator.OnLoad(System.EventArgs)">
-            <summary>
-            The on load.
-            </summary>
-            <param name="e">
-            The e.
-            </param>
-        </member>
         <member name="P:VZF.Controls.LocalizedCustomValidator.EnableBBCode">
             <summary>
             Gets or sets a value indicating whether EnableBBCode.
@@ -666,6 +658,14 @@
             <summary>
             Gets or sets Param2.
             </summary>
+        </member>
+        <member name="M:VZF.Controls.LocalizedCustomValidator.OnLoad(System.EventArgs)">
+            <summary>
+            The on load.
+            </summary>
+            <param name="e">
+            The e.
+            </param>
         </member>
         <member name="T:VZF.Controls.LocalizedRequiredFieldValidator">
             <summary>
@@ -702,14 +702,6 @@
             The _param 2.
             </summary>
         </member>
-        <member name="M:VZF.Controls.LocalizedRequiredFieldValidator.OnLoad(System.EventArgs)">
-            <summary>
-            The on load.
-            </summary>
-            <param name="e">
-            The e.
-            </param>
-        </member>
         <member name="P:VZF.Controls.LocalizedRequiredFieldValidator.EnableBBCode">
             <summary>
             Gets or sets a value indicating whether EnableBBCode.
@@ -744,6 +736,14 @@
             <summary>
             Gets or sets Param2.
             </summary>
+        </member>
+        <member name="M:VZF.Controls.LocalizedRequiredFieldValidator.OnLoad(System.EventArgs)">
+            <summary>
+            The on load.
+            </summary>
+            <param name="e">
+            The e.
+            </param>
         </member>
         <member name="T:VZF.Controls.HelpLabel">
             <summary>
@@ -810,13 +810,6 @@
             Initializes a new instance of the <see cref="T:VZF.Controls.HelpLabel"/> class.
             </summary>
         </member>
-        <member name="M:VZF.Controls.HelpLabel.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Shows the localized text string (if available)
-            </summary>
-            <param name="output">
-            </param>
-        </member>
         <member name="P:VZF.Controls.HelpLabel.EnableBBCode">
             <summary>
             Gets or sets a value indicating whether EnableBBCode.
@@ -872,6 +865,13 @@
             Gets or sets ParamHelp2.
             </summary>
         </member>
+        <member name="M:VZF.Controls.HelpLabel.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Shows the localized text string (if available)
+            </summary>
+            <param name="output">
+            </param>
+        </member>
         <member name="T:VZF.Controls.MessageBox">
             <summary>
             The MessagBox
@@ -881,35 +881,6 @@
             <summary>
               The buttons.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.MessageBox.CreateBox(System.Web.UI.Control)">
-            <summary>
-            The create default box.
-            </summary>
-            <param name="template">
-            The template.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.MessageBox.CreateChildControls">
-            <summary>
-            Overrides the <see cref="M:System.Web.UI.Control.CreateChildControls"/> method.
-            </summary>
-        </member>
-        <member name="M:VZF.Controls.MessageBox.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.MessageBox.OnPreRender(System.EventArgs)">
-            <summary>
-            The On PreRender event.
-            </summary>
-            <param name="e">
-            the Event Arguments
-            </param>
         </member>
         <member name="P:VZF.Controls.MessageBox.BodyTemplate">
             <summary>
@@ -940,6 +911,35 @@
             <summary>
               Gets or sets Title.
             </summary>
+        </member>
+        <member name="M:VZF.Controls.MessageBox.CreateBox(System.Web.UI.Control)">
+            <summary>
+            The create default box.
+            </summary>
+            <param name="template">
+            The template.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.MessageBox.CreateChildControls">
+            <summary>
+            Overrides the <see cref="M:System.Web.UI.Control.CreateChildControls"/> method.
+            </summary>
+        </member>
+        <member name="M:VZF.Controls.MessageBox.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.MessageBox.OnPreRender(System.EventArgs)">
+            <summary>
+            The On PreRender event.
+            </summary>
+            <param name="e">
+            the Event Arguments
+            </param>
         </member>
         <member name="T:VZF.Controls.PopEventArgs">
             <summary>
@@ -1031,7 +1031,54 @@
         </member>
         <member name="M:VZF.Controls.RecaptchaControl.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.RecaptchaControl"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.RecaptchaControl" /> class.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.AllowMultipleInstances">
+            <summary>
+              Gets or sets a value indicating whether AllowMultipleInstances.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.CustomThemeWidget">
+            <summary>
+              Gets or sets CustomThemeWidget.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.ErrorMessage">
+            <summary>
+              Gets or sets ErrorMessage.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.IsValid">
+            <summary>
+              Gets or sets a value indicating whether IsValid.
+            </summary>
+            <exception cref = "T:System.NotImplementedException">
+            </exception>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.OverrideSecureMode">
+            <summary>
+              Gets or sets a value indicating whether OverrideSecureMode.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.PrivateKey">
+            <summary>
+              Gets or sets PrivateKey.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.PublicKey">
+            <summary>
+              Gets or sets PublicKey.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.SkipRecaptcha">
+            <summary>
+              Gets or sets a value indicating whether SkipRecaptcha.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaControl.Theme">
+            <summary>
+              Gets or sets Theme.
             </summary>
         </member>
         <member name="M:VZF.Controls.RecaptchaControl.Validate">
@@ -1084,53 +1131,6 @@
             The generate challenge url.
             </returns>
         </member>
-        <member name="P:VZF.Controls.RecaptchaControl.AllowMultipleInstances">
-            <summary>
-              Gets or sets a value indicating whether AllowMultipleInstances.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.CustomThemeWidget">
-            <summary>
-              Gets or sets CustomThemeWidget.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.ErrorMessage">
-            <summary>
-              Gets or sets ErrorMessage.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.IsValid">
-            <summary>
-              Gets or sets a value indicating whether IsValid.
-            </summary>
-            <exception cref="T:System.NotImplementedException">
-            </exception>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.OverrideSecureMode">
-            <summary>
-              Gets or sets a value indicating whether OverrideSecureMode.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.PrivateKey">
-            <summary>
-              Gets or sets PrivateKey.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.PublicKey">
-            <summary>
-              Gets or sets PublicKey.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.SkipRecaptcha">
-            <summary>
-              Gets or sets a value indicating whether SkipRecaptcha.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaControl.Theme">
-            <summary>
-              Gets or sets Theme.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.RecaptchaResponse">
             <summary>
             The recaptcha response.
@@ -1172,6 +1172,16 @@
             The error code.
             </param>
         </member>
+        <member name="P:VZF.Controls.RecaptchaResponse.ErrorCode">
+            <summary>
+              Gets ErrorCode.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaResponse.IsValid">
+            <summary>
+              Gets a value indicating whether IsValid.
+            </summary>
+        </member>
         <member name="M:VZF.Controls.RecaptchaResponse.Equals(System.Object)">
             <summary>
             The equals.
@@ -1190,16 +1200,6 @@
             <returns>
             The get hash code.
             </returns>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaResponse.ErrorCode">
-            <summary>
-              Gets ErrorCode.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaResponse.IsValid">
-            <summary>
-              Gets a value indicating whether IsValid.
-            </summary>
         </member>
         <member name="T:VZF.Controls.RecaptchaValidator">
             <summary>
@@ -1226,6 +1226,28 @@
               The response.
             </summary>
         </member>
+        <member name="P:VZF.Controls.RecaptchaValidator.Challenge">
+            <summary>
+              Gets or sets Challenge.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaValidator.PrivateKey">
+            <summary>
+              Gets or sets PrivateKey.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaValidator.RemoteIP">
+            <summary>
+              Gets or sets RemoteIP.
+            </summary>
+            <exception cref = "T:System.ArgumentException">
+            </exception>
+        </member>
+        <member name="P:VZF.Controls.RecaptchaValidator.Response">
+            <summary>
+              Gets or sets Response.
+            </summary>
+        </member>
         <member name="M:VZF.Controls.RecaptchaValidator.Validate">
             <summary>
             The validate.
@@ -1248,40 +1270,10 @@
             <exception cref="T:System.ArgumentNullException">
             </exception>
         </member>
-        <member name="P:VZF.Controls.RecaptchaValidator.Challenge">
-            <summary>
-              Gets or sets Challenge.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaValidator.PrivateKey">
-            <summary>
-              Gets or sets PrivateKey.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaValidator.RemoteIP">
-            <summary>
-              Gets or sets RemoteIP.
-            </summary>
-            <exception cref="T:System.ArgumentException">
-            </exception>
-        </member>
-        <member name="P:VZF.Controls.RecaptchaValidator.Response">
-            <summary>
-              Gets or sets Response.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.BaseReportedPosts">
             <summary>
             Shows a Reporters for reported posts
             </summary>
-        </member>
-        <member name="M:VZF.Controls.BaseReportedPosts.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
         </member>
         <member name="P:VZF.Controls.BaseReportedPosts.MessageID">
             <summary>
@@ -1303,138 +1295,22 @@
               Gets or sets ResolvedDate.
             </summary>
         </member>
+        <member name="M:VZF.Controls.BaseReportedPosts.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
         <member name="T:VZF.Controls.OnlineStatusImage">
             <summary>
             Provides an Online/Offline status for a YAF User
             </summary>
         </member>
-        <member name="T:VZF.Controls.ThemeImage">
+        <member name="P:VZF.Controls.OnlineStatusImage.UserID">
             <summary>
-            Provides a image with themed src
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._alt">
-            <summary>
-              The _alt.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._cssClass">
-            <summary>
-              The css Class.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._enabled">
-            <summary>
-              The _enabled tag.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._localizedTitle">
-            <summary>
-              The _localized title ready.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._localizedTitlePage">
-            <summary>
-              The _localized title page.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._localizedTitleTag">
-            <summary>
-              The _localized title tag.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._style">
-            <summary>
-              The _style.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._themePage">
-            <summary>
-              The _theme page.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._themeTag">
-            <summary>
-              The _theme tag.
-            </summary>
-        </member>
-        <member name="F:VZF.Controls.ThemeImage._useTitleForEmptyAlt">
-            <summary>
-              The _use title for empty alt.
-            </summary>
-        </member>
-        <member name="M:VZF.Controls.ThemeImage.GetCurrentThemeItem">
-            <summary>
-            The get current theme item.
-            </summary>
-            <returns>
-            Current image alt value
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.ThemeImage.GetCurrentTitleItem">
-            <summary>
-            The get current title item.
-            </summary>
-            <returns>
-            The current title item string.
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.ThemeImage.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="output">
-            The output.
-            </param>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.Alt">
-            <summary>
-              Gets or sets Alt.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.CssClass">
-            <summary>
-              Gets or sets Style.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.Enabled">
-            <summary>
-              Gets or sets a value indicating whether the control is Active .
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.LocalizedTitle">
-            <summary>
-              Gets or sets LocalizedTitle.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.LocalizedTitlePage">
-            <summary>
-              Gets or sets LocalizedTitlePage.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.LocalizedTitleTag">
-            <summary>
-              Gets or sets LocalizedTitleTag.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.Style">
-            <summary>
-              Gets or sets Style.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.ThemePage">
-            <summary>
-              Gets or sets the ThemePage -- Defaults to "ICONS"
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.ThemeTag">
-            <summary>
-              Gets or sets the actual theme item
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.ThemeImage.UseTitleForEmptyAlt">
-            <summary>
-              Gets or sets a value indicating whether UseTitleForEmptyAlt.
+              The userid of the user.
             </summary>
         </member>
         <member name="M:VZF.Controls.OnlineStatusImage.Render(System.Web.UI.HtmlTextWriter)">
@@ -1444,11 +1320,6 @@
             <param name="output">
             The output.
             </param>
-        </member>
-        <member name="P:VZF.Controls.OnlineStatusImage.UserID">
-            <summary>
-              The userid of the user.
-            </summary>
         </member>
         <member name="T:VZF.Controls.RssFeedLink">
             <summary>
@@ -1472,35 +1343,8 @@
         </member>
         <member name="M:VZF.Controls.RssFeedLink.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.RssFeedLink"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.RssFeedLink" /> class.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.RssFeedLink.GetLocalizedTitle">
-            <summary>
-            The get localized title.
-            </summary>
-            <returns>
-            The get localized title.
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.RssFeedLink.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="output">
-            The output.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.RssFeedLink.RssFeedLink_Load(System.Object,System.EventArgs)">
-            <summary>
-            The rss icon link_ load.
-            </summary>
-            <param name="sender">
-            The sender.
-            </param>
-            <param name="e">
-            The e.
-            </param>
         </member>
         <member name="P:VZF.Controls.RssFeedLink.AdditionalParameters">
             <summary>
@@ -1572,44 +1416,51 @@
               Localized Tag for the optional link description (title)
             </summary>
         </member>
+        <member name="M:VZF.Controls.RssFeedLink.GetLocalizedTitle">
+            <summary>
+            The get localized title.
+            </summary>
+            <returns>
+            The get localized title.
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.RssFeedLink.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="output">
+            The output.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.RssFeedLink.RssFeedLink_Load(System.Object,System.EventArgs)">
+            <summary>
+            The rss icon link_ load.
+            </summary>
+            <param name="sender">
+            The sender.
+            </param>
+            <param name="e">
+            The e.
+            </param>
+        </member>
         <member name="T:VZF.Controls.SignaturePreview">
             <summary>
             The message signature.
             </summary>
         </member>
-        <member name="T:VZF.Controls.MessageBase">
+        <member name="P:VZF.Controls.SignaturePreview.DisplayUserID">
             <summary>
-            The message base.
+              Gets or sets DisplayUserID.
             </summary>
         </member>
-        <member name="F:VZF.Controls.MessageBase._Options">
+        <member name="P:VZF.Controls.SignaturePreview.MessageID">
             <summary>
-              The _options.
+              Gets or sets MessageID.
             </summary>
         </member>
-        <member name="M:VZF.Controls.MessageBase.RenderModulesInBBCode(System.Web.UI.HtmlTextWriter,System.String,YAF.Types.Flags.MessageFlags,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="P:VZF.Controls.SignaturePreview.Signature">
             <summary>
-            The render modules in bb code.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
-            <param name="messageStr">
-            The message Str.
-            </param>
-            <param name="theseFlags">
-            The these flags.
-            </param>
-            <param name="displayUserId">
-            The display user id.
-            </param>
-            <param name="messageId">
-            The Message Id.
-            </param>
-        </member>
-        <member name="P:VZF.Controls.MessageBase.CustomBBCode">
-            <summary>
-            Gets CustomBBCode.
+              Gets or sets Signature.
             </summary>
         </member>
         <member name="M:VZF.Controls.SignaturePreview.Render(System.Web.UI.HtmlTextWriter)">
@@ -1627,21 +1478,6 @@
             <param name="writer">
             The writer.
             </param>
-        </member>
-        <member name="P:VZF.Controls.SignaturePreview.DisplayUserID">
-            <summary>
-              Gets or sets DisplayUserID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SignaturePreview.MessageID">
-            <summary>
-              Gets or sets MessageID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.SignaturePreview.Signature">
-            <summary>
-              Gets or sets Signature.
-            </summary>
         </member>
         <member name="T:VZF.Controls.SmartScroller">
             <summary>
@@ -1697,22 +1533,6 @@
             The UserLabel
             </summary>
         </member>
-        <member name="M:VZF.Controls.UserLabel.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="output">
-            The output.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.UserLabel.RenderMainTagAttributes(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders "id", "style", "onclick", "onmouseover" and "class"
-            </summary>
-            <param name="output">
-            The output.
-            </param>
-        </member>
         <member name="P:VZF.Controls.UserLabel.CssClass">
             <summary>
               Gets or sets CssClass.
@@ -1752,6 +1572,22 @@
             <summary>
               Gets or sets The userid of this user for the link
             </summary>
+        </member>
+        <member name="M:VZF.Controls.UserLabel.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="output">
+            The output.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.UserLabel.RenderMainTagAttributes(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders "id", "style", "onclick", "onmouseover" and "class"
+            </summary>
+            <param name="output">
+            The output.
+            </param>
         </member>
         <member name="T:VZF.Controls.AdminMenu">
             <summary>
@@ -1811,195 +1647,6 @@
             The writer.
             </param>
         </member>
-        <member name="T:YafMenu">
-            <summary>
-            The yaf menu.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="F:YafMenu.itemsField">
-            <summary>
-            The items field.
-            </summary>
-        </member>
-        <member name="P:YafMenu.Items">
-            <summary>
-            The items.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="T:YafMenuYafMenuSection">
-            <summary>
-            The yaf menu yaf menu section.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="F:YafMenuYafMenuSection.hostAdminOnlyField">
-            <summary>
-            The host admin only field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSection.titleField">
-            <summary>
-            The title field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSection.tagField">
-            <summary>
-            The tag field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSection.yafMenuItemField">
-            <summary>
-            The yaf menu item field.
-            </summary>
-        </member>
-        <member name="P:YafMenuYafMenuSection.YafMenuItem">
-            <summary>
-            The yaf menu item.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSection.Title">
-            <summary>
-            The title.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSection.Tag">
-            <summary>
-            The title.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSection.HostAdminOnly">
-            <summary>
-            The title.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="T:YafMenuYafMenuSectionYafMenuItem">
-            <summary>
-            The yaf menu yaf menu section yaf menu item.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.debugField">
-            <summary>
-            The debug field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.forumPageField">
-            <summary>
-            The forum page field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_0">
-            <summary>
-            The sub forum page field 0.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_1">
-            <summary>
-            The sub forum page field 1.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_2">
-            <summary>
-            The sub forum page field 2.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_3">
-            <summary>
-            The sub forum page field 3.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.imageField">
-            <summary>
-            The image field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.linkField">
-            <summary>
-            The link field.
-            </summary>
-        </member>
-        <member name="F:YafMenuYafMenuSectionYafMenuItem.titleField">
-            <summary>
-            The title field.
-            </summary>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.Title">
-            <summary>
-            The title.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.ForumPage">
-            <summary>
-            The forum page.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_0">
-            <summary>
-            The sub forum page 0.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_1">
-            <summary>
-            The sub forum page 1.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_2">
-            <summary>
-            The sub forum page 1.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_3">
-            <summary>
-            The sub forum page 3.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.Image">
-            <summary>
-            The image.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.Link">
-            <summary>
-            The link.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
-        <member name="P:YafMenuYafMenuSectionYafMenuItem.Debug">
-            <summary>
-            The debug.
-            </summary>
-            <remarks>
-            </remarks>
-        </member>
         <member name="T:VZF.Controls.YafAdminMenu.YafMenu">
              <summary>
             Represents a strongly typed in-memory cache of data.
@@ -2040,14 +1687,6 @@
             Control displaying list of letters and/or characters for filtering list of members.
             </summary>
         </member>
-        <member name="M:VZF.Controls.AlphaSort.OnLoad(System.EventArgs)">
-            <summary>
-            Raises the Load event.
-            </summary>
-            <param name="e">
-            The e.
-            </param>
-        </member>
         <member name="P:VZF.Controls.AlphaSort.CurrentLetter">
             <summary>
               Gets actually selected letter.
@@ -2063,9 +1702,42 @@
               Gets GroupID.
             </summary>
         </member>
+        <member name="M:VZF.Controls.AlphaSort.OnLoad(System.EventArgs)">
+            <summary>
+            Raises the Load event.
+            </summary>
+            <param name="e">
+            The e.
+            </param>
+        </member>
         <member name="T:VZF.Controls.CollapsibleImage">
             <summary>
             The collapsible image.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.CollapsibleImage.AttachedControlID">
+            <summary>
+              Gets or sets AttachedControlID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.CollapsibleImage.DefaultState">
+            <summary>
+              Gets or sets DefaultState.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.CollapsibleImage.PageContext">
+            <summary>
+              Gets PageContext.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.CollapsibleImage.PanelID">
+            <summary>
+              Gets or sets PanelID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.CollapsibleImage.PanelState">
+            <summary>
+              Gets or sets PanelState.
             </summary>
         </member>
         <member name="M:VZF.Controls.CollapsibleImage.GetAttachedControl">
@@ -2096,34 +1768,49 @@
             The update attached visibility.
             </summary>
         </member>
-        <member name="P:VZF.Controls.CollapsibleImage.AttachedControlID">
-            <summary>
-              Gets or sets AttachedControlID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.CollapsibleImage.DefaultState">
-            <summary>
-              Gets or sets DefaultState.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.CollapsibleImage.PageContext">
-            <summary>
-              Gets PageContext.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.CollapsibleImage.PanelID">
-            <summary>
-              Gets or sets PanelID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.CollapsibleImage.PanelState">
-            <summary>
-              Gets or sets PanelState.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.Container">
             <summary>
             Rendered DIV container
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.CSSClass">
+            <summary>
+              Css Clas for surrounding DIV
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.Contents">
+            <summary>
+              Contents to render within the container
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.HideText">
+            <summary>
+              Hide Text required for expanding/collapsing container
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.RoundedCorners">
+            <summary>
+              If true, renders SLIDING doors technique additional DIV tags
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.ShowText">
+            <summary>
+              Hide Text required for expanding/collapsing container
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.Title">
+            <summary>
+              If present renders a h2 html tag
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.ContentsClientID">
+            <summary>
+              Client ID for Contents DIV - Required for Javascript
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Container.LinkClientID">
+            <summary>
+              Client ID for HTML Link - Required for Javascript
             </summary>
         </member>
         <member name="M:VZF.Controls.Container.DataBind">
@@ -2184,46 +1871,6 @@
             The expand link.
             </returns>
         </member>
-        <member name="P:VZF.Controls.Container.CSSClass">
-            <summary>
-              Css Clas for surrounding DIV
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.Contents">
-            <summary>
-              Contents to render within the container
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.HideText">
-            <summary>
-              Hide Text required for expanding/collapsing container
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.RoundedCorners">
-            <summary>
-              If true, renders SLIDING doors technique additional DIV tags
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.ShowText">
-            <summary>
-              Hide Text required for expanding/collapsing container
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.Title">
-            <summary>
-              If present renders a h2 html tag
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.ContentsClientID">
-            <summary>
-              Client ID for Contents DIV - Required for Javascript
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Container.LinkClientID">
-            <summary>
-              Client ID for HTML Link - Required for Javascript
-            </summary>
-        </member>
         <member name="T:VZF.Controls.DataPanel">
             <summary>
             Web control which provides a panel control as a 
@@ -2247,7 +1894,7 @@
             </summary>
             <remarks>
               This value is the key for the property
-              state parameter in the <see cref="P:System.Web.UI.Control.ViewState"/>
+              state parameter in the <see cref = "P:System.Web.UI.Control.ViewState" />
               object.
             </remarks>
         </member>
@@ -2258,7 +1905,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2269,7 +1916,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2280,7 +1927,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2291,7 +1938,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2308,7 +1955,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2319,7 +1966,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2330,7 +1977,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2346,7 +1993,7 @@
             </summary>
             <remarks>
               This link is active only if the
-              <see cref="P:VZF.Controls.DataPanel.HideActionExpandCollapse"/> is false.
+              <see cref = "P:VZF.Controls.DataPanel.HideActionExpandCollapse" /> is false.
             </remarks>
         </member>
         <member name="F:VZF.Controls.DataPanel._contentCell">
@@ -2392,7 +2039,7 @@
             <remarks>
               This value is the key for the property
               state parameter in the 
-              <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
+              <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
               object.
             </remarks>
         </member>
@@ -2407,24 +2054,142 @@
             </summary>
             <remarks>
               This link is active only if the 
-              <see cref="P:VZF.Controls.DataPanel.AllowTitleExpandCollapse"/> property is true.
+              <see cref = "P:VZF.Controls.DataPanel.AllowTitleExpandCollapse" /> property is true.
             </remarks>
         </member>
         <member name="F:VZF.Controls.DataPanel._titleStyle">
             <summary>
-              The member used for the <see cref="P:VZF.Controls.DataPanel.TitleStyle"/>
+              The member used for the <see cref = "P:VZF.Controls.DataPanel.TitleStyle" />
               property.
             </summary>
         </member>
         <member name="M:VZF.Controls.DataPanel.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.DataPanel"/> class. 
+              Initializes a new instance of the <see cref = "T:VZF.Controls.DataPanel" /> class. 
               Default Constructor.
             </summary>
             <remarks>
-              If the <see cref="P:System.Web.UI.WebControls.WebControl.Width">Width</see> of the control is not set,
+              If the <see cref = "P:System.Web.UI.WebControls.WebControl.Width">Width</see> of the control is not set,
               the value of '100%' is set as default.
             </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.AllowTitleExpandCollapse">
+            <summary>
+              Set to true to allow clicking the panel
+              header title to expand/collapse the content panel.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.CollapseImageUrl">
+            <summary>
+              Url of the image to use for the collapse-action link.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.CollapseText">
+            <summary>
+              Text to use for the collapse-action link.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.Collapsed">
+            <summary>
+              Set to true to collapse the content panel, 
+              else false to expand.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see>
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.Collapsible">
+            <summary>
+              Set to true to enable the user content panel to
+              collapse, else false to disable.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.ExpandImageUrl">
+            <summary>
+              Url of the image to use for the expand-action link.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.ExpandText">
+            <summary>
+              Text to use for the expand-action link.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.HideActionExpandCollapse">
+            <summary>
+              Set to true to hide the text/image action link which expands
+              or collapses the content panel.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.TitleStyle">
+            <summary>
+              Display style of the control title header.
+            </summary>
+            <remarks>
+              The <see cref = "M:VZF.Controls.DataPanel.SaveViewState" /> override is used to save
+              the value of this property between postbacks, while
+              the <see cref = "M:VZF.Controls.DataPanel.LoadViewState(System.Object)" /> override is used to restore
+              the value.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.TitleText">
+            <summary>
+              Text that will appear on the control title header.
+            </summary>
+            <remarks>
+              The <see cref = "P:System.Web.UI.Control.ViewState">ViewState</see> 
+              object is used to save the
+              value of this property between postbacks.
+            </remarks>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.CollapsedStateId">
+            <summary>
+              Helper property to return the correct control id for the
+              hidden input object that holds the control collapsed state
+              string.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.DataPanel.HeaderPanelId">
+            <summary>
+              Helper property to return the correct control id for the
+              header panel object.
+            </summary>
         </member>
         <member name="M:VZF.Controls.DataPanel.LoadPostData(System.String,System.Collections.Specialized.NameValueCollection)">
             <summary>
@@ -2631,127 +2396,19 @@
               various properties of the control.
             </summary>
         </member>
-        <member name="P:VZF.Controls.DataPanel.AllowTitleExpandCollapse">
-            <summary>
-              Set to true to allow clicking the panel
-              header title to expand/collapse the content panel.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.CollapseImageUrl">
-            <summary>
-              Url of the image to use for the collapse-action link.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.CollapseText">
-            <summary>
-              Text to use for the collapse-action link.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.Collapsed">
-            <summary>
-              Set to true to collapse the content panel, 
-              else false to expand.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see>
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.Collapsible">
-            <summary>
-              Set to true to enable the user content panel to
-              collapse, else false to disable.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.ExpandImageUrl">
-            <summary>
-              Url of the image to use for the expand-action link.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.ExpandText">
-            <summary>
-              Text to use for the expand-action link.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.HideActionExpandCollapse">
-            <summary>
-              Set to true to hide the text/image action link which expands
-              or collapses the content panel.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.TitleStyle">
-            <summary>
-              Display style of the control title header.
-            </summary>
-            <remarks>
-              The <see cref="M:VZF.Controls.DataPanel.SaveViewState"/> override is used to save
-              the value of this property between postbacks, while
-              the <see cref="M:VZF.Controls.DataPanel.LoadViewState(System.Object)"/> override is used to restore
-              the value.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.TitleText">
-            <summary>
-              Text that will appear on the control title header.
-            </summary>
-            <remarks>
-              The <see cref="P:System.Web.UI.Control.ViewState">ViewState</see> 
-              object is used to save the
-              value of this property between postbacks.
-            </remarks>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.CollapsedStateId">
-            <summary>
-              Helper property to return the correct control id for the
-              hidden input object that holds the control collapsed state
-              string.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.DataPanel.HeaderPanelId">
-            <summary>
-              Helper property to return the correct control id for the
-              header panel object.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.Footer">
             <summary>
             Summary description for Footer.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Footer.SimpleRender">
+            <summary>
+              Gets or sets a value indicating whether SimpleRender.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Footer.ThisControl">
+            <summary>
+              Gets ThisControl.
             </summary>
         </member>
         <member name="M:VZF.Controls.Footer.Render(System.Web.UI.HtmlTextWriter)">
@@ -2794,16 +2451,6 @@
             The footer.
             </param>
         </member>
-        <member name="P:VZF.Controls.Footer.SimpleRender">
-            <summary>
-              Gets or sets a value indicating whether SimpleRender.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Footer.ThisControl">
-            <summary>
-              Gets ThisControl.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.ForumUsers">
             <summary>
             Summary description for ForumUsers.
@@ -2816,7 +2463,12 @@
         </member>
         <member name="M:VZF.Controls.ForumUsers.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.ForumUsers"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.ForumUsers" /> class.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ForumUsers.TreatGuestAsHidden">
+            <summary>
+              Gets or sets a value indicating whether TreatGuestAsHidden.
             </summary>
         </member>
         <member name="M:VZF.Controls.ForumUsers.Render(System.Web.UI.HtmlTextWriter)">
@@ -2837,11 +2489,6 @@
             <param name="e">
             The e.
             </param>
-        </member>
-        <member name="P:VZF.Controls.ForumUsers.TreatGuestAsHidden">
-            <summary>
-              Gets or sets a value indicating whether TreatGuestAsHidden.
-            </summary>
         </member>
         <member name="T:VZF.Controls.GotoPageForumEventArgs">
             <summary>
@@ -2896,6 +2543,36 @@
               The _goto page value.
             </summary>
         </member>
+        <member name="E:VZF.Controls.GotoPageForm.GotoPageClick">
+            <summary>
+              The goto page click.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.GotoPageForm.GotoButtonClientID">
+            <summary>
+              Gets GotoButtonClientID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.GotoPageForm.GotoPageValue">
+            <summary>
+              Gets or sets GotoPageValue.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.GotoPageForm.GotoTextBoxClientID">
+            <summary>
+              Gets GotoTextBoxClientID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.GotoPageForm.InnerDiv">
+            <summary>
+              Gets InnerDiv.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.GotoPageForm.MainPanel">
+            <summary>
+              Gets MainPanel.
+            </summary>
+        </member>
         <member name="M:VZF.Controls.GotoPageForm.BuildForm">
             <summary>
             The build form.
@@ -2935,36 +2612,6 @@
             <param name="writer">
             The writer.
             </param>
-        </member>
-        <member name="E:VZF.Controls.GotoPageForm.GotoPageClick">
-            <summary>
-              The goto page click.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.GotoPageForm.GotoButtonClientID">
-            <summary>
-              Gets GotoButtonClientID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.GotoPageForm.GotoPageValue">
-            <summary>
-              Gets or sets GotoPageValue.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.GotoPageForm.GotoTextBoxClientID">
-            <summary>
-              Gets GotoTextBoxClientID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.GotoPageForm.InnerDiv">
-            <summary>
-              Gets InnerDiv.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.GotoPageForm.MainPanel">
-            <summary>
-              Gets MainPanel.
-            </summary>
         </member>
         <member name="T:VZF.Controls.Header">
             <summary>
@@ -3045,7 +2692,7 @@
         </member>
         <member name="M:VZF.Controls.IconLegend.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.IconLegend"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.IconLegend" /> class.
             </summary>
         </member>
         <member name="M:VZF.Controls.IconLegend.Render(System.Web.UI.HtmlTextWriter)">
@@ -3107,13 +2754,6 @@
             Initializes a new instance of the <see cref="T:VZF.Controls.LocalizedLabel"/> class.
             </summary>
         </member>
-        <member name="M:VZF.Controls.LocalizedLabel.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Shows the localized text string (if available)
-            </summary>
-            <param name="writer">
-            </param>
-        </member>
         <member name="P:VZF.Controls.LocalizedLabel.EnableBBCode">
             <summary>
             Gets or sets a value indicating whether EnableBBCode.
@@ -3144,6 +2784,13 @@
             Gets or sets Param2.
             </summary>
         </member>
+        <member name="M:VZF.Controls.LocalizedLabel.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Shows the localized text string (if available)
+            </summary>
+            <param name="writer">
+            </param>
+        </member>
         <member name="T:VZF.Controls.MessageAttached">
             <summary>
             The message attached.
@@ -3152,6 +2799,16 @@
         <member name="F:VZF.Controls.MessageAttached._userName">
             <summary>
               The _user name.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessageAttached.MessageID">
+            <summary>
+              Gets or sets MessageID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessageAttached.UserName">
+            <summary>
+              Gets or sets UserName.
             </summary>
         </member>
         <member name="M:VZF.Controls.MessageAttached.Render(System.Web.UI.HtmlTextWriter)">
@@ -3170,19 +2827,89 @@
             The writer.
             </param>
         </member>
-        <member name="P:VZF.Controls.MessageAttached.MessageID">
+        <member name="T:VZF.Controls.MessageBase">
             <summary>
-              Gets or sets MessageID.
+            The message base.
             </summary>
         </member>
-        <member name="P:VZF.Controls.MessageAttached.UserName">
+        <member name="F:VZF.Controls.MessageBase._Options">
             <summary>
-              Gets or sets UserName.
+              The _options.
             </summary>
+        </member>
+        <member name="P:VZF.Controls.MessageBase.CustomBBCode">
+            <summary>
+            Gets CustomBBCode.
+            </summary>
+        </member>
+        <member name="M:VZF.Controls.MessageBase.RenderModulesInBBCode(System.Web.UI.HtmlTextWriter,System.String,YAF.Types.Flags.MessageFlags,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            The render modules in bb code.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+            <param name="messageStr">
+            The message Str.
+            </param>
+            <param name="theseFlags">
+            The these flags.
+            </param>
+            <param name="displayUserId">
+            The display user id.
+            </param>
+            <param name="messageId">
+            The Message Id.
+            </param>
         </member>
         <member name="T:VZF.Controls.MessagePost">
             <summary>
             Shows a Message Post
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.IsAlt">
+            <summary>
+              Gets or sets a value indicating whether IsAlt.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.RowColSpan">
+            <summary>
+              Gets or sets a value indicating whether IsAlt.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.DisplayUserID">
+            <summary>
+              Gets or sets DisplayUserID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.MessageID">
+            <summary>
+              Gets or sets MessageID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.HighlightWords">
+            <summary>
+              Gets or sets the Words to highlight in this message
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.IsModeratorChanged">
+            <summary>
+              Gets or sets a value indicating whether IsModeratorChanged.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.Message">
+            <summary>
+              Gets or sets Message.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.MessageFlags">
+            <summary>
+              Gets or sets MessageFlags.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.MessagePost.Signature">
+            <summary>
+              Gets or sets Signature.
             </summary>
         </member>
         <member name="M:VZF.Controls.MessagePost.HighlightMessage(System.String,System.Boolean)">
@@ -3233,51 +2960,6 @@
             The writer.
             </param>
         </member>
-        <member name="P:VZF.Controls.MessagePost.IsAlt">
-            <summary>
-              Gets or sets a value indicating whether IsAlt.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.RowColSpan">
-            <summary>
-              Gets or sets a value indicating whether IsAlt.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.DisplayUserID">
-            <summary>
-              Gets or sets DisplayUserID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.MessageID">
-            <summary>
-              Gets or sets MessageID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.HighlightWords">
-            <summary>
-              Gets or sets the Words to highlight in this message
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.IsModeratorChanged">
-            <summary>
-              Gets or sets a value indicating whether IsModeratorChanged.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.Message">
-            <summary>
-              Gets or sets Message.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.MessageFlags">
-            <summary>
-              Gets or sets MessageFlags.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.MessagePost.Signature">
-            <summary>
-              Gets or sets Signature.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.MessagePostData">
             <summary>
             Shows a Message Post
@@ -3307,29 +2989,6 @@
             <summary>
             The _show deleted.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.MessagePostData.TruncateMessage(System.String)">
-            <summary>
-            Truncates the message.
-            </summary>
-            <param name="message">The message.</param>
-            <returns>
-            The truncate message.
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.MessagePostData.OnPreRender(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
-            </summary>
-            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-        </member>
-        <member name="M:VZF.Controls.MessagePostData.RenderMessage(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render message.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
         </member>
         <member name="P:VZF.Controls.MessagePostData.IsAltMessage">
             <summary>
@@ -3396,34 +3055,33 @@
               Gets Signature.
             </summary>
         </member>
+        <member name="M:VZF.Controls.MessagePostData.TruncateMessage(System.String)">
+            <summary>
+            Truncates the message.
+            </summary>
+            <param name="message">The message.</param>
+            <returns>
+            The truncate message.
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.MessagePostData.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
+        </member>
+        <member name="M:VZF.Controls.MessagePostData.RenderMessage(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render message.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
         <member name="T:VZF.Controls.MessageSignature">
             <summary>
             The message signature.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.MessageSignature.GetPostClass">
-            <summary>
-            The get post class.
-            </summary>
-            <returns>
-            Returns the post class.
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.MessageSignature.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.MessageSignature.RenderSignature(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render signature.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
         </member>
         <member name="P:VZF.Controls.MessageSignature.DisplayUserID">
             <summary>
@@ -3460,6 +3118,30 @@
               Gets or sets a value indicating whether Col Span is.
             </summary>
         </member>
+        <member name="M:VZF.Controls.MessageSignature.GetPostClass">
+            <summary>
+            The get post class.
+            </summary>
+            <returns>
+            Returns the post class.
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.MessageSignature.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.MessageSignature.RenderSignature(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render signature.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
         <member name="T:VZF.Controls.YafBBCodeControl">
             <summary>
             The yaf bb code control.
@@ -3483,6 +3165,26 @@
         <member name="F:VZF.Controls.YafBBCodeControl._parameters">
             <summary>
               The _parameters.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.YafBBCodeControl.CurrentMessageFlags">
+            <summary>
+              Gets or sets CurrentMessageFlags.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.YafBBCodeControl.MessageID">
+            <summary>
+              Gets or sets MessageID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.YafBBCodeControl.DisplayUserID">
+            <summary>
+              Gets or sets DisplayUserID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.YafBBCodeControl.Parameters">
+            <summary>
+              Gets or sets Parameters.
             </summary>
         </member>
         <member name="M:VZF.Controls.YafBBCodeControl.LocalizedString(System.String,System.String)">
@@ -3509,26 +3211,6 @@
             <returns>
             The process bb code string.
             </returns>
-        </member>
-        <member name="P:VZF.Controls.YafBBCodeControl.CurrentMessageFlags">
-            <summary>
-              Gets or sets CurrentMessageFlags.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.YafBBCodeControl.MessageID">
-            <summary>
-              Gets or sets MessageID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.YafBBCodeControl.DisplayUserID">
-            <summary>
-              Gets or sets DisplayUserID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.YafBBCodeControl.Parameters">
-            <summary>
-              Gets or sets Parameters.
-            </summary>
         </member>
         <member name="T:VZF.Controls.MyLinkButton">
             <summary>
@@ -3563,6 +3245,16 @@
         <member name="T:VZF.Controls.PageLinks">
             <summary>
             Summary description for PageLinks.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PageLinks.LinkedPageLinkID">
+            <summary>
+              Gets or sets LinkedPageLinkID.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PageLinks.PageLinkDT">
+            <summary>
+              Gets or sets PageLinkDT.
             </summary>
         </member>
         <member name="M:VZF.Controls.PageLinks.AddForumLinks(System.Int32)">
@@ -3616,16 +3308,6 @@
             The writer.
             </param>
         </member>
-        <member name="P:VZF.Controls.PageLinks.LinkedPageLinkID">
-            <summary>
-              Gets or sets LinkedPageLinkID.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PageLinks.PageLinkDT">
-            <summary>
-              Gets or sets PageLinkDT.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.Pager">
             <summary>
             Pager Control.
@@ -3649,6 +3331,51 @@
         <member name="F:VZF.Controls.Pager._usePostBack">
             <summary>
               The _use post back.
+            </summary>
+        </member>
+        <member name="E:VZF.Controls.Pager.PageChange">
+            <summary>
+              The page change.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.Count">
+            <summary>
+              Gets or sets Count.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.CurrentPageIndex">
+            <summary>
+              Gets or sets CurrentPageIndex.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.LinkedPager">
+            <summary>
+              Gets or sets LinkedPager.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.PageCount">
+            <summary>
+              Gets PageCount.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.PageSize">
+            <summary>
+              Gets or sets PageSize.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.SkipIndex">
+            <summary>
+              Gets the current item index.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.UsePostBack">
+            <summary>
+              Gets or sets a value indicating whether UsePostBack.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.Pager.CurrentLinkedPager">
+            <summary>
+              Gets the Current Linked Pager.
             </summary>
         </member>
         <member name="M:VZF.Controls.Pager.RaisePostBackEvent(System.String)">
@@ -3732,51 +3459,6 @@
             The e.
             </param>
         </member>
-        <member name="E:VZF.Controls.Pager.PageChange">
-            <summary>
-              The page change.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.Count">
-            <summary>
-              Gets or sets Count.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.CurrentPageIndex">
-            <summary>
-              Gets or sets CurrentPageIndex.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.LinkedPager">
-            <summary>
-              Gets or sets LinkedPager.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.PageCount">
-            <summary>
-              Gets PageCount.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.PageSize">
-            <summary>
-              Gets or sets PageSize.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.SkipIndex">
-            <summary>
-              Gets the current item index.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.UsePostBack">
-            <summary>
-              Gets or sets a value indicating whether UsePostBack.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.Pager.CurrentLinkedPager">
-            <summary>
-              Gets the Current Linked Pager.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.PopMenu">
             <summary>
             PopMenu Control
@@ -3794,7 +3476,27 @@
         </member>
         <member name="M:VZF.Controls.PopMenu.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.PopMenu"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.PopMenu" /> class.
+            </summary>
+        </member>
+        <member name="E:VZF.Controls.PopMenu.ItemClick">
+            <summary>
+              The item click.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopMenu.Control">
+            <summary>
+              Gets or sets Control.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopMenu.ControlOnClick">
+            <summary>
+              Gets ControlOnClick.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.PopMenu.ControlOnMouseOver">
+            <summary>
+              Gets ControlOnMouseOver.
             </summary>
         </member>
         <member name="M:VZF.Controls.PopMenu.AddClientScriptItem(System.String,System.String)">
@@ -3912,26 +3614,6 @@
             The e.
             </param>
         </member>
-        <member name="E:VZF.Controls.PopMenu.ItemClick">
-            <summary>
-              The item click.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PopMenu.Control">
-            <summary>
-              Gets or sets Control.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PopMenu.ControlOnClick">
-            <summary>
-              Gets ControlOnClick.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.PopMenu.ControlOnMouseOver">
-            <summary>
-              Gets ControlOnMouseOver.
-            </summary>
-        </member>
         <member name="T:VZF.Controls.PopEventHandler">
             <summary>
             The pop event handler.
@@ -4006,6 +3688,11 @@
               Number of active discussions to display in a control.
             </summary>
         </member>
+        <member name="P:VZF.Controls.Statistics.ActiveDiscussions.DisplayNumber">
+            <summary>
+              Gets or sets number of active discussions to display in a control.
+            </summary>
+        </member>
         <member name="M:VZF.Controls.Statistics.ActiveDiscussions.Render(System.Web.UI.HtmlTextWriter)">
             <summary>
             Renders the ActiveDiscussions control.
@@ -4013,11 +3700,6 @@
             <param name="writer">
             The writer.
             </param>
-        </member>
-        <member name="P:VZF.Controls.Statistics.ActiveDiscussions.DisplayNumber">
-            <summary>
-              Gets or sets number of active discussions to display in a control.
-            </summary>
         </member>
         <member name="T:VZF.Controls.Statistics.MostActiveUsers">
             <summary>
@@ -4034,13 +3716,6 @@
               The _last num of days.
             </summary>
         </member>
-        <member name="M:VZF.Controls.Statistics.MostActiveUsers.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the MostActiveUsers class.
-            </summary>
-            <param name="writer">
-            </param>
-        </member>
         <member name="P:VZF.Controls.Statistics.MostActiveUsers.DisplayNumber">
             <summary>
               Gets or sets DisplayNumber.
@@ -4050,6 +3725,13 @@
             <summary>
               Gets or sets LastNumOfDays.
             </summary>
+        </member>
+        <member name="M:VZF.Controls.Statistics.MostActiveUsers.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the MostActiveUsers class.
+            </summary>
+            <param name="writer">
+            </param>
         </member>
         <member name="T:VZF.Controls.ThemeButton">
             <summary>
@@ -4098,55 +3780,8 @@
         </member>
         <member name="M:VZF.Controls.ThemeButton.#ctor">
             <summary>
-              Initializes a new instance of the <see cref="T:VZF.Controls.ThemeButton"/> class.
+              Initializes a new instance of the <see cref = "T:VZF.Controls.ThemeButton" /> class.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.ThemeButton.System#Web#UI#IPostBackEventHandler#RaisePostBackEvent(System.String)">
-            <summary>
-            The i post back event handler. raise post back event.
-            </summary>
-            <param name="eventArgument">
-            The event argument.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.ThemeButton.GetLocalizedTitle">
-            <summary>
-            Gets the localized title.
-            </summary>
-            <returns>
-            The get localized title.
-            </returns>
-        </member>
-        <member name="M:VZF.Controls.ThemeButton.OnClick(System.EventArgs)">
-            <summary>
-            The on click.
-            </summary>
-            <param name="e">
-            The e.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.ThemeButton.OnCommand(System.Web.UI.WebControls.CommandEventArgs)">
-            <summary>
-            The on command.
-            </summary>
-            <param name="e">
-            The e.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.ThemeButton.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="output">
-            The output.
-            </param>
-        </member>
-        <member name="M:VZF.Controls.ThemeButton.ThemeButton_Load(System.Object,System.EventArgs)">
-            <summary>
-            Setup the controls before render
-            </summary>
-            <param name="sender">The source of the event.</param>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
         <member name="E:VZF.Controls.ThemeButton.Click">
             <summary>
@@ -4233,6 +3868,182 @@
                Gets or sets the Non-localized Title for optional link description
             </summary>
         </member>
+        <member name="M:VZF.Controls.ThemeButton.System#Web#UI#IPostBackEventHandler#RaisePostBackEvent(System.String)">
+            <summary>
+            The i post back event handler. raise post back event.
+            </summary>
+            <param name="eventArgument">
+            The event argument.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.ThemeButton.GetLocalizedTitle">
+            <summary>
+            Gets the localized title.
+            </summary>
+            <returns>
+            The get localized title.
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.ThemeButton.OnClick(System.EventArgs)">
+            <summary>
+            The on click.
+            </summary>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.ThemeButton.OnCommand(System.Web.UI.WebControls.CommandEventArgs)">
+            <summary>
+            The on command.
+            </summary>
+            <param name="e">
+            The e.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.ThemeButton.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="output">
+            The output.
+            </param>
+        </member>
+        <member name="M:VZF.Controls.ThemeButton.ThemeButton_Load(System.Object,System.EventArgs)">
+            <summary>
+            Setup the controls before render
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="T:VZF.Controls.ThemeImage">
+            <summary>
+            Provides a image with themed src
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._alt">
+            <summary>
+              The _alt.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._cssClass">
+            <summary>
+              The css Class.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._enabled">
+            <summary>
+              The _enabled tag.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._localizedTitle">
+            <summary>
+              The _localized title ready.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._localizedTitlePage">
+            <summary>
+              The _localized title page.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._localizedTitleTag">
+            <summary>
+              The _localized title tag.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._style">
+            <summary>
+              The _style.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._themePage">
+            <summary>
+              The _theme page.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._themeTag">
+            <summary>
+              The _theme tag.
+            </summary>
+        </member>
+        <member name="F:VZF.Controls.ThemeImage._useTitleForEmptyAlt">
+            <summary>
+              The _use title for empty alt.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.Alt">
+            <summary>
+              Gets or sets Alt.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.CssClass">
+            <summary>
+              Gets or sets Style.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.Enabled">
+            <summary>
+              Gets or sets a value indicating whether the control is Active .
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.LocalizedTitle">
+            <summary>
+              Gets or sets LocalizedTitle.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.LocalizedTitlePage">
+            <summary>
+              Gets or sets LocalizedTitlePage.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.LocalizedTitleTag">
+            <summary>
+              Gets or sets LocalizedTitleTag.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.Style">
+            <summary>
+              Gets or sets Style.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.ThemePage">
+            <summary>
+              Gets or sets the ThemePage -- Defaults to "ICONS"
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.ThemeTag">
+            <summary>
+              Gets or sets the actual theme item
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.ThemeImage.UseTitleForEmptyAlt">
+            <summary>
+              Gets or sets a value indicating whether UseTitleForEmptyAlt.
+            </summary>
+        </member>
+        <member name="M:VZF.Controls.ThemeImage.GetCurrentThemeItem">
+            <summary>
+            The get current theme item.
+            </summary>
+            <returns>
+            Current image alt value
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.ThemeImage.GetCurrentTitleItem">
+            <summary>
+            The get current title item.
+            </summary>
+            <returns>
+            The current title item string.
+            </returns>
+        </member>
+        <member name="M:VZF.Controls.ThemeImage.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="output">
+            The output.
+            </param>
+        </member>
         <member name="T:VZF.Controls.DisplayDateTime">
             <summary>
             The display date time.
@@ -4242,14 +4053,6 @@
             <summary>
               The _controlHtml.
             </summary>
-        </member>
-        <member name="M:VZF.Controls.DisplayDateTime.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="writer">
-            The writer.
-            </param>
         </member>
         <member name="P:VZF.Controls.DisplayDateTime.DateTime">
             <summary>
@@ -4265,6 +4068,14 @@
             <summary>
               Gets AsDateTime.
             </summary>
+        </member>
+        <member name="M:VZF.Controls.DisplayDateTime.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
         </member>
         <member name="T:VZF.Controls.UserBox">
             <summary>
@@ -4289,6 +4100,46 @@
         <member name="F:VZF.Controls.UserBox.messageFlags">
             <summary>
               The _message flags.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.DataRow">
+            <summary>
+              Gets or sets DataRow.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.PageCache">
+            <summary>
+              Gets or sets PageCache.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.CachedUserBox">
+            <summary>
+              Gets or sets CachedUserBox.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.UserBoxRegex">
+            <summary>
+            Gets UserBoxRegex.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.UserId">
+            <summary>
+              Gets UserId.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.UserProfile">
+            <summary>
+              Gets UserProfile.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.PostDeleted">
+            <summary>
+              Gets a value indicating whether PostDeleted.
+            </summary>
+        </member>
+        <member name="P:VZF.Controls.UserBox.TransformStyle">
+            <summary>
+              Gets refined style string from other skins info
             </summary>
         </member>
         <member name="M:VZF.Controls.UserBox.CreateUserBox">
@@ -4483,66 +4334,10 @@
             Returns the emptyd string
             </returns>
         </member>
-        <member name="P:VZF.Controls.UserBox.DataRow">
-            <summary>
-              Gets or sets DataRow.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.PageCache">
-            <summary>
-              Gets or sets PageCache.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.CachedUserBox">
-            <summary>
-              Gets or sets CachedUserBox.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.UserBoxRegex">
-            <summary>
-            Gets UserBoxRegex.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.UserId">
-            <summary>
-              Gets UserId.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.UserProfile">
-            <summary>
-              Gets UserProfile.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.PostDeleted">
-            <summary>
-              Gets a value indicating whether PostDeleted.
-            </summary>
-        </member>
-        <member name="P:VZF.Controls.UserBox.TransformStyle">
-            <summary>
-              Gets refined style string from other skins info
-            </summary>
-        </member>
         <member name="T:VZF.Controls.UserLink">
             <summary>
             Provides a basic "profile link" for a YAF User
             </summary>
-        </member>
-        <member name="M:VZF.Controls.UserLink.OnPreRender(System.EventArgs)">
-            <summary>
-            The On PreRender event.
-            </summary>
-            <param name="e">
-            the Event Arguments
-            </param>
-        </member>
-        <member name="M:VZF.Controls.UserLink.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            The render.
-            </summary>
-            <param name="output">
-            The output.
-            </param>
         </member>
         <member name="P:VZF.Controls.UserLink.BlankTarget">
             <summary>
@@ -4573,6 +4368,211 @@
             <summary>
             Gets a value indicating whether is hover card enabled.
             </summary>
+        </member>
+        <member name="M:VZF.Controls.UserLink.OnPreRender(System.EventArgs)">
+            <summary>
+            The On PreRender event.
+            </summary>
+            <param name="e">
+            the Event Arguments
+            </param>
+        </member>
+        <member name="M:VZF.Controls.UserLink.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            The render.
+            </summary>
+            <param name="output">
+            The output.
+            </param>
+        </member>
+        <member name="T:YafMenu">
+            <summary>
+            The yaf menu.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="F:YafMenu.itemsField">
+            <summary>
+            The items field.
+            </summary>
+        </member>
+        <member name="P:YafMenu.Items">
+            <summary>
+            The items.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="T:YafMenuYafMenuSection">
+            <summary>
+            The yaf menu yaf menu section.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="F:YafMenuYafMenuSection.hostAdminOnlyField">
+            <summary>
+            The host admin only field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSection.titleField">
+            <summary>
+            The title field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSection.tagField">
+            <summary>
+            The tag field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSection.yafMenuItemField">
+            <summary>
+            The yaf menu item field.
+            </summary>
+        </member>
+        <member name="P:YafMenuYafMenuSection.YafMenuItem">
+            <summary>
+            The yaf menu item.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSection.Title">
+            <summary>
+            The title.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSection.Tag">
+            <summary>
+            The title.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSection.HostAdminOnly">
+            <summary>
+            The title.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="T:YafMenuYafMenuSectionYafMenuItem">
+            <summary>
+            The yaf menu yaf menu section yaf menu item.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.debugField">
+            <summary>
+            The debug field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.forumPageField">
+            <summary>
+            The forum page field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_0">
+            <summary>
+            The sub forum page field 0.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_1">
+            <summary>
+            The sub forum page field 1.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_2">
+            <summary>
+            The sub forum page field 2.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.subForumPageField_3">
+            <summary>
+            The sub forum page field 3.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.imageField">
+            <summary>
+            The image field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.linkField">
+            <summary>
+            The link field.
+            </summary>
+        </member>
+        <member name="F:YafMenuYafMenuSectionYafMenuItem.titleField">
+            <summary>
+            The title field.
+            </summary>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.Title">
+            <summary>
+            The title.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.ForumPage">
+            <summary>
+            The forum page.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_0">
+            <summary>
+            The sub forum page 0.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_1">
+            <summary>
+            The sub forum page 1.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_2">
+            <summary>
+            The sub forum page 1.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.SubForumPage_3">
+            <summary>
+            The sub forum page 3.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.Image">
+            <summary>
+            The image.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.Link">
+            <summary>
+            The link.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:YafMenuYafMenuSectionYafMenuItem.Debug">
+            <summary>
+            The debug.
+            </summary>
+            <remarks>
+            </remarks>
         </member>
     </members>
 </doc>

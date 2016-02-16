@@ -1423,8 +1423,6 @@ END
 END
 GO
 
-
-
 /* Procedures for "Thanks" Mod */
 CREATE PROCEDURE [{databaseSchema}].[{objectQualifier}message_addthanks] 
     @FromUserID int,

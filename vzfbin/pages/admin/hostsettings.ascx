@@ -18,6 +18,7 @@
         <li><a href="#View9"><VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="HOST_CACHE" LocalizedPage="ADMIN_HOSTSETTINGS" /></a></li>
         <li><a href="#View10"><VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="HOST_SEARCH" LocalizedPage="ADMIN_HOSTSETTINGS" /></a></li>
         <li><a href="#View11"><VZF:LocalizedLabel ID="LocalizedLabel34" runat="server" LocalizedTag="HOST_LOG" LocalizedPage="ADMIN_HOSTSETTINGS" /></a></li>
+        <li><a href="#View12"><VZF:LocalizedLabel ID="LocalizedLabel36" runat="server" LocalizedTag="HOST_SYNDICATION" LocalizedPage="ADMIN_HOSTSETTINGS" /></a></li>
     </ul>
     <div id="View1">
         <table class="content" cellspacing="2" width="100%" cellpadding="2" align="center">
@@ -608,12 +609,21 @@
                         <td class="post">
                             <asp:CheckBox ID="EnableUserInfoHoverCards" runat="server"></asp:CheckBox>
                         </td>
-                    </tr><tr>
+                    </tr>
+                    <tr>
                         <td class="postheader" style="width:50%">
                             <VZF:HelpLabel ID="HelpLabel225" runat="server" LocalizedTag="ALLOW_TOPICIMAGES" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="AllowTopicImages" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel242" runat="server" LocalizedTag="TOPICIMAGE_THUMB" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="TopicImageDirectThumbnail" runat="server"></asp:CheckBox>
                         </td>
                     </tr>
                                <tr>
@@ -622,6 +632,22 @@
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="AlowRemoteTopicImages" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel240" runat="server" LocalizedTag="TOPICIMAGE_THUMB_WIDTH" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox ID="TopicImageThumbnailWidth" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel241" runat="server" LocalizedTag="TOPICIMAGE_THUMB_HEIGHT" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox ID="TopicImageThumbnailHeight" runat="server"></asp:TextBox>
                         </td>
                     </tr>
                      <tr>
@@ -890,89 +916,6 @@
                             <asp:TextBox Style="width:350px" ID="PopularTopicDays" runat="server"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="header1" colspan="2">
-                            <VZF:LocalizedLabel ID="LocalizedLabel26" runat="server" LocalizedTag="HEADER_SYNDICATION" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel131" runat="server" LocalizedTag="SHOW_RSS_LINKS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>
-                        <td class="post">
-                            <asp:CheckBox ID="ShowRSSLink" runat="server"></asp:CheckBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel132" runat="server" LocalizedTag="SHOW_ATOM_LINKS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>
-                        <td class="post">
-                            <asp:CheckBox ID="ShowAtomLink" runat="server"></asp:CheckBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="TOPICFEED_COUNT" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>
-                        <td class="post">
-                            <asp:TextBox Style="width:350px" ID="TopicsFeedItemsCount" runat="server"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel133" runat="server" LocalizedTag="POSTS_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>              
-                        <td class="post">
-                              <asp:DropDownList Style="width:350px" ID="PostsFeedAccess" runat="server">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel134" runat="server" LocalizedTag="LASTPOSTS_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>              
-                        <td class="post">
-                              <asp:DropDownList Style="width:350px" ID="PostLatestFeedAccess" runat="server">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel135" runat="server" LocalizedTag="FORUM_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>              
-                        <td class="post">
-                              <asp:DropDownList Style="width:350px" ID="ForumFeedAccess" runat="server">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel136" runat="server" LocalizedTag="TOPIC_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>              
-                        <td class="post">
-                            <asp:DropDownList Style="width:350px" ID="TopicsFeedAccess" runat="server">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel137" runat="server" LocalizedTag="ACTIVETOPIC_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>              
-                        <td class="post">
-                              <asp:DropDownList Style="width:350px" ID="ActiveTopicFeedAccess" runat="server">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="postheader">
-                            <VZF:HelpLabel ID="HelpLabel138" runat="server" LocalizedTag="FAVTOPIC_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
-                        </td>              
-                        <td class="post">
-                              <asp:DropDownList Style="width:350px" ID="FavoriteTopicFeedAccess" runat="server">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>        
                     <tr>
                         <td class="header1" colspan="2">
                             <VZF:LocalizedLabel ID="LocalizedLabel30" runat="server" LocalizedTag="HEADER_GEOLOCATION" LocalizedPage="ADMIN_HOSTSETTINGS" />
@@ -2212,6 +2155,93 @@
                             <asp:CheckBox ID="LogUserSuspendedUnsuspended" runat="server"></asp:CheckBox>
                         </td>
                     </tr>
+                </table>
+        </div>
+              <div id="View12">
+                <table class="content" width="100%" cellspacing="2" cellpadding="2" align="center">
+                     <tr>
+                        <td class="header1" colspan="2">
+                            <VZF:LocalizedLabel ID="LocalizedLabel26" runat="server" LocalizedTag="HEADER_SYNDICATION" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel131" runat="server" LocalizedTag="SHOW_RSS_LINKS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="ShowRSSLink" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel132" runat="server" LocalizedTag="SHOW_ATOM_LINKS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="ShowAtomLink" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="TOPICFEED_COUNT" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox Style="width:350px" ID="TopicsFeedItemsCount" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel133" runat="server" LocalizedTag="POSTS_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>              
+                        <td class="post">
+                              <asp:DropDownList Style="width:350px" ID="PostsFeedAccess" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel134" runat="server" LocalizedTag="LASTPOSTS_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>              
+                        <td class="post">
+                              <asp:DropDownList Style="width:350px" ID="PostLatestFeedAccess" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel135" runat="server" LocalizedTag="FORUM_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>              
+                        <td class="post">
+                              <asp:DropDownList Style="width:350px" ID="ForumFeedAccess" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel136" runat="server" LocalizedTag="TOPIC_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>              
+                        <td class="post">
+                            <asp:DropDownList Style="width:350px" ID="TopicsFeedAccess" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel137" runat="server" LocalizedTag="ACTIVETOPIC_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>              
+                        <td class="post">
+                              <asp:DropDownList Style="width:350px" ID="ActiveTopicFeedAccess" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel138" runat="server" LocalizedTag="FAVTOPIC_FEEDS_ACCESS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>              
+                        <td class="post">
+                              <asp:DropDownList Style="width:350px" ID="FavoriteTopicFeedAccess" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>        
                 </table>
         </div>
     </asp:Panel>

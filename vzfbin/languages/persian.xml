@@ -233,6 +233,8 @@
     <Resource tag="INVALID_VALUE">یکی از قسمت های آی پی معتبر نیست. مقدار معتبر بین 0 تا 255 است و * به عنوان همه استفاده کنید</Resource>
     <Resource tag="MASK">قالب:</Resource>
     <Resource tag="MASK_HELP">آدرس آی پی برای ممانعت (می توانید از * استفاده کنید 127.0.0.*)</Resource>
+    <Resource tag="MASK1">Mask:</Resource>
+    <Resource tag="MASK1_HELP">The ip address to ban. You can use wildcards (127.0.0.*) or CIDR.</Resource>
     <Resource tag="REASON">دلیل :</Resource>
     <Resource tag="REASON_HELP">دلیل اینکه آی پی ممنوع شده</Resource>
     <Resource tag="TITLE">افزودن/ویرایش آی پی های ممنوعه</Resource>
@@ -1187,6 +1189,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="HOST_LOG">Logs</Resource>
     <Resource tag="HOST_PERMISSION">مجوزها</Resource>
     <Resource tag="HOST_SEARCH">جستجو</Resource>
+    <Resource tag="HOST_SYNDICATION">Syndication Feeds</Resource>
     <Resource tag="HOST_TEMPLATES">شما ها</Resource>
     <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
     <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
@@ -1501,6 +1504,11 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
     <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB">Use topic image thumbnail.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT">Topic thumb image height:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_HEIGHT_HELP">The max height of topic thumbnail images in px.</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH">Topic thumb image width:</Resource>
+    <Resource tag="TOPICIMAGE_THUMB_WIDTH_HELP">The max width of the topic thumbnail images in px.</Resource>
     <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
     <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">عنوان بر صفحه :</Resource>
@@ -5345,9 +5353,13 @@ The Message was posted in the {forumname} forum.
     <Resource tag="YESTERDAYAT">[b]دیروز[/b] در {0:T}</Resource>
   </page>
   <page name="TOPICSBYTAGS">
+    <Resource tag="DELETE_ALL">Delete tag</Resource>
+    <Resource tag="DELETE_SELECTED">Delete From Selected</Resource>
+    <Resource tag="SELECTIT">Select:</Resource>
     <Resource tag="TAGS_LIST">Tags: {0}</Resource>
     <Resource tag="TAGS_MORE">More Tags:</Resource>
     <Resource tag="TITLE">Topics by tags</Resource>
+    <Resource tag="TOPIC">Topic:</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]تشکری یافت نشد[/b]</Resource>

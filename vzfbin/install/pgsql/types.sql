@@ -1392,6 +1392,7 @@ CREATE TYPE {databaseSchema}.{objectQualifier}topic_bytags_rt AS (
 	"LastForumAccess"  timestamp,
 	"LastTopicAccess"  timestamp,
 	"Tags" text,
+	"TopicTags" text,
 	"TopicImage" varchar(255),
 	"TopicImageBin" bytea,
 	"TopicImageType" varchar(50),	
