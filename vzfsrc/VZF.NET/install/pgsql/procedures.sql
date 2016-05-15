@@ -14512,7 +14512,7 @@ DROP FUNCTION IF EXISTS {databaseSchema}.{objectQualifier}rsstopic_list(
 							integer);
 --GO
 CREATE OR REPLACE FUNCTION {databaseSchema}.{objectQualifier}rsstopic_list(
-						   iii_forumid integer,
+						   iii_forumid integer,						
 						   i_start integer,
 						   i_limit integer)
 				  RETURNS SETOF {databaseSchema}.{objectQualifier}rsstopic_list_return_type AS
@@ -14536,9 +14536,9 @@ WHERE a.forumid = iii_forumid AND b.forumid = a.forumid
 AND SIGN(a.flags & 8) = 0 AND a.topicmovedid IS NULL
 ORDER BY a.posted DESC
 LOOP
-IF cntr > i_count THEN EXIT;END IF;
+IF cntr > i_limit THEN EXIT;END IF;
 cntr:= cntr+1;
-IF cntr between i_start and i_count THEN RETURN NEXT _rec; END IF;
+IF cntr between i_start and i_limit THEN RETURN NEXT _rec; END IF;
 END LOOP;
 
 END;$BODY$
