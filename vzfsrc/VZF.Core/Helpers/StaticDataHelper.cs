@@ -31,6 +31,8 @@ namespace YAF.Core
     using YAF.Types;
     using YAF.Types.Interfaces;
     using VZF.Utils;
+    using System.Collections.ObjectModel;
+    using VZF.Types.Objects;
 
     /// <summary>
     /// The static data helper.
@@ -80,40 +82,26 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable Country(ILocalization localization)
+        public static ReadOnlyCollection<ForumCountry> Country(ILocalization localization)
         {
-            using (var dt = new DataTable("Country"))
+            var countries = new List<ForumCountry>();
+            // Add an empty row to data table for dropdown lists with empty selection option.   
+            countries.Add(new ForumCountry());
+
+
+            var countriesBefore =
+             localization.GetCountryNodesUsingQuery("COUNTRY", x => x.tag.StartsWith(string.Empty)).ToList();
+
+            // vzrus: a temporary hack - it returns all tags if the page is not found
+            if (countriesBefore.Count <= 2000)
             {
-                dt.Columns.Add("Value", Type.GetType("System.String"));
-                dt.Columns.Add("Name", Type.GetType("System.String"));
-
-                // Add empty row to data table for dropdown lists with empty selection option.
-                bool addEmptyRow = true;
-
-                if (addEmptyRow)
+                foreach (var node in countriesBefore)
                 {
-                    var drow = dt.NewRow();
-                    drow["Value"] = null;
-                    drow["Name"] = "None";
-                    dt.Rows.Add(drow);
+                    countries.Add(new ForumCountry() { Name = node.Value, Value = node.tag });
                 }
-
-                var countries =
-                    localization.GetRegionNodesUsingQuery("COUNTRY", x => x.tag.StartsWith(string.Empty)).ToList();
-
-                // vzrus: a temporary hack - it returns all tags if the page is not found
-                if (countries.Count > 2000)
-                {
-                    return dt;
-                }
-
-                foreach (var node in countries)
-                {
-                    dt.Rows.Add(new object[] { node.tag, node.Value });
-                }
-
-                return dt;
             }
+
+            return countries.AsReadOnly();
         }
 
         /// <summary>
@@ -121,7 +109,7 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable Country()
+        public static ReadOnlyCollection<ForumCountry> Country()
         {
             return Country(YafContext.Current.Get<ILocalization>());
         }
@@ -134,7 +122,7 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable Country(string forceLanguage)
+        public static ReadOnlyCollection<ForumCountry> Country(string forceLanguage)
         {
             var localization = new YafLocalization();
             localization.LoadTranslation(forceLanguage);
@@ -153,32 +141,28 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable Region(ILocalization localization, string culture)
+        public static ReadOnlyCollection<CountryRegion> Region(ILocalization localization, string culture)
         {
-            using (var dt = new DataTable("Region"))
+
+            var countryRegions = new List<CountryRegion>();
+            // Add an empty row to data table for dropdown lists with empty selection option.   
+            countryRegions.Add(new CountryRegion());
+
+            var countries =
+             localization.GetCountryNodesUsingQuery("REGION_{0}".FormatWith(culture), x => x.tag.StartsWith("RGN_{0}_".FormatWith(culture))).ToList();
+
+            foreach (var node in countries)
             {
-                dt.Columns.Add("Value", Type.GetType("System.String"));
-                dt.Columns.Add("Name", Type.GetType("System.String"));
-
-                // Add empty row to data table for dropdown lists with empty selection option.
-                bool addEmptyRow = true;
-                if (addEmptyRow)
-                {
-                    var drow = dt.NewRow();
-                    drow["Value"] = null;
-                    drow["Name"] = null;
-                    dt.Rows.Add(drow);
-                }
-
-                var countries =
-                 localization.GetCountryNodesUsingQuery("REGION", x => x.tag.StartsWith("RGN_{0}_".FormatWith(culture))).ToList();
-
-                foreach (var node in countries)
-                {
-                    dt.Rows.Add(new object[] { node.tag.Replace("RGN_{0}_".FormatWith(culture), string.Empty), node.Value });
-                }
-                return dt;
+                countryRegions.Add(
+                    new CountryRegion()
+                    {
+                        Value = node.tag.Replace("RGN_{0}_".FormatWith(culture), string.Empty),
+                        Name = node.Value
+                    });
             }
+
+            return countryRegions.AsReadOnly();
+
         }
 
         /// <summary>
@@ -186,7 +170,7 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable Region(string culture)
+        public static ReadOnlyCollection<CountryRegion> Region(string culture)
         {
             return Region(YafContext.Current.Get<ILocalization>(), culture);
         }
@@ -198,17 +182,9 @@ namespace YAF.Core
         /// <returns>
         /// The cultures filtered by first 2 letters in the language tag in a language file
         /// </returns>
-        public static DataTable Cultures()
+        public static ReadOnlyCollection<ForumCultureInfo> Cultures()
         {
-            using (var dt = new DataTable("Cultures"))
-            {
-
-                dt.Columns.Add("CultureTag", typeof(string));
-                dt.Columns.Add("CultureFile", typeof(string));
-                dt.Columns.Add("CultureEnglishName", typeof(string));
-                dt.Columns.Add("CultureNativeName", typeof(string));
-                dt.Columns.Add("CultureDisplayName", typeof(string));
-
+         
                 // Get all language files info
                 var dir =
                   new DirectoryInfo(
@@ -243,27 +219,29 @@ namespace YAF.Core
                     }
                 }
 
-                CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
-                foreach (CultureInfo ci in cultures)
+                var lstCultures = new List<ForumCultureInfo>();
+
+                foreach (CultureInfo ci in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
                 {
                     for (int j = 0; j < files.Length; j++)
                     {
+
                         if (!ci.IsNeutralCulture && tags[1, j].ToLower().Substring(0, 2).Contains(ci.TwoLetterISOLanguageName.ToLower()) /*&& ci.IetfLanguageTag.Length == 5*/)
                         {
-                            DataRow dr = dt.NewRow();
-                            dr["CultureTag"] = ci.IetfLanguageTag;
-                            dr["CultureFile"] = tags[0, j];
-                            dr["CultureEnglishName"] = ci.EnglishName;
-                            dr["CultureNativeName"] = ci.NativeName;
-                            dr["CultureDisplayName"] = ci.DisplayName;
-                            dt.Rows.Add(dr);
+                            lstCultures.Add(new ForumCultureInfo()
+                                {
+                                    IetfLanguageTag = ci.IetfLanguageTag,
+                                    CultureFile = tags[0, j],
+                                    DisplayName = ci.DisplayName,
+                                    NativeName = ci.NativeName,
+                                    EnglishName = ci.EnglishName
+                                }
+                                );
                         }
                     }
-
                 }
-                return dt;
-            }
 
+                return lstCultures.AsReadOnly();           
         }
 
         /// <summary>
@@ -417,7 +395,7 @@ namespace YAF.Core
                 return dt;
             }
         }
-       
+
         /// <summary>
         /// The themes.
         /// </summary>
@@ -509,12 +487,10 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable TopicTimes()
+        public static ReadOnlyCollection<TopicTimes> TopicTimes()
         {
-            using (var dt = new DataTable("TopicTimes"))
-            {
-                dt.Columns.Add("TopicText", typeof(string));
-                dt.Columns.Add("TopicValue", typeof(int));
+            var topicTimes = new List<TopicTimes>(); 
+         
 
                 string[] tTextArray = {
                                 "all", "last_day", "last_two_days", "last_week", "last_two_weeks", "last_month", 
@@ -525,18 +501,24 @@ namespace YAF.Core
                                     "Last Two Months", "Last Six Months", "Last Year"
                                   };
 
-                for (int i = 0; i < 8; i++)
+                bool noTransPage = (YafContext.Current.Get<ILocalization>().TransPage == null);
+                int countT = noTransPage
+                                        ? tTextArrayProp.Count()
+                                        : tTextArray.Count();
+
+                for (int i = 0; i < countT; i++)
                 {
-                    DataRow dr = dt.NewRow();
-                    dr["TopicText"] = (YafContext.Current.Get<ILocalization>().TransPage == null)
+                    topicTimes.Add(new TopicTimes()
+                    {
+                        TopicText = noTransPage
                                         ? tTextArrayProp[i]
-                                        : YafContext.Current.Get<ILocalization>().GetText(tTextArray[i]);
-                    dr["TopicValue"] = i;
-                    dt.Rows.Add(dr);
+                                        : YafContext.Current.Get<ILocalization>().GetText(tTextArray[i]),
+                        TopicValue = i.ToString()
+                    }
+                    );                    
                 }
 
-                return dt;
-            }
+                return topicTimes.AsReadOnly();           
         }
 
         #endregion

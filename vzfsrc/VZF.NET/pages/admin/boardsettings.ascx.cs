@@ -100,14 +100,11 @@ namespace YAF.Pages.Admin
                 this.MobileTheme.DataSource = mobileThemes;
                 this.MobileTheme.DataTextField = "Theme";
                 this.MobileTheme.DataValueField = "FileName";
-            }
+            }        
 
-            this.Culture.DataSource =
-                StaticDataHelper.Cultures().AsEnumerable().OrderBy(x => x.Field<string>("CultureNativeName")).
-                    CopyToDataTable();
-
-            this.Culture.DataTextField = "CultureNativeName";
-            this.Culture.DataValueField = "CultureTag";
+            this.Culture.DataSource = StaticDataHelper.Cultures().OrderBy(x => x.NativeName);
+            this.Culture.DataValueField = "IetfLanguageTag";
+            this.Culture.DataTextField = "NativeName";
 
             this.ShowTopic.DataSource = StaticDataHelper.TopicTimes();
             this.ShowTopic.DataTextField = "TopicText";
@@ -230,17 +227,11 @@ namespace YAF.Pages.Admin
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            string languageFile = "english.xml";
-
-            var cultures =
-                StaticDataHelper.Cultures().AsEnumerable().Where(
-                    c => c.Field<string>("CultureTag").Equals(this.Culture.SelectedValue));
-
-            if (cultures.Any())
-            {
-                languageFile = cultures.First().Field<string>("CultureFile");
-            }
-
+            // english.xml by default
+            string languageFile = 
+                StaticDataHelper.Cultures().Where(
+                    c => c.IetfLanguageTag.Equals(this.Culture.SelectedValue)).FirstOrDefault().CultureFile;
+           
             CommonDb.board_save(PageContext.PageModuleID, this.PageContext.PageBoardID,
                 languageFile,
                 this.Culture.SelectedValue,

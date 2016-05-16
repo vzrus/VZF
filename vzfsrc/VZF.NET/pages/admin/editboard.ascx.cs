@@ -151,15 +151,12 @@ namespace YAF.Pages.Admin
                 this.Get<MembershipProvider>().ApplicationName = boardRolesAppName;
             }
 
-            int newBoardID;
-            DataTable cult = StaticDataHelper.Cultures();
-            string langFile = "english.xml";
+            int newBoardID;  
 
-            foreach (DataRow drow in
-                cult.Rows.Cast<DataRow>().Where(drow => drow["CultureTag"].ToString() == this.Culture.SelectedValue))
-            {
-                langFile = (string)drow["CultureFile"];
-            }
+            // english.xml by default
+            string languageFile =
+                StaticDataHelper.Cultures().Where(
+                    c => c.IetfLanguageTag.Equals(this.Culture.SelectedValue)).FirstOrDefault().CultureFile;
 
             if (createUserAndRoles)
             {
@@ -199,7 +196,7 @@ namespace YAF.Pages.Admin
                     newAdmin.ProviderUserKey,
                     boardName,
                     this.Culture.SelectedItem.Value,
-                    langFile,
+                    languageFile,
                     boardMembershipAppName,
                     boardRolesAppName,
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty,
@@ -218,7 +215,7 @@ namespace YAF.Pages.Admin
                     newAdmin.ProviderUserKey,
                     boardName,
                     this.Culture.SelectedItem.Value,
-                    langFile,
+                    languageFile,
                     boardMembershipAppName,
                     boardRolesAppName,
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty,
@@ -337,13 +334,13 @@ namespace YAF.Pages.Admin
             this.Save.Text = this.GetText("SAVE");
             this.Cancel.Text = this.GetText("CANCEL");
 
-            this.Culture.DataSource =
-                StaticDataHelper.Cultures()
-                    .AsEnumerable()
-                    .OrderBy(x => x.Field<string>("CultureNativeName"))
-                    .CopyToDataTable();
-            this.Culture.DataValueField = "CultureTag";
-            this.Culture.DataTextField = "CultureNativeName";
+            var cultures = StaticDataHelper.Cultures().OrderBy(x => x.NativeName);
+            var culture = cultures.FirstOrDefault();
+
+            this.Culture.DataSource = cultures;
+            this.Culture.DataValueField = "IetfLanguageTag";
+            this.Culture.DataTextField = "NativeName";
+           
 
             this.BindData();
 
@@ -412,16 +409,10 @@ namespace YAF.Pages.Admin
             }
 
             if (this.BoardID != null)
-            {
-                DataTable cult = StaticDataHelper.Cultures();
-                string langFile = "en-US";
-
-                foreach (DataRow drow in
-                    cult.Rows.Cast<DataRow>().Where(drow => drow["CultureTag"].ToString() == this.Culture.SelectedValue)
-                    )
-                    {
-                    langFile = (string)drow["CultureFile"];
-                }
+            {              
+                string langFile =
+                StaticDataHelper.Cultures().Where(
+                  c => c.IetfLanguageTag.Equals(this.Culture.SelectedValue)).FirstOrDefault().CultureFile;        
 
                 // Save current board settings
                 CommonDb.board_save(

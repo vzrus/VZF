@@ -185,7 +185,9 @@
     <Compile Include="Classes\Editors\BBCodeEditor.cs" />
     <Compile Include="Classes\Editors\RichClassEditor.cs" />
     <Compile Include="Classes\Editors\TextEditor.cs" />
-    <Compile Include="Classes\Forum.cs" />
+    <Compile Include="Classes\Forum.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Classes\ForumPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

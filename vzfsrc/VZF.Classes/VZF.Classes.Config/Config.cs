@@ -465,7 +465,7 @@ namespace YAF.Classes
                 if (HttpContext.Current != null)
                 {
                     object obj = HttpContext.Current.Items["PortalSettings"];
-                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("dotnetnuke", StringComparison.Ordinal) >= 0;
+                    return obj != null && obj.ToString().ToLower().IndexOf("dotnetnuke", StringComparison.Ordinal) >= 0;
                 }
 
                 return false;
@@ -482,7 +482,7 @@ namespace YAF.Classes
                 if (HttpContext.Current != null)
                 {
                     object obj = HttpContext.Current.Items["SiteSettings"];
-                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("mojoportal", StringComparison.Ordinal) >= 0;
+                    return obj != null && obj.ToString().ToLower().IndexOf("mojoportal", StringComparison.Ordinal) >= 0;
                 }
 
                 return false;
@@ -496,7 +496,7 @@ namespace YAF.Classes
         {
             get
             {
-                return HttpContext.Current != null && HttpContext.Current.Session["YetAnotherPortal.net"] != null;
+                return HttpContext.Current.Session != null && HttpContext.Current.Session["YetAnotherPortal.net"] != null;
             }
         }
 
@@ -507,7 +507,7 @@ namespace YAF.Classes
         {
             get
             {
-                return HttpContext.Current != null && HttpContext.Current.Session["Portalomatic.NET"] != null;
+                return HttpContext.Current.Session != null && HttpContext.Current.Session["Portalomatic.NET"] != null;
             }
         }
 
@@ -521,7 +521,7 @@ namespace YAF.Classes
                 if (HttpContext.Current != null)
                 {
                     object obj = HttpContext.Current.Items["PortalSettings"];
-                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("rainbow", StringComparison.Ordinal) >= 0;
+                    return obj != null && obj.ToString().ToLower().IndexOf("rainbow", StringComparison.Ordinal) >= 0;
                 }
 
                 return false;

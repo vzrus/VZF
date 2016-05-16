@@ -484,7 +484,7 @@ namespace YAF.Pages
 
         // get the country data source
         var country = (DropDownList)this.CreateUserWizard1.FindWizardControlRecursive("Country");
-        country.DataSource = StaticDataHelper.Country();
+        country.DataSource = StaticDataHelper.Country().OrderBy(x => x.Name);
 
         if (this.Get<YafBoardSettings>().EnableIPInfoService && this._UserIpLocator == null)
         {

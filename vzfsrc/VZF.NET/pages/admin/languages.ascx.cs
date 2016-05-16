@@ -31,6 +31,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using VZF.Utils;
+    using VZF.Types.Objects;
 
     #endregion
 
@@ -83,6 +84,8 @@ namespace YAF.Pages.Admin
         private void BindData()
         {
             this.List.DataSource = StaticDataHelper.Cultures();
+           // this.List.DataValueField = "IetfLanguageTag";
+           // this.List.DataTextField = "NativeName";
             this.DataBind();
         }
 

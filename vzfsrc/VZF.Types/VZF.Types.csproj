@@ -75,6 +75,10 @@
     <Compile Include="Constants\ViewPermissions.cs" />
     <Compile Include="Constants\YafRssFeeds.cs" />
     <Compile Include="Constants\YafSyndicationFormats.cs" />
+    <Compile Include="Objects\ForumCountry.cs" />
+    <Compile Include="Objects\CountryRegion.cs" />
+    <Compile Include="Objects\ForumCultureInfo.cs" />
+    <Compile Include="Objects\TopicTimes.cs" />
     <Compile Include="Objects\TreeNodeKey.cs" />
     <Compile Include="Objects\TypedUserFind.cs" />
     <Compile Include="EventProxies\CacheItemRemovedEvent.cs" />

@@ -36,6 +36,7 @@ namespace YAF.Install
     using System.Web.UI.WebControls;
     using VZF.Data.Common;
     using VZF.Data.DAL;
+    using VZF.Types.Objects;
     using VZF.Utils;
     using VZF.Utils.Helpers;
     using YAF.Classes;
@@ -1089,23 +1090,18 @@ namespace YAF.Install
                 }
 
                 // logout administrator...
-                FormsAuthentication.SignOut();
-                DataTable cult = StaticDataHelper.Cultures();
-                string langFile = "english.xml";
+                FormsAuthentication.SignOut();              
 
-                foreach (DataRow drow in
-                    cult.Rows.Cast<DataRow>().Where(drow => drow["CultureTag"].ToString() == this.Culture.SelectedValue)
-                    )
-                {
-                    langFile = (string) drow["CultureFile"];
-                }
+                // english.xml by default in class
+                string languageFileName = StaticDataHelper.Cultures().Where(
+                   ci => this.Culture.SelectedValue == ci.IetfLanguageTag).FirstOrDefault().CultureFile;                 
 
                 CommonDb.system_initialize(
                     this.Session["InstallModuleID"].ToType<int?>(),
                     this.TheForumName.Text,
                     this.TimeZones.SelectedValue,
                     this.Culture.SelectedValue,
-                    langFile,
+                    languageFileName,
                     this.ForumEmailAddress.Text,
                     string.Empty,
                     user.UserName,
@@ -1293,11 +1289,11 @@ namespace YAF.Install
                 this.FullTextSupport.Visible =
                     CommonDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.TimeZones.DataSource = StaticDataHelper.TimeZones("english.xml");
+                this.TimeZones.DataSource = StaticDataHelper.TimeZones("english.xml");               
 
                 this.Culture.DataSource = StaticDataHelper.Cultures();
-                this.Culture.DataValueField = "CultureTag";
-                this.Culture.DataTextField = "CultureNativeName";
+                this.Culture.DataValueField = "IetfLanguageTag";
+                this.Culture.DataTextField = "NativeName";
 
                 this.DataBind();
 

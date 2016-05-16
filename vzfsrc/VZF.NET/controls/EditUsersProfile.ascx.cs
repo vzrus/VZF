@@ -379,7 +379,7 @@ namespace VZF.Controls
 
             // vzrus: We should do it as we need to write null value to db, else it will be empty. 
             // Localizer currently treats only nulls. 
-            object language = null;
+            object languageFileName = null;
             object culture = this.Culture.SelectedValue;
             object theme = this.Theme.SelectedValue;
             object editor = this.ForumEditor.SelectedValue;
@@ -400,12 +400,8 @@ namespace VZF.Controls
             }
             else
             {
-                foreach (DataRow row in
-                  StaticDataHelper.Cultures().Rows.Cast<DataRow>().Where(
-                    row => culture.ToString() == row["CultureTag"].ToString()))
-                {
-                    language = row["CultureFile"].ToString();
-                }
+                languageFileName = StaticDataHelper.Cultures().Where(
+                    ci => culture.ToString() == ci.IetfLanguageTag).FirstOrDefault().CultureFile;  
             }
            
             // save remaining settings to the DB
@@ -417,7 +413,7 @@ namespace VZF.Controls
                 displayName,
                 null,
                 this.TimeZones.SelectedValue.ToType<int>(),
-                language,
+                languageFileName,
                 culture,
                 theme,
                 this.SingleSignOn.Checked,
@@ -499,12 +495,15 @@ namespace VZF.Controls
 
             if (this.Get<YafBoardSettings>().AllowUserLanguage)
             {
-                this.Culture.DataSource = StaticDataHelper.Cultures();
-                this.Culture.DataValueField = "CultureTag";
-                this.Culture.DataTextField = "CultureNativeName";
+                var cultures = StaticDataHelper.Cultures().OrderBy(x => x.NativeName);
+                var culture = cultures.FirstOrDefault();
+
+                this.Culture.DataSource = cultures;
+                this.Culture.DataValueField = "IetfLanguageTag";
+                this.Culture.DataTextField = "NativeName";
             }
 
-            this.Country.DataSource = StaticDataHelper.Country();
+            this.Country.DataSource = StaticDataHelper.Country().OrderBy(x => x.Name);
             this.Country.DataValueField = "Value";
             this.Country.DataTextField = "Name";
 
@@ -822,12 +821,12 @@ namespace VZF.Controls
         /// <param name="country">The country.</param>
         private void LookForNewRegionsBind(string country)
         {
-            DataTable dt = StaticDataHelper.Region(country);
+            var regionNames = StaticDataHelper.Region(country).OrderBy(s => s.Name);
 
             // The first row is empty
-            if (dt.Rows.Count > 1)
+            if (regionNames.Count() > 1)
             {
-                this.Region.DataSource = dt;
+                this.Region.DataSource = regionNames;
                 this.Region.DataValueField = "Value";
                 this.Region.DataTextField = "Name";
                 this.RegionTr.Visible = true;

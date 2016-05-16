@@ -31,13 +31,13 @@
 			<ItemTemplate>
 				<tr class="post">
                     <td>
-						<%# Eval("CultureEnglishName")%>
+						<%# Eval("EnglishName")%>
 					</td>
                     <td>
-						<%# Eval("CultureTag")%>
+						<%# Eval("IetfLanguageTag")%>
 					</td>
                      <td>
-						<%# Eval("CultureNativeName")%>
+						<%# Eval("NativeName")%>
 					</td>
 					<td>
 						<%# Eval("CultureFile")%>
