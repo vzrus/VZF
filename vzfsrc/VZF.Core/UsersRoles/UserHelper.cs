@@ -20,6 +20,7 @@ namespace YAF.Core
 {
     using System;
     using System.Data;
+    using System.Linq;
 
     using YAF.Classes;
     using YAF.Types.Interfaces;
@@ -67,7 +68,7 @@ namespace YAF.Core
 
             if (!YafTheme.IsValidTheme(themeFile))
             {
-                themeFile = StaticDataHelper.Themes().Rows[0][1].ToString();
+                themeFile = StaticDataHelper.Themes().First().FileName;
             }
 
             return themeFile;

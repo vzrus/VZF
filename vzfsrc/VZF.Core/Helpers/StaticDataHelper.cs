@@ -46,28 +46,21 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable AllowDisallow()
+        public static ReadOnlyCollection<AllowDisallow> AllowDisallow()
         {
-            using (var dt = new DataTable("AllowDisallow"))
-            {
-                dt.Columns.Add("Text", typeof(string));
-                dt.Columns.Add("Value", typeof(int));
+            var list = new List<AllowDisallow>();
 
-                string[] tTextArray = {
+            string[] tTextArray = {
                                     YafContext.Current.Get<ILocalization>().GetText("COMMON", "ALLOWED"),
                                     YafContext.Current.Get<ILocalization>().GetText("COMMON", "DISALLOWED")
                                 };
 
-                for (int i = 0; i < tTextArray.Length; i++)
-                {
-                    DataRow dr = dt.NewRow();
-                    dr["Text"] = tTextArray[i];
-                    dr["Value"] = i;
-                    dt.Rows.Add(dr);
-                }
-
-                return dt;
+            for (int i = 0; i < tTextArray.Length; i++)
+            {
+                list.Add(new AllowDisallow() { Value = i, Text = tTextArray[i] });               
             }
+
+            return list.AsReadOnly();
         }
 
 
@@ -143,7 +136,6 @@ namespace YAF.Core
         /// </returns>
         public static ReadOnlyCollection<CountryRegion> Region(ILocalization localization, string culture)
         {
-
             var countryRegions = new List<CountryRegion>();
             // Add an empty row to data table for dropdown lists with empty selection option.   
             countryRegions.Add(new CountryRegion());
@@ -290,78 +282,70 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable Languages()
+        public static ReadOnlyCollection<TranslationFileLanguage> Languages()
         {
-            using (var dt = new DataTable("Languages"))
+            var languageFileLst = new List<TranslationFileLanguage>();
+
+            var dir =
+                 new DirectoryInfo(
+                   YafContext.Current.Get<HttpRequestBase>().MapPath("{0}languages".FormatWith(YafForumInfo.ForumServerFileRoot)));
+            
+            FileInfo[] files = dir.GetFiles("*.xml");
+
+            foreach (FileInfo file in files)
             {
-                dt.Columns.Add("Language", typeof(string));
-                dt.Columns.Add("FileName", typeof(string));
-
-                var dir =
-                  new DirectoryInfo(
-                    YafContext.Current.Get<HttpRequestBase>().MapPath("{0}languages".FormatWith(YafForumInfo.ForumServerFileRoot)));
-                FileInfo[] files = dir.GetFiles("*.xml");
-                foreach (FileInfo file in files)
+                try
                 {
-                    try
-                    {
-                        var doc = new XmlDocument();
-                        doc.Load(file.FullName);
-                        DataRow dr = dt.NewRow();
-                        dr["Language"] = doc.DocumentElement.Attributes["language"].Value;
-                        dr["FileName"] = file.Name;
-                        dt.Rows.Add(dr);
-                    }
-                    catch (Exception)
-                    {
-                    }
+                    var doc = new XmlDocument();
+                    doc.Load(file.FullName);
+                    languageFileLst.Add(
+                        new TranslationFileLanguage() { Language = doc.DocumentElement.Attributes["language"].Value, FileName = file.Name });
+                   
                 }
+                catch (Exception)
+                {
+                }
+            }        
 
-                return dt;
-            }
-        }
+            return languageFileLst.AsReadOnly();
+        }   
 
         /// <summary>
         /// The themes.
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable Themes()
+        public static ReadOnlyCollection<ForumTheme> Themes()
         {
-            using (var dt = new DataTable("Themes"))
+            var lstThemes = new List<ForumTheme>();
+            var dir = new DirectoryInfo(YafContext.Current.Get<HttpRequestBase>().MapPath("{0}{1}".FormatWith(YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Themes)));
+
+            foreach (FileInfo file in dir.GetFiles("*.xml"))
             {
-                dt.Columns.Add("Theme", typeof(string));
-                dt.Columns.Add("FileName", typeof(string));
-                dt.Columns.Add("IsMobile", typeof(bool));
-
-                var dir = new DirectoryInfo(YafContext.Current.Get<HttpRequestBase>().MapPath("{0}{1}".FormatWith(YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Themes)));
-
-                foreach (FileInfo file in dir.GetFiles("*.xml"))
+                try
                 {
-                    try
-                    {
-                        var doc = new XmlDocument();
-                        doc.Load(file.FullName);
-
-                        DataRow dr = dt.NewRow();
-                        dr["Theme"] = doc.DocumentElement.Attributes["theme"].Value;
-                        dr["IsMobile"] = false;
-
-                        if (doc.DocumentElement.HasAttribute("ismobile"))
+                    var doc = new XmlDocument();
+                    doc.Load(file.FullName);
+                    var theme = new ForumTheme()
                         {
-                            dr["IsMobile"] = Convert.ToBoolean(doc.DocumentElement.Attributes["ismobile"].Value ?? "false");
-                        }
+                            Theme = doc.DocumentElement.Attributes["theme"].Value,
+                            FileName = file.Name,
+                            IsMobile =  false
+                        };
 
-                        dr["FileName"] = file.Name;
-                        dt.Rows.Add(dr);
-                    }
-                    catch (Exception)
+                    if (doc.DocumentElement.HasAttribute("ismobile"))
                     {
+                        theme.IsMobile = Convert.ToBoolean(doc.DocumentElement.Attributes["ismobile"].Value ?? "false");
                     }
-                }
 
-                return dt;
+                    lstThemes.Add(theme);                 
+                }
+                catch (Exception)
+                {
+                }
             }
+
+            return lstThemes.AsReadOnly();           
         }
 
         /// <summary>
@@ -369,31 +353,27 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable JqueryUIThemes()
+        public static ReadOnlyCollection<JQueryUIThemes> JqueryUIThemes()
         {
-            using (var dt = new DataTable("JqueryUIThemes"))
+            var lst = new List<JQueryUIThemes>();
+            var themeDir = new DirectoryInfo(HttpContext.Current.Request.MapPath(YafForumInfo.GetURLToResource("css/jquery-ui-themes")));
+
+            foreach (DirectoryInfo dir in themeDir.GetDirectories())
             {
-                dt.Columns.Add("Theme", typeof(string));
-
-                var themeDir = new DirectoryInfo(HttpContext.Current.Request.MapPath(YafForumInfo.GetURLToResource("css/jquery-ui-themes")));
-
-                foreach (DirectoryInfo dir in themeDir.GetDirectories())
+                try
                 {
-                    try
+                    lst.Add(new JQueryUIThemes()
                     {
-                        DataRow dr = dt.NewRow();
-                        dr["Theme"] = dir.Name;
-
-                        dt.Rows.Add(dr);
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
+                        Theme = dir.Name
+                    });
                 }
-
-                return dt;
+                catch (Exception)
+                {
+                    continue;
+                }
             }
+
+            return lst.AsReadOnly();      
         }
 
         /// <summary>
@@ -401,31 +381,27 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable FancyTreeThemes()
+        public static ReadOnlyCollection<FancyTreeThemes> FancyTreeThemes()
         {
-            using (var dt = new DataTable("FancyTreeThemes"))
+            var lst = new List<FancyTreeThemes>();
+            var themeDir = new DirectoryInfo(HttpContext.Current.Request.MapPath(YafForumInfo.GetURLToResource("css/fancytree")));
+
+            foreach (DirectoryInfo dir in themeDir.GetDirectories())
             {
-                dt.Columns.Add("Theme", typeof(string));
-
-                var themeDir = new DirectoryInfo(HttpContext.Current.Request.MapPath(YafForumInfo.GetURLToResource("css/fancytree")));
-
-                foreach (DirectoryInfo dir in themeDir.GetDirectories())
+                try
                 {
-                    try
+                    lst.Add(new FancyTreeThemes()
                     {
-                        DataRow dr = dt.NewRow();
-                        dr["Theme"] = dir.Name;
-
-                        dt.Rows.Add(dr);
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
+                        Theme = dir.Name
+                    });                  
                 }
-
-                return dt;
+                catch (Exception)
+                {
+                    continue;
+                }
             }
+
+            return lst.AsReadOnly();          
         }
         /// <summary>
         /// The time zones.
@@ -435,25 +411,20 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable TimeZones(ILocalization localization)
+        public static ReadOnlyCollection<ForumTimeZones> TimeZones(ILocalization localization)
         {
-            using (var dt = new DataTable("TimeZone"))
+            var lst = new List<ForumTimeZones>();
+            var timezones =
+                 localization.GetNodesUsingQuery("TIMEZONES", x => x.tag.StartsWith("UTC")).ToList();
+
+            timezones.Sort(new YafLanguageNodeComparer());
+
+            foreach (var node in timezones)
             {
-                dt.Columns.Add("Value", Type.GetType("System.Int32"));
-                dt.Columns.Add("Name", Type.GetType("System.String"));
-
-                var timezones =
-                  localization.GetNodesUsingQuery("TIMEZONES", x => x.tag.StartsWith("UTC")).ToList();
-
-                timezones.Sort(new YafLanguageNodeComparer());
-
-                foreach (var node in timezones)
-                {
-                    dt.Rows.Add(new object[] { node.GetHoursOffset() * 60, node.Value });
-                }
-
-                return dt;
+                lst.Add(new ForumTimeZones() { Name = node.Value, Value = node.GetHoursOffset() * 60 });              
             }
+
+            return lst.AsReadOnly();           
         }
 
         /// <summary>
@@ -461,7 +432,7 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable TimeZones()
+        public static ReadOnlyCollection<ForumTimeZones> TimeZones()
         {
             return TimeZones(YafContext.Current.Get<ILocalization>());
         }
@@ -474,7 +445,7 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable TimeZones(string forceLanguage)
+        public static ReadOnlyCollection<ForumTimeZones> TimeZones(string forceLanguage)
         {
             var localization = new YafLocalization();
             localization.LoadTranslation(forceLanguage);
@@ -513,7 +484,7 @@ namespace YAF.Core
                         TopicText = noTransPage
                                         ? tTextArrayProp[i]
                                         : YafContext.Current.Get<ILocalization>().GetText(tTextArray[i]),
-                        TopicValue = i.ToString()
+                        TopicValue = i
                     }
                     );                    
                 }

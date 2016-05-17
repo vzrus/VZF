@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace VZF.Types.Objects
 {
-    public class TopicTimes
+    public class AllowDisallow
     {
-        public string TopicText { get; set; }
-        public int TopicValue { get; set; }
+        public string Text { get; set; }
+        public int Value { get; set; }
     }
 }

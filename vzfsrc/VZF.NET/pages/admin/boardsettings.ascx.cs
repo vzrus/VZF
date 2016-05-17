@@ -40,6 +40,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Objects;
     using VZF.Utils;
     using VZF.Utils.Helpers;
+    using VZF.Types.Objects;
 
     #endregion
 
@@ -73,29 +74,29 @@ namespace YAF.Pages.Admin
             this.Save.Text = this.GetText("COMMON", "SAVE");
 
             // create list boxes by populating datasources from Data class
-            var themeData = StaticDataHelper.Themes().AsEnumerable().Where(x => !x.Field<bool>("IsMobile"));
+            var themeData = StaticDataHelper.Themes().Where(x => !x.IsMobile);
 
             if (themeData.Any())
             {
-                this.Theme.DataSource = themeData.CopyToDataTable();
+                this.Theme.DataSource = themeData;
                 this.Theme.DataTextField = "Theme";
                 this.Theme.DataValueField = "FileName";
             }
 
-            var mobileThemeData = StaticDataHelper.Themes().AsEnumerable().Where(x => x.Field<bool>("IsMobile"));
+            var mobileThemeData = StaticDataHelper.Themes().Where(x => x.IsMobile);
 
             if (mobileThemeData.Any())
             {
-                var mobileThemes = mobileThemeData.CopyToDataTable();
+                var mobileThemes = mobileThemeData.ToList();
 
                 // Add Dummy Disabled Mobile Theme Item to allow disabling the Mobile Theme
-                DataRow dr = mobileThemes.NewRow();
-                dr["Theme"] = "[ {0} ]".FormatWith(this.GetText("ADMIN_COMMON", "DISABLED"));
-
-                dr["FileName"] = string.Empty;
-                dr["IsMobile"] = false;
-
-                mobileThemes.Rows.InsertAt(dr, 0);
+                mobileThemes.Insert(0,new ForumTheme()
+                    {
+                        Theme = "[ {0} ]".FormatWith(this.GetText("ADMIN_COMMON", "DISABLED")),
+                        FileName = string.Empty,
+                        IsMobile = false
+                    }
+                    );      
 
                 this.MobileTheme.DataSource = mobileThemes;
                 this.MobileTheme.DataTextField = "Theme";
