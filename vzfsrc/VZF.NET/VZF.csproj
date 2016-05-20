@@ -1019,6 +1019,7 @@
     <Content Include="Bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
     <Content Include="Bin\Mono.Security.dll" />
+    <Content Include="Bin\MySql.Data.dll" />
     <Content Include="Bin\Npgsql.dll" />
     <Content Include="Bin\nStuff.UpdateControls.dll" />
     <Content Include="Controls\AlbumImageList.ascx" />

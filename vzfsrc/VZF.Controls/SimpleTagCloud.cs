@@ -227,64 +227,20 @@ namespace VZF.Controls
         /// </returns>
         public string GetTagClass(int tagFrequency, int highestFrequency)
         {
+            string tag = "tag0";        
+
             if (tagFrequency == 0 || highestFrequency == 0)
             {
-                return "tag0";
+                return tag;
             }
 
-            var percentageFrequency = (tagFrequency * 100) / highestFrequency;
-
-            if (percentageFrequency >= 90)
+            var percentageFrequency = ((((tagFrequency * 100) / highestFrequency) / 10) * 10) - 10;
+            if (percentageFrequency <= 0)
             {
-                return "tag{0}".FormatWith(90);
+                percentageFrequency = 1;
             }
 
-            if (percentageFrequency >= 80)
-            {
-                return "tag80";
-            }
-
-            if (percentageFrequency >= 70)
-            {
-                return "tag70";
-            }
-
-            if (percentageFrequency >= 60)
-            {
-                return "tag60";
-            }
-
-            if (percentageFrequency >= 50)
-            {
-                return "tag50";
-            }
-
-            if (percentageFrequency >= 40)
-            {
-                return "tag40";
-            }
-
-            if (percentageFrequency >= 30)
-            {
-                return "tag30";
-            }
-
-            if (percentageFrequency >= 20)
-            {
-                return "tag20";
-            }
-
-            if (percentageFrequency >= 10)
-            {
-                return "tag10";
-            }
-
-            if (percentageFrequency >= 1)
-            {
-                return "tag1";
-            }
-
-            return null;
+            return "tag{0}".FormatWith(Convert.ToUInt16(percentageFrequency));
         }
 
         /// <summary>
