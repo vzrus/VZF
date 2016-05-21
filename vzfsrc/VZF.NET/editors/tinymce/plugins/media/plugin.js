@@ -1,3 +1,13 @@
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
 /*jshint maxlen:255 */
 /*eslint max-len:0 */
 /*global tinymce:true */

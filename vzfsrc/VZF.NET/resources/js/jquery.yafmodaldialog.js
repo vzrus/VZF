@@ -1,3 +1,12 @@
+/*
+ * YafModalDialog by Ingo Herbote  for YAF.NET based on Facebox http://famspam.com/facebox/ by Chris Wanstrath [ chris@ozmm.org ]
+ * version: 1.02 (07/07/2012)
+ * @requires jQuery v1.4.4 or later
+ *
+ * Licensed under the MIT:
+ *   http://www.opensource.org/licenses/mit-license.php
+ */
+  
 (function($) {
     // jQuery plugin definition
     $.fn.YafModalDialog = function(settings) {

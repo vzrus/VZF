@@ -1,4 +1,8 @@
-﻿CKEDITOR.plugins.setLang( 'codemirror', 'ko', {
+﻿/*
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+CKEDITOR.plugins.setLang( 'codemirror', 'ko', {
 	toolbar: '소스',
 	searchCode: 'Search Source',
 	autoFormat: 'Format Selection',

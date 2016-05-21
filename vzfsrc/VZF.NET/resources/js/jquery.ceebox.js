@@ -1,3 +1,14 @@
+/*
+ * CeeBox 2.1.4 jQuery Plugin (minimized version)
+ * Requires jQuery 1.3.2 and swfobject.jquery.js plugin to work
+ * Code hosted on GitHub (http://github.com/catcubed/ceebox) Please visit there for version history information
+ * By Colin Fahrion (http://www.catcubed.com)
+ * Inspiration for ceebox comes from Thickbox (http://jquery.com/demo/thickbox/) and Videobox (http://videobox-lb.sourceforge.net/)
+ * However, along the upgrade path ceebox has morphed a long way from those roots.
+ * Copyright (c) 2009 Colin Fahrion
+ * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
+*/
+
 (function (b) {
     function v(c, a, d) {
         l.vidRegex = function () {
