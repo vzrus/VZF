@@ -1,9 +1,4 @@
-﻿/**
- * Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
- */
-
-// This file contains style definitions that can be used by CKEditor plugins.
+﻿// This file contains style definitions that can be used by CKEditor plugins.
 //
 // The most common use for it is the "stylescombo" plugin, which shows a combo
 // in the editor toolbar, containing all styles. Other plugins instead, like

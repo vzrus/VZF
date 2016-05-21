@@ -1,13 +1,3 @@
-// MSDropDown - jquery.dd.js
-// author: Marghoob Suleman - http://www.marghoobsuleman.com/
-// Date: 10 Nov, 2012
-// Version: 3.3
-// Revision: 22
-// web: www.marghoobsuleman.com
-/*
-// msDropDown is free jQuery Plugin: you can redistribute it and/or modify
-// it under the terms of the either the MIT License or the Gnu General Public License (GPL) Version 2
-*/
 var msBeautify = msBeautify || {};
 (function ($) {
     msBeautify = {

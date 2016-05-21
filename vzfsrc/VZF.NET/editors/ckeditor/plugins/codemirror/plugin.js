@@ -1,11 +1,3 @@
-/*
-*  The "codemirror" plugin. It's indented to enhance the
-*  "sourcearea" editing mode, which displays the xhtml source code with
-*  syntax highlight and line numbers.
-* Licensed under the MIT license
-* CodeMirror Plugin: http://codemirror.net/ (MIT License)
-*/
-
 (function() {
     CKEDITOR.plugins.add('codemirror', {
         icons: 'searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete',

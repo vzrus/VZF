@@ -1,10 +1,4 @@
-﻿/*
- * BBCode Plugin v1.0 for CKEditor - http://www.site-top.com/
- * Copyright (c) 2010, PitBult.
- * - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
- */
-
-CKEDITOR.plugins.add( 'bbcode',
+﻿CKEDITOR.plugins.add( 'bbcode',
 {
 	requires : [ 'htmlwriter' ],
 	init : function( editor ) {
