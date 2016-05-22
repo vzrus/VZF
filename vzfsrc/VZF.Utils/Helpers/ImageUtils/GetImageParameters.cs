@@ -163,14 +163,14 @@ namespace VZF.Utils.Helpers
         {           
             // TODO : Save an Animated Gif
             var bitmap = GetResizedImageFromImage(img, x, y);
-            return GetImageStreamFromImage(bitmap);          
+            return GetImageStreamFromImage(bitmap, img);          
         }
 
-        public static Stream GetImageStreamFromImage(Image img)
+        public static Stream GetImageStreamFromImage(Image img, Image s)
         {
             Stream resized = null;          
             resized = new MemoryStream();
-            img.Save(resized, img.RawFormat);
+            img.Save(resized, s.RawFormat);
             return resized;
         }
 
@@ -204,7 +204,7 @@ namespace VZF.Utils.Helpers
                 newWidth = newWidth * y / newHeight;
                 newHeight = y;
             }
-
+          
             // TODO : Save an Animated Gif
             var bitmap = img.GetThumbnailImage((int)newWidth, (int)newHeight, null, IntPtr.Zero);
 

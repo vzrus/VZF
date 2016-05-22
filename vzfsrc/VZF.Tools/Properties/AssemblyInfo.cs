@@ -34,10 +34,10 @@ using System.Security;
 [assembly: AssemblyTitle("VZF.Tools")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VZF")]
-[assembly: AssemblyCopyright("Copyright ©  2011-2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Vladimir Zakharov")]
+[assembly: AssemblyProduct("VZF.Tools")]
+[assembly: AssemblyCopyright("Vladimir Zakharov ©  2011-2016")]
+[assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -58,8 +58,8 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 
 #if (!COMPACT_FRAMEWORK)
 [assembly: AllowPartiallyTrustedCallers]

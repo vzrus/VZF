@@ -34,10 +34,10 @@ using System.Security;
 [assembly: AssemblyTitle("VZF.Data.DAL")]
 [assembly: AssemblyDescription("Base Data Access Layer for VZF.")]
 [assembly: AssemblyConfiguration("vzrus")]
-[assembly: AssemblyCompany("vzrus")]
+[assembly: AssemblyCompany("Vladimir Zakharov")]
 [assembly: AssemblyProduct("VZF.Data.DAL")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Vladimir Zakharov  ©  2015 - 2016")]
+[assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -52,8 +52,8 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
 // [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

@@ -256,25 +256,33 @@
                 return;
             }
 
+           
+
             int nImageSize = this.Get<YafBoardSettings>().AlbumImagesSizeMax;
+            if (this.File.PostedFile.ContentLength > nImageSize)
+            {
+                // image is probably invalid...
+                this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "INVALID_IMG_FILE"));
+                return;
+            }
 
             Stream resized = null;
             Stream resizedLarge = null;
             Image imgThumb = null;
             Image imgLarge = null;
-            try
-            {
+          //  try
+          //  {
                 using (Image img = Image.FromStream(this.File.PostedFile.InputStream))
                 {
                     long x = this.Get<YafBoardSettings>().TopicImageWidth;
                     long y = this.Get<YafBoardSettings>().TopicImageHeight;
 
                     if (img.Width > x || img.Height > y)
-                    {
+                    {                        
                         this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_TOOBIG").FormatWith(x, y));
                         this.PageContext.AddLoadMessage(
                         this.GetText("IMAGEADD", "WARN_IMG_SIZE").FormatWith(img.Width, img.Height));
-                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_RESIZED"));
+                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_RESIZED"));                       
 
                         resizedLarge = ImageHelper.GetResizedImageStreamFromImage(img, x, y);
 
@@ -294,10 +302,10 @@
 
                     if (img.Width > x || img.Height > y)
                     {
-                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_TOOBIG").FormatWith(x, y));
+                      /*  this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_TOOBIG").FormatWith(x, y));
                         this.PageContext.AddLoadMessage(
                             this.GetText("IMAGEADD", "WARN_IMG_SIZE").FormatWith(img.Width, img.Height));
-                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_RESIZED"));
+                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_RESIZED")); */
 
                         resized = ImageHelper.GetResizedImageStreamFromImage(img, x, y);
 
@@ -333,12 +341,14 @@
                     CommonDb.topic_imagesave(
                         PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), null, null, null);
 
-                    var streamI = resized ?? this.File.PostedFile.InputStream;
+                    // to save in database
+                 //  var streamI = resized ?? this.File.PostedFile.InputStream;
+
                     CommonDb.topic_imagesave(
                         PageContext.PageModuleID,
                         this.PageContext.QueryIDs["ti"].ToType<int>(),
                         this.File.PostedFile.FileName.Trim(),
-                        streamI,
+                        null,
                         this.File.PostedFile.ContentType);
 
                 }
@@ -373,12 +383,13 @@
                 {
                     this.NoImage.Visible = false;
                 }
-            }
+           
+          /*  }
             catch (Exception)
             {
                 // image is probably invalid...
                 this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "INVALID_IMG_FILE"));
-            }
+            } */
 
             this.BindData();
         }
@@ -421,7 +432,7 @@
             else if (row["TopicImage"].ToString().Length > 0)
             {
                 // remote
-                if (row["TopicImage"].ToString().TrimStart().IndexOf("ttp", System.StringComparison.Ordinal) > 0)
+                if (row["TopicImage"].ToString().TrimStart().IndexOf("http", System.StringComparison.Ordinal) > 0)
                 {
                     this.TopicImg.ImageUrl =
                         "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}&remote=1".FormatWith(
@@ -435,12 +446,12 @@
                 }
                 else
                 {
-                    // image in folder
+                    // image in folder                
                     this.TopicImg.ImageUrl =
-                        "{0}resource.ashx?ti={1}&width={3}&height={4}".FormatWith(
+                        "{0}resource.ashx?ti={1}&width={3}&height={4}&thumb={2}".FormatWith(
                             YafForumInfo.ForumClientFileRoot,
                             topicId,
-                            this.Server.UrlEncode(row["TopicImage"].ToString()),
+                            this.Server.UrlEncode(ImagePathHelper.GetThumbnailImageRealFileName(row["TopicImage"].ToString(), "thumb")),
                             this.Get<YafBoardSettings>().TopicImageWidth,
                             this.Get<YafBoardSettings>().TopicImageHeight);
                     this.TopicImage.Text = row["TopicImage"].ToString();

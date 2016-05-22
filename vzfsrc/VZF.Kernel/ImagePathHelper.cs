@@ -43,6 +43,23 @@ namespace VZF.Kernel
                 TopicImageUploadDir, topicId, thumbClause, topicImageName, uploadFileExtension);
         }
 
+        public static string GetThumbnailImageRealFileName(string topicImageName, string thumbClause = null)
+        {
+            int i = 0;
+
+          
+            string newName = thumbClause;  
+
+            var d = topicImageName.Split('.');
+
+            for(i =0; i < d.Length; i++)
+            {       
+               newName = newName + "." + d[i];               
+            }           
+
+            return newName;
+        }
+
         public static string GetTopicImageUploadFullPath(int topicId, string topicImageName)
         {
             return GetTopicImageUploadPath(topicId, string.Empty, topicImageName);

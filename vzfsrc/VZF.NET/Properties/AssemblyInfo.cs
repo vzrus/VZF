@@ -7,12 +7,12 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VZF")]
-[assembly: AssemblyDescription("Yet Another Forum.NET Main WAP DLL")]
+[assembly: AssemblyDescription("VZF Main DLL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tiny Gecko")]
+[assembly: AssemblyCompany("Vladiimir Zakharov")]
 [assembly: AssemblyProduct("VZF")]
-[assembly: AssemblyCopyright("Copyright © 2006-2012 Yet Another Forum.NET")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Vladiimir Zakharov (vzrus) © 2014-2016")]
+[assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -30,8 +30,8 @@ using System.Security;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 
 #if (!COMPACT_FRAMEWORK)
 [assembly: AllowPartiallyTrustedCallers]

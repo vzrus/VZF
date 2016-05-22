@@ -32,12 +32,12 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VZF.Data.Mssql")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Mssql server specific data access layer.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Vladimir Zakharov")]
 [assembly: AssemblyProduct("VZF")]
-[assembly: AssemblyCopyright("Copyright ©  2011")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Vladimir Zakharov  ©  2015-2016")]
+[assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -64,7 +64,7 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 
 [assembly: AssemblyDelaySign(false)]

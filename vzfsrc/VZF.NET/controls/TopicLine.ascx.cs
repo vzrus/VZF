@@ -18,7 +18,7 @@ namespace VZF.Controls
     using YAF.Types.Interfaces.Extensions;
     using VZF.Utils;
     using VZF.Utils.Helpers;
-
+    using Kernel;
     #endregion
 
     /// <summary>
@@ -407,12 +407,12 @@ namespace VZF.Controls
         }
 
         // Written by vzrus(2012)
-      
+
         /// <summary>
         /// Returns topic tags as a comma-delimited icon tooltip.
         /// </summary>
         /// <returns></returns>
-        protected  string GetTags()
+        protected string GetTags()
         {
             if (this.Get<YafBoardSettings>().AllowTopicTags && this.TopicRow.Row.Table.Columns.Contains("TopicTags") && this.TopicRow["TopicTags"].ToString().IsSet())
             {
@@ -478,16 +478,16 @@ namespace VZF.Controls
                 {
                     strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "POLL_T_SICON"), this.GetText("POLL"));
                 }
-                
+
                 switch (int.Parse(row["Priority"].ToString()))
-                    {
-                        case 1:
-                            strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "STICKY_T_SICON"), this.GetText("STICKY"));
-                            break;
-                     /*   case 2:
-                            strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "ANOUNCEMENT_T_SICON"), this.GetText("ANNOUNCEMENT"));
-                            break; */
-                    }
+                {
+                    case 1:
+                        strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "STICKY_T_SICON"), this.GetText("STICKY"));
+                        break;
+                        /*   case 2:
+                               strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "ANOUNCEMENT_T_SICON"), this.GetText("ANNOUNCEMENT"));
+                               break; */
+                }
 
 
                 DateTime lastPosted = row["LastPosted"] != DBNull.Value
@@ -499,11 +499,11 @@ namespace VZF.Controls
                 {
                     strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "HOT_T_ICON"), this.GetText("ICONLEGEND", "HOT_NEW_POSTS"));
                 }
-              /*  if (strReturn.Length > 0)
-                {
-                    strReturn = "[ {0} ] ".FormatWith(strReturn);
-                }
-              */
+                /*  if (strReturn.Length > 0)
+                  {
+                      strReturn = "[ {0} ] ".FormatWith(strReturn);
+                  }
+                */
 
                 if (strReturn.IsSet())
                 {
@@ -537,29 +537,40 @@ namespace VZF.Controls
 
                 if (row["TopicImage"].ToString().Length > 0)
                 {
-                   
+
                     // remote
                     imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
                     if (this.Get<YafBoardSettings>().TopicImageDirectThumbnail)
                     {
-                        return
-                            "{0}resource.ashx?ti={1}&thumb={2}&type={3}".FormatWith(
-                                YafForumInfo.ForumClientFileRoot,
-                                row["TopicID"].ToType<int>(),
-                                this.Server.UrlEncode(row["TopicImage"].ToString()),
-                                row["TopicImageType"]);
+                        // local image thumbnail
+                        return "{0}resource.ashx?ti={1}&thumb={2}".FormatWith(
+                                                       YafForumInfo.ForumClientFileRoot,
+                                                       row["TopicID"].ToType<int>(),                                        
+                                                       this.Server.UrlEncode(ImagePathHelper.GetThumbnailImageRealFileName(row["TopicImage"].ToString(), "thumb")));
                     }
+
+                    // Remote image. 
                     if (row["TopicImage"].ToString().Contains("http"))
                     {
                         return
-                            "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
-                                YafForumInfo.ForumClientFileRoot,
-                                row["TopicID"].ToType<int>(),
-                                this.Server.UrlEncode(row["TopicImage"].ToString()),
-                                this.Get<YafBoardSettings>().TopicImageWidth,
-                                this.Get<YafBoardSettings>().TopicImageHeight);
+                        "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}&remote=1".FormatWith(
+                            YafForumInfo.ForumClientFileRoot,
+                            row["TopicID"].ToType<int>(),
+                            this.Server.UrlEncode(row["TopicImage"].ToString()),
+                            this.Get<YafBoardSettings>().TopicImageWidth,
+                            this.Get<YafBoardSettings>().TopicImageHeight);
+                    }
+                    else
+                    {
+                        return
+                              "{0}resource.ashx?ti={1}&thumb={2}&type={3}".FormatWith(
+                                  YafForumInfo.ForumClientFileRoot,
+                                  row["TopicID"].ToType<int>(),
+                                  this.Server.UrlEncode(row["TopicImage"].ToString()),
+                                  row["TopicImageType"]);
                     }
                 }
+
                 if (row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
                 {
                     imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
@@ -595,7 +606,7 @@ namespace VZF.Controls
                 row["TopicID"].ToType<int>(),
                 row["LastForumAccess"].IsNullOrEmptyDBField() ? DateTimeHelper.SqlDbMinTime() : row["LastForumAccess"].ToType<DateTime?>(),
                 row["LastTopicAccess"].IsNullOrEmptyDBField() ? DateTimeHelper.SqlDbMinTime() : row["LastForumAccess"].ToType<DateTime?>());
-                
+
             if (lastPosted > lastRead)
             {
                 this.Get<IYafSession>().UnreadTopics++;

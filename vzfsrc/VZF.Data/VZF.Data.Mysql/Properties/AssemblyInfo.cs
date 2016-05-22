@@ -34,9 +34,9 @@ using System.Security;
 [assembly: AssemblyTitle("VZF.Data.Mysql")]
 [assembly: AssemblyDescription("My Sql Data Layer for VZF")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Vladimir Zakharov(vzrus)")]
+[assembly: AssemblyCompany("Vladimir Zakharov")]
 [assembly: AssemblyProduct("VZF.Data.Mysql")]
-[assembly: AssemblyCopyright("Copyright ©  2008-2013 Vladimir Zakharov")]
+[assembly: AssemblyCopyright("©  2008-2016 Vladimir Zakharov")]
 [assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
@@ -62,7 +62,7 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 [assembly: AssemblyDelaySign(false)]
 // [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

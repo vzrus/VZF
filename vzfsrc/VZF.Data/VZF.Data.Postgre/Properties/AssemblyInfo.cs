@@ -32,12 +32,12 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VZF.Data.Postgre")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Postgre specific data layer functionality.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Vladimir Zakharov(vzrus)")]
-[assembly: AssemblyProduct("VZF")]
-[assembly: AssemblyCopyright("Copyright ©  2008-2013 Vladimir Zakharov")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Vladimir Zakharov")]
+[assembly: AssemblyProduct("VZF.Data.Postgre")]
+[assembly: AssemblyCopyright("©  2008-2016 Vladimir Zakharov")]
+[assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -58,8 +58,8 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 
 #if (!COMPACT_FRAMEWORK)
 [assembly: AllowPartiallyTrustedCallers]

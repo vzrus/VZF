@@ -31,11 +31,11 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VZF.Data.Common")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Common functions of data access layer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vladimir Zakharov")]
 [assembly: AssemblyProduct("VZF.Data.Common")]
-[assembly: AssemblyCopyright("Copyright Vladimir Zakharov (vzrus) ©  2014")]
+[assembly: AssemblyCopyright("Vladimir Zakharov ©  2014 - 2016")]
 [assembly: AssemblyTrademark("vzrus")]
 [assembly: AssemblyCulture("")]
 
@@ -61,8 +61,8 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
-[assembly: AssemblyVersion("1.9.6.2")]
-[assembly: AssemblyFileVersion("1.9.6.2")]
+[assembly: AssemblyVersion("1.9.6.4")]
+[assembly: AssemblyFileVersion("1.9.6.4")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
 // [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]
