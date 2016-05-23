@@ -284,6 +284,13 @@
     <Compile Include="Controls\DialogBox.ascx.designer.cs">
       <DependentUpon>DialogBox.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ForumCategoryListNew.ascx.cs">
+      <DependentUpon>ForumCategoryListNew.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ForumCategoryListNew.ascx.designer.cs">
+      <DependentUpon>ForumCategoryListNew.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ForumJumper.ascx.cs">
       <DependentUpon>ForumJumper.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1035,6 +1042,7 @@
     <Content Include="Controls\BuddyList.ascx" />
     <Content Include="Controls\EditObjectImage.ascx" />
     <Content Include="Controls\DialogBox.ascx" />
+    <Content Include="Controls\ForumCategoryListNew.ascx" />
     <Content Include="Controls\ForumJumper.ascx" />
     <Content Include="Controls\ForumsAdminTree.ascx" />
     <Content Include="Controls\PollChoiceList.ascx" />

@@ -4,6 +4,7 @@
 <%@ Register TagPrefix="VZF" TagName="ForumStatistics" Src="../controls/ForumStatistics.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="ForumActiveDiscussion" Src="../controls/ForumActiveDiscussion.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="ForumCategoryList" Src="../controls/ForumCategoryList.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="ForumCategoryListNew" Src="../controls/ForumCategoryListNew.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="ShoutBox" Src="../controls/ShoutBox.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="PollList" Src="../controls/PollList.ascx" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
@@ -12,6 +13,7 @@
 </div>
 <VZF:ShoutBox ID="ShoutBox1" runat="server" />
 <VZF:PollList ID="PollList" runat="server"/>
+<VZF:ForumCategoryListNew ID="ForumCategoryListNew" runat="server"/>
 <VZF:ForumCategoryList ID="ForumCategoryList" runat="server"/>
 <br />
 <VZF:ForumActiveDiscussion ID="ActiveDiscussions" runat="server" />

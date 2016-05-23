@@ -59,9 +59,8 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<AllowDisallow> AllowDisallow()
-        {
-            var list = new List<AllowDisallow>();
+        public static IEnumerable<AllowDisallow> AllowDisallow()
+        {       
 
             string[] tTextArray = {
                                     YafContext.Current.Get<ILocalization>().GetText("COMMON", "ALLOWED"),
@@ -70,10 +69,8 @@ namespace YAF.Core
 
             for (int i = 0; i < tTextArray.Length; i++)
             {
-                list.Add(new AllowDisallow() { Value = i, Text = tTextArray[i] });               
-            }
-
-            return list.AsReadOnly();
+               yield return new AllowDisallow() { Value = i, Text = tTextArray[i] };               
+            }            
         }
 
 
@@ -88,12 +85,11 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<ForumCountry> Country(ILocalization localization)
+        public static IEnumerable<ForumCountry> Country(ILocalization localization)
         {
-            var countries = new List<ForumCountry>();
+         
             // Add an empty row to data table for dropdown lists with empty selection option.   
-            countries.Add(new ForumCountry());
-
+            yield return new ForumCountry();
 
             var countriesBefore =
              localization.GetCountryNodesUsingQuery("COUNTRY", x => x.tag.StartsWith(string.Empty)).ToList();
@@ -103,11 +99,9 @@ namespace YAF.Core
             {
                 foreach (var node in countriesBefore)
                 {
-                    countries.Add(new ForumCountry() { Name = node.Value, Value = node.tag });
+                    yield return new ForumCountry() { Name = node.Value, Value = node.tag };
                 }
-            }
-
-            return countries.AsReadOnly();
+            }         
         }
 
         /// <summary>
@@ -115,7 +109,7 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<ForumCountry> Country()
+        public static IEnumerable<ForumCountry> Country()
         {
             return Country(YafContext.Current.Get<ILocalization>());
         }
@@ -128,7 +122,7 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<ForumCountry> Country(string forceLanguage)
+        public static IEnumerable<ForumCountry> Country(string forceLanguage)
         {
             var localization = new YafLocalization();
             localization.LoadTranslation(forceLanguage);
@@ -147,27 +141,23 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<CountryRegion> Region(ILocalization localization, string culture)
+        public static IEnumerable<CountryRegion> Region(ILocalization localization, string culture)
         {
             var countryRegions = new List<CountryRegion>();
             // Add an empty row to data table for dropdown lists with empty selection option.   
-            countryRegions.Add(new CountryRegion());
+            yield return new CountryRegion();
 
             var countries =
              localization.GetCountryNodesUsingQuery("REGION_{0}".FormatWith(culture), x => x.tag.StartsWith("RGN_{0}_".FormatWith(culture))).ToList();
 
             foreach (var node in countries)
             {
-                countryRegions.Add(
-                    new CountryRegion()
+                yield return new CountryRegion()
                     {
                         Value = node.tag.Replace("RGN_{0}_".FormatWith(culture), string.Empty),
                         Name = node.Value
-                    });
+                    };
             }
-
-            return countryRegions.AsReadOnly();
-
         }
 
         /// <summary>
@@ -175,11 +165,10 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<CountryRegion> Region(string culture)
+        public static IEnumerable<CountryRegion> Region(string culture)
         {
             return Region(YafContext.Current.Get<ILocalization>(), culture);
         }
-
 
         /// <summary>
         /// The cultures IetfLangTags (4-letter).
@@ -394,7 +383,7 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<FancyTreeThemes> FancyTreeThemes()
+        public static IEnumerable<FancyTreeThemes> FancyTreeThemes()
         {
             var lst = new List<FancyTreeThemes>();
             var themeDir = new DirectoryInfo(HttpContext.Current.Request.MapPath(YafForumInfo.GetURLToResource("css/fancytree")));
@@ -424,9 +413,8 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<ForumTimeZones> TimeZones(ILocalization localization)
-        {
-            var lst = new List<ForumTimeZones>();
+        public static IEnumerable<ForumTimeZones> TimeZones(ILocalization localization)
+        {         
             var timezones =
                  localization.GetNodesUsingQuery("TIMEZONES", x => x.tag.StartsWith("UTC")).ToList();
 
@@ -434,10 +422,8 @@ namespace YAF.Core
 
             foreach (var node in timezones)
             {
-                lst.Add(new ForumTimeZones() { Name = node.Value, Value = node.GetHoursOffset() * 60 });              
-            }
-
-            return lst.AsReadOnly();           
+               yield return new ForumTimeZones() { Name = node.Value, Value = node.GetHoursOffset() * 60 };              
+            }                   
         }
 
         /// <summary>
@@ -445,7 +431,7 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<ForumTimeZones> TimeZones()
+        public static IEnumerable<ForumTimeZones> TimeZones()
         {
             return TimeZones(YafContext.Current.Get<ILocalization>());
         }
@@ -458,7 +444,7 @@ namespace YAF.Core
         /// </param>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<ForumTimeZones> TimeZones(string forceLanguage)
+        public static IEnumerable<ForumTimeZones> TimeZones(string forceLanguage)
         {
             var localization = new YafLocalization();
             localization.LoadTranslation(forceLanguage);
@@ -471,10 +457,8 @@ namespace YAF.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        public static ReadOnlyCollection<TopicTimes> TopicTimes()
-        {
-            var topicTimes = new List<TopicTimes>(); 
-         
+        public static IEnumerable<TopicTimes> TopicTimes()
+        {         
 
                 string[] tTextArray = {
                                 "all", "last_day", "last_two_days", "last_week", "last_two_weeks", "last_month", 
@@ -492,17 +476,14 @@ namespace YAF.Core
 
                 for (int i = 0; i < countT; i++)
                 {
-                    topicTimes.Add(new TopicTimes()
+                    yield return new TopicTimes()
                     {
                         TopicText = noTransPage
                                         ? tTextArrayProp[i]
                                         : YafContext.Current.Get<ILocalization>().GetText(tTextArray[i]),
                         TopicValue = i
-                    }
-                    );                    
-                }
-
-                return topicTimes.AsReadOnly();           
+                    };                    
+                }                
         }
 
         #endregion
